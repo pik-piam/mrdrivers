@@ -31,6 +31,3 @@ from a .csv file to a magclass object
 \seealso{
 \code{\link{readSource}}
 }
-\author{
-David Chen, Benjamin Bodirsky
-}

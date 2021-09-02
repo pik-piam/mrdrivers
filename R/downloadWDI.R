@@ -3,7 +3,6 @@
 #' Download WDI (World development indicators) data .rda file. 
 #' the WDI data is updated with the funciton "WDISearch(cache=WDIcache())"
 #' 
-#' @author  Xiaoxi Wang
 #' @seealso  \code{\link{downloadSource}} \code{\link{WDI}}
 #' @examples
 #' 

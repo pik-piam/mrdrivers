@@ -21,6 +21,3 @@ Read-in iMF data
 \seealso{
 \code{\link{readSource}}
 }
-\author{
-Lavinia Baumstark
-}

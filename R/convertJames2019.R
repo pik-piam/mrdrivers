@@ -4,7 +4,6 @@
 #' @param x MAgPIE object containing James data region resolution
 #' @param subtype subtype of GDP indicator to be selected
 #' @return GDP per capita in USD05 in PPP or MER as magpie object
-#' @author David CHen 
 #' @seealso \code{\link{readJames}}
 #' @examples
 #' 

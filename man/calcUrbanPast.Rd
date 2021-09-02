@@ -15,9 +15,3 @@ Urban shares in population
 \description{
 Calculates a time series of urban shares
 }
-\seealso{
-\code{\link{convertWDI}},\code{\link{calcGDPpppPast}}
-}
-\author{
-Antoine Levesque
-}

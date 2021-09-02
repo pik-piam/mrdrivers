@@ -15,6 +15,3 @@ magpie object of ARIADNE reference scenario data by country
 \description{
 Read ARIADNE Reference Scenario data from various .xls files as magpie object
 }
-\author{
-Falk Benke
-}

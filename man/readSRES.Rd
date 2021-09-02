@@ -27,6 +27,3 @@ and GDP
 \seealso{
 \code{\link{readSource}}
 }
-\author{
-Benjamin Leon Bodirsky
-}

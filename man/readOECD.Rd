@@ -27,6 +27,3 @@ a <- readSource("OECD","ratioPM")
 \seealso{
 \code{\link{readSource}}
 }
-\author{
-Lavinia Baumstark
-}

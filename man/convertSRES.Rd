@@ -25,6 +25,3 @@ Convert SRES data on ISO country level.
 }
 
 }
-\author{
-Benjamin Leon Bodirsky
-}

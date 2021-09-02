@@ -1,26 +1,28 @@
 #' Collect Default Model Drivers
-#' @param drivers Which default drivers to collect.
-calcDefaultDrivers <- function(drivers = c("pop", "GDP")) {
+#' 
+#' @param drivers Vector of strings.
+#' @return A magpie object.
+calcDefaultDrivers <- function(drivers = c("Population", "Urban", "GDP", "GDPpc")) {
   
-  if (!all(drivers %in% c("pop", "urban_pop", "GDP"))) {
+  if (!all(drivers %in% c("Population", "Urban", "GDP", "GDPpc"))) {
      stop("Bad input for DefaultDrivers. Invalid 'drivers' argument.")
   }
 
-  purrr::map(drivers, internal_calcDefaultDrivers) %>%
-  purrr::reduce(~ list(x = mbind(.x$x, .y$x),
-                       weight = NULL,
-                       unit = glue::glue("{.x$unit} \n {.y$unit}"),
-                       description = glue::glue("{.x$description} \n {.y$description}")))
+  toolInternalCalc("DefaultDrivers", list(drivers))
 }
 
-internal_calcDefaultDrivers <- function (driver) {
+######################################################################################
+# Internal Function
+######################################################################################
+internal_calcDefaultDrivers <- function (drivers) {
 
-  d <- switch(driver, 
-             "pop" = calcOutput("Population", aggregate = FALSE, supplementary = TRUE),
-             "urban_pop" = {urban_share <- calcOutput("Urban", aggregate = FALSE) 
-                            urban <- urban_share * calcOutput("Population", aggregate = FALSE)[,, getNames(urban_share)]
-                            getNames(urban, dim = 1) <- "urban"},
-             "GDP" = calcOutput("GDPppp", aggregate = FALSE, supplementary = TRUE))
+  d <- switch(
+    drivers, 
+    "Population" = calcOutput("Population", aggregate = FALSE, supplementary = TRUE),
+    "Urban"      = calcOutput("Urban",      aggregate = FALSE, supplementary = TRUE),
+    "GDP"        = calcOutput("GDP",        aggregate = FALSE, supplementary = TRUE),
+    "GDPpc"      = calcOutput("GDPpc",      aggregate = FALSE, supplementary = TRUE)
+  )
 
   return(list(x = d$x,
               weight = NULL,

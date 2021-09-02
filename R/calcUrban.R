@@ -12,67 +12,68 @@
 #' @param UrbanCalib To what should be calibrated? past or future?
 #' @param UrbanPast Urban past data source
 #' @param UrbanFuture Urban future data source
-#' @param naming naming scheme
-#' @return Share of urban population
-#' @author Antoine Levesque
-#' @seealso \code{\link{convertWDI}},\code{\link{calcGDPpppPast}}
-calcUrban <- function(UrbanCalib="past", UrbanPast="WDI", UrbanFuture="SSP",naming="indicator_scenario" ) {
-  past<-calcOutput("UrbanPast", UrbanPast=UrbanPast, aggregate = FALSE)
-  future<-calcOutput("UrbanFuture", UrbanFuture=UrbanFuture, aggregate = FALSE)
-  firstyear<-min(getYears(future,as.integer = T))
+#' @inheritParams calcGDP
+#' @return A magpie object. Share of urban population
+calcUrban <- function(UrbanCalib = "past", 
+                      UrbanPast = "WDI", 
+                      UrbanFuture = "SSPs",
+                      extension2150 = "constant",
+                      FiveYearSteps = TRUE,
+                      naming = "indicator_scenario") {
+  # Check user input
+  toolCheckUserInput("Urban", as.list(environment()))
+  # Call internal_calcUrban function the appropriate number of times              
+  toolInternalCalc("Urban", as.list(environment()))
+}
+
+######################################################################################
+# Internal Function
+######################################################################################
+internal_calcUrban <- function(UrbanCalib, 
+                               UrbanPast, 
+                               UrbanFuture, 
+                               FiveYearSteps, 
+                               extension2150, 
+                               naming){
+
+  # Compute "past" and "future" time series.
+  past <- calcOutput("UrbanPast", UrbanPast = UrbanPast, aggregate = FALSE)
+  future <- calcOutput("UrbanFuture", UrbanFuture = UrbanFuture, extension2150 = "none", aggregate = FALSE)
   
-  if (UrbanCalib == "past") {
-    tmp<-dimSums(future/setYears(future[,firstyear,],NULL)*setYears(past[,firstyear,],NULL),dim=3.2)
-    tmp[is.nan(tmp)]<-0
-    if (firstyear>min(getYears(past,as.integer = T))) {                                                 
-      years_past<-getYears(past)[which(getYears(past,as.integer = T)<firstyear)]
-      tmp2 <- setNames(past[,years_past,rep(1,ndata(future))],getNames(future))
-      combined<-mbind(tmp2,tmp)
-    } else {
-      combined<-tmp
-    }
-    datasettype <- UrbanPast
-  } else if (UrbanCalib == "future") {
-    tmp<-dimSums(past/setYears(past[,firstyear,],NULL)*setYears(future[,firstyear,],NULL),dim=3.2)
-    tmp[is.nan(tmp)]<-0
-    if (firstyear>min(getYears(past,as.integer = T))) {                                                 
-      years_past<-getYears(past)[which(getYears(past,as.integer = T)<firstyear)]
-      tmp2 <- setNames(tmp[,years_past,rep(1,ndata(future))],getNames(future))
-      combined<-mbind(tmp2,future)
-    } else {
-      combined<-future
-    }
-    datasettype <- UrbanFuture
-  } else {
-    stop("UrbanCalib has to be past or future")
-  }
-  
-  wp <- calcOutput("Population", aggregate = FALSE)
-  #getNames(wp) <- gsub("(pop_SSP\\d).*","\\1",getNames(wp))
-  combined <- combined[getRegions(wp),getYears(wp),]
-  
- 
-  
-  combined<-clean_magpie(combined)
-  combined[combined[]=="Inf"] <- 0    # LB: preliminary bug fix
-  combined<-setNames(combined,getNames(future))
-  
-  if(naming=="indicator.scenario"){
-    getNames(combined)<-sub(pattern = "_",x=getNames(combined),replacement = ".")
-    getSets(combined)<-c("region","year","indicator","scenario")
-  } else if (naming!="indicator_scenario"){
-    stop("unknown naming scheme")
-  }
- 
-  
-  return(list(x=combined,weight=wp,unit="share of population",
-              description=paste0("Urban data. Datasource for the Past: ",
-                                 UrbanPast,
-                                 ". Datasource for the Future: ",
-                                 UrbanFuture,
-                                 ". Calibrated to ",
-                                 datasettype)
+  # Combine "past" and "future" time series.
+  combined <- switch(
+    UrbanCalib,
+    "past"   = harmonizePast(past, future),
+    "future" = harmonizeFuture(past, future),
+    stop("Bad input for calcUrban. Invalid 'UrbanCalib' argument.")
   )
+
+  # Get description of harmonization function.
+  datasettype <- switch(
+    UrbanCalib,
+    "past"   = UrbanPast,
+    "future" = UrbanFuture,
   )
+
+  # Apply finishing touches to combined time-series
+  combined <- finishingTouches(combined, extension2150, FiveYearSteps, naming)
   
+  # Get weigth
+  wp <- calcOutput("Population", 
+                   PopulationCalib = UrbanCalib,
+                   PopulationPast = UrbanPast, 
+                   PopulationFuture = UrbanFuture,
+                   useMIData = FALSE,
+                   FiveYearSteps = FiveYearSteps,
+                   extension2150 = extension2150,
+                   aggregate = FALSE)
+  combined <- combined[getRegions(wp), getYears(wp),]
+
+  return(list(x = combined,
+              weight = wp,
+              unit = "share of population",
+              description = glue("Urbanisation data. Datasource for the Past: {UrbanPast}. \\
+                                  Datasource for the Future: {UrbanFuture}. Calibrated \\
+                                  to {datasettype}")))
+
 }

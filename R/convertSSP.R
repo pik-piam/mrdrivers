@@ -7,7 +7,6 @@
 #' @param subtype data subtype. Either "all" or "ratioPM"
 #' @return SSP data as MAgPIE object aggregated to country level, all models,
 #' all SSP-scenarios
-#' @author Lavinia Baumstark
 #' @examples
 #' 
 #' \dontrun{ a <- convertSSP(x,subtype="all")

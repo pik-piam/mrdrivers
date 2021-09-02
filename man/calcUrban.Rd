@@ -7,7 +7,9 @@
 calcUrban(
   UrbanCalib = "past",
   UrbanPast = "WDI",
-  UrbanFuture = "SSP",
+  UrbanFuture = "SSPs",
+  extension2150 = "constant",
+  FiveYearSteps = TRUE,
   naming = "indicator_scenario"
 )
 }
@@ -18,10 +20,14 @@ calcUrban(
 
 \item{UrbanFuture}{Urban future data source}
 
+\item{extension2150}{string, either "bezier", "constant" or "none"}
+
+\item{FiveYearSteps}{Only five year steps if TRUE, FALSE returns years from source data}
+
 \item{naming}{naming scheme}
 }
 \value{
-Share of urban population
+A magpie object. Share of urban population
 }
 \description{
 Merges time series of urban shares for the past and present.  See
@@ -32,10 +38,4 @@ determines the merging point.  All data is calibrated either to the "past"
 or the "future" dataset.  Currently, the SSP (future) and WDI (past) data
 have some inconsistencies, which leads to unrealistic figures if the one is
 scaled on the other.
-}
-\seealso{
-\code{\link{convertWDI}},\code{\link{calcGDPpppPast}}
-}
-\author{
-Antoine Levesque
 }

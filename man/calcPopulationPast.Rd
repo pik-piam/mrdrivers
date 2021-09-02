@@ -4,17 +4,18 @@
 \alias{calcPopulationPast}
 \title{calcPopulationPast}
 \usage{
-calcPopulationPast(PopulationPast = "WDI_completed")
+calcPopulationPast(PopulationPast = "WDI", useMIData = TRUE)
 }
 \arguments{
 \item{PopulationPast}{population past data source}
+
+\item{useMIData}{logical}
 }
 \value{
 Population in millions.
 }
 \description{
-Calculates a time series of Population. Different sources are available and
-can be selected in the madrat config(getConfig()$calc$PopulationPast):
+Calculates a time series of Population. Different sources are available:
 \itemize{
 \item \code{WDI}: Source: Worldbank. Taiwan was estimated as the
 difference between all countries and the global total.
@@ -22,7 +23,4 @@ difference between all countries and the global total.
 from "other, non-specified areas". Missing countries have their
 values set to zero.
 }
-}
-\author{
-Lavinia Baumstark, Benjamin Bodirsky, Johannes Koch
 }

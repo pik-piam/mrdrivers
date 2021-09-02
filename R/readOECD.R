@@ -5,7 +5,6 @@
 #' 
 #' @param subtype data subtype. Either "gdp" or "ratioPM"
 #' @return magpie object of the GDP data
-#' @author Lavinia Baumstark
 #' @seealso \code{\link{readSource}}
 #' @examples
 #' 

@@ -42,6 +42,3 @@ object.
 \seealso{
 \code{\link{readSource}} \code{\link{downloadWDI}}
 }
-\author{
-Jan Phillip Dietrich, Benjamin Bodirsky, Xiaoxi Wang
-}

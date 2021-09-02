@@ -2,5 +2,6 @@
 
 import(madrat)
 import(magclass)
+importFrom(glue,glue)
 importFrom(magrittr,"%>%")
 importFrom(rlang,.data)

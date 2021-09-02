@@ -23,6 +23,3 @@ as difference from global total.
 \dontrun{ a <- convertWDI(x)
 }
 }
-\author{
-Jan Phillip Dietrich, Benjamin Bodirsky, Xiaoxi Wang
-}

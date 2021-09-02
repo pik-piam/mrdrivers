@@ -4,10 +4,12 @@
 \alias{calcUrbanFuture}
 \title{calcUrbanFuture}
 \usage{
-calcUrbanFuture(UrbanFuture = "SSP")
+calcUrbanFuture(UrbanFuture = "SSPs", extension2150 = "constant")
 }
 \arguments{
 \item{UrbanFuture}{Urban future data source}
+
+\item{extension2150}{string, either "bezier", "constant" or "none"}
 }
 \value{
 Urban shares
@@ -16,10 +18,4 @@ Urban shares
 Calculates a time series of urban shares, using SSP projections Currently,
 SSP data does not differentiate between SSPs and has some unconsistencies
 with WDI in 2010
-}
-\seealso{
-\code{\link{convertWDI}},\code{\link{calcGDPpppPast}}
-}
-\author{
-Antoine Levesque
 }

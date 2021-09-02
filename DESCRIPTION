@@ -1,20 +1,36 @@
 Package: mrdrivers
 Type: Package
-Title: What the Package Does (Title Case)
-Version: 0.1.0
-Author: Who wrote it
-Maintainer: The package maintainer <yourself@somewhere.net>
-Description: More about what it does (maybe more than one line)
-    Use four spaces when indenting paragraphs within the Description.
+Title: Create GDP and population scenarios
+Version: 0.0.0.9001
+Authors@R: c(person("Benjamin Leon", "Bodirsky", role = "aut"),
+             person("Lavinia", "Baumstark", role = "aut"),
+             person("Xiaoxi", "Wang", role = "aut"),
+             person("Chen", "David", role = "aut"),
+             person("Benke", "Falk", role = "aut"),
+             person("Araujo", "Eweron", role = "aut"),
+             person("Renato", "Rodrigues", role = "aut"),
+             person("Anastasis", "Giannousakis", role = "aut"),
+             person("Antoine", "Levesque", role = "aut"),
+             person("Michaja", "Pehl", role = "aut"),
+             person("Bjoern", "Soergel", role = "aut"),
+             person("Jan Philipp", "Dietrich", role = "aut"),
+             person("Koch", "Johannes", email = "jokch@pik-potsdam.de", role = c("aut", "cre")))
+Description: Create GDP and population scenarios
+    This package takes care of GDP and population scenario construction, which are important drivers
+    to both the REMIND and MAgPIE models.
 License: LGPL (>= 3)
 Encoding: UTF-8
 LazyData: true
 Roxygen: list(markdown = TRUE)
-RoxygenNote: 7.1.1
+RoxygenNote: 7.1.2
+Depends: 
+    madrat (>= 2.2.2),
+    magclass (>= 6.0.3)
 Imports: 
     bezier,
     countrycode,
     dplyr,
+    lifecycle,
     GDPuc,
     glue,
     luscale,
@@ -31,6 +47,7 @@ Imports:
     tidyr,
     tidyselect,
     WDI
-Depends: 
-    magclass (>= 3.17),
-    madrat (>= 1.30)
+Suggests: 
+    testthat (>= 3.0.0)
+Config/testthat/edition: 3
+Date: 2021-09-09

@@ -4,7 +4,6 @@
 #' @param subtype pop for population or gdp for gdp
 #' 
 #' @return Magpie object
-#' @author Benjamin Bodirsky, Eweron Araujo
 #' @examples
 #' \dontrun{ 
 #' readSource("MissingIslands", subtype = "pop", convert = FALSE)

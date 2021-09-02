@@ -4,26 +4,34 @@
 \alias{calcGDPpc}
 \title{calcGDPpc}
 \usage{
-calcGDPpc(gdp = "PPP")
+calcGDPpc(
+  GDPpcCalib = c("past_IMF_SSP", "past_IMF_SDP"),
+  GDPpcPast = c("WDI", "WDI"),
+  GDPpcFuture = c("SSPs", "SDPs"),
+  unit = "constant 2005 Int$PPP",
+  useMIData = TRUE,
+  extension2150 = "bezier",
+  FiveYearSteps = TRUE,
+  naming = "indicator_scenario"
+)
 }
 \arguments{
-\item{gdp}{Can be switched between ppp and MER. Default is ppp.}
-}
-\value{
-list of magpie object with results on country level, weight on country level, unit and description.
+\item{GDPpcCalib}{String or vector of strings}
+
+\item{GDPpcPast}{String or vector of strings}
+
+\item{GDPpcFuture}{String ot vector of strings}
+
+\item{unit}{string}
+
+\item{useMIData}{logical}
+
+\item{extension2150}{string, either "bezier", "constant" or "none"}
+
+\item{FiveYearSteps}{Only five year steps if TRUE, FALSE returns years from source data}
+
+\item{naming}{naming scheme}
 }
 \description{
-calculates GDP per capita
-}
-\examples{
-\dontrun{ 
-calcOutput("GDPpc", gdp="ppp")
-}
-}
-\seealso{
-\code{\link{calcPopulation}},
-\code{\link{calcGDPppp}}
-}
-\author{
-Benjamin Leon Bodirsky, Abhijeet Mishra
+calcGDPpc
 }

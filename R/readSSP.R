@@ -5,7 +5,6 @@
 #' 
 #' @param subtype data subtype. Either "all" or "ratioPM"
 #' @return magpie object of the SSP data
-#' @author Lavinia Baumstark
 #' @seealso \code{\link{readSource}}
 #' @examples
 #' 

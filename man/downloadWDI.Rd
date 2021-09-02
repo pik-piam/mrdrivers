@@ -19,6 +19,3 @@ the WDI data is updated with the funciton "WDISearch(cache=WDIcache())"
 \seealso{
 \code{\link{downloadSource}} \code{\link{WDI}}
 }
-\author{
-Xiaoxi Wang
-}

@@ -10,7 +10,6 @@
 #' 
 #' @param subtype String indicating the data series
 #' @return GDP per capita in USD05 in PPP or MER as magpie object
-#' @author David Chen, Benjamin Bodirsky
 #' @seealso \code{\link{readSource}}
 #' @examples
 #' 

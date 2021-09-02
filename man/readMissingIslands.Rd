@@ -21,6 +21,3 @@ readSource("MissingIslands", subtype = "pop", convert = FALSE)
 }
 
 }
-\author{
-Benjamin Bodirsky, Eweron Araujo
-}

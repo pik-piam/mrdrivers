@@ -4,7 +4,6 @@
 #' 
 #' @param subtype Either "current_account" or "GDPpc"
 #' @return magpie object of the data
-#' @author Lavinia Baumstark
 #' @seealso \code{\link{readSource}}
 #' @examples
 #' \dontrun{ a <- readSource(type="IMF")}

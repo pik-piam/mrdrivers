@@ -7,7 +7,6 @@
 #' @param subtype subtype of GDP indicator to be selected
 #' @return Krausmann data as MAgPIE object aggregated/disaggregated to country
 #' level
-#' @author Benjamin Bodirsky
 #' @seealso \code{\link{readJames}}
 #' @examples
 #' 

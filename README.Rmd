@@ -16,13 +16,17 @@ knitr::opts_chunk$set(
 # mrdrivers
 
 <!-- badges: start -->
+
+[![Lifecycle: maturing](https://img.shields.io/badge/lifecycle-experimental-orange.svg)](https://lifecycle.r-lib.org/articles/stages.html#experimental)
+
 <!-- badges: end -->
 
-The goal of mrdrivers is to ...
+The goal of **mrdrivers** is to handle the construction of GDP, GDP per capita, Population and Urbanization scenarios: all of which are important drivers to the REMIND and MAgPIE models.
 
 ## Installation
 
-```{r}
-#install.packages("mrdrivers")
-```
+Install the package from github:
 
+```{r, eval = FALSE}
+remotes::install_github("pik-piam/mrdrivers")
+```

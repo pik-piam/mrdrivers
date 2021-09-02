@@ -8,7 +8,6 @@
 #' "gdp_a1","gdp_a2","gdp_b1","gdp_b2"
 #' @return magpie object of the SRES data. Units are million people or USD1990
 #' market exchange rate.
-#' @author Benjamin Leon Bodirsky
 #' @seealso \code{\link{readSource}}
 #' @examples
 #' 

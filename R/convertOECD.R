@@ -6,7 +6,6 @@
 #' @param x MAgPIE object containing GDP data mixed country-region resolution
 #' @param subtype data subtype. Either "gdp" or "ratioPM"
 #' @return GDP / ratioPM data as MAgPIE object aggregated to country level
-#' @author Lavinia Baumstark
 #' @seealso \code{\link{readSource}}
 #' @examples
 #' 

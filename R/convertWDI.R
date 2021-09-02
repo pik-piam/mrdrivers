@@ -7,7 +7,6 @@
 #' @param x MAgPIE object containing WDI data region resolution
 #' @param subtype Name of the worldbank indicator, e.g. "SP.POP.TOTL"
 #' @return MAgPIE object of the WDI data disaggregated to country level
-#' @author Jan Phillip Dietrich, Benjamin Bodirsky, Xiaoxi Wang
 #' @examples
 #'
 #' \dontrun{ a <- convertWDI(x)

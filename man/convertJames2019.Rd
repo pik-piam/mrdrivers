@@ -25,6 +25,3 @@ Convert updated James data
 \seealso{
 \code{\link{readJames}}
 }
-\author{
-David CHen
-}

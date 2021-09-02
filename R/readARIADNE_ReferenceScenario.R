@@ -4,8 +4,6 @@
 #' 
 #' @param subtype data subtype. Either "population", "gdp", or "gdp_corona"
 #' @return magpie object of ARIADNE reference scenario data by country
-#' @author Falk Benke
-
 readARIADNE_ReferenceScenario <- function(subtype){
 
   switch(subtype,

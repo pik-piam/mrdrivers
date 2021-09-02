@@ -1,8 +1,7 @@
-#' calcGDPpppPast
+#' calcGDPPast
 #' 
 #' Calculates a time series of GDP in Purchase Power Parity (PPP) of million
-#' International Dollars of the year 2005.  The source is selected in the
-#' config file (getConfig()$calc$GDPpppPast). Different sources are available:
+#' International Dollars of the year 2005. Different sources are available:
 #' \itemize{ \item \code{WDI}: The PPP estimate from the World Development
 #' Indicators (WDI) are supplemented by values for Argentina, Syria and Somalia
 #' which are missing in the database. The values were taken from World Bank.
@@ -22,21 +21,16 @@
 #' This publication also contains further interpolated indicators that can be
 #' used. }
 #' 
-#' @param GDPpppPast GDPppp past data source
+#' @inheritParams calcGDP
 #' @return GDP PPP in million USD05 equivalents
-#' @author Lavinia Baumstark, Benjamin Bodirsky, Johannes Koch
-
-calcGDPpppPast <- function(GDPpppPast = "WDI_completed") {
+calcGDPPast <- function(GDPPast = "WDI", 
+                        unit = "constant 2005 Int$PPP", 
+                        useMIData = TRUE) {
 
   # Check input argument
   valid_inputs <- c(
     "WDI", 
-    "WDI_completed",
-    "PWT", 
     "Eurostat_WDI",
-    "Eurostat_WDI_completed",
-    "IHME_USD05_PPP_pc_completed",
-    "IHME_USD05_MER_pc_completed",
     "IHME_USD05_PPP_pc",
     "IHME_USD05_MER_pc",
     "IMF_USD05_PPP_pc",
@@ -45,36 +39,30 @@ calcGDPpppPast <- function(GDPpppPast = "WDI_completed") {
     "MADDISON_USD05_PPP_pc",
     "WB_USD05_MER_pc",
     "IMF_USD05_MER_pc",
-    "UN_USD05_MER_pc"
+    "UN_USD05_MER_pc",
+    "PWT"
   )
-  if (!GDPpppPast %in% valid_inputs) {
-    stop("Bad input for calcGDPpppPast. Invalid 'GDPpppPast' argument.")
-  }
-
-  # Look for "_completed" tag. Remove if found.
-  if (grepl("_completed$", GDPpppPast)) {
-    GDPpppPast <- gsub("_completed", "", GDPpppPast)
-    complete <- TRUE
-  } else {
-    complete <- FALSE
+  if (!GDPPast %in% valid_inputs) {
+    stop("Bad input for calcGDPPast. Invalid 'GDPPast' argument.")
   }
   
-  # Call appropriate calcGDPpppPast function. 
-  data <- switch(GDPpppPast,
-                 "PWT" = calcGDPpppPastPWT(),
-                 "WDI" = calcGDPpppPastWDI(complete),
-                 "Eurostat_WDI" = calcGDPpppPastEurostatWDI(complete),
-                 calcGDPpppPastJames(GDPpppPast, complete))
+  # Call appropriate calcGDPPast function. 
+  data <- switch(GDPPast,
+                 "PWT"          = calcGDPPastPWT(),
+                 "WDI"          = calcGDPPastWDI(),
+                 "Eurostat_WDI" = calcGDPPastEurostatWDI(),
+                 calcGDPPastJames(GDPPast))
+
+  if (useMIData) {  
+    fill <- readSource("MissingIslands", subtype = "gdp", convert = FALSE)
+    data <- completeData(data, fill)
+  }
 
   return(list(x = data,
               weight = NULL,
-              unit = "Million US Dollar 2005 equivalents in PPP",
-              description = "GDP in PPP with baseyear in 2005. PPP may come either from ICP 2005 or 2011."))
+              unit = unit,
+              description = glue("GDP data from {GDPPast}.")))
 }
-
-
-
-
 
 
 
@@ -82,13 +70,7 @@ calcGDPpppPast <- function(GDPpppPast = "WDI_completed") {
 ######################################################################################
 # Functions
 ######################################################################################
-calcGDPpppPastPWT <- function() {
-  data <- readSource("PWT")[,,"rgdpna"]
-  getNames(data) <- "GDPppp_PWT"
-  data
-}
-
-calcGDPpppPastWDI <- function(complete) {
+calcGDPPastWDI <- function() {
   # "NY.GDP.MKTP.PP.KD" = GDP in constant 2017 Int$PPP (as of time of writing this function)
   data <- readSource("WDI", "NY.GDP.MKTP.PP.KD") %>% 
     GDPuc::convertGDP("constant 2017 Int$PPP", "constant 2005 Int$PPP")
@@ -127,33 +109,12 @@ calcGDPpppPastWDI <- function(complete) {
     }
   }
   data <- x
-
-  if (complete) {  
-    fill <- readSource("MissingIslands", subtype = "gdp", convert = FALSE)
-    data <- completeData(data, fill)
-  }
   
   getNames(data) <- "gdp in constant 2005 Int$PPP" 
   data
 }
 
-calcGDPpppPastJames <- function(type, complete) {
-  PPP_pc <- readSource(type = "James", subtype = type)
-  pop <- readSource("WDI", subtype = "SP.POP.TOTL")
-  years <- intersect(getYears(PPP_pc), getYears(pop))
-  data <- PPP_pc[,years,] * pop[,years,]
-  getNames(data) <- substr(type, 1, (nchar(type) - 3))
-  
-  if (complete) {  
-    fill <- readSource("MissingIslands", subtype = "gdp", convert = FALSE)
-    data <- completeData(data, fill)
-    getNames(data) <- "gdp" #??
-  }
-  
-  data
-}
-
-calcGDPpppPastEurostatWDI <- function(complete) {
+calcGDPPastEurostatWDI <- function() {
   data_eurostat <- readSource("Eurostat", "GDP")
   data_wdi <- readSource("WDI", "NY.GDP.MKTP.PP.KD") %>% 
     GDPuc::convertGDP("constant 2017 Int$PPP", "constant 2005 Int$PPP")
@@ -174,11 +135,56 @@ calcGDPpppPastEurostatWDI <- function(complete) {
   data <- harmonizeFutureGrPast(past = readSource("WDI", "NY.GDP.MKTP.KN"),
                                 future = data)
 
-  if (complete) {
-    fill <- readSource("MissingIslands", subtype = "gdp", convert = FALSE)
-    data <- completeData(data, fill)
-  }
-
   getNames(data) <- "gdp in constant 2005 Int$PPP" 
   data
+}
+
+calcGDPPastJames <- function(type) {
+  PPP_pc <- readSource(type = "James", subtype = type)
+  pop <- readSource("WDI", subtype = "SP.POP.TOTL")
+  years <- intersect(getYears(PPP_pc), getYears(pop))
+  data <- PPP_pc[,years,] * pop[,years,]
+  getNames(data) <- substr(type, 1, (nchar(type) - 3))
+  getNames(data) <- "gdp" #??
+
+  data
+}
+
+
+######################################################################################
+# Legacy
+######################################################################################
+calcGDPPastPWT <- function() {
+  data <- readSource("PWT")[,,"rgdpna"]
+  getNames(data) <- "GDP_PWT"
+  data
+}
+
+
+######################################################################################
+# GDPpast Harmonization Functions
+######################################################################################
+harmonizeFutureGrPast <- function(past, future) {
+  firstFutureYear <- min(intersect(getYears(past, as.integer = TRUE),
+                                   getYears(future, as.integer = TRUE)))
+  lastPastYear <- max(getYears(past, as.integer = TRUE))
+  if (lastPastYear < firstFutureYear) {
+    stop("The past and future data need to have some overlap")
+  }
+
+  # Create future data for all past scenarios
+  years_future <- getYears(future)[which(getYears(future, as.integer = TRUE) >= firstFutureYear)]
+  tmpFuture <- future[, years_future, rep(1, ndata(past))]
+  tmpFuture <- setNames(tmpFuture, getNames(past))
+  tmpFuture[is.nan(tmpFuture)] <- 0
+
+  # Create transition magpie object for all future scenarios
+  years_past <- getYears(past)[which(getYears(past, as.integer = TRUE) < firstFutureYear)]
+  tmpPast <- new.magpie(getRegions(past), years_past, getNames(past), fill = 0)
+
+  # Use growth rates of future object
+  tmpPast[,,] <- tmpFuture[,firstFutureYear,] * past[,years_past,] / past[,firstFutureYear,]
+  tmpPast[is.nan(tmpPast)] <- 0
+
+  mbind(tmpPast, tmpFuture)
 }

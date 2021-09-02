@@ -4,10 +4,9 @@
 \name{mrdrivers-package}
 \alias{mrdrivers-package}
 \alias{mrdrivers}
-\title{MadRat commons Input Data Library}
+\title{MadRat drivers Input Data Library}
 \description{
-Provides useful functions and a common structure to all the input data required to run models like MAgPIE and REMIND of model input data.
-}
-\author{
-Maintainer: Jan Philipp Dietrich \href{mailto:dietrich@pik-potsdam.de}{dietrich@pik-potsdam.de}
+\ifelse{html}{\href{https://lifecycle.r-lib.org/articles/stages.html#experimental}{\figure{lifecycle-experimental.svg}{options: alt='[Experimental]'}}}{\strong{[Experimental]}}
+
+Create scenarios of Population, Urbanization, GDP and GDP per capita
 }

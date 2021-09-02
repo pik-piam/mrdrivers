@@ -8,7 +8,6 @@
 #' "gdp_a1","gdp_a2","gdp_b1","gdp_b2"
 #' @return SRES data as MAgPIE object aggregated to country level, all models,
 #' all SRES-scenarios, GDP+Population. Units:
-#' @author Benjamin Leon Bodirsky
 #' @examples
 #' 
 #' \dontrun{ a <- convertSRES(x,subtype="pop_a1")

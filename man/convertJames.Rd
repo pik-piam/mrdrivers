@@ -26,6 +26,3 @@ Convert James data on ISO country level.
 \seealso{
 \code{\link{readJames}}
 }
-\author{
-Benjamin Bodirsky
-}

@@ -5,10 +5,11 @@
 \title{calcPopulation}
 \usage{
 calcPopulation(
-  PopulationCalib = c("past_grPEAP_grFuture", "Ariadne"),
-  PopulationPast = c("WDI_completed", "Eurostat_WDI_completed"),
-  PopulationFuture = c("SSP2018Update_completed_bezierOut",
-    "SSP2Ariadne_completed_bezierOut"),
+  PopulationCalib = c("past_grPEAP_grFuture", "past_grPEAP_grFuture", "Ariadne"),
+  PopulationPast = c("WDI", "WDI", "Eurostat_WDI"),
+  PopulationFuture = c("SSPs", "SDPs", "SSP2Ariadne"),
+  useMIData = TRUE,
+  extension2150 = "bezier",
   FiveYearSteps = TRUE,
   naming = "indicator_scenario"
 )
@@ -20,6 +21,10 @@ calcPopulation(
 
 \item{PopulationFuture}{population future data source}
 
+\item{useMIData}{logical}
+
+\item{extension2150}{string, either "bezier", "constant" or "none"}
+
 \item{FiveYearSteps}{Only five year steps if TRUE, FALSE returns years from source data}
 
 \item{naming}{naming scheme}
@@ -28,17 +33,13 @@ calcPopulation(
 Population in millions.
 }
 \description{
-Merges time series of population for the past and present. Different sources
-are available and can be selected in the madrat config. See
+Merges time series of population for the past and present. See
 \code{\link{calcPopulationPast}} for past datasets, and
 \code{\link{calcPopulationFuture}} for future datasets. The time series are
 merged via the growth rates. The first year of the future scenarios
 determines the merging point. All data is calibrated either to the "past" or
-the "future" dataset as specified in "getConfig()$calc$PopulationCalib".
+the "future" dataset as specified by PopulationCalib.
 }
 \seealso{
-\code{\link{calcPopulationPast}},\code{\link{calcPopulationFuture}}
-}
-\author{
-Lavinia Baumstark, Benjamin Bodirsky, Johannes Koch
+\code{\link{calcPopulationPast}}, \code{\link{calcPopulationFuture}}
 }

@@ -23,7 +23,6 @@
 #' \item \code{NY.GDP.PCAP.CD}: #' GDP MER, per capita(current US$)
 #' \item \code{NY.GDP.PCAP.PP.CD}: #' GDP PPP, per capita (current int$)}
 #' @return magpie object of the WDI data
-#' @author Jan Phillip Dietrich, Benjamin Bodirsky, Xiaoxi Wang
 #' @seealso \code{\link{readSource}} \code{\link{downloadWDI}}
 #' @examples
 #' 

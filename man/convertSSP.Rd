@@ -23,6 +23,3 @@ Convert SSP data on ISO country level.
 \dontrun{ a <- convertSSP(x,subtype="all")
 }
 }
-\author{
-Lavinia Baumstark
-}

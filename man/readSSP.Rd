@@ -23,6 +23,3 @@ Read-in an SSP data csv.zip file as magclass object
 \seealso{
 \code{\link{readSource}}
 }
-\author{
-Lavinia Baumstark
-}

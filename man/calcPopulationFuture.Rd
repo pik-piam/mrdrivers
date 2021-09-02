@@ -4,20 +4,24 @@
 \alias{calcPopulationFuture}
 \title{calcPopulationFuture}
 \usage{
-calcPopulationFuture(PopulationFuture = "SSP2018Update_completed_bezierOut")
+calcPopulationFuture(
+  PopulationFuture = "SSPs",
+  useMIData = TRUE,
+  extension2150 = "bezier"
+)
 }
 \arguments{
 \item{PopulationFuture}{population future data source}
+
+\item{useMIData}{logical}
+
+\item{extension2150}{string, either "bezier", "constant" or "none"}
 }
 \value{
 Population in millions.
 }
 \description{
-Calculates a time series of Population. Different sources are available and
-can be selected in the madrat config (getConfig()$calc$PopulationPast):
+Calculates a time series of Pop. Different sources are available:
 \itemize{ \item \code{"IIASApop"}: Source: IIASA? Lavinia?  \item
 \code{"IIASApop"}: Source: Lavinia? }
-}
-\author{
-Lavinia Baumstark, Benjamin Bodirsky, Johannes Koch
 }
