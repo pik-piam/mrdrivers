@@ -3,17 +3,14 @@
 #' Read-in an SRES data csv file as magclass object. Works for both population
 #' and GDP
 #' 
-#' 
 #' @param subtype data subtype. "pop_a1","pop_a2","pop_b1","pop_b2" or
 #' "gdp_a1","gdp_a2","gdp_b1","gdp_b2"
 #' @return magpie object of the SRES data. Units are million people or USD1990
 #' market exchange rate.
 #' @seealso \code{\link{readSource}}
 #' @examples
-#' 
 #' \dontrun{ a <- readSource(type="SRES",subtype="pop_a1")
-#' }
-#' 
+#' } 
 readSRES <- function(subtype) {
 
   
@@ -28,7 +25,8 @@ readSRES <- function(subtype) {
   x<-as.magpie(x,spatial=1)
   
   dimnames(x)[[1]]<-as.integer(dimnames(x)[[1]])
-  x<-luscale::rename_dimnames(x,query="countries_query.csv", from="UN_Code", to="ISO_3166_1_alpha_3")
+  getItems(x, 1) <- countrycode::countrycode(getRegions(x), origin = "iso3n", destination = "iso3c", 
+                                             custom_match = c("530" = "ANT", "736" = "SDN", "891" = "YUG"))
   dimnames(x)[[1]][which(dimnames(x)[[1]]=="YUG")]<-"SCG"
   getSets(x)<-c("region","year","scenario")
   getNames(x)<-subtype
