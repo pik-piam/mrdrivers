@@ -19,10 +19,8 @@ Read-in an SRES data csv file as magclass object. Works for both population
 and GDP
 }
 \examples{
-
 \dontrun{ a <- readSource(type="SRES",subtype="pop_a1")
-}
-
+} 
 }
 \seealso{
 \code{\link{readSource}}

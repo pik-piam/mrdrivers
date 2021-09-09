@@ -33,8 +33,6 @@ Imports:
     lifecycle,
     GDPuc,
     glue,
-    luscale,
-    magpiesets,
     magrittr,
     purrr,
     quitte,
