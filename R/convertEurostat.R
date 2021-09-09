@@ -10,11 +10,11 @@ convertEurostat <- function(x, subtype) {
   switch(
     subtype,
     "emissions"              = toolCountryFill(x, fill = 0, verbosity = 0),
-    "sectorEmi"              = convertEurostatSectorEmi(x),
-    "MACCemi"                = convertEurostatMACCemi(x),
-    "population"             = convertEurostatPopulation(x),
-    "population_projections" = convertEurostatPopulation(x),
-    "GDP"                    = convertEurostatGDP(x),
+    "sectorEmi"              = convEurostatSectorEmi(x),
+    "MACCemi"                = convEurostatMACCemi(x),
+    "population"             = convEurostatPopulation(x),
+    "population_projections" = convEurostatPopulation(x),
+    "GDP"                    = convEurostatGDP(x),
     stop("Bad input for convertEurostat. Invalid 'subtype' argument.")
   )
 }
@@ -22,7 +22,7 @@ convertEurostat <- function(x, subtype) {
 ######################################################################################
 # Functions
 ######################################################################################
-convertEurostatSectorEmi <- function(x) {
+convEurostatSectorEmi <- function(x) {
   x  <- toolCountryFill(x, fill = 0, verbosity = 0)
   # mapping eurostat to sector emissions
   mapping <- list("power"      =list("energy"  =c("Fuel combustion in public electricity and heat production")),
@@ -59,7 +59,7 @@ convertEurostatSectorEmi <- function(x) {
  
  
 
-convertEurostatMACCemi <- function(x) {
+convEurostatMACCemi <- function(x) {
   x  <- toolCountryFill(x, fill = 0, verbosity = 0)
   # mapping eurostat to MACC emissions
   mapping <- list("ch4coal"=list("emi"="CH4","accounts"=c("Solid fuels - fugitive emissions")),
@@ -89,7 +89,7 @@ convertEurostatMACCemi <- function(x) {
 }
 
 
-convertEurostatPopulation <- function(x) {
+convEurostatPopulation <- function(x) {
   # Fix names of sets, and of variable
   x <- collapseDim(x, dim = 3)
   getNames(x) <- "population"
@@ -112,7 +112,7 @@ convertEurostatPopulation <- function(x) {
   x <- toolCountryFill(x, fill = 0)
  }
 
-convertEurostatGDP <- function(x) {
+convEurostatGDP <- function(x) {
   # Fix names of sets, and of variable
   x <- collapseDim(x, dim = 3)
   getNames(x) <- "GDP"

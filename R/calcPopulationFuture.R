@@ -11,13 +11,13 @@ calcPopulationFuture <- function(PopulationFuture = "SSPs",
                                  extension2150 = "bezier") {
 
   data <- switch(PopulationFuture,
-                 "SSPs"        = calcPopulationFutureSSPs(),
-                 "SSP2Ariadne" = calcPopulationFutureSSP2Ariadne(),
-                 "SDPs"        = calcPopulationFutureSDPs(),
+                 "SSPs"        = cPopulationFutureSSPs(),
+                 "SSP2Ariadne" = cPopulationFutureSSP2Ariadne(),
+                 "SDPs"        = cPopulationFutureSDPs(),
                  #
                  # Deprecated options ? 
-                 "SSPs_old" = calcPopulationFutureSSPsOld(),
-                 "SRES"     = calcPopulationFutureSRES(),
+                 "SSPs_old" = cPopulationFutureSSPsOld(),
+                 "SRES"     = cPopulationFutureSRES(),
                  "IIASApop" = readSource("IIASApop") / 1e+6,
                  stop("Bad input for PopulationFuture. Invalid 'PopulationFuture' argument."))
 
@@ -40,23 +40,23 @@ calcPopulationFuture <- function(PopulationFuture = "SSPs",
 ######################################################################################
 # Functions
 ######################################################################################
-calcPopulationFutureSSPs <- function() {
+cPopulationFutureSSPs <- function() {
   data <- readSource("SSP", "pop2018Update") / 1e+3
   getNames(data) <- paste0("pop_", getNames(data))
   data
 }
 
-calcPopulationFutureSDPs <- function() {
-  data_SSP1 <- calcPopulationFutureSSPs()[,, "pop_SSP1"]
+cPopulationFutureSDPs <- function() {
+  data_SSP1 <- cPopulationFutureSSPs()[,, "pop_SSP1"]
 
   data <- purrr::map(c("SDP", "SDP_EI", "SDP_RC", "SDP_MC"),
                      ~ setNames(data_SSP1, gsub("SSP1", .x, getNames(data_SSP1)))) %>%
     purrr::reduce(mbind)
 }
 
-calcPopulationFutureSSP2Ariadne <- function() {
+cPopulationFutureSSP2Ariadne <- function() {
   data_eurostat <- readSource("Eurostat", "population_projections") / 1e+6
-  data_ssp2 <- calcPopulationFutureSSPs()[,, "pop_SSP2"]
+  data_ssp2 <- cPopulationFutureSSPs()[,, "pop_SSP2"]
 
   # Get EUR countries - GBR. (Great Britatin still in EUR mapping, but no Eurostat projections exist.) 
   EUR_countries <- toolGetMapping("regionmappingH12.csv") %>% 
@@ -80,7 +80,7 @@ calcPopulationFutureSSP2Ariadne <- function() {
 ######################################################################################
 # Legacy
 ######################################################################################
-calcPopulationFutureSSPsOld <- function() {
+cPopulationFutureSSPsOld <- function() {
   data <- readSource("SSP", subtype = "all")[,,"Population"][,,"IIASA-WiC POP"]
   
   # Refactor names
@@ -92,7 +92,7 @@ calcPopulationFutureSSPsOld <- function() {
   data <- data[,setdiff(getYears(data), c("y2000", "y2005")),]
 }
 
-calcPopulationFutureSRES <- function() {
+cPopulationFutureSRES <- function() {
   data <- NULL
   for (i in c("sres_a1_pop", "sres_a2_pop", "sres_b1_pop", "sres_b2_pop")) {
     data <- mbind(data, readSource("SRES", i))

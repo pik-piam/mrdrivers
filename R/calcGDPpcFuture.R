@@ -8,8 +8,8 @@ calcGDPpcFuture <- function(GDPpcFuture = "SSPs",
 
   data <- switch(
     GDPpcFuture,
-    "SSPs" = calcGDPpcFutureSSPs(),
-    "SDPs" = calcGDPpcFutureSDPs(), 
+    "SSPs" = cGDPpcFutureSSPs(),
+    "SDPs" = cGDPpcFutureSDPs(), 
     stop("Bad input for calcGDPFuture. Invalid 'GDPFuture' argument.")
   )
 
@@ -34,7 +34,7 @@ calcGDPpcFuture <- function(GDPpcFuture = "SSPs",
 ######################################################################################
 # Functions
 ######################################################################################
-calcGDPpcFutureSSPs <- function() {
+cGDPpcFutureSSPs <- function() {
   gdp <- calcOutput("GDPFuture", 
                     GDPFuture = "SSPs", 
                     useMIData = FALSE, 
@@ -55,8 +55,8 @@ calcGDPpcFutureSSPs <- function() {
   data 
 }
 
-calcGDPpcFutureSDPs <- function() {
-  data_SSP1 <- calcGDPpcFutureSSPs()[,, "gdppc_SSP1"]
+cGDPpcFutureSDPs <- function() {
+  data_SSP1 <- cGDPpcFutureSSPs()[,, "gdppc_SSP1"]
 
   data <- purrr::map(c("SDP", "SDP_EI", "SDP_RC", "SDP_MC"),
                      ~ setNames(data_SSP1, gsub("SSP1", .x, getNames(data_SSP1)))) %>%

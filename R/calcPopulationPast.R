@@ -17,7 +17,7 @@ calcPopulationPast <- function(PopulationPast = "WDI", useMIData = TRUE) {
     PopulationPast,
     "WDI"          = readSource("WDI", "SP.POP.TOTL"),
     "UN_PopDiv"    = readSource("UN_PopDiv"),
-    "Eurostat_WDI" = calcPopulationPastEurostatWDI(),
+    "Eurostat_WDI" = cPopulationPastEurostatWDI(),
     stop("Bad input for PopulationPast. Invalid 'PopulationPast' argument.")
   )
 
@@ -40,7 +40,7 @@ calcPopulationPast <- function(PopulationPast = "WDI", useMIData = TRUE) {
 ######################################################################################
 # Functions
 ######################################################################################
-calcPopulationPastEurostatWDI <- function() {
+cPopulationPastEurostatWDI <- function() {
   data_eurostat <- readSource("Eurostat", "population") / 1e+6
   data_wdi <- readSource("WDI", "SP.POP.TOTL")
 

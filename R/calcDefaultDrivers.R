@@ -24,8 +24,5 @@ internal_calcDefaultDrivers <- function (drivers) {
     "GDPpc"      = calcOutput("GDPpc",      aggregate = FALSE, supplementary = TRUE)
   )
 
-  return(list(x = d$x,
-              weight = NULL,
-              unit = d$unit,
-              description = d$description))
+  list(x = d$x, weight = NULL, unit = d$unit, description = d$description)
 }
