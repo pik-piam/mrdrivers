@@ -48,10 +48,10 @@ calcGDPPast <- function(GDPPast = "WDI",
   
   # Call appropriate calcGDPPast function. 
   data <- switch(GDPPast,
-                 "PWT"          = calcGDPPastPWT(),
-                 "WDI"          = calcGDPPastWDI(),
-                 "Eurostat_WDI" = calcGDPPastEurostatWDI(),
-                 calcGDPPastJames(GDPPast))
+                 "PWT"          = cGDPPastPWT(),
+                 "WDI"          = cGDPPastWDI(),
+                 "Eurostat_WDI" = cGDPPastEurostatWDI(),
+                 cGDPPastJames(GDPPast))
 
   if (useMIData) {  
     fill <- readSource("MissingIslands", subtype = "gdp", convert = FALSE)
@@ -70,7 +70,7 @@ calcGDPPast <- function(GDPPast = "WDI",
 ######################################################################################
 # Functions
 ######################################################################################
-calcGDPPastWDI <- function() {
+cGDPPastWDI <- function() {
   # "NY.GDP.MKTP.PP.KD" = GDP in constant 2017 Int$PPP (as of time of writing this function)
   data <- readSource("WDI", "NY.GDP.MKTP.PP.KD") %>% 
     GDPuc::convertGDP("constant 2017 Int$PPP", "constant 2005 Int$PPP")
@@ -114,7 +114,7 @@ calcGDPPastWDI <- function() {
   data
 }
 
-calcGDPPastEurostatWDI <- function() {
+cGDPPastEurostatWDI <- function() {
   data_eurostat <- readSource("Eurostat", "GDP")
   data_wdi <- readSource("WDI", "NY.GDP.MKTP.PP.KD") %>% 
     GDPuc::convertGDP("constant 2017 Int$PPP", "constant 2005 Int$PPP")
@@ -139,7 +139,7 @@ calcGDPPastEurostatWDI <- function() {
   data
 }
 
-calcGDPPastJames <- function(type) {
+cGDPPastJames <- function(type) {
   PPP_pc <- readSource(type = "James", subtype = type)
   pop <- readSource("WDI", subtype = "SP.POP.TOTL")
   years <- intersect(getYears(PPP_pc), getYears(pop))
@@ -154,7 +154,7 @@ calcGDPPastJames <- function(type) {
 ######################################################################################
 # Legacy
 ######################################################################################
-calcGDPPastPWT <- function() {
+cGDPPastPWT <- function() {
   data <- readSource("PWT")[,,"rgdpna"]
   getNames(data) <- "GDP_PWT"
   data

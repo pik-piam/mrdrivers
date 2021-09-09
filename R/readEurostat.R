@@ -10,12 +10,12 @@
 readEurostat <- function(subtype = "emissions") {
 
   switch(subtype,
-         "emissions" = readEurostatEmissions(),
-         "MACCemi" = readEurostatEmissions(),
-         "sectorEmi" = readEurostatEmissions(),
-         "population" = readEurostatPopulation(),
-         "population_projections" = readEurostatPopulationProjections(),
-         "GDP" = readEurostatGDP(),
+         "emissions" = rEurostatEmissions(),
+         "MACCemi" = rEurostatEmissions(),
+         "sectorEmi" = rEurostatEmissions(),
+         "population" = rEurostatPopulation(),
+         "population_projections" = rEurostatPopulationProjections(),
+         "GDP" = rEurostatGDP(),
          stop("Bad input for readEurostat. Invalid 'subtype' argument."))
 } 
 
@@ -25,7 +25,7 @@ readEurostat <- function(subtype = "emissions") {
 ######################################################################################
 # Functions
 ######################################################################################
-readEurostatEmissions <- function() {
+rEurostatEmissions <- function() {
   #Reading Eurostat historical emissions 
   type <- c("GHG","CO2","CH4","N2O","HFC","PFC","HFC_PFC_NSP","SF6","NF3")
   data <- NULL
@@ -43,7 +43,7 @@ readEurostatEmissions <- function() {
   x <- as.magpie(data,spatial=2,temporal=1,datacol=5)
 }
 
-readEurostatPopulation <- function() {
+rEurostatPopulation <- function() {
   readr::read_csv("estat_demo_gind.csv.gz", col_types = "ccccddc") %>% 
   # Remove last column, mostly empty anyways, that causes issue when converting to magpie
   dplyr::select(-"OBS_FLAG") %>% 
@@ -53,7 +53,7 @@ readEurostatPopulation <- function() {
   as.magpie(spatial = "geo", temporal = "TIME_PERIOD")
 }
 
-readEurostatPopulationProjections <- function() {
+rEurostatPopulationProjections <- function() {
   readr::read_csv("estat_proj_19np.csv.gz", col_types = "cccccccddc") %>% 
   # Remove last column, mostly empty anyways, that causes issue when converting to magpie
   dplyr::select(-"OBS_FLAG") %>% 
@@ -65,7 +65,7 @@ readEurostatPopulationProjections <- function() {
   as.magpie(spatial = "geo", temporal = "TIME_PERIOD")
 }
 
-readEurostatGDP <- function() {
+rEurostatGDP <- function() {
   readr::read_csv("estat_nama_10_gdp.csv.gz", col_types = "cccccddc") %>% 
   # Remove last column, mostly empty anyways, that causes issue when converting to magpie
   dplyr::select(-"OBS_FLAG") %>% 

@@ -7,7 +7,7 @@ calcGDPpcPast <- function(GDPpcPast = "WDI",
   
   # Call appropriate calcGDPPast function. 
   data <- switch(GDPpcPast,
-                 "WDI" = calcGDPpcPastWDI(),
+                 "WDI" = cGDPpcPastWDI(),
                  stop("Bad input for calcGDPpcPast. Invalid 'GDPpcPast' argument."))
 
   if (useMIData) {  
@@ -28,7 +28,7 @@ calcGDPpcPast <- function(GDPpcPast = "WDI",
 ######################################################################################
 # Functions
 ######################################################################################
-calcGDPpcPastWDI <- function() {
+cGDPpcPastWDI <- function() {
   gdp <- calcOutput("GDPPast", GDPPast = "WDI", useMIData = FALSE, aggregate = FALSE)
   pop <- calcOutput("PopulationPast", PopulationPast = "WDI", useMIData = FALSE, aggregate = FALSE) 
   years <- intersect(getYears(gdp), getYears(pop))

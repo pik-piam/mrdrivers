@@ -10,7 +10,7 @@ calcUrbanFuture <- function(UrbanFuture = "SSPs", extension2150 = "constant") {
   
   data <- switch(
     UrbanFuture,
-    "SSPs" = calcUrbanFutureSSPs(),
+    "SSPs" = cUrbanFutureSSPs(),
     stop("Bad input for UrbanFuture. Invalid 'UrbanFuture' argument.")
   )
 
@@ -36,7 +36,7 @@ calcUrbanFuture <- function(UrbanFuture = "SSPs", extension2150 = "constant") {
 ######################################################################################
 # Functions
 ######################################################################################
-calcUrbanFutureSSPs <- function() {
+cUrbanFutureSSPs <- function() {
   data <- collapseNames(readSource("SSP", subtype = "all")[,,"Population|Urban|Share"][,,"NCAR"]) / 100
   getNames(data) <- paste0("urb_", gsub("_v[[:alnum:],[:punct:]]*", "", getNames(data)))
   

@@ -13,12 +13,12 @@ calcGDPFuture <- function(GDPFuture = "SSPs",
 
   data <- switch(
     GDPFuture,
-    "SSPs"        = calcGDPFutureSSPs(),
-    "SSP2Ariadne" = calcGDPFutureSSP2Ariadne(),
-    "SDPs"        = calcGDPFutureSDPs(),
+    "SSPs"        = cGDPFutureSSPs(),
+    "SSP2Ariadne" = cGDPFutureSSP2Ariadne(),
+    "SDPs"        = cGDPFutureSDPs(),
     # Deprecated options ? 
     "OECD"        = readSource("OECD", subtype = "gdp") * 1000, 
-    "SRES"        = calcGDPFutureSRES(), 
+    "SRES"        = cGDPFutureSRES(), 
     stop("Bad input for calcGDPFuture. Invalid 'GDPFuture' argument.")
   )
 
@@ -41,7 +41,7 @@ calcGDPFuture <- function(GDPFuture = "SSPs",
 ######################################################################################
 # Functions
 ######################################################################################
-calcGDPFutureSSPs <- function() {
+cGDPFutureSSPs <- function() {
   data <- readSource("SSP", subtype = "all")[,,"GDP|PPP"][,,"OECD Env-Growth"] * 1000
   
   # Refactor names
@@ -53,17 +53,17 @@ calcGDPFutureSSPs <- function() {
   data <- data[,setdiff(getYears(data), c("y2000", "y2005")),]
 }
 
-calcGDPFutureSDPs <- function() {
-  data_SSP1 <- calcGDPFutureSSPs()[,, "gdp_SSP1"]
+cGDPFutureSDPs <- function() {
+  data_SSP1 <- cGDPFutureSSPs()[,, "gdp_SSP1"]
 
   data <- purrr::map(c("SDP", "SDP_EI", "SDP_RC", "SDP_MC"),
                      ~ setNames(data_SSP1, gsub("SSP1", .x, getNames(data_SSP1)))) %>%
     purrr::reduce(mbind)
 }
 
-calcGDPFutureSSP2Ariadne <- function() {
+cGDPFutureSSP2Ariadne <- function() {
   data_ariadne <- readSource("ARIADNE_ReferenceScenario", "gdp_corona")
-  data_ssp <- calcGDPFutureSSPs()
+  data_ssp <- cGDPFutureSSPs()
 
   # Get countries for which ARIADNE/Eurostat GDP projections exist.) 
   EUR_countries <- where(data_ariadne != 0 )$true$regions
@@ -83,7 +83,7 @@ calcGDPFutureSSP2Ariadne <- function() {
 ######################################################################################
 # Legacy
 ######################################################################################
-calcGDPFutureSRES <- function() {
+cGDPFutureSRES <- function() {
   vcat(1, "growth rates of SRES projections were multiplied on 1990 GDP of James et al")
   data <- NULL
   for (i in c("sres_a1_gdp", "sres_a2_gdp", "sres_b1_gdp", "sres_b2_gdp")) {

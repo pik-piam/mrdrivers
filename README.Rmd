@@ -5,6 +5,7 @@ output: github_document
 <!-- README.md is generated from README.Rmd. Please edit that file -->
 
 ```{r, include = FALSE}
+library(mrdrivers)
 knitr::opts_chunk$set(
   collapse = TRUE,
   comment = "#>",
@@ -27,6 +28,25 @@ The goal of **mrdrivers** is to handle the construction of GDP, GDP per capita, 
 
 Install the package from github:
 
-```{r, eval = FALSE}
+```{r, eval=FALSE}
 remotes::install_github("pik-piam/mrdrivers")
 ```
+
+## Framework: madrat and magclass
+
+This package depends upon the [madrat](https://github.com/pik-piam/madrat#readme) and [magclass](https://github.com/pik-piam/magclass#readme) packages. It integrates into the madrat framework and is structured accordingly. It mainly uses magpie objects (from the magclass package). For more information on madrat or magclass, please visit the respective github repositories ([madrat](https://github.com/pik-piam/madrat#readme), [magclass](https://github.com/pik-piam/magclass#readme)).  
+  
+The read and calc functions provided by this package are listed below.  
+
+readSource:
+```{r, echo=FALSE}
+madrat::getSources(packages = "mrdrivers", type = "read")
+```
+
+calcOutput:
+```{r, echo=FALSE}
+madrat::getCalculations(packages = "mrdrivers")[,"type"]
+```
+
+
+

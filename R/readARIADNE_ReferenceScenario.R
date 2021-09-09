@@ -7,9 +7,9 @@
 readARIADNE_ReferenceScenario <- function(subtype){
 
   switch(subtype,
-         "population" = readARIADNEPopulation(),
-         "gdp" = readARIADNEGDP(corona = FALSE),
-         "gdp_corona" = readARIADNEGDP(corona = TRUE),
+         "population" = rARIADNEPopulation(),
+         "gdp" = rARIADNEGDP(corona = FALSE),
+         "gdp_corona" = rARIADNEGDP(corona = TRUE),
          stop("Bad input for readARIADNE_ReferenceScenario. Invalid 'subtype' argument."))
 }
   
@@ -17,7 +17,7 @@ readARIADNE_ReferenceScenario <- function(subtype){
 ######################################################################################
 # Functions
 ######################################################################################
-readARIADNEPopulation <- function() {
+rARIADNEPopulation <- function() {
   populationSheet <- suppressMessages(
     readxl::read_excel('POP_EU-27_Eurostat.xlsx', range='B12:T46', sheet='Pop_Total')
   )
@@ -32,7 +32,7 @@ readARIADNEPopulation <- function() {
   as.magpie(populationSheet, spatial = 2, temporal = 3, datacol = 4)
 }
 
-readARIADNEGDP <- function(corona) {
+rARIADNEGDP <- function(corona) {
   gdpSheet <- suppressMessages(readxl::read_excel('GDP_Base_Corona_EU-28_V02.xlsx', range = 'A2:AL30')) %>% 
     # Drop columns with only NAs
     dplyr::select(tidyselect::vars_select_helpers$where(~!all(is.na(.x)))) %>% 
