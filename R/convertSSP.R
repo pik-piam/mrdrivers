@@ -108,9 +108,10 @@ convertSSP <- function(x,subtype) {
     x <- toolCountryFill(x, fill = 0)
 
   }  else if(subtype == "ratioPM") {
+    getSets(x) <- c("Region", "year", "value")
     # fill all the rest with 1
     x <- toolCountryFill(x, fill = 1)
   }  
 
-  return(x)
+  x
 }  

@@ -8,7 +8,12 @@
 warning <- function(...) madrat::vcat(0, ...)
 
 # create a own stop function which redirects calls to stop (package internal)
-stop <- function(...) madrat::vcat(-1, ...)
+stop <- if ("crayon" %in% rownames(installed.packages())) {
+  function(...) madrat::vcat(-1, crayon::red(...))
+} else {
+  function(...) madrat::vcat(-1, ...)
+}
+
 
 # create an own cat function which redirects calls to cat (package internal)
 cat <- function(...) madrat::vcat(1, ...)

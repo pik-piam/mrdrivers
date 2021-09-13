@@ -1,16 +1,16 @@
 #' Dowload WDI
 #' 
-#' Download WDI (World development indicators) data .rda file. 
-#' the WDI data is updated with the funciton "WDISearch(cache=WDIcache())"
+#' Download World development indicators (WDI) data .Rds file. 
+#' the WDI data is updated with the function "WDISearch(cache = WDIcache())"
 #' 
-#' @seealso  \code{\link{downloadSource}} \code{\link{WDI}}
-#' @examples
+#' @seealso <https://databank.worldbank.org/source/world-development-indicators>, [madrat::downloadSource()]
+#' @family WDI functions
 #' 
-#' \dontrun{ a <- downloadSource(type="WDI")
-#' }
+#' @examples \dontrun{ 
+#' library(mrdrivers)
+#' downloadSource("WDI")}
 #' 
 downloadWDI <- function(){
-  end_year <- as.numeric(strsplit(as.character(Sys.Date()), "-")[[1]][1]) -1
   WDI::WDIsearch(cache = WDI::WDIcache())
   indicator <- c("SP.POP.TOTL", #population, total
                  "NY.GDP.MKTP.PP.KD", #GDP ppp, constant 2017 int$
@@ -32,6 +32,7 @@ downloadWDI <- function(){
                  "NY.GDP.PCAP.CD", #GDP per capita, current US$
                  "NY.GDP.PCAP.PP.CD" #GDP per capita, current PPP int$
                  )
+  end_year <- as.numeric(strsplit(as.character(Sys.Date()), "-")[[1]][1]) -1
   wdi <- WDI::WDI(indicator = indicator, start = 1960, end = end_year)
-  save(wdi, file = "WDI.rda")
+  readr::write_rds(wdi, "WDI.Rds")
 }

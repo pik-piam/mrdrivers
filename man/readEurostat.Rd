@@ -4,7 +4,7 @@
 \alias{readEurostat}
 \title{Read Eurostat historical emissions}
 \usage{
-readEurostat(subtype = "emissions")
+readEurostat(subtype)
 }
 \arguments{
 \item{subtype}{emissions for original eurostat emissions split, MACCemi for MACC historical emissions, or
@@ -17,8 +17,30 @@ magpie object of Eurostat historical emissions (MtCO2)
 Read-in Eurostat historical emissions csv files as magclass object
 }
 \examples{
-\dontrun{a <- readSource(type = "Eurostat", subtype = "emissions")}
+\dontrun{
+readSource("Eurostat", subtype = "population")
+}
 }
 \seealso{
-\code{\link{readSource}}
+\code{\link[madrat:readSource]{madrat::readSource()}}
+
+Other "Past" population functions: 
+\code{\link{readMissingIslands}()},
+\code{\link{readUN_PopDiv}()},
+\code{\link{readWDI}()}
+
+Other "Future" population functions: 
+\code{\link{readPEAP}()},
+\code{\link{readPopulationTWN}()}
+
+Other "Past" GDP functions: 
+\code{\link{readMissingIslands}()},
+\code{\link{readWDI}()}
+
+Other Eurostat functions: 
+\code{\link{convertEurostat}()}
 }
+\concept{"Future" population functions}
+\concept{"Past" GDP functions}
+\concept{"Past" population functions}
+\concept{Eurostat functions}

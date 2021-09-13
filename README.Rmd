@@ -40,7 +40,14 @@ The read and calc functions provided by this package are listed below.
 
 readSource:
 ```{r, echo=FALSE}
-madrat::getSources(packages = "mrdrivers", type = "read")
+x <- madrat::getSources(packages = "mrdrivers", type = "read")
+x[!x %in% c("James", "PopulationTWN", "SRES", "IIASApop", "UN_PopDiv", "PWT", "OECD")]
+```
+
+readSource (deprecated?!):
+```{r, echo=FALSE}
+x <- madrat::getSources(packages = "mrdrivers", type = "read")
+x[x %in% c("James", "PopulationTWN", "SRES", "IIASApop", "UN_PopDiv", "PWT", "OECD")]
 ```
 
 calcOutput:

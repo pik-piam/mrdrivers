@@ -7,7 +7,9 @@
 #' (\href{https://esa.un.org/unpd/wpp/}{website}).
 #'
 #' @return \code{magclass} object; population in thousands.
-#' @seealso \code{\link{readSource}}
+#' @seealso [madrat::readSource()]
+#' @family "Past" population functions
+#' @family UN_PopDiv functions
 readUN_PopDiv <- function() {
 
   d <- readxl::read_excel('WPP2015_POP_F01_1_TOTAL_POPULATION_BOTH_SEXES.XLS',

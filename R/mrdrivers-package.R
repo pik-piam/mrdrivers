@@ -14,5 +14,6 @@
 #' @importFrom magrittr %>%
 #' @importFrom rlang .data
 #' @importFrom glue glue
+#' @exportPattern "^(calc|read|convert|download).*"
 NULL
 

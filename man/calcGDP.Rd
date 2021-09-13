@@ -33,7 +33,7 @@ calcGDP(
 \item{naming}{naming scheme}
 }
 \value{
-A magpie object.
+A magpie object with sets "region", "period" and "scen".
 }
 \description{
 Merges time series of GDP in Purchase Power Parity (PPP) of International
@@ -44,6 +44,24 @@ determines the merging point. All data is calibrated specified by GDPCalib.
 The extension comes after the combination of past and future, in case the
 calibration method affected the future extension
 }
-\seealso{
-\code{\link{calcGDPPast}}, \code{\link{calcGDPFuture}}
+\examples{
+\dontrun{
+library(mrdrivers)
+calcOutput("GDP")}
+
 }
+\seealso{
+\code{\link[madrat:calcOutput]{madrat::calcOutput()}}
+
+Other GDP functions: 
+\code{\link{calcGDPFuture}()},
+\code{\link{calcGDPPast}()}
+
+Other Combined scenario functions: 
+\code{\link{calcGDPpc}()},
+\code{\link{calcPopulation}()},
+\code{\link{calcUrbanPop}()},
+\code{\link{calcUrban}()}
+}
+\concept{Combined scenario functions}
+\concept{GDP functions}

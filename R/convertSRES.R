@@ -51,7 +51,7 @@ convertSRES<-function(x,subtype){
   
   x <- toolCountryFill(x,fill = 0, no_remove_warning = "ANT")
   x[is.na(x)]<-0
-  return(x)
+  x
 }
 
 

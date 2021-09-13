@@ -1,11 +1,15 @@
 #' Read IIASApop
 #' 
+#' @description
+#' `r lifecycle::badge('deprecated')`  
+#' 
 #' Read-in an population data csv file as magclass object
 #' 
 #' @return magpie object of the population data
 #' @seealso \code{\link{readSource}}
 #' @examples
 #' \dontrun{ a <- readSource(type="IIASApop")}
+#' @keywords internal
 readIIASApop <- function() {
   data <- utils::read.csv("Data A1 Country total population-SSPs.csv")
   data <- data[, -ncol(data)]

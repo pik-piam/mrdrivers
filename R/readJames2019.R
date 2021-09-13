@@ -10,14 +10,16 @@
 #' 
 #' @param subtype String indicating the data series
 #' @return GDP per capita in USD05 in PPP or MER as magpie object
-#' @seealso \code{\link{readSource}}
-#' @examples
 #' 
-#' \dontrun{ a <- readSource(type="James2019", subtype="IHME_USD05_PPP_pc")
-#' }
+#' @seealso [madrat::readSource()]
+#' @family "Past" GDPpc functions
+#' @family James2019 functions
+#' 
+#' @examples \dontrun{
+#' readSource("James2019", subtype = "IHME_USD05_PPP_pc")}
 #' 
 readJames2019 <- function(subtype) {
-  x <- utils::read.csv("james2019.csv", sep = ",", dec = ".", header = TRUE)
-  x <- x[, c("ISO3", "Year", subtype)]
-  x <- as.magpie(x, spatial = 1, temporal = 2)    
+  readr::read_csv("james2019.csv", show_col_types = FALSE) %>%
+    `[`(, c("ISO3", "Year", subtype)) %>%
+    as.magpie(spatial = 1, temporal = 2)    
 }  

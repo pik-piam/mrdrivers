@@ -30,7 +30,7 @@ calcPopulation(
 \item{naming}{naming scheme}
 }
 \value{
-Population in millions.
+A magpie object with sets "region", "period" and "scen".
 }
 \description{
 Merges time series of population for the past and present. See
@@ -40,6 +40,24 @@ merged via the growth rates. The first year of the future scenarios
 determines the merging point. All data is calibrated either to the "past" or
 the "future" dataset as specified by PopulationCalib.
 }
-\seealso{
-\code{\link{calcPopulationPast}}, \code{\link{calcPopulationFuture}}
+\examples{
+\dontrun{
+library(mrdrivers)
+calcOutput("GDPpc")}
+
 }
+\seealso{
+\link[madrat:calcOutput]{madrat::calcOutput}
+
+Other Population functions: 
+\code{\link{calcPopulationFuture}()},
+\code{\link{calcPopulationPast}()}
+
+Other Combined scenario functions: 
+\code{\link{calcGDPpc}()},
+\code{\link{calcGDP}()},
+\code{\link{calcUrbanPop}()},
+\code{\link{calcUrban}()}
+}
+\concept{Combined scenario functions}
+\concept{Population functions}

@@ -5,7 +5,15 @@
 #' \code{"IIASApop"}: Source: Lavinia? }
 #' 
 #' @inheritParams calcPopulation
-#' @return Population in millions.
+#' @inherit calcPopulation return
+#' 
+#' @seealso [madrat::calcOutput]
+#' @family Population functions
+#'
+#' @examples \dontrun{
+#' library(mrdrivers)
+#' calcOutput("PopulationFuture")}
+#'
 calcPopulationFuture <- function(PopulationFuture = "SSPs",
                                  useMIData = TRUE,
                                  extension2150 = "bezier") {
@@ -29,10 +37,10 @@ calcPopulationFuture <- function(PopulationFuture = "SSPs",
 
   data <- finishingTouches(data, extension2150)
 
-  return(list(x = data,
-              weight = NULL,
-              unit = "million",
-              description = paste0("Population data from ", PopulationFuture)))
+  list(x = data,
+       weight = NULL,
+       unit = "million",
+       description = paste0("Population data from ", PopulationFuture))
 }
 
 

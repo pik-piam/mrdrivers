@@ -23,11 +23,17 @@ from a .csv file to a magclass object
 2019 dataset from personal communication w/ B Bodirsky
 }
 \examples{
-
-\dontrun{ a <- readSource(type="James2019", subtype="IHME_USD05_PPP_pc")
-}
+\dontrun{
+readSource("James2019", subtype = "IHME_USD05_PPP_pc")}
 
 }
 \seealso{
-\code{\link{readSource}}
+\code{\link[madrat:readSource]{madrat::readSource()}}
+
+Other "Past" GDPpc functions: 
+\code{\link{readIMF}()},
+\code{\link{readPWT}()},
+\code{\link{readWDI}()}
 }
+\concept{"Past" GDPpc functions}
+\concept{James2019 functions}

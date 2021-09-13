@@ -14,7 +14,7 @@ Authors@R: c(person("Benjamin Leon", "Bodirsky", role = "aut"),
              person("Michaja", "Pehl", role = "aut"),
              person("Bjoern", "Soergel", role = "aut"),
              person("Jan Philipp", "Dietrich", role = "aut"),
-             person("Koch", "Johannes", email = "jokch@pik-potsdam.de", role = c("aut", "cre")))
+             person("Koch", "Johannes", email = "jokoch@pik-potsdam.de", role = c("aut", "cre")))
 Description: Create GDP and population scenarios
     This package takes care of GDP and population scenario construction, which are important drivers
     to both the REMIND and MAgPIE models.
@@ -35,17 +35,15 @@ Imports:
     glue,
     magrittr,
     purrr,
-    quitte,
     readr,
     readxl,
-    reshape2,
     rlang,
-    stringr,
     tibble,
     tidyr,
     tidyselect,
     WDI
 Suggests: 
+    crayon,
     testthat (>= 3.0.0)
 Config/testthat/edition: 3
 Date: 2021-09-09

@@ -32,6 +32,30 @@ calcGDPpc(
 
 \item{naming}{naming scheme}
 }
+\value{
+A magpie object with sets "region", "period" and "scen".
+}
 \description{
 calcGDPpc
 }
+\examples{
+\dontrun{
+library(mrdrivers)
+calcOutput("GDPpc")}
+
+}
+\seealso{
+[madrat::calcOutput()
+
+Other GDPpc functions: 
+\code{\link{calcGDPpcFuture}()},
+\code{\link{calcGDPpcPast}()}
+
+Other Combined scenario functions: 
+\code{\link{calcGDP}()},
+\code{\link{calcPopulation}()},
+\code{\link{calcUrbanPop}()},
+\code{\link{calcUrban}()}
+}
+\concept{Combined scenario functions}
+\concept{GDPpc functions}

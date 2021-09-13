@@ -29,5 +29,5 @@ convertIMF <- function(x, subtype = "current_account") {
   # fill rest of countries with 0
   x <- toolCountryFill(x, fill = 0)
   
-  return(x)
+  x
 }

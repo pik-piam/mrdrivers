@@ -21,10 +21,22 @@ calcGDPFuture(
 \item{extension2150}{string, either "bezier", "constant" or "none"}
 }
 \value{
-A magpie object.
+A magpie object with sets "region", "period" and "scen".
 }
 \description{
-Calculates a time series of GDP in Purchase Power Parity (PPP) of million
-International Dollars of the year 2005. Different sources are available:
-\itemize{ \item \code{SSP}: Lavinia? \item \code{OECD}: Lavinia? }
+calcGDPFuture
 }
+\examples{
+\dontrun{
+library(mrdrivers)
+calcOutput("GDPFuture")}
+
+}
+\seealso{
+[madrat::calcOutput()
+
+Other GDP functions: 
+\code{\link{calcGDPPast}()},
+\code{\link{calcGDP}()}
+}
+\concept{GDP functions}

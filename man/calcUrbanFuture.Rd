@@ -12,10 +12,25 @@ calcUrbanFuture(UrbanFuture = "SSPs", extension2150 = "constant")
 \item{extension2150}{string, either "bezier", "constant" or "none"}
 }
 \value{
-Urban shares
+A magpie object with sets "region", "period" and "scen".
 }
 \description{
 Calculates a time series of urban shares, using SSP projections Currently,
 SSP data does not differentiate between SSPs and has some unconsistencies
 with WDI in 2010
 }
+\examples{
+\dontrun{
+library(mrdrivers)
+calcOutput("UrbanFuture")}
+
+}
+\seealso{
+\link[madrat:calcOutput]{madrat::calcOutput}
+
+Other Urban functions: 
+\code{\link{calcUrbanPast}()},
+\code{\link{calcUrbanPop}()},
+\code{\link{calcUrban}()}
+}
+\concept{Urban functions}

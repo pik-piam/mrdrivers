@@ -10,6 +10,8 @@ readIIASApop()
 magpie object of the population data
 }
 \description{
+\ifelse{html}{\href{https://lifecycle.r-lib.org/articles/stages.html#deprecated}{\figure{lifecycle-deprecated.svg}{options: alt='[Deprecated]'}}}{\strong{[Deprecated]}}
+
 Read-in an population data csv file as magclass object
 }
 \examples{
@@ -18,3 +20,4 @@ Read-in an population data csv file as magclass object
 \seealso{
 \code{\link{readSource}}
 }
+\keyword{internal}

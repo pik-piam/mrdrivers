@@ -2,17 +2,12 @@
 #' 
 #' Read-in GDP or ratio PPP2MER data xlsx file from OECD as magclass object
 #' 
-#' 
 #' @param subtype data subtype. Either "gdp" or "ratioPM"
 #' @return magpie object of the GDP data
-#' @seealso \code{\link{readSource}}
-#' @examples
-#' 
-#' \dontrun{ 
-#' a <- readSource("OECD","gdp")
-#' a <- readSource("OECD","ratioPM")
-#' 
-#' }
+#' @seealso [madrat::readSource()]
+#' @examples \dontrun{ 
+#' readSource("OECD", "gdp")
+#' readSource("OECD", "ratioPM")}
 #' 
 readOECD <- function(subtype) {
   files <- c(gdp       = "OECD_v9_25-3-13-3.xlsx",
@@ -47,5 +42,5 @@ readOECD <- function(subtype) {
     getSets(x)[1] <- "country"
   }  
     
-  return(x)
+  x
 }  

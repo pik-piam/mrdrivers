@@ -19,5 +19,13 @@ Read-in iMF data
 \dontrun{ a <- readSource(type="IMF")}
 }
 \seealso{
-\code{\link{readSource}}
+\code{\link[madrat:readSource]{madrat::readSource()}}
+
+Other "Past" GDPpc functions: 
+\code{\link{readJames2019}()},
+\code{\link{readPWT}()},
+\code{\link{readWDI}()}
 }
+\concept{"Future" GDPpc functions}
+\concept{"Past" GDPpc functions}
+\concept{IMF functions}

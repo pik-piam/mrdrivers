@@ -20,6 +20,23 @@ calcGDPpcFuture(
 
 \item{extension2150}{string, either "bezier", "constant" or "none"}
 }
+\value{
+A magpie object with sets "region", "period" and "scen".
+}
 \description{
 calcGDPpcFuture
 }
+\examples{
+\dontrun{
+library(mrdrivers)
+calcOutput("GDPpcFuture")}
+
+}
+\seealso{
+\link[madrat:calcOutput]{madrat::calcOutput}
+
+Other GDPpc functions: 
+\code{\link{calcGDPpcPast}()},
+\code{\link{calcGDPpc}()}
+}
+\concept{GDPpc functions}

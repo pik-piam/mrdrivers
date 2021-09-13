@@ -14,7 +14,7 @@ calcGDPPast(GDPPast = "WDI", unit = "constant 2005 Int$PPP", useMIData = TRUE)
 \item{useMIData}{logical}
 }
 \value{
-GDP PPP in million USD05 equivalents
+A magpie object with sets "region", "period" and "scen".
 }
 \description{
 Calculates a time series of GDP in Purchase Power Parity (PPP) of million
@@ -38,3 +38,17 @@ Comprehensive Time Series of GDP per Capita for 210 Countries from 1950 to
 This publication also contains further interpolated indicators that can be
 used. }
 }
+\examples{
+\dontrun{
+library(mrdrivers)
+calcOutput("GDPPast")}
+
+}
+\seealso{
+[madrat::calcOutput()
+
+Other GDP functions: 
+\code{\link{calcGDPFuture}()},
+\code{\link{calcGDP}()}
+}
+\concept{GDP functions}

@@ -1,5 +1,8 @@
 #' Read SRES
 #' 
+#' @description
+#' `r lifecycle::badge('deprecated')`
+#' 
 #' Read-in an SRES data csv file as magclass object. Works for both population
 #' and GDP
 #' 
@@ -7,10 +10,10 @@
 #' "gdp_a1","gdp_a2","gdp_b1","gdp_b2"
 #' @return magpie object of the SRES data. Units are million people or USD1990
 #' market exchange rate.
-#' @seealso \code{\link{readSource}}
-#' @examples
-#' \dontrun{ a <- readSource(type="SRES",subtype="pop_a1")
-#' } 
+#' @seealso [madrat::readSource()]
+#' @examples \dontrun{
+#' readSource("SRES", subtype = "pop_a1")} 
+#' @keywords internal
 readSRES <- function(subtype) {
 
   

@@ -10,7 +10,15 @@
 #' }
 #' 
 #' @inheritParams calcPopulation
-#' @return Population in millions.
+#' @inherit calcPopulation return
+#' 
+#' @seealso [madrat::calcOutput]
+#' @family Population functions
+#'
+#' @examples \dontrun{
+#' library(mrdrivers)
+#' calcOutput("PopulationPast")}
+#'
 calcPopulationPast <- function(PopulationPast = "WDI", useMIData = TRUE) {
 
   data <- switch(
@@ -29,10 +37,10 @@ calcPopulationPast <- function(PopulationPast = "WDI", useMIData = TRUE) {
   getNames(data) <- "population"
   data <- finishingTouches(data)
 
-  return(list(x = data,
-              weight = NULL,
-              unit = "million",
-              description = paste0("Population data from ", PopulationPast)))
+  list(x = data, 
+       weight = NULL, 
+       unit = "million", 
+       description = paste0("Population data from ", PopulationPast))
 }
 
 
