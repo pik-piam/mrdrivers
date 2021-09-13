@@ -33,7 +33,8 @@ information on madrat or magclass, please visit the respective github
 repositories ([madrat](https://github.com/pik-piam/madrat#readme),
 [magclass](https://github.com/pik-piam/magclass#readme)).
 
-The read and calc functions provided by this package are listed below.
+The readSource and calcOutput functions provided by this package are
+listed below.
 
 readSource:
 
