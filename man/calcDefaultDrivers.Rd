@@ -4,14 +4,23 @@
 \alias{calcDefaultDrivers}
 \title{Collect Default Model Drivers}
 \usage{
-calcDefaultDrivers(drivers = c("Population", "Urban", "GDP", "GDPpc"))
+calcDefaultDrivers(drivers = c("Population", "UrbanPop", "GDP", "GDPpc"))
 }
 \arguments{
 \item{drivers}{Vector of strings.}
 }
 \value{
-A magpie object.
+A magpie object with sets "region", "period" and "scen".
 }
 \description{
 Collect Default Model Drivers
+}
+\examples{
+\dontrun{
+library(mrdrivers)
+calcOutput("DefaultDrivers")}
+
+}
+\seealso{
+\link[madrat:calcOutput]{madrat::calcOutput}
 }

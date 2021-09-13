@@ -16,14 +16,11 @@ magpie object of the GDP data
 Read-in GDP or ratio PPP2MER data xlsx file from OECD as magclass object
 }
 \examples{
-
 \dontrun{ 
-a <- readSource("OECD","gdp")
-a <- readSource("OECD","ratioPM")
-
-}
+readSource("OECD", "gdp")
+readSource("OECD", "ratioPM")}
 
 }
 \seealso{
-\code{\link{readSource}}
+\code{\link[madrat:readSource]{madrat::readSource()}}
 }

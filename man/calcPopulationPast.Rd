@@ -12,7 +12,7 @@ calcPopulationPast(PopulationPast = "WDI", useMIData = TRUE)
 \item{useMIData}{logical}
 }
 \value{
-Population in millions.
+A magpie object with sets "region", "period" and "scen".
 }
 \description{
 Calculates a time series of Population. Different sources are available:
@@ -24,3 +24,17 @@ from "other, non-specified areas". Missing countries have their
 values set to zero.
 }
 }
+\examples{
+\dontrun{
+library(mrdrivers)
+calcOutput("PopulationPast")}
+
+}
+\seealso{
+\link[madrat:calcOutput]{madrat::calcOutput}
+
+Other Population functions: 
+\code{\link{calcPopulationFuture}()},
+\code{\link{calcPopulation}()}
+}
+\concept{Population functions}

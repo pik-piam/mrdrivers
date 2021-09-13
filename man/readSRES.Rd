@@ -15,13 +15,16 @@ magpie object of the SRES data. Units are million people or USD1990
 market exchange rate.
 }
 \description{
+\ifelse{html}{\href{https://lifecycle.r-lib.org/articles/stages.html#deprecated}{\figure{lifecycle-deprecated.svg}{options: alt='[Deprecated]'}}}{\strong{[Deprecated]}}
+
 Read-in an SRES data csv file as magclass object. Works for both population
 and GDP
 }
 \examples{
-\dontrun{ a <- readSource(type="SRES",subtype="pop_a1")
-} 
+\dontrun{
+readSource("SRES", subtype = "pop_a1")} 
 }
 \seealso{
-\code{\link{readSource}}
+\code{\link[madrat:readSource]{madrat::readSource()}}
 }
+\keyword{internal}

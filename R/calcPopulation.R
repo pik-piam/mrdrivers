@@ -10,10 +10,18 @@
 #' @param PopulationCalib to what should be calibrated? past, future or a transition?
 #' @param PopulationPast population past data source
 #' @param PopulationFuture population future data source
-#' @inheritParams calcGDP
 #' 
-#' @return Population in millions.
-#' @seealso \code{\link{calcPopulationPast}}, \code{\link{calcPopulationFuture}}
+#' @inheritParams calcGDP
+#' @inherit calcGDP return
+#' 
+#' @seealso [madrat::calcOutput]
+#' @family Population functions
+#' @family Combined scenario functions
+#' 
+#' @examples \dontrun{
+#' library(mrdrivers)
+#' calcOutput("GDPpc")}
+#' 
 calcPopulation <- function(PopulationCalib  = c("past_grPEAP_grFuture", "past_grPEAP_grFuture", "Ariadne"),
                            PopulationPast   = c("WDI",                  "WDI",                  "Eurostat_WDI"), 
                            PopulationFuture = c("SSPs",                 "SDPs",                 "SSP2Ariadne"), 
@@ -86,12 +94,12 @@ internal_calcPopulation <- function(PopulationCalib,
   # Apply finishing touches to combined time-series
   combined <- finishingTouches(combined, extension2150, FiveYearSteps, naming)
   
-  return(list(x = combined,
-              weight = NULL,
-              unit = "million",
-              description = glue("Population data. Datasource for the Past: {PopulationPast}. \\
-                                        Datasource for the Future: {PopulationFuture}. Calibrated \\
-                                        to {datasettype}")))
+  list(x = combined,
+       weight = NULL,
+       unit = "million",
+       description = glue("Population data. Datasource for the Past: {PopulationPast}. \\
+                                 Datasource for the Future: {PopulationFuture}. Calibrated \\
+                                 to {datasettype}"))
 
 }
 

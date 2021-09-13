@@ -73,5 +73,5 @@ convertIIASApop <- function(x) {
   #check whether the country list agrees with the list of countries in the madrat library
   #remove unrequired data, add missing data 
   x <- toolCountryFill(x,fill=0)
-  return(x)
+  x
 }  

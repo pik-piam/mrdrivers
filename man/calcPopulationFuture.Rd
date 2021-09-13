@@ -18,10 +18,24 @@ calcPopulationFuture(
 \item{extension2150}{string, either "bezier", "constant" or "none"}
 }
 \value{
-Population in millions.
+A magpie object with sets "region", "period" and "scen".
 }
 \description{
 Calculates a time series of Pop. Different sources are available:
 \itemize{ \item \code{"IIASApop"}: Source: IIASA? Lavinia?  \item
 \code{"IIASApop"}: Source: Lavinia? }
 }
+\examples{
+\dontrun{
+library(mrdrivers)
+calcOutput("PopulationFuture")}
+
+}
+\seealso{
+\link[madrat:calcOutput]{madrat::calcOutput}
+
+Other Population functions: 
+\code{\link{calcPopulationPast}()},
+\code{\link{calcPopulation}()}
+}
+\concept{Population functions}

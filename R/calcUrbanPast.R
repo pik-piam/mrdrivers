@@ -3,7 +3,15 @@
 #' Calculates a time series of urban shares
 #' 
 #' @inheritParams calcUrban
-#' @return Urban shares in population
+#' @inherit calcUrban return
+#' 
+#' @seealso [madrat::calcOutput]
+#' @family Urban functions
+#' 
+#' @examples \dontrun{
+#' library(mrdrivers)
+#' calcOutput("UrbanPast")}
+#' 
 calcUrbanPast <- function(UrbanPast = "WDI") {
 
   data <- switch(
@@ -19,8 +27,5 @@ calcUrbanPast <- function(UrbanPast = "WDI") {
   
   data <- data[getRegions(wp), getYears(wp),]
 
-  return(list(x = data,
-              weight = wp,
-              unit = "per 1",
-              description = paste0("Urbanisation data from ", UrbanPast)))
+  list(x = data, weight = wp, unit = "per 1", description = glue("Urbanisation data from {UrbanPast}"))
 }

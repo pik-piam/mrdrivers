@@ -17,3 +17,8 @@ Converts data from \code{readUN_PopDiv()} to ISO country level. "Other,
 non-specified areas" is used as a stand-in for Taiwan, Province of China.
 Countries missing in the data set are set to zero.
 }
+\seealso{
+Other UN_PopDiv functions: 
+\code{\link{readUN_PopDiv}()}
+}
+\concept{UN_PopDiv functions}

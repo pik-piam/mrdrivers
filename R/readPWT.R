@@ -1,16 +1,15 @@
 #' Read PWT
 #' 
 #' Read-in an PWT data .xlsx file as magclass object
+#
+#' @family "Past" GDPpc functions
+#' @family PWT functions
 #' 
-#' @return magpie object of the PWT data
+#' @return Magpie object of the PWT data
 readPWT<- function() {
-  pwt <- as.data.frame(readxl::read_excel("pwt81.xlsx", sheet = "Data"))
-  
-  # remove country and currency_unit columns. should be done better?
-  pwt <- pwt[, c(-2, -3)]                       
-  # remove indicator columns, as they are text based and don't mix well with floating values
-  pwt <- pwt[, !grepl("i_", names(pwt))] 
-
-  pwt <- as.magpie(pwt, datacol = 3)        
-  pwt
+  pwt <- readxl::read_excel("pwt80.xlsx", sheet = "Data")
+  # Remove "country", "currency_unit" and indicator ("i_") columns
+  pwt <- pwt[, !grepl("(^country$|^currency_unit$|^i_)", names(pwt))]
+  # Transform to magpie
+  as.magpie(pwt)
 }

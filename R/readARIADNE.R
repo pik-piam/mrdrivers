@@ -3,14 +3,20 @@
 #' Read ARIADNE Reference Scenario data from various .xls files as magpie object
 #' 
 #' @param subtype data subtype. Either "population", "gdp", or "gdp_corona"
+#' 
+#' @seealso [madrat::readSource()]
+#' @family "Future" GDP functions
+#' @family "Future" Population functions
+#' @family ARIADNE functions
+#' 
 #' @return magpie object of ARIADNE reference scenario data by country
-readARIADNE_ReferenceScenario <- function(subtype){
+readARIADNE <- function(subtype){
 
   switch(subtype,
          "population" = rARIADNEPopulation(),
          "gdp" = rARIADNEGDP(corona = FALSE),
          "gdp_corona" = rARIADNEGDP(corona = TRUE),
-         stop("Bad input for readARIADNE_ReferenceScenario. Invalid 'subtype' argument."))
+         stop("Bad input for readARIADNE. Invalid 'subtype' argument."))
 }
   
 
@@ -26,7 +32,7 @@ rARIADNEPopulation <- function() {
   populationSheet$Region <- c(populationSheet$Region[1:8], 'GR', populationSheet$Region[10:27], 'IS', 'LI', 'NO', 'CH')
   populationSheet[,seq(2,19)] <- sapply(populationSheet[,seq(2,19)], as.numeric)
   populationSheet[,seq(2,19)] <- populationSheet[,seq(2,19)] / 1000000
-  populationSheet <- reshape2::melt(populationSheet, id.vars=1)
+  populationSheet <- tidyr::pivot_longer(populationSheet, -1)
   populationSheet <- cbind(c('Population (million)'), populationSheet)
   colnames(populationSheet) <- c('variable', 'region','period','value')
   as.magpie(populationSheet, spatial = 2, temporal = 3, datacol = 4)

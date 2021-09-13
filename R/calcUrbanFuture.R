@@ -5,7 +5,15 @@
 #' with WDI in 2010
 #' 
 #' @inheritParams calcUrban
-#' @return Urban shares
+#' @inherit calcUrban return
+#' 
+#' @seealso [madrat::calcOutput]
+#' @family Urban functions
+#'
+#' @examples \dontrun{
+#' library(mrdrivers)
+#' calcOutput("UrbanFuture")}
+#'
 calcUrbanFuture <- function(UrbanFuture = "SSPs", extension2150 = "constant") {
   
   data <- switch(
@@ -26,10 +34,7 @@ calcUrbanFuture <- function(UrbanFuture = "SSPs", extension2150 = "constant") {
   data <- data[getRegions(wp), getYears(wp),]
   
 
-  return(list(x = data,
-              weight = wp,
-              unit = "per 1",
-              description = paste0("Urbanisation data from ", UrbanFuture)))
+  list(x = data, weight = wp, unit = "per 1", description = paste0("Urbanisation data from {UrbanFuture}"))
 }
 
 

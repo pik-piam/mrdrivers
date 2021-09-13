@@ -7,15 +7,20 @@
 downloadWDI()
 }
 \description{
-Download WDI (World development indicators) data .rda file.
-the WDI data is updated with the funciton "WDISearch(cache=WDIcache())"
+Download World development indicators (WDI) data .Rds file.
+the WDI data is updated with the function "WDISearch(cache = WDIcache())"
 }
 \examples{
-
-\dontrun{ a <- downloadSource(type="WDI")
-}
+\dontrun{ 
+library(mrdrivers)
+downloadSource("WDI")}
 
 }
 \seealso{
-\code{\link{downloadSource}} \code{\link{WDI}}
+\url{https://databank.worldbank.org/source/world-development-indicators}, \code{\link[madrat:downloadSource]{madrat::downloadSource()}}
+
+Other WDI functions: 
+\code{\link{convertWDI}()},
+\code{\link{readWDI}()}
 }
+\concept{WDI functions}

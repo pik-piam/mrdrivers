@@ -12,8 +12,18 @@
 #' @param UrbanCalib To what should be calibrated? past or future?
 #' @param UrbanPast Urban past data source
 #' @param UrbanFuture Urban future data source
+#' 
 #' @inheritParams calcGDP
-#' @return A magpie object. Share of urban population
+#' @inherit calcGDP return
+#' 
+#' @seealso [madrat::calcOutput]
+#' @family Urban functions
+#' @family Combined scenario functions
+#' 
+#' @examples \dontrun{
+#' library(mrdrivers)
+#' calcOutput("Urban")}
+#' 
 calcUrban <- function(UrbanCalib = "past", 
                       UrbanPast = "WDI", 
                       UrbanFuture = "SSPs",
@@ -69,11 +79,10 @@ internal_calcUrban <- function(UrbanCalib,
                    aggregate = FALSE)
   combined <- combined[getRegions(wp), getYears(wp),]
 
-  return(list(x = combined,
-              weight = wp,
-              unit = "share of population",
-              description = glue("Urbanisation data. Datasource for the Past: {UrbanPast}. \\
-                                  Datasource for the Future: {UrbanFuture}. Calibrated \\
-                                  to {datasettype}")))
-
+  list(x = combined,
+       weight = wp,
+       unit = "share of population",
+       description = glue("Urbanisation data. Datasource for the Past: {UrbanPast}. \\
+                           Datasource for the Future: {UrbanFuture}. Calibrated \\
+                           to {datasettype}"))
 }

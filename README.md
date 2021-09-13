@@ -37,18 +37,17 @@ The read and calc functions provided by this package are listed below.
 
 readSource:
 
-    #>  [1] "ARIADNE_ReferenceScenario" "Eurostat"                 
-    #>  [3] "IIASApop"                  "IMF"                      
-    #>  [5] "James"                     "James2019"                
-    #>  [7] "MissingIslands"            "OECD"                     
-    #>  [9] "PEAP"                      "PopulationTWN"            
-    #> [11] "PWT"                       "SRES"                     
-    #> [13] "SSP"                       "UN_PopDiv"                
-    #> [15] "WDI"
+    #> [1] "ARIADNE"        "Eurostat"       "IMF"            "James2019"     
+    #> [5] "MissingIslands" "PEAP"           "SSP"            "WDI"
+
+readSource (deprecated?!):
+
+    #> [1] "IIASApop"      "James"         "OECD"          "PopulationTWN"
+    #> [5] "PWT"           "SRES"          "UN_PopDiv"
 
 calcOutput:
 
     #>  [1] "DefaultDrivers"   "GDP"              "GDPFuture"        "GDPPast"         
     #>  [5] "GDPpc"            "GDPpcFuture"      "GDPpcPast"        "Population"      
     #>  [9] "PopulationFuture" "PopulationPast"   "Urban"            "UrbanFuture"     
-    #> [13] "UrbanPast"
+    #> [13] "UrbanPast"        "UrbanPop"

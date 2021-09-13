@@ -10,8 +10,23 @@ calcUrbanPast(UrbanPast = "WDI")
 \item{UrbanPast}{Urban past data source}
 }
 \value{
-Urban shares in population
+A magpie object with sets "region", "period" and "scen".
 }
 \description{
 Calculates a time series of urban shares
 }
+\examples{
+\dontrun{
+library(mrdrivers)
+calcOutput("UrbanPast")}
+
+}
+\seealso{
+\link[madrat:calcOutput]{madrat::calcOutput}
+
+Other Urban functions: 
+\code{\link{calcUrbanFuture}()},
+\code{\link{calcUrbanPop}()},
+\code{\link{calcUrban}()}
+}
+\concept{Urban functions}

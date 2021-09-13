@@ -17,7 +17,21 @@ Read in core data for minor islands which are not included in big inventories bu
 }
 \examples{
 \dontrun{ 
-readSource("MissingIslands", subtype = "pop", convert = FALSE)
-}
+readSource("MissingIslands", subtype = "pop", convert = FALSE)}
 
 }
+\seealso{
+\code{\link[madrat:readSource]{madrat::readSource()}}
+
+Other "Past" population functions: 
+\code{\link{readEurostat}()},
+\code{\link{readUN_PopDiv}()},
+\code{\link{readWDI}()}
+
+Other "Past" GDP functions: 
+\code{\link{readEurostat}()},
+\code{\link{readWDI}()}
+}
+\concept{"Past" GDP functions}
+\concept{"Past" population functions}
+\concept{MissingIslands functions}

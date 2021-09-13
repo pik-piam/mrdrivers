@@ -17,6 +17,23 @@ calcGDPpcPast(
 
 \item{useMIData}{logical}
 }
+\value{
+A magpie object with sets "region", "period" and "scen".
+}
 \description{
 calcGDPpcPast
 }
+\examples{
+\dontrun{
+library(mrdrivers)
+calcOutput("GDPpcPast")}
+
+}
+\seealso{
+\link[madrat:calcOutput]{madrat::calcOutput}
+
+Other GDPpc functions: 
+\code{\link{calcGDPpcFuture}()},
+\code{\link{calcGDPpc}()}
+}
+\concept{GDPpc functions}

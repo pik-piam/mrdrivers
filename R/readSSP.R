@@ -2,18 +2,16 @@
 #' 
 #' Read-in an SSP data csv.zip file as magclass object
 #' 
+#' @param subtype A string, either "all", "pop2018Update" or "ratioPM".
+#' @return Magpie object of the SSP data
+#' @seealso [madrat::readSource()]
+#' @examples \dontrun{
+#' readSource("SSP", subtype = "all")}
 #' 
-#' @param subtype data subtype. Either "all" or "ratioPM"
-#' @return magpie object of the SSP data
-#' @seealso \code{\link{readSource}}
-#' @examples
-#' 
-#' \dontrun{ a <- readSource(type="SSP",subtype="all")
-#' }
 readSSP<- function(subtype) {
   files <- c(all = "SspDb_country_data_2013-06-12.csv.zip",
              pop2018Update = "Population in 000 by Age and Sex, countries, SSPs 2018vers wide.csv",
-             ratioPM = "OECD-WB PPP-MER2005_conversion_rates.xlsx")
+             ratioPM = "WB_PPP_MER_2005_conversion_rates.xlsx")
   
   file <- toolSubtypeSelect(subtype, files)
   
@@ -29,22 +27,17 @@ readSSP<- function(subtype) {
       as.magpie(spatial = "iso3c", temporal = "year", tidy = TRUE, filter = FALSE)  
 
   } else if(subtype == "pop2018Update") {
-
-    x <- readr::read_csv(file, col_types = list(.default = readr::col_double(), 
-                                                scenario = readr::col_character(),
-                                                vers = readr::col_character(),
-                                                sex = readr::col_character(),
-                                                agegrp = readr::col_character())) %>% 
+    # Specifying the col_types quickens the read process
+    my_col_types <- readr::cols(.default = "d", scenario = "c", vers = "c", sex = "c", agegrp = "c")
+    x <- readr::read_csv(file, col_types = my_col_types) %>% 
       tidyr::pivot_longer(6:206, names_to = "iso3c") %>% 
       as.magpie(spatial = "iso3c", temporal = "year", tidy = TRUE) 
     
   } else if(subtype == "ratioPM") {
 
-    data <- as.data.frame(readxl::read_excel(file))
-    colnames(data) <- c("Region", "value") 
-    x <- as.magpie(data)
-    
+    x <- readxl::read_excel(file) %>% as.magpie()
+
   }
 
-  return(x)
+  x
 }

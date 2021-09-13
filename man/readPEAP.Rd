@@ -12,3 +12,12 @@ magpie object
 \description{
 Read-in xlsx file from the World Bank's Population Estimates And Projections
 }
+\seealso{
+\code{\link[madrat:readSource]{madrat::readSource()}}
+
+Other "Future" population functions: 
+\code{\link{readEurostat}()},
+\code{\link{readPopulationTWN}()}
+}
+\concept{"Future" population functions}
+\concept{PEAP functions}

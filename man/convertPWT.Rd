@@ -15,3 +15,8 @@ PWT data as MAgPIE object aggregated to country level
 \description{
 Convert PWT data on ISO country level.
 }
+\seealso{
+Other PWT functions: 
+\code{\link{readPWT}()}
+}
+\concept{PWT functions}

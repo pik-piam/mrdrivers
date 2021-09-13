@@ -7,19 +7,19 @@
 readSSP(subtype)
 }
 \arguments{
-\item{subtype}{data subtype. Either "all" or "ratioPM"}
+\item{subtype}{A string, either "all", "pop2018Update" or "ratioPM".}
 }
 \value{
-magpie object of the SSP data
+Magpie object of the SSP data
 }
 \description{
 Read-in an SSP data csv.zip file as magclass object
 }
 \examples{
+\dontrun{
+readSource("SSP", subtype = "all")}
 
-\dontrun{ a <- readSource(type="SSP",subtype="all")
-}
 }
 \seealso{
-\code{\link{readSource}}
+\code{\link[madrat:readSource]{madrat::readSource()}}
 }

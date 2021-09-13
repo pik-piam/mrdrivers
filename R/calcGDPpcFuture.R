@@ -1,6 +1,15 @@
 #' calcGDPpcFuture
 #' 
 #' @inheritParams calcGDPpc
+#' @inherit calcGDPpc return
+#' 
+#' @seealso [madrat::calcOutput]
+#' @family GDPpc functions
+#'
+#' @examples \dontrun{
+#' library(mrdrivers)
+#' calcOutput("GDPpcFuture")}
+#'
 calcGDPpcFuture <- function(GDPpcFuture = "SSPs",
                             unit = "constant 2005 Int$PPP", 
                             useMIData = TRUE,
@@ -24,10 +33,7 @@ calcGDPpcFuture <- function(GDPpcFuture = "SSPs",
 
   data <- finishingTouches(data, extension2150)
 
-  return(list(x = data,
-              weight = NULL,
-              unit = unit,
-              description = glue("GDPpc data from {GDPpcFuture}")))
+  list(x = data, weight = NULL, unit = unit, description = glue("GDPpc data from {GDPpcFuture}"))
 }
 
 

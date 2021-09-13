@@ -7,6 +7,7 @@
 #'
 #' @param x \code{magclass} object containing UN Population Division data.
 #' 
+#' @family UN_PopDiv functions
 #' @return \code{magclass} object; population in millions.
 convertUN_PopDiv <- function(x) {
   
@@ -20,17 +21,15 @@ convertUN_PopDiv <- function(x) {
   
   x_have <- x %>%
     as.data.frame() %>%
-    # convert years to integers
-    dplyr::mutate(year = as.integer(as.character(.data$Year))) %>% 
-    dplyr::select(.data$year, .data$Value, .data$Region) %>%
-    # add iso3c country codes
-    quitte::add_countrycode_(c('Region' = 'un'), 'iso3c', warn = FALSE) %>% 
-    # use "other, non-specified areas" as proxy for "Taiwan, Province of China"
-    dplyr::mutate(iso3c = ifelse(.data$Region == '158', 'TWN', .data$iso3c)) %>% 
+    dplyr::select(.data$Year, .data$Value, .data$Region) %>%
+    # convert years to integers and
+    # add iso3c country codes . Use "other, non-specified areas" as proxy for "Taiwan, Province of China"
+    dplyr::mutate(year = as.integer(as.character(.data$Year)),
+                  iso3c = countrycode::countrycode(.data$Region, "un", "iso3c", warn = FALSE),
+                  iso3c = ifelse(.data$Region == '158', 'TWN', .data$iso3c),
+                  .keep = "unused") %>%
     # drop entries from non-countries
-    dplyr::filter(!is.na(.data$iso3c)) %>% 
-    # drop m49/Region column
-    dplyr::select(dplyr::matches('[^(Region)]'))
+    dplyr::filter(!is.na(.data$iso3c)) 
   
   missing_iso3c <- setdiff(target_iso3c, unique(x_have$iso3c))
   

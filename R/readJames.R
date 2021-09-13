@@ -1,5 +1,8 @@
 #' Read James
 #' 
+#' @description
+#' `r lifecycle::badge('deprecated')`  
+#' 
 #' Read-in GDP per-capita data from the publication James, Spencer L., Paul
 #' Gubbins, Christopher JL Murray, and Emmanuela Gakidou. 2012. "Developing a
 #' Comprehensive Time Series of GDP per Capita for 210 Countries from 1950 to
@@ -8,15 +11,12 @@
 #' 
 #' @param subtype String indicating the data series
 #' @return GDP per capita in USD05 in PPP or MER as magpie object
-#' @seealso \code{\link{readSource}}
-#' @examples
-#' 
-#' \dontrun{ a <- readSource(type="James",subtype="IHME_USD05_PPP_pc")
-#' }
-#' 
+#' @seealso [madrat::readSource()]
+#' @examples \dontrun{ 
+#' readSource("James", subtype = "IHME_USD05_PPP_pc")}
+#' @keywords internal
 readJames <- function(subtype) {
-  x <- utils::read.csv("james.csv", sep = ";", dec = ",")
-  x <- x[, c("ISO3", "Year", subtype)]
-  x <- as.magpie(x, spatial = 1, temporal = 2)    
-  return(x)
+  utils::read.csv("james.csv", sep = ";", dec = ",") %>%
+    `[`(, c("ISO3", "Year", subtype)) %>%
+    as.magpie(spatial = 1, temporal = 2)    
 }  

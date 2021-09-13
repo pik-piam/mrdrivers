@@ -3,15 +3,16 @@
 #' Convert WDI converts data from readWDI() to ISO country level. Adds Taiwan
 #' as difference from global total.
 #'
-#'
 #' @param x MAgPIE object containing WDI data region resolution
-#' @param subtype Name of the worldbank indicator, e.g. "SP.POP.TOTL"
+#' @inheritParams readWDI
+#' 
 #' @return MAgPIE object of the WDI data disaggregated to country level
-#' @examples
-#'
-#' \dontrun{ a <- convertWDI(x)
-#' }
+#' 
+#' @family WDI functions
+#' 
 convertWDI <- function(x, subtype){
+
+  getSets(x)[3] <- "variable"
 
   # changing scale of indicators
   if (subtype %in% c("SP.POP.TOTL",

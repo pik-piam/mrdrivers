@@ -1,5 +1,14 @@
-
-convertARIADNE_ReferenceScenario <- function(x, subtype){
+#' Convert ARIADNE Reference Scenario
+#' 
+#' Read ARIADNE Reference Scenario data from various .xls files as magpie object
+#' 
+#' @param x magpie
+#' @param subtype data subtype. Either "population", "gdp", or "gdp_corona"
+#' 
+#' @family ARIADNE functions
+#' 
+#' @return magpie object of ARIADNE reference scenario data by country
+convertARIADNE <- function(x, subtype){
 
   # Convert region codons from Eurostat to iso3c
   getItems(x, 1) <- countrycode::countrycode(getRegions(x), "eurostat", "iso3c")
@@ -21,6 +30,6 @@ convertARIADNE_ReferenceScenario <- function(x, subtype){
   
   x <- toolCountryFill(x)
   x[is.na(x)] <- 0
-  return(x)
+  x
 }
 

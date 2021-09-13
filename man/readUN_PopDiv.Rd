@@ -16,5 +16,15 @@ Population Division} "World Population Prospects: The 2015 Revision"
 (\href{https://esa.un.org/unpd/wpp/}{website}).
 }
 \seealso{
-\code{\link{readSource}}
+\code{\link[madrat:readSource]{madrat::readSource()}}
+
+Other "Past" population functions: 
+\code{\link{readEurostat}()},
+\code{\link{readMissingIslands}()},
+\code{\link{readWDI}()}
+
+Other UN_PopDiv functions: 
+\code{\link{convertUN_PopDiv}()}
 }
+\concept{"Past" population functions}
+\concept{UN_PopDiv functions}

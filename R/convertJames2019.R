@@ -38,5 +38,5 @@ convertJames2019 <- function(x, subtype) {
   
   #reset set name of year to Year
   getSets(x)[2] <- "Year"
-  return(x)
+  x
 }  

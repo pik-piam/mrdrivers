@@ -19,5 +19,12 @@ A MAgPIE object containing the Eurostat historical emissions (MtCO2)
 Converts Eurostat historical emissions
 }
 \examples{
-\dontrun{a <- convertEurostat(x, subtype = "emissions")}
+\dontrun{
+convertEurostat(x, subtype = "population")
 }
+}
+\seealso{
+Other Eurostat functions: 
+\code{\link{readEurostat}()}
+}
+\concept{Eurostat functions}

@@ -1,13 +1,20 @@
 #' Collect Default Model Drivers
 #' 
 #' @param drivers Vector of strings.
-#' @return A magpie object.
-calcDefaultDrivers <- function(drivers = c("Population", "Urban", "GDP", "GDPpc")) {
+#' @inherit calcGDP return
+#' 
+#' @seealso [madrat::calcOutput]
+#' 
+#' @examples \dontrun{
+#' library(mrdrivers)
+#' calcOutput("DefaultDrivers")}
+#' 
+calcDefaultDrivers <- function(drivers = c("Population", "UrbanPop", "GDP", "GDPpc")) {
   
-  if (!all(drivers %in% c("Population", "Urban", "GDP", "GDPpc"))) {
+  if (!all(drivers %in% c("Population", "UrbanPop", "GDP", "GDPpc"))) {
      stop("Bad input for DefaultDrivers. Invalid 'drivers' argument.")
   }
-
+  
   toolInternalCalc("DefaultDrivers", list(drivers))
 }
 
@@ -19,7 +26,7 @@ internal_calcDefaultDrivers <- function (drivers) {
   d <- switch(
     drivers, 
     "Population" = calcOutput("Population", aggregate = FALSE, supplementary = TRUE),
-    "Urban"      = calcOutput("Urban",      aggregate = FALSE, supplementary = TRUE),
+    "UrbanPop"   = calcOutput("UrbanPop",   aggregate = FALSE, supplementary = TRUE),
     "GDP"        = calcOutput("GDP",        aggregate = FALSE, supplementary = TRUE),
     "GDPpc"      = calcOutput("GDPpc",      aggregate = FALSE, supplementary = TRUE)
   )
