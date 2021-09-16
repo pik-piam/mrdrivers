@@ -7,7 +7,7 @@
 convertWDI(x, subtype)
 }
 \arguments{
-\item{x}{MAgPIE object containing WDI data region resolution}
+\item{x}{MAgPIE object containing WDI data}
 
 \item{subtype}{A string. Type of WDI data that should be read. Use the
 worldbank indicator abbreviation. Available subtypes are: \itemize{
@@ -29,7 +29,7 @@ worldbank indicator abbreviation. Available subtypes are: \itemize{
 \item \code{"NY.GDP.PCAP.PP.CD"}: GDP PPP, per capita (current int$)}}
 }
 \value{
-MAgPIE object of the WDI data disaggregated to country level
+A magpie object of the WDI data
 }
 \description{
 Convert WDI converts data from readWDI() to ISO country level. Adds Taiwan

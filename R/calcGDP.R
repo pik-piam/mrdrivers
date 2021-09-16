@@ -17,7 +17,7 @@
 #' @param FiveYearSteps Only five year steps if TRUE, FALSE returns years from source data
 #' @param naming naming scheme
 #'
-#' @return A magpie object with sets "region", "period" and "scen".
+#' @return A magpie object with sets "iso3c", "year" and "variable".
 #' 
 #' @seealso [madrat::calcOutput()]
 #' @family GDP functions

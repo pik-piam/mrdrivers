@@ -35,6 +35,15 @@
 #' readSource("WDI", subtype = "SP.POP.TOTL")}
 #' 
 readWDI <- function(subtype){
-  readr::read_rds("WDI.Rds")[, c("iso2c", "year", subtype)] %>% 
+  x <- readr::read_rds("WDI.Rds")
+  possible_subtypes <- colnames(x)[! colnames(x) %in% c("iso3c", "country", "year")]
+
+  if (! subtype %in% possible_subtypes) {
+     stop(glue("Bad subtype. Possible subtypes are: \n {paste0(possible_subtypes, collapse = '\n')}."))
+  }
+
+  x <- x[, c("iso2c", "year", subtype)] %>% 
+    # Replace "." with "_" otherwise readSource messes up the data dim
+    dplyr::rename_with( ~ gsub(".", "_", .x, fixed = TRUE)) %>% 
     as.magpie(spatial = 1, tidy = TRUE, replacement = ".")
 }

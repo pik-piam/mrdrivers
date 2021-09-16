@@ -12,7 +12,7 @@ calcPopulationPast(PopulationPast = "WDI", useMIData = TRUE)
 \item{useMIData}{logical}
 }
 \value{
-A magpie object with sets "region", "period" and "scen".
+A magpie object with sets "iso3c", "year" and "variable".
 }
 \description{
 Calculates a time series of Population. Different sources are available:

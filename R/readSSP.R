@@ -8,7 +8,7 @@
 #' @examples \dontrun{
 #' readSource("SSP", subtype = "all")}
 #' 
-readSSP<- function(subtype) {
+readSSP <- function(subtype) {
   files <- c(all = "SspDb_country_data_2013-06-12.csv.zip",
              pop2018Update = "Population in 000 by Age and Sex, countries, SSPs 2018vers wide.csv",
              ratioPM = "WB_PPP_MER_2005_conversion_rates.xlsx")
@@ -18,7 +18,7 @@ readSSP<- function(subtype) {
   if(subtype == "all") {
 
     x <- readr::read_csv(file, col_types = list(.default = readr::col_character())) %>% 
-      tidyr::unite("mod.scen", .data$MODEL, .data$SCENARIO, .data$VARIABLE, .data$UNIT, sep = ".") %>% 
+      tidyr::unite("mod.variable", .data$MODEL, .data$SCENARIO, .data$VARIABLE, .data$UNIT, sep = ".") %>% 
       dplyr::rename("iso3c" = .data$REGION) %>% 
       # Drop columns with only NAs
       dplyr::select(tidyselect::vars_select_helpers$where(~ !all(is.na(.x)))) %>% 
@@ -31,6 +31,7 @@ readSSP<- function(subtype) {
     my_col_types <- readr::cols(.default = "d", scenario = "c", vers = "c", sex = "c", agegrp = "c")
     x <- readr::read_csv(file, col_types = my_col_types) %>% 
       tidyr::pivot_longer(6:206, names_to = "iso3c") %>% 
+      dplyr::rename("variable" = "scenario") %>%
       as.magpie(spatial = "iso3c", temporal = "year", tidy = TRUE) 
     
   } else if(subtype == "ratioPM") {

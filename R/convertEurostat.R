@@ -32,7 +32,8 @@ convEurostatPopulation <- function(x) {
   my_countries <- getRegions(x)[purrr::map_lgl(getRegions(x), ~ nchar(.x) == 2)]
   x <- x[my_countries,,]
   # Convert the eurostat countrycodes to iso3c codes
-  getItems(x, 1) <- countrycode::countrycode(getRegions(x), "eurostat", "iso3c")
+  getItems(x, 1) <- countrycode::countrycode(getRegions(x), "eurostat", "iso3c", warn = FALSE)
+  # ABOVE Warning: Some values were not matched unambiguously: FX, XK
   # Fix set names
   getSets(x) <- c("iso3c", "year", "value")
   # Filter out any countries that don't have a iso3c code (in this case Kosovo, and Mainland-France)
@@ -55,7 +56,8 @@ convEurostatGDP <- function(x) {
   x <- x[my_countries,,]
 
   # Convert the eurostat countrycodes to iso3c codes
-  getItems(x, 1) <- countrycode::countrycode(getRegions(x), "eurostat", "iso3c")
+  getItems(x, 1) <- countrycode::countrycode(getRegions(x), "eurostat", "iso3c", warn = FALSE)
+  # ABOVE warning: Some values were not matched unambiguously: EA
 
   # Fix set names
   getSets(x) <- c("iso3c", "year", "value")
@@ -64,7 +66,8 @@ convEurostatGDP <- function(x) {
   x <- x[!is.na(getCells(x)),,]
 
   # Convert from constant 2005 LCU to constant 2005 Int$PPP
-  x <- GDPuc::convertGDP(x, "constant 2005 LCU", "constant 2005 Int$PPP")
+  x <- GDPuc::convertGDP(x, "constant 2005 LCU", "constant 2005 Int$PPP") %>%
+    suppressWarnings()
 
   # Sort by year
   x <- x[,sort(getYears(x)),]

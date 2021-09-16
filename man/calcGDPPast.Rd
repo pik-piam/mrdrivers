@@ -14,7 +14,7 @@ calcGDPPast(GDPPast = "WDI", unit = "constant 2005 Int$PPP", useMIData = TRUE)
 \item{useMIData}{logical}
 }
 \value{
-A magpie object with sets "region", "period" and "scen".
+A magpie object with sets "iso3c", "year" and "variable".
 }
 \description{
 Calculates a time series of GDP in Purchase Power Parity (PPP) of million

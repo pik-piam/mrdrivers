@@ -10,7 +10,7 @@ calcDefaultDrivers(drivers = c("Population", "UrbanPop", "GDP", "GDPpc"))
 \item{drivers}{Vector of strings.}
 }
 \value{
-A magpie object with sets "region", "period" and "scen".
+A magpie object with sets "iso3c", "year" and "variable".
 }
 \description{
 Collect Default Model Drivers

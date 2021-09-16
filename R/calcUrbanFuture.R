@@ -14,7 +14,7 @@
 #' library(mrdrivers)
 #' calcOutput("UrbanFuture")}
 #'
-calcUrbanFuture <- function(UrbanFuture = "SSPs", extension2150 = "constant") {
+calcUrbanFuture <- function(UrbanFuture = "SSPs", extension2150 = "none") {
   
   data <- switch(
     UrbanFuture,
@@ -29,7 +29,8 @@ calcUrbanFuture <- function(UrbanFuture = "SSPs", extension2150 = "constant") {
                    useMIData = FALSE, 
                    extension2150 = extension2150,
                    aggregate = FALSE)
-  getNames(wp) <- gsub("(urb_SSP\\d).*", "\\1", getNames(wp))
+  # Give weight same names as data, so that aggregate doesn't mess up data dim
+  getNames(wp) <- gsub("pop", "urb", getNames(wp))
 
   data <- data[getRegions(wp), getYears(wp),]
   

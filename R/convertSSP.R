@@ -2,21 +2,43 @@
 #' 
 #' Convert SSP data on ISO country level.
 #' 
-#' 
-#' @param x MAgPIE object containing SSP data mixed country-region resolution
-#' @param subtype data subtype. Either "all" or "ratioPM"
-#' @return SSP data as MAgPIE object aggregated to country level, all models,
-#' all SSP-scenarios
-#' @examples
-#' 
-#' \dontrun{ a <- convertSSP(x,subtype="all")
-#' }
- 
-convertSSP <- function(x,subtype) {
+#' @param x MAgPIE object returned from readSSP
+#' @inheritParams readSSP
+#' @inherit readSSP return examples
+#' @family SSP functions 
+convertSSP <- function(x, subtype) {
   if(subtype == "all") {
-
     #---------------------- add TWN data to population --------------------------------------------
-    TWN_pop <- new.magpie("TWN",getYears(x[,,"Population"][,,"IIASA-WiC POP"]),getNames(x[,,"Population"][,,"IIASA-WiC POP"]))
+    x <- add_TWN_pop_lab(x)
+    #--------------------------------------------------------------------------------
+    # substitute NA by 0
+    x[is.na(x)] <- 0    
+    #--------------------------------------------------------------------------------
+    # check whether the country list agrees with the list of countries in the madrat library
+    # remove unrequired data, add missing data 
+    x <- toolCountryFill(x, fill=0)
+   
+  } else if(subtype == "pop2018Update") {
+
+    # Sum over sex, agegrp and version
+    x <- dimSums(x, dim = c(3.2, 3.3, 3.4))
+    # Add the Channel Islands (GB_CHA) to Great Britain (GBR)
+    x["GBR",,] <- x["GBR",,] + x["GB_CHA",,]
+    x <- x["GB_CHA",, invert = TRUE]
+    # Fill in missing countries
+    x <- toolCountryFill(x, fill = 0)
+
+  }  else if(subtype == "ratioPM") {
+    getSets(x) <- c("iso3c", "year", "value")
+    # fill all the rest with 1
+    x <- toolCountryFill(x, fill = 1)
+  }  
+
+  x
+}  
+
+add_TWN_pop_lab <- function(x) {
+  TWN_pop <- new.magpie("TWN",getYears(x[,,"Population"][,,"IIASA-WiC POP"]),getNames(x[,,"Population"][,,"IIASA-WiC POP"]))
     aged <- c( "Population|Female|Aged15-19",
                "Population|Female|Aged20-24",
                "Population|Female|Aged25-29",
@@ -85,33 +107,7 @@ convertSSP <- function(x,subtype) {
     }
     TWN_pop[,2010,] <- 23162.123
     TWN_lab[,2010,] <- 16774.919195/length(aged)
-    x[,,"IIASA-WiC POP"]["TWN",,"Population"] <- TWN_pop/1000      
-    x[,,"IIASA-WiC POP"]["TWN",,aged]         <- TWN_lab/1000      
-    #--------------------------------------------------------------------------------
-    
-    
-    x[is.na(x)] <- 0    # substitute NA by 0
-  
-    #--------------------------------------------------------------------------------
-    # check whether the country list agrees with the list of countries in the madrat library
-    # remove unrequired data, add missing data 
-    x <- toolCountryFill(x, fill=0)
-   
-  } else if(subtype == "pop2018Update") {
-
-    # Sum over sex, agegrp and version
-    x <- dimSums(x, dim = c(3.2, 3.3, 3.4))
-    # Add the Channel Islands (GB_CHA) to Great Britain (GBR)
-    x["GBR",,] <- x["GBR",,] + x["GB_CHA",,]
-    x <- x["GB_CHA",, invert = TRUE]
-    # Fill in missing countries
-    x <- toolCountryFill(x, fill = 0)
-
-  }  else if(subtype == "ratioPM") {
-    getSets(x) <- c("Region", "year", "value")
-    # fill all the rest with 1
-    x <- toolCountryFill(x, fill = 1)
-  }  
-
-  x
-}  
+    x[,,"IIASA-WiC POP"]["TWN",,"Population"] <- TWN_pop / 1000      
+    x[,,"IIASA-WiC POP"]["TWN",,aged]         <- TWN_lab / 1000      
+    x
+}

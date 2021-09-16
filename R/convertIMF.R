@@ -27,7 +27,7 @@ convertIMF <- function(x, subtype = "current_account") {
   }
   
   # fill rest of countries with 0
-  x <- toolCountryFill(x, fill = 0)
+  x <- toolCountryFill(x, fill = 0, no_remove_warning = c("UVK", "WBG"))
   
   x
 }

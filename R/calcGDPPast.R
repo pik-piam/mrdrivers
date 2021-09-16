@@ -78,7 +78,8 @@ calcGDPPast <- function(GDPPast = "WDI",
 cGDPPastWDI <- function() {
   # "NY.GDP.MKTP.PP.KD" = GDP in constant 2017 Int$PPP (as of time of writing this function)
   data <- readSource("WDI", "NY.GDP.MKTP.PP.KD") %>%
-    GDPuc::convertGDP("constant 2017 Int$PPP", "constant 2005 Int$PPP")
+    GDPuc::convertGDP("constant 2017 Int$PPP", "constant 2005 Int$PPP") %>%
+    suppressWarnings()
   # TODO: Decide if use JAMES 2019 data for NA countries, e.g. DJI (as is now) or
   # convert using regional averages and use JAMES 2019 growth rates
   data[is.na(data)] <- 0
@@ -91,12 +92,14 @@ cGDPPastWDI <- function() {
   # Using growth rates, since conversion of James2019 data into 2005 Int$PPP not certain to be correct.
   gdppc <- readSource("James2019", "WB_USD05_PPP_pc")
   pop <- readSource("WDI", "SP.POP.TOTL")
+  
   cy <- intersect(getYears(gdppc), getYears(pop))
   past_gdp <- gdppc[, cy,] * pop[, cy,]
-  getSets(past_gdp) <- c("iso3c", "year", "data")
+  getSets(past_gdp) <- c("iso3c", "year", "variable")
   getNames(past_gdp) <- "WB_USD05_PPP"
 
   x <- new.magpie(getRegions(data), getYears(past_gdp), getNames(data), fill = 0)
+  getSets(x) <- getSets(past_gdp)
   for (i in getRegions(data)) {
     tmp <- data[i, getYears(data)[data[i,,] != 0], ]
     ihme_data <- past_gdp[i, getYears(past_gdp)[past_gdp[i,,] != 0], ]
@@ -122,7 +125,8 @@ cGDPPastWDI <- function() {
 cGDPPastEurostatWDI <- function() {
   data_eurostat <- readSource("Eurostat", "GDP")
   data_wdi <- readSource("WDI", "NY.GDP.MKTP.PP.KD") %>%
-    GDPuc::convertGDP("constant 2017 Int$PPP", "constant 2005 Int$PPP")
+    GDPuc::convertGDP("constant 2017 Int$PPP", "constant 2005 Int$PPP") %>%
+    suppressWarnings()
   data_wdi[is.na(data_wdi)] <- 0
 
   # Get EUR countries.

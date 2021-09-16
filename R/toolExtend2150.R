@@ -55,8 +55,10 @@ bezierExtension <- function(data, time_extend) {
       pob <- bezier::pointsOnBezier(p = p, 
                                     method = "max_dist", 
                                     max.dist = max(abs(y_end[i] - y_start[i]), 50) / 100,
-                                    print.progress = TRUE) 
-        
+                                    print.progress = TRUE) %>% 
+       suppressWarnings()
+      # The above Warnings which are suppressed are
+      #: "essentially perfect fit: summary may be unreliable"
 
       # Get y coordinates of points with x coordinates = time_extend 
       my_bezier_outflow <- pob$points %>% 

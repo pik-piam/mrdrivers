@@ -3,16 +3,10 @@
 #' Convert GDP / ratioPM data from OECD to data on ISO country level.
 #' 
 #' 
-#' @param x MAgPIE object containing GDP data mixed country-region resolution
-#' @param subtype data subtype. Either "gdp" or "ratioPM"
-#' @return GDP / ratioPM data as MAgPIE object aggregated to country level
-#' @seealso \code{\link{readSource}}
-#' @examples
-#' 
-#' \dontrun{
-#' a <- readSource("OECD","gdp")
-#' a <- readSource("OECD","ratioPM")
-#' }
+#' @param x MAgPIE object returned from readOECD
+#' @inheritParams readOECD
+#' @inherit readOECD return examples
+#' @family OECD functions
 convertOECD <- function(x,subtype) {
 
   if(subtype=="gdp") {

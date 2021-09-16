@@ -105,22 +105,22 @@ gdppcHarmonizePastIMFSSP <- function(past_gdppc, future_gdppc, yEnd) {
   tmp_gdppc <- tmp_gdppc %>%
     as.data.frame(rev = 2) %>% 
     tibble::as_tibble() %>% 
-    dplyr::select("region", "period" = "year", "value" = ".value") %>% 
-    dplyr::filter(.data$period != 2026)
+    dplyr::select("iso3c", "year", "value" = ".value") %>% 
+    dplyr::filter(.data$year != 2026)
 
   future_gdppc <- future_gdppc %>% 
     as.data.frame(rev = 2) %>% 
     tibble::as_tibble() %>% 
-    dplyr::select("region" = "iso3c", "period" = "year", "scen", "value" = ".value")
+    dplyr::select("iso3c", "year", "variable", "value" = ".value")
 
-  combined_gdppc <- tidyr::expand_grid(region = unique(tmp_gdppc$region),
-                                       period = unique(c(tmp_gdppc$period, future_gdppc$period)),
-                                       scen = unique(future_gdppc$scen)) %>%
-    dplyr::left_join(tmp_gdppc, by = c("region", "period")) %>%
+  combined_gdppc <- tidyr::expand_grid(iso3c = unique(tmp_gdppc$iso3c),
+                                       year = unique(c(tmp_gdppc$year, future_gdppc$year)),
+                                       variable = unique(future_gdppc$variable)) %>%
+    dplyr::left_join(tmp_gdppc, by = c("iso3c", "year")) %>%
     dplyr::left_join(future_gdppc %>%
-                dplyr::select(.data$region, .data$period, .data$scen, "iiasa_gdppc" = .data$value),
-              by = c("region", "period", "scen")) %>%
-    dplyr::rename("SSP" = .data$scen) %>%
+                dplyr::select(.data$iso3c, .data$year, .data$variable, "iiasa_gdppc" = .data$value),
+              by = c("iso3c", "year", "variable")) %>%
+    dplyr::rename("SSP" = .data$variable) %>%
     dplyr::mutate(SSP = sub("^......", "", .data$SSP))
 
   # Pass to special convergence function
@@ -129,7 +129,7 @@ gdppcHarmonizePastIMFSSP <- function(past_gdppc, future_gdppc, yEnd) {
   # Retransform into magpie
   combined_gdppc <- combined_gdppc %>%
     dplyr::mutate(SSP = paste0("gdppc_", .data$SSP)) %>%
-    dplyr::select(.data$region, .data$period, "variable" = .data$SSP, .data$value) %>%
+    dplyr::select(.data$iso3c, .data$year, "variable" = .data$SSP, .data$value) %>%
     as.magpie()
 
   combined_gdppc
@@ -139,22 +139,22 @@ gdppcHarmonizePastIMFSSP <- function(past_gdppc, future_gdppc, yEnd) {
 convergeSpecial <- function(x) {
 
   dif <- x %>%
-    dplyr::filter(.data$period == 2025) %>%
+    dplyr::filter(.data$year == 2025) %>%
     dplyr::mutate(d = .data$iiasa_gdppc - .data$value) %>%
-    dplyr::select(.data$region, .data$SSP, .data$d)
+    dplyr::select(.data$iso3c, .data$SSP, .data$d)
 
   x <- x %>%
-    dplyr::left_join(dif, by = c("region", "SSP")) %>%
+    dplyr::left_join(dif, by = c("iso3c", "SSP")) %>%
     dplyr::mutate(
       # Medium convergence
       value = dplyr::if_else(
-        .data$period > 2025 & .data$SSP == "SSP2",
+        .data$year > 2025 & .data$SSP == "SSP2",
         dplyr::if_else(
-          .data$period == 2030,
+          .data$year == 2030,
           .data$iiasa_gdppc - .data$d,
           dplyr::if_else(
-            .data$period <= 2100,
-            .data$iiasa_gdppc - .data$d * (2100 - .data$period) / 70,
+            .data$year <= 2100,
+            .data$iiasa_gdppc - .data$d * (2100 - .data$year) / 70,
             .data$iiasa_gdppc
           )
         ),
@@ -162,27 +162,27 @@ convergeSpecial <- function(x) {
       ),
       # Fast convergence
       value = dplyr::if_else(
-         .data$period > 2025 &
+         .data$year > 2025 &
             ((.data$SSP %in% c("SSP1", "SSP5") & .data$d >= 0) |
              (.data$SSP %in% c("SSP3", "SSP4") & .data$d < 0)),
          dplyr::if_else(
-             .data$period <= 2100,
-             .data$iiasa_gdppc - .data$d * (2100 - .data$period) / 75,
+             .data$year <= 2100,
+             .data$iiasa_gdppc - .data$d * (2100 - .data$year) / 75,
              .data$iiasa_gdppc
          ),
          .data$value
       ),
       # Slow convergence
       value = dplyr::if_else(
-        .data$period > 2025 &
+        .data$year > 2025 &
             ((.data$SSP %in% c("SSP3", "SSP4") & .data$d >=0 ) |
              (.data$SSP %in% c("SSP1", "SSP5") & .data$d < 0)),
         dplyr::if_else(
-            .data$period <= 2035,
+            .data$year <= 2035,
             .data$iiasa_gdppc - .data$d,
             dplyr::if_else(
-              .data$period <= 2100,
-              .data$iiasa_gdppc - .data$d * (2100 - .data$period) / 65,
+              .data$year <= 2100,
+              .data$iiasa_gdppc - .data$d * (2100 - .data$year) / 65,
               .data$iiasa_gdppc
             )
         ),

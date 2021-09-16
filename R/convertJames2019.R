@@ -1,14 +1,12 @@
 #' Convert updated James data
 #'
 #' 
-#' @param x MAgPIE object containing James data region resolution
-#' @param subtype subtype of GDP indicator to be selected
-#' @return GDP per capita in USD05 in PPP or MER as magpie object
-#' @seealso \code{\link{readJames}}
-#' @examples
+#' @param x MAgPIE object returned by readJames2019
+#' @inheritParams readJames2019
+#' @inherit readJames2019 return
 #' 
-#' \dontrun{ a <- convertSource("James2019","IHME_USD05_PPP_pc")
-#' }
+#' @family James2019 functions
+#' 
 convertJames2019 <- function(x, subtype) {
   x <- x[c("USSR_FRMR","CHN_354","CHN_361"),,,invert = TRUE] #Macao and HKG and Former USSR have 0 values in the dataset
   x <- toolCountryFill(x[,,subtype], fill = 0) 
@@ -36,7 +34,7 @@ convertJames2019 <- function(x, subtype) {
   x[c("CHN","HKG","MAC"),getYears(x1),] <- x1/pop[c("CHN","HKG","MAC"),,]
   x[c("HKG","MAC"),1950:1959,] <- setYears(x[c("HKG","MAC"),1960,],NULL)
   
-  #reset set name of year to Year
-  getSets(x)[2] <- "Year"
+  # Set correct set names
+  getSets(x) <- c("iso3c", "year", "variable")
   x
 }  

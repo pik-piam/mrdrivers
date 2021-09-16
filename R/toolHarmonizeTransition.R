@@ -14,7 +14,10 @@ harmonizeTransition <- function(past, future, yEnd) {
     }  
     combined   <- mbind(tmpPast[,which(getYears(tmpPast,as.integer=TRUE) < firstyear),],
                         tmpTrans,
-                        future[,which(getYears(future,as.integer=TRUE) > yEnd),])
+                        future[,which(getYears(future,as.integer=TRUE) > yEnd),]) %>%
+      suppressWarnings()
+      # Above warning sometimes appears: You are trying to mbind an empty magclass object. Is that really intended?
+      # Answer is yes!
   } else {
     stop("The past and future data need to have some overlap")
   }

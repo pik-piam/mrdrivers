@@ -14,7 +14,10 @@ readPEAP <- function() {
     dplyr::select("iso3c" = .data$`Country Code`, .data$year, .data$value) %>% 
     dplyr::mutate(variable = "population",
                   year = as.integer(sub(" .*", "", .data$year)),
-                  value = as.numeric(.data$value)) %>% 
+                  value = suppressWarnings(as.numeric(.data$value))) %>% 
+                  # The warnings that are being suppressed above, come from 
+                  # character strings that can't be converted to numeric, and
+                  # are thus returned as NA. 
     dplyr::relocate(.data$value, .after = tidyselect::last_col()) %>% 
     as.magpie(tidy = TRUE)    
 }
