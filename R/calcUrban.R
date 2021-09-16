@@ -77,6 +77,9 @@ internal_calcUrban <- function(UrbanCalib,
                    FiveYearSteps = FiveYearSteps,
                    extension2150 = extension2150,
                    aggregate = FALSE)
+  # Give weight same names as data, so that aggregate doesn't mess up data dim
+  getNames(wp) <- gsub("pop", "urb", getNames(wp))
+  
   combined <- combined[getRegions(wp), getYears(wp),]
 
   list(x = combined,

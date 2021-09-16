@@ -7,9 +7,9 @@
 convertJames2019(x, subtype)
 }
 \arguments{
-\item{x}{MAgPIE object containing James data region resolution}
+\item{x}{MAgPIE object returned by readJames2019}
 
-\item{subtype}{subtype of GDP indicator to be selected}
+\item{subtype}{String indicating the data series}
 }
 \value{
 GDP per capita in USD05 in PPP or MER as magpie object
@@ -17,11 +17,8 @@ GDP per capita in USD05 in PPP or MER as magpie object
 \description{
 Convert updated James data
 }
-\examples{
-
-\dontrun{ a <- convertSource("James2019","IHME_USD05_PPP_pc")
-}
-}
 \seealso{
-\code{\link{readJames}}
+Other James2019 functions: 
+\code{\link{readJames2019}()}
 }
+\concept{James2019 functions}

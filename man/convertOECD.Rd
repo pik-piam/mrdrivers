@@ -7,23 +7,20 @@
 convertOECD(x, subtype)
 }
 \arguments{
-\item{x}{MAgPIE object containing GDP data mixed country-region resolution}
+\item{x}{MAgPIE object returned from readOECD}
 
 \item{subtype}{data subtype. Either "gdp" or "ratioPM"}
 }
 \value{
-GDP / ratioPM data as MAgPIE object aggregated to country level
+magpie object of the GDP data
 }
 \description{
 Convert GDP / ratioPM data from OECD to data on ISO country level.
 }
 \examples{
+\dontrun{ 
+readSource("OECD", "gdp")
+readSource("OECD", "ratioPM")}
 
-\dontrun{
-a <- readSource("OECD","gdp")
-a <- readSource("OECD","ratioPM")
 }
-}
-\seealso{
-\code{\link{readSource}}
-}
+\concept{OECD functions}

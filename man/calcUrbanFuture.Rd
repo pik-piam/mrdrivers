@@ -4,7 +4,7 @@
 \alias{calcUrbanFuture}
 \title{calcUrbanFuture}
 \usage{
-calcUrbanFuture(UrbanFuture = "SSPs", extension2150 = "constant")
+calcUrbanFuture(UrbanFuture = "SSPs", extension2150 = "none")
 }
 \arguments{
 \item{UrbanFuture}{Urban future data source}
@@ -12,7 +12,7 @@ calcUrbanFuture(UrbanFuture = "SSPs", extension2150 = "constant")
 \item{extension2150}{string, either "bezier", "constant" or "none"}
 }
 \value{
-A magpie object with sets "region", "period" and "scen".
+A magpie object with sets "iso3c", "year" and "variable".
 }
 \description{
 Calculates a time series of urban shares, using SSP projections Currently,

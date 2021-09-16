@@ -34,6 +34,9 @@ Other "Past" GDPpc functions:
 \code{\link{readIMF}()},
 \code{\link{readPWT}()},
 \code{\link{readWDI}()}
+
+Other James2019 functions: 
+\code{\link{convertJames2019}()}
 }
 \concept{"Past" GDPpc functions}
 \concept{James2019 functions}

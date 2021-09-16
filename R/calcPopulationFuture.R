@@ -16,7 +16,7 @@
 #'
 calcPopulationFuture <- function(PopulationFuture = "SSPs",
                                  useMIData = TRUE,
-                                 extension2150 = "bezier") {
+                                 extension2150 = "none") {
 
   data <- switch(PopulationFuture,
                  "SSPs"        = cPopulationFutureSSPs(),

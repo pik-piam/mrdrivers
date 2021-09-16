@@ -8,7 +8,7 @@ calcGDPFuture(
   GDPFuture = "SSPs",
   unit = "constant 2005 Int$PPP",
   useMIData = TRUE,
-  extension2150 = "bezier"
+  extension2150 = "none"
 )
 }
 \arguments{
@@ -21,7 +21,7 @@ calcGDPFuture(
 \item{extension2150}{string, either "bezier", "constant" or "none"}
 }
 \value{
-A magpie object with sets "region", "period" and "scen".
+A magpie object with sets "iso3c", "year" and "variable".
 }
 \description{
 calcGDPFuture

@@ -7,19 +7,19 @@
 convertSSP(x, subtype)
 }
 \arguments{
-\item{x}{MAgPIE object containing SSP data mixed country-region resolution}
+\item{x}{MAgPIE object returned from readSSP}
 
-\item{subtype}{data subtype. Either "all" or "ratioPM"}
+\item{subtype}{A string, either "all", "pop2018Update" or "ratioPM".}
 }
 \value{
-SSP data as MAgPIE object aggregated to country level, all models,
-all SSP-scenarios
+Magpie object of the SSP data
 }
 \description{
 Convert SSP data on ISO country level.
 }
 \examples{
+\dontrun{
+readSource("SSP", subtype = "all")}
 
-\dontrun{ a <- convertSSP(x,subtype="all")
 }
-}
+\concept{SSP functions}

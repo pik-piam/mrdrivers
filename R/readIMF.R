@@ -33,7 +33,11 @@ readIMF <- function(subtype = "current_account"){
     dplyr::select("iso3c" = .data$ISO, .data$`Subject Descriptor`, tidyselect::starts_with(c("1", "2"))) %>% 
     tidyr::pivot_longer(tidyselect::starts_with(c("1", "2")), names_to = "year") %>% 
      dplyr::mutate(value = gsub(",", "", .data$value),
-                   dplyr::across(.cols = c(.data$year, .data$value), as.double),
+                   dplyr::across(.cols = c(.data$year, .data$value), 
+                                 ~ suppressWarnings(as.double(.x))),
+                                 # The warnings that are being suppressed above, come from 
+                                 # character strings that can't be converted to numeric, and
+                                 # are thus returned as NA.
                    value = tidyr::replace_na(.data$value, 0)) %>%
     tidyr::pivot_wider(names_from = .data$`Subject Descriptor`)  
   

@@ -30,7 +30,7 @@ calcPopulation(
 \item{naming}{naming scheme}
 }
 \value{
-A magpie object with sets "region", "period" and "scen".
+A magpie object with sets "iso3c", "year" and "variable".
 }
 \description{
 Merges time series of population for the past and present. See

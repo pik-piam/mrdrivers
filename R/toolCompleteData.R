@@ -4,8 +4,10 @@ completeData <- function(data, fill) {
   missing <- where(setYears(dimSums(data, dim = 2), "y0000") == 0)$true$region
   
   if (!all(missing %in% getRegions(fill))) {
+     left_over <- setdiff(missing, getRegions(fill))
+     message(glue("NOTE: The following countries have not been filled: \\
+                  {paste0(left_over, collapse = ', ')}."))
      missing <- intersect(missing, getRegions(fill))
-     warning("Some countries with missing data can't be filled.")
   }
 
   data[missing,,] <- fill[missing,,]
