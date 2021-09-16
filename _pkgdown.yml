@@ -1,0 +1,7 @@
+url: https://pik-piam.github.io/mrdrivers
+
+destination: docs
+
+development:
+  mode: auto
+

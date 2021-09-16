@@ -5,3 +5,6 @@
 ^\.github$
 ^\.buildlibrary$
 ^.*\.zenodo.json$
+^_pkgdown\.yml$
+^docs$
+^pkgdown$
