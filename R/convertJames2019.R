@@ -29,11 +29,22 @@ convertJames2019 <- function(x, subtype) {
   x1 <- x[c("CHN","HKG","MAC"),getYears(pop),]*pop[c("CHN","HKG","MAC"), getYears(pop),] 
   x1[c("HKG","MAC"),,] <- shr*x1["CHN",,]
   x1["CHN",,] <- x1["CHN",,]-dimSums(x1[c("HKG","MAC"),,], dim=1)
-  
+
   #fill 1950-1959 HKG and MAC with 1960 values, don't subtract from CHINA for these years because no population data to convert to totals, but very small differnece anyways
   x[c("CHN","HKG","MAC"),getYears(x1),] <- x1/pop[c("CHN","HKG","MAC"),,]
   x[c("HKG","MAC"),1950:1959,] <- setYears(x[c("HKG","MAC"),1960,],NULL)
   
+  # South Sudan values are very large, likely inaccurate. In their stead, the Missing island gdp values and WDI pop numbers are used.
+  ssd_gdp <- readSource("MissingIslands", subtype = "gdp", convert = FALSE)["SSD",,]
+  ssd_pop <- readSource("WDI", subtype = "SP.POP.TOTL")["SSD",,] %>% dimReduce()
+  
+  ssd_gdp <- time_interpolate(ssd_gdp, c(1950:2019)) 
+  ssd_pop <- time_interpolate(ssd_pop, c(1950:2019)) 
+  
+  ssd_gdppc <- ssd_gdp/ssd_pop
+  
+  x["SSD",,] <- ssd_gdppc
+
   # Set correct set names
   getSets(x) <- c("iso3c", "year", "variable")
   x

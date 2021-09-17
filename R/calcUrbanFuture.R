@@ -18,7 +18,9 @@ calcUrbanFuture <- function(UrbanFuture = "SSPs", extension2150 = "none") {
   
   data <- switch(
     UrbanFuture,
-    "SSPs" = cUrbanFutureSSPs(),
+    "SSPs"        = cUrbanFutureSSPs(),
+    "SDPs"        = cUrbanFutureSDPs(),
+    "SSP2Ariadne" = cUrbanFutureSSP2Ariadne(),
     stop("Bad input for UrbanFuture. Invalid 'UrbanFuture' argument.")
   )
 
@@ -34,7 +36,6 @@ calcUrbanFuture <- function(UrbanFuture = "SSPs", extension2150 = "none") {
 
   data <- data[getRegions(wp), getYears(wp),]
   
-
   list(x = data, weight = wp, unit = "per 1", description = paste0("Urbanisation data from {UrbanFuture}"))
 }
 
@@ -51,4 +52,26 @@ cUrbanFutureSSPs <- function() {
   
   time_inter <- paste0("y", seq(2015, 2095, by = 10))
   data <- time_interpolate(data, time_inter, integrate_interpolated_years = TRUE)
+}
+
+cUrbanFutureSDPs <- function() {
+  # note on SHAPE: the alternative scenario combinations are not coded explicitly here. 
+  # They will re-use urbanization settings:
+  # SDP_LS = SDP_MC (Green cities), SDP_GS = SDP_EI (Tech cities)
+  urbanization_mapping <- c("urb_SDP"    = "urb_SSP1",
+                            "urb_SDP_EI" = "urb_SSP1", # = high urbanization from SSPs
+                            "urb_SDP_RC" = "urb_SSP2", # = med urbanization from SSPs
+                            "urb_SDP_MC" = "urb_SSP1") # = high urbanization from SSPs
+  
+  ssp_urb <- calcOutput("UrbanFuture", UrbanFuture = "SSPs", aggregate = FALSE)
+
+  sdp_urb <- lapply(names(urbanization_mapping),
+                    function(name, mapping) setNames(ssp_urb[,,mapping[[name]]], name),
+                    mapping = urbanization_mapping) %>%
+    mbind()
+}
+
+cUrbanFutureSSP2Ariadne <- function() {
+  ssp2_urb <- calcOutput("UrbanFuture", UrbanFuture = "SSPs", aggregate = FALSE)[,, "urb_SSP2"]
+  ssp2ariadne_urb <- setNames(ssp2_urb, sub("SSP2", "SSP2Ariadne", getNames(ssp2_urb)))
 }

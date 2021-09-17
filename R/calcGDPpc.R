@@ -39,7 +39,7 @@ internal_calcGDPpc <- function(GDPpcCalib,
                                extension2150,
                                FiveYearSteps,
                                naming){
-  # Depending on the chose GDPpcCalib, the harmonization function either requires 'past' and
+  # Depending on the chosen GDPpcCalib, the harmonization function either requires 'past' and
   # 'future' GDPpc scenarios, OR NOT, which is the case for "past_IMF_SDP" for example, where
   # the computations are done based off of the combined SSP1 GDPpc scenario.
 
@@ -84,7 +84,7 @@ internal_calcGDPpc <- function(GDPpcCalib,
        weight = NULL,
        unit = unit,
        description = glue("Datasource for the Past: {GDPpcPast}. Datasource for the Future: \\
-                                 {GDPpcFuture}. Calibrated to {description}."))
+                           {GDPpcFuture}. Calibrated to {description}."))
 }
 
 
@@ -95,7 +95,10 @@ internal_calcGDPpc <- function(GDPpcCalib,
 gdppcHarmonizePastIMFSSP <- function(past_gdppc, future_gdppc, yEnd) {
   # Get IMF short-term income projcetions and fill missing with SSP2
   imf_gdppc <- readSource("IMF", "GDPpc")
-  fill <- calcOutput("GDPpcFuture", GDPpcFuture = "SSPs", extension2150 = "none")[,, "gdppc_SSP2"]
+  fill <- calcOutput("GDPpcFuture", 
+                     GDPpcFuture = "SSPs", 
+                     extension2150 = "none",
+                     aggregate = FALSE)[,, "gdppc_SSP2"]
   imf_gdppc <- completeData(imf_gdppc, fill)
 
   # Use short term IMF growth rates (here, as far as possible = 2026)
@@ -209,10 +212,10 @@ gdppcHarmonizePastIMFSDP <- function(args) {
   gdppcap_SDP <- gdppcap_SSP1
   getNames(gdppcap_SDP) <- gsub("SSP1", "SDP", getNames(gdppcap_SDP))
   # SHAPE SDP_XX variants are calculated as modifications of SSP1 GDP/cap growth rates
-  combined <- purrr::map(c("gdp_SDP_EI", "gdp_SDP_MC", "gdp_SDP_RC"),
-                              compute_SHAPE_growth,
-                              gdppcap_SSP1 = gdppcap_SSP1,
-                              startFromYear = 2020) %>%
+  combined <- purrr::map(c("gdppc_SDP_EI", "gdppc_SDP_MC", "gdppc_SDP_RC"),
+                         compute_SHAPE_growth,
+                         gdppcap_SSP1 = gdppcap_SSP1,
+                         startFromYear = 2020) %>%
     mbind() %>%
     mbind(gdppcap_SDP)
 
@@ -244,7 +247,7 @@ gdppcHarmonizePastIMFSDP <- function(args) {
 
 # calculate modified growth rates and resulting gdp/capita in forward simulation
 compute_SHAPE_growth <- function(SHAPE_GDPscenario, gdppcap_SSP1, startFromYear){
-
+  
   # calculation of growth rates
   yrs <- getYears(gdppcap_SSP1, as.integer = TRUE)
   # flexible timestep
@@ -256,38 +259,38 @@ compute_SHAPE_growth <- function(SHAPE_GDPscenario, gdppcap_SSP1, startFromYear)
   yrs_shifted <- yrs[2:length(yrs)]
   yrs_base <- yrs[1:length(yrs)-1]
   growthrate_SSP1 <- 100* ((setYears(gdppcap_SSP1[,yrs_shifted,],yrs_base)/gdppcap_SSP1[,yrs_base,])^(1./timestep[,yrs_base,]) - 1)
-
+  
   #modified growth rates and gdp/cap
   growthrate <- setNames(as.magpie(growthrate_SSP1),SHAPE_GDPscenario)
   gdppcap <- setNames(as.magpie(gdppcap_SSP1),SHAPE_GDPscenario)
   gdppcap[,yrs > startFromYear,] <- NA
-
+  
   for (yr in yrs[1:length(yrs)-1]){
-    # modify growth rates only for future period (default: from 2020 onwards)
+    # modify growth rates only for future period (default: from 2020 onwards) 
     if (yr >= startFromYear){
       # innovation-driven (SDP_EI): enhance growth rates for low-income countries by up to 15%
-      if (SHAPE_GDPscenario == "gdp_SDP_EI"){
+      if (SHAPE_GDPscenario == "gdppc_SDP_EI"){
         modification_factor <- logistic_transition(gdppcap[,yr,], L0 = 1.15, L = 1, k = 20, x0 = 15e3, use_log10 = TRUE)
       }
       # service-driven (SDP_MC): growth rate reduced based on relative distance to technology frontier (given by the US)
-      else if (SHAPE_GDPscenario == "gdp_SDP_MC"){
+      else if (SHAPE_GDPscenario == "gdppc_SDP_MC"){
         # define US as technology frontier
         frontier <- gdppcap["USA",yr,]
-        getItems(frontier, 1) <- "GLO"
+        getRegions(frontier) <- "GLO"
         # countries with gdp/cap above US are treated the same as the US -> set diff = 0
         reldiff_to_frontier <- pmax((frontier[,yr,] - gdppcap[,yr,])/frontier[,yr,] , 0)
         modification_factor <- logistic_transition(reldiff_to_frontier[,yr,], L0 = 1, L = 0.5, k = -30, x0 = 0.2, use_log10 = FALSE)
-      }
+      } 
       # society-driven (SDP_RC): gradual transition to zero growth for high-income countries
-      else if (SHAPE_GDPscenario == "gdp_SDP_RC") {
+      else if (SHAPE_GDPscenario == "gdppc_SDP_RC") {
         modification_factor <- logistic_transition(gdppcap[,yr,], L0 = 1, L = 0, k = 10, x0 = 30e3, use_log10 = TRUE)
       } else {
         stop("cannot create SHAPE GDP scenarios: unknown scenario")
       }
-
+      
       # for service (SDP_MC) and society (SDP_RC) additionally add a smoothing for 2020 and 2025 timesteps
       # apply only 1/3 (2020-2024) and 2/3 (2025-2029) of the modification
-      if (SHAPE_GDPscenario %in% c("gdp_SDP_MC","gdp_SDP_RC")){
+      if (SHAPE_GDPscenario %in% c("gdppc_SDP_MC","gdppc_SDP_RC")){
         if (yr >= 2020 && yr < 2025){
           modification_factor[,yr,] <- 1/3.*(modification_factor[,yr,] - 1) + 1
         } else if (yr >= 2025 && yr < 2030) {
@@ -296,7 +299,7 @@ compute_SHAPE_growth <- function(SHAPE_GDPscenario, gdppcap_SSP1, startFromYear)
       }
       growthrate[,yr,] <- growthrate[,yr,] * modification_factor[,yr,]
     }
-
+    
     # calculate next gdp/cap based on current value and (modified) growth rate
     gdppcap[,yr+as.integer(timestep[,yr,]),] <- gdppcap[,yr,]*(1 + growthrate[,yr,]/100.)^timestep[,yr,]
   }
@@ -311,4 +314,4 @@ logistic_transition <- function(x,L0,L,k,x0, use_log10 = FALSE){
   }
   logistic <- 1./(1+exp(-k*(x-x0)))
   return( L0 - (L0-L)*logistic )
-}
+} 

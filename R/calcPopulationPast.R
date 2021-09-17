@@ -58,6 +58,16 @@ cPopulationPastEurostatWDI <- function() {
     dplyr::filter(.data$RegionCode == "EUR") %>% 
     dplyr::pull(.data$CountryCode)
   
+  # Fill in missing ( == 0) eurostat data using wdi growth rates 
+  for (c in EUR_countries) {
+    if (any(data_eurostat[c,,] == 0) && !all(data_eurostat[c,,] == 0)) {
+       data_eurostat[c,,] <- harmonizeFutureGrPast(
+         past = data_wdi[c,,], 
+         future = data_eurostat[c, data_eurostat[c,,] != 0, ]
+        )
+    }
+  }
+
   # Use WDI data for everything but the EUR_countries. Use Eurostat stat for those.
   data <- data_wdi
   data[EUR_countries,,] <- data_eurostat[EUR_countries,,]
