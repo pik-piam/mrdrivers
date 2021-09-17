@@ -17,19 +17,10 @@ calcGDPpcFuture <- function(GDPpcFuture = "SSPs",
 
   data <- switch(
     GDPpcFuture,
-    "SSPs" = cGDPpcFutureSSPs(),
-    "SDPs" = cGDPpcFutureSDPs(), 
+    "SSPs" = cGDPpcFutureSSPs(useMIData),
+    "SDPs" = cGDPpcFutureSDPs(useMIData), 
     stop("Bad input for calcGDPFuture. Invalid 'GDPFuture' argument.")
   )
-
-  # Fill in data with Missing Islands dataset
-  if (useMIData) {  
-    gdp <- readSource("MissingIslands", subtype = "gdp", convert = FALSE)
-    pop <- readSource("MissingIslands", subtype = "pop", convert = FALSE)
-    countries <- intersect(getRegions(gdp), getRegions(pop))
-    fill <- gdp[countries,,] / pop[countries,,]
-    data <- completeData(data, fill)
-  }
 
   data <- finishingTouches(data, extension2150)
 
@@ -40,17 +31,17 @@ calcGDPpcFuture <- function(GDPpcFuture = "SSPs",
 ######################################################################################
 # Functions
 ######################################################################################
-cGDPpcFutureSSPs <- function() {
+cGDPpcFutureSSPs <- function(useMIData) {
   gdp <- calcOutput("GDPFuture", 
                     GDPFuture = "SSPs", 
-                    useMIData = FALSE, 
+                    useMIData = useMIData, 
                     extension2150 = "none", 
                     aggregate = FALSE)
   gdp <- setNames(gdp, c("gdppc_SSP1", "gdppc_SSP2", "gdppc_SSP3", "gdppc_SSP4", "gdppc_SSP5"))
 
   pop <- calcOutput("PopulationFuture", 
-                    PopulationFuture = "SSPs",
-                    useMIData = FALSE, 
+                    PopulationFuture = "SSPs_old",
+                    useMIData = useMIData, 
                     extension2150 = "none", 
                     aggregate = FALSE)
   pop <- setNames(pop, c("gdppc_SSP1", "gdppc_SSP2", "gdppc_SSP3", "gdppc_SSP4", "gdppc_SSP5"))
@@ -61,8 +52,8 @@ cGDPpcFutureSSPs <- function() {
   data 
 }
 
-cGDPpcFutureSDPs <- function() {
-  data_SSP1 <- cGDPpcFutureSSPs()[,, "gdppc_SSP1"]
+cGDPpcFutureSDPs <- function(useMIData) {
+  data_SSP1 <- cGDPpcFutureSSPs(useMIData)[,, "gdppc_SSP1"]
 
   data <- purrr::map(c("SDP", "SDP_EI", "SDP_RC", "SDP_MC"),
                      ~ setNames(data_SSP1, gsub("SSP1", .x, getNames(data_SSP1)))) %>%

@@ -76,19 +76,19 @@ internal_calcPopulation <- function(PopulationCalib,
     "past"                 = PopulationPast,
     "future"               = PopulationFuture,
     "transition"           = glue("transition between {PopulationPast} and {PopulationFuture} \\
-                                        with a transition period until 2020"),
+                                  with a transition period until 2020"),
     "past_transition"      = glue("use past data and afterwards transition between \\
-                                        {PopulationPast} and {PopulationFuture} with a transition \\
-                                        period until 2050"),
+                                  {PopulationPast} and {PopulationFuture} with a transition \\
+                                  period until 2050"),
     "past_grFuture"        = glue("use past data from {PopulationPast} and then the growth rates \\
-                                        from {PopulationFuture}."),
+                                  from {PopulationFuture}."),
     "past_grPEAP_grFuture" = glue("use past data from {PopulationPast}, then the growth rates \\
-                                         from the Wolrld Bank's PEAP until 2025, and then the growth \\
-                                         rates from {PopulationFuture}."),
+                                  from the Wolrld Bank's PEAP until 2025, and then the growth \\
+                                  rates from {PopulationFuture}."),
     "Ariadne"              = glue("use past data from {PopulationPast}, then the growth rates \\
-                                        from the Wolrld Bank's PEAP until 2025, and then the growth \\
-                                        rates from {PopulationFuture}. For EUR/ARIADNE countries, \\
-                                        just glue past with future.")
+                                  from the Wolrld Bank's PEAP until 2025, and then the growth \\
+                                  rates from {PopulationFuture}. For EUR/ARIADNE countries, \\
+                                  just glue past with future.")
   )
 
   # Apply finishing touches to combined time-series
@@ -98,8 +98,8 @@ internal_calcPopulation <- function(PopulationCalib,
        weight = NULL,
        unit = "million",
        description = glue("Population data. Datasource for the Past: {PopulationPast}. \\
-                                 Datasource for the Future: {PopulationFuture}. Calibrated \\
-                                 to {datasettype}"))
+                          Datasource for the Future: {PopulationFuture}. Calibrated \\
+                          to {datasettype}"))
 
 }
 
@@ -118,6 +118,8 @@ popHarmonizePast <- function(past, future) {
   } else {
     combined <- tmp
   }
+  combined[combined == Inf] <- 0
+  combined
 }
 
 harmonizePastGrPEAPGrFuture <- function(past, future) {

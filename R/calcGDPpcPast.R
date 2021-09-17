@@ -16,30 +16,19 @@ calcGDPpcPast <- function(GDPpcPast = "WDI",
 
   # Call appropriate calcGDPPast function.
   data <- switch(GDPpcPast,
-                 "WDI" = cGDPpcPastWDI(),
+                 "WDI" = cGDPpcPastWDI(useMIData),
                  stop("Bad input for calcGDPpcPast. Invalid 'GDPpcPast' argument."))
 
-  if (useMIData) {
-    gdp <- readSource("MissingIslands", subtype = "gdp", convert = FALSE)
-    pop <- readSource("MissingIslands", subtype = "pop", convert = FALSE)
-    countries <- intersect(getRegions(gdp), getRegions(pop))
-    fill <- gdp[countries,,] / pop[countries,,]
-    data <- completeData(data, fill)
-  }
-
-  list(x = data,
-       weight = NULL,
-       unit = unit,
-       description = glue("GDPpc data from {GDPpcPast}."))
+  list(x = data, weight = NULL, unit = unit, description = glue("GDPpc data from {GDPpcPast}."))
 }
 
 
 ######################################################################################
 # Functions
 ######################################################################################
-cGDPpcPastWDI <- function() {
-  gdp <- calcOutput("GDPPast", GDPPast = "WDI", useMIData = FALSE, aggregate = FALSE)
-  pop <- calcOutput("PopulationPast", PopulationPast = "WDI", useMIData = FALSE, aggregate = FALSE)
+cGDPpcPastWDI <- function(useMIData) {
+  gdp <- calcOutput("GDPPast", GDPPast = "WDI", useMIData = useMIData, aggregate = FALSE)
+  pop <- calcOutput("PopulationPast", PopulationPast = "WDI", useMIData = useMIData, aggregate = FALSE)
   years <- intersect(getYears(gdp), getYears(pop))
 
   data <- gdp[, years,] / pop[, years,]

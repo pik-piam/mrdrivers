@@ -10,6 +10,7 @@ harmonizePast <- function(past, future) {
   } else {
     combined <- tmp
   }
+
   combined
 }
 

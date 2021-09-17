@@ -7,6 +7,9 @@ finishingTouches <- function(x, extension2150 = "none", FiveYearSteps = FALSE, n
   # Return only 5-year time steps, if opted for
   if (FiveYearSteps){
     x <- x[, getYears(x, as.integer = TRUE) %% 5 == 0, ]
+    # This operation used to be done using magpiesets::findset("time"), which for some reason
+    # doesn't include 1960. So it's taken out as well.
+    x <- x[, getYears(x, as.integer = TRUE) != 1960, ]
   }
 
   # Clean magpie pbject (necessary?)

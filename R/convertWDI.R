@@ -11,15 +11,15 @@
 #' 
 convertWDI <- function(x, subtype){
   
-  if (subtype %in% c("SP_POP_TOTL",
-                     "NY_GDP_MKTP_PP_KD",
-                     "NY_GDP_MKTP_PP_CD",
-                     "NY_GDP_MKTP_CD", 
-                     "NY_GDP_MKTP_CN", 
-                     "NY_GDP_MKTP_KD",
-                     "NY_GDP_MKTP_KN", 
-                     "NV_AGR_TOTL_KD", 
-                     "NV_AGR_TOTL_CD")) {
+  if (subtype %in% c("SP.POP.TOTL",
+                     "NY.GDP.MKTP.PP.KD",
+                     "NY.GDP.MKTP.PP.CD",
+                     "NY.GDP.MKTP.CD", 
+                     "NY.GDP.MKTP.CN", 
+                     "NY.GDP.MKTP.KD",
+                     "NY.GDP.MKTP.KN", 
+                     "NV.AGR.TOTL.KD", 
+                     "NV.AGR.TOTL.CD")) {
     # Change scale of indicators
     x <- x / 1e+6
     # Add Kosovo to Serbia

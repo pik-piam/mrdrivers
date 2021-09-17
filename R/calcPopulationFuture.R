@@ -59,7 +59,7 @@ cPopulationFutureSDPs <- function() {
 
   data <- purrr::map(c("SDP", "SDP_EI", "SDP_RC", "SDP_MC"),
                      ~ setNames(data_SSP1, gsub("SSP1", .x, getNames(data_SSP1)))) %>%
-    purrr::reduce(mbind)
+    mbind()
 }
 
 cPopulationFutureSSP2Ariadne <- function() {
@@ -84,10 +84,6 @@ cPopulationFutureSSP2Ariadne <- function() {
   data
 }
 
-
-######################################################################################
-# Legacy
-######################################################################################
 cPopulationFutureSSPsOld <- function() {
   data <- readSource("SSP", subtype = "all")[,,"Population"][,,"IIASA-WiC POP"]
   
@@ -100,6 +96,9 @@ cPopulationFutureSSPsOld <- function() {
   data <- data[,setdiff(getYears(data), c("y2000", "y2005")),]
 }
 
+######################################################################################
+# Legacy
+######################################################################################
 cPopulationFutureSRES <- function() {
   data <- NULL
   for (i in c("sres_a1_pop", "sres_a2_pop", "sres_b1_pop", "sres_b2_pop")) {
