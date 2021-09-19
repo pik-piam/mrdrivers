@@ -14,7 +14,8 @@ calcGDPpcFuture(
 \arguments{
 \item{GDPpcFuture}{String ot vector of strings}
 
-\item{unit}{string}
+\item{unit}{A string. Either 'constant 2005 Int$PPP', 'constant 2005 US$MER',
+'constant 2017 Int$PPP' or 'constant 2017 US$MER'.}
 
 \item{useMIData}{logical}
 
