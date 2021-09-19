@@ -5,6 +5,7 @@
 
 <!-- badges: start -->
 
+[![R-cmd-check](https://github.com/pik-piam/mrdrivers/actions/workflows/test-buildlibrary.yaml/badge.svg)](https://github.com/pik-piam/mrdrivers/actions/workflows/test-buildlibrary.yaml)
 [![Lifecycle:
 maturing](https://img.shields.io/badge/lifecycle-experimental-orange.svg)](https://lifecycle.r-lib.org/articles/stages.html#experimental)
 

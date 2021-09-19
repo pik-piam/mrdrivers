@@ -18,6 +18,9 @@ Read-in xlsx file from the World Bank's Population Estimates And Projections
 Other "Future" population functions: 
 \code{\link{readEurostat}()},
 \code{\link{readPopulationTWN}()}
+
+Other PEAP functions: 
+\code{\link{convertPEAP}()}
 }
 \concept{"Future" population functions}
 \concept{PEAP functions}

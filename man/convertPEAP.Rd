@@ -7,11 +7,16 @@
 convertPEAP(x)
 }
 \arguments{
-\item{x}{MAgPIE object}
+\item{x}{MAgPIE object returned by readPEAP}
 }
 \value{
-MAgPIE object
+magpie object
 }
 \description{
 Convert data from the World Bank's Population Estimates And Projections
 }
+\seealso{
+Other PEAP functions: 
+\code{\link{readPEAP}()}
+}
+\concept{PEAP functions}

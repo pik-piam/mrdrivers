@@ -35,46 +35,19 @@ convEurostatPopulation <- function(x) {
   getItems(x, 1) <- countrycode::countrycode(getRegions(x), "eurostat", "iso3c", warn = FALSE)
   # ABOVE Warning: Some values were not matched unambiguously: FX, XK
   # Fix set names
-  getSets(x) <- c("iso3c", "year", "value")
-  # Filter out any countries that don't have a iso3c code (in this case Kosovo, and Mainland-France)
-  x <- x[!is.na(getCells(x)),,]
-  # Sort by year
-  x <- x[,sort(getYears(x)),]
-  # Replace NAs with 0
-  x[is.na(x)] <- 0
-  # Fill in 0 for all missing countries
-  x <- toolCountryFill(x, fill = 0)
+  
+  toolGeneralConvert(x)
  }
 
 convEurostatGDP <- function(x) {
-  # Fix names of sets, and of variable
-  x <- collapseDim(x, dim = 3)
-  getNames(x) <- "GDP"
-
-  # Drop any countries with more than 2 charachters in their Eurostat identifier. Those are aggregates.
-  my_countries <- getRegions(x)[purrr::map_lgl(getRegions(x), ~ nchar(.x) == 2)]
-  x <- x[my_countries,,]
-
   # Convert the eurostat countrycodes to iso3c codes
   getItems(x, 1) <- countrycode::countrycode(getRegions(x), "eurostat", "iso3c", warn = FALSE)
-  # ABOVE warning: Some values were not matched unambiguously: EA
+  # ABOVE warning that is being ignored: 
+  # Some values were not matched unambiguously: EA, EA12, EA19, EU15, EU27_2020, EU28
 
-  # Fix set names
-  getSets(x) <- c("iso3c", "year", "value")
-
-  # Filter out any countries that don't have a iso3c code
-  x <- x[!is.na(getCells(x)),,]
-
-  # Convert from constant 2005 LCU to constant 2005 Int$PPP
-  x <- GDPuc::convertGDP(x, "constant 2005 LCU", "constant 2005 Int$PPP") %>%
-    suppressWarnings()
-
-  # Sort by year
-  x <- x[,sort(getYears(x)),]
-
-  # Replace NAs with 0
-  x[is.na(x)] <- 0
-
-  # Fill in 0 for all missing countries
-  x <- toolCountryFill(x, fill = 0)
+  x <- toolGeneralConvert(x)
+  
+  # Convert from constant 2005 LCU to constant 2005 Int$PPP.
+  getNames(x) <- "GDP"
+  x <- GDPuc::convertGDP(x, "constant 2005 LCU", "constant 2005 Int$PPP", replace_NAs = 1) 
 }

@@ -1,18 +1,15 @@
 #' @title convertIMF
 #' @description Converts data from IMF
-#' @param x unconverted magpie object from read-script
-#' @param subtype A string
-#' @return magpie object with a completed dataset.
-#' 
-#' @seealso
-#' \code{\link{convertIMF}}
+#' @param x MAgPIE object returned by readIMF
+#' @inheritParams readIMF
+#' @inherit readIMF return
+#' @family IMF functions
 convertIMF <- function(x, subtype = "current_account") {
   if (subtype == "current_account") {
     # delete "World"
     x <- x["World",,,invert=TRUE]
     # delete Kosovo
     x <- x["KOS",,,invert=TRUE]
-    
     
     ### allocate global current account to the countries
     # calculate global sum which is not 0
@@ -26,8 +23,5 @@ convertIMF <- function(x, subtype = "current_account") {
     x <- x + x_rest
   }
   
-  # fill rest of countries with 0
-  x <- toolCountryFill(x, fill = 0, no_remove_warning = c("UVK", "WBG"))
-  
-  x
+  toolGeneralConvert(x, no_remove_warning = c("UVK", "WBG"))
 }

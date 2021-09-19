@@ -5,7 +5,6 @@
 #' @seealso [madrat::readSource()]
 #' @family "Future" population functions
 #' @family PEAP functions
-#' 
 #' @return magpie object 
 readPEAP <- function() {
   file <- "Data_Extract_From_Population_estimates_and_projections.xlsx"

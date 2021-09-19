@@ -11,7 +11,8 @@
 #' @param GDPCalib to what should be calibrated? past, future or a transition?
 #' @param GDPPast GDP past data source
 #' @param GDPFuture GDP future data source
-#' @param unit string
+#' @param unit A string. Either 'constant 2005 Int$PPP', 'constant 2005 US$MER',
+#'   'constant 2017 Int$PPP' or 'constant 2017 US$MER'.
 #' @param useMIData logical
 #' @param extension2150 string, either "bezier", "constant" or "none"
 #' @param FiveYearSteps Only five year steps if TRUE, FALSE returns years from source data
