@@ -7,7 +7,7 @@
 convertARIADNE(x, subtype)
 }
 \arguments{
-\item{x}{magpie}
+\item{x}{MAgPIE object returned by readARIADNE}
 
 \item{subtype}{data subtype. Either "population", "gdp", or "gdp_corona"}
 }

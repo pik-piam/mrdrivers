@@ -8,9 +8,8 @@
 #' @family James2019 functions
 #' 
 convertJames2019 <- function(x, subtype) {
-  x <- x[c("USSR_FRMR","CHN_354","CHN_361"),,,invert = TRUE] #Macao and HKG and Former USSR have 0 values in the dataset
-  x <- toolCountryFill(x[,,subtype], fill = 0) 
-  
+  x <- toolGeneralConvert(x, no_remove_warning = c("CHN_354", "CHN_361", "USSR_FRMR"))
+ 
   #fill missing islands not in MissingIslands, using older James
   old <- readSource("James", subtype = subtype)
   missing <- time_interpolate(old[c("ABW","PYF","NCL"),,], interpolated_year = c(1950:2019))
@@ -45,7 +44,5 @@ convertJames2019 <- function(x, subtype) {
   
   x["SSD",,] <- ssd_gdppc
 
-  # Set correct set names
-  getSets(x) <- c("iso3c", "year", "variable")
   x
 }  

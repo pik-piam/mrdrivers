@@ -45,10 +45,12 @@ calcUrbanFuture <- function(UrbanFuture = "SSPs", extension2150 = "none") {
 ######################################################################################
 cUrbanFutureSSPs <- function() {
   data <- collapseNames(readSource("SSP", subtype = "all")[,,"Population|Urban|Share"][,,"NCAR"]) / 100
+  getSets(data)[3] <- "variable"
   getNames(data) <- paste0("urb_", gsub("_v[[:alnum:],[:punct:]]*", "", getNames(data)))
   
-  #remove years which only contain 0s as entries
-  data <- data[, !apply(data, 2, function(x) return(all(x == 0))),]
+  
+  # Remove years which only contain 0s as entries
+  data <- data[, !apply(data, 2, function(x) all(x == 0)), ]
   
   time_inter <- paste0("y", seq(2015, 2095, by = 10))
   data <- time_interpolate(data, time_inter, integrate_interpolated_years = TRUE)

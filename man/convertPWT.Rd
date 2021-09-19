@@ -7,10 +7,10 @@
 convertPWT(x)
 }
 \arguments{
-\item{x}{MAgPIE object containing PWT data country-region resolution}
+\item{x}{MAgPIE object returned by readPWT}
 }
 \value{
-PWT data as MAgPIE object aggregated to country level
+Magpie object of the PWT data
 }
 \description{
 Convert PWT data on ISO country level.

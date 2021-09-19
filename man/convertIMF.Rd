@@ -7,16 +7,18 @@
 convertIMF(x, subtype = "current_account")
 }
 \arguments{
-\item{x}{unconverted magpie object from read-script}
+\item{x}{MAgPIE object returned by readIMF}
 
-\item{subtype}{A string}
+\item{subtype}{Either "current_account" or "GDPpc"}
 }
 \value{
-magpie object with a completed dataset.
+magpie object of the data
 }
 \description{
 Converts data from IMF
 }
 \seealso{
-\code{\link{convertIMF}}
+Other IMF functions: 
+\code{\link{readIMF}()}
 }
+\concept{IMF functions}

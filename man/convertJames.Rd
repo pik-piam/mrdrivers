@@ -7,22 +7,14 @@
 convertJames(x, subtype)
 }
 \arguments{
-\item{x}{MAgPIE object containing James data region resolution}
+\item{x}{MAgPIE object returned by readJames}
 
-\item{subtype}{subtype of GDP indicator to be selected}
+\item{subtype}{String indicating the data series}
 }
 \value{
-Krausmann data as MAgPIE object aggregated/disaggregated to country
-level
+GDP per capita in USD05 in PPP or MER as magpie object
 }
 \description{
 Convert James data on ISO country level.
 }
-\examples{
-
-\dontrun{ a <- convertJames(x,"IHME_USD05_PPP_pc")
-}
-}
-\seealso{
-\code{\link{readJames}}
-}
+\concept{James functions}

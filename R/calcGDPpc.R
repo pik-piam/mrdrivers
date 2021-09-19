@@ -276,7 +276,7 @@ compute_SHAPE_growth <- function(SHAPE_GDPscenario, gdppcap_SSP1, startFromYear)
       else if (SHAPE_GDPscenario == "gdppc_SDP_MC"){
         # define US as technology frontier
         frontier <- gdppcap["USA",yr,]
-        getRegions(frontier) <- "GLO"
+        getItems(frontier, 1) <- "GLO"
         # countries with gdp/cap above US are treated the same as the US -> set diff = 0
         reldiff_to_frontier <- pmax((frontier[,yr,] - gdppcap[,yr,])/frontier[,yr,] , 0)
         modification_factor <- logistic_transition(reldiff_to_frontier[,yr,], L0 = 1, L = 0.5, k = -30, x0 = 0.2, use_log10 = FALSE)

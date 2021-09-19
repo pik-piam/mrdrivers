@@ -47,8 +47,8 @@ cGDPFutureSSPs <- function() {
 
   # Refactor names
   data <- collapseNames(data)
+  getSets(data)[3] <- "variable"
   getNames(data) <- paste0("gdp_", gsub("_v[[:alnum:],[:punct:]]*", "", getNames(data)))
-  set_names_for_later <- getSets(data)
 
   # Remove 2000 and 2005, because these years are not complete
   data <- data[,setdiff(getYears(data), c("y2000", "y2005")),]

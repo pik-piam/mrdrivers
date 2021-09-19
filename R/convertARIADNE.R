@@ -2,12 +2,10 @@
 #' 
 #' Read ARIADNE Reference Scenario data from various .xls files as magpie object
 #' 
-#' @param x magpie
-#' @param subtype data subtype. Either "population", "gdp", or "gdp_corona"
-#' 
+#' @param x MAgPIE object returned by readARIADNE
+#' @inheritParams readARIADNE
+#' @inherit readARIADNE return
 #' @family ARIADNE functions
-#' 
-#' @return magpie object of ARIADNE reference scenario data by country
 convertARIADNE <- function(x, subtype){
 
   # Convert region codons from Eurostat to iso3c
@@ -29,8 +27,6 @@ convertARIADNE <- function(x, subtype){
     getNames(x) <- "GDP|PPP (million US$2005/yr)"
   }
 
-  x <- toolCountryFill(x)
-  x[is.na(x)] <- 0
-  x
+  toolGeneralConvert(x)
 }
 

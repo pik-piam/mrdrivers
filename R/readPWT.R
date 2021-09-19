@@ -4,7 +4,6 @@
 #
 #' @family "Past" GDPpc functions
 #' @family PWT functions
-#' 
 #' @return Magpie object of the PWT data
 readPWT<- function() {
   pwt <- readxl::read_excel("pwt80.xlsx", sheet = "Data")

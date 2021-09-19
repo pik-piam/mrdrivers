@@ -7,31 +7,21 @@
 #' @inherit readSSP return examples
 #' @family SSP functions 
 convertSSP <- function(x, subtype) {
-  if(subtype == "all") {
-    #---------------------- add TWN data to population --------------------------------------------
+  if (subtype == "all") {
     x <- add_TWN_pop_lab(x)
-    #--------------------------------------------------------------------------------
-    # substitute NA by 0
-    x[is.na(x)] <- 0    
-    #--------------------------------------------------------------------------------
-    # check whether the country list agrees with the list of countries in the madrat library
-    # remove unrequired data, add missing data 
-    x <- toolCountryFill(x, fill=0)
-   
-  } else if(subtype == "pop2018Update") {
+    x <- toolGeneralConvert(x)
 
+  } else if (subtype == "pop2018Update") {
     # Sum over sex, agegrp and version
     x <- dimSums(x, dim = c(3.2, 3.3, 3.4))
     # Add the Channel Islands (GB_CHA) to Great Britain (GBR)
     x["GBR",,] <- x["GBR",,] + x["GB_CHA",,]
     x <- x["GB_CHA",, invert = TRUE]
-    # Fill in missing countries
-    x <- toolCountryFill(x, fill = 0)
 
-  }  else if(subtype == "ratioPM") {
-    getSets(x) <- c("iso3c", "year", "value")
-    # fill all the rest with 1
-    x <- toolCountryFill(x, fill = 1)
+    x <- toolGeneralConvert(x)
+
+  }  else if (subtype == "ratioPM") {
+    x <- toolGeneralConvert(x, countryFillWith = 1)
   }  
 
   x
