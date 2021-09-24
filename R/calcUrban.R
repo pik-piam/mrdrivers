@@ -26,7 +26,7 @@
 #' 
 calcUrban <- function(UrbanCalib = "past", 
                       UrbanPast = "WDI", 
-                      UrbanFuture = c("SSPs", "SDPs", "SSP2Ariadne"),
+                      UrbanFuture = c("SSPs", "SDPs", "SSP2EU"),
                       extension2150 = "constant",
                       FiveYearSteps = TRUE,
                       naming = "indicator_scenario") {
@@ -53,8 +53,8 @@ internal_calcUrban <- function(UrbanCalib,
   # Combine "past" and "future" time series.
   combined <- switch(
     UrbanCalib,
-    "past"   = harmonizePast(past, future),
-    "future" = harmonizeFuture(past, future),
+    "past"   = toolHarmonizePast(past, future),
+    "future" = toolHarmonizeFuture(past, future),
     stop("Bad input for calcUrban. Invalid 'UrbanCalib' argument.")
   )
 

@@ -19,9 +19,9 @@ calcPopulationFuture <- function(PopulationFuture = "SSPs",
                                  extension2150 = "none") {
 
   data <- switch(PopulationFuture,
-                 "SSPs"        = cPopulationFutureSSPs(),
-                 "SSP2Ariadne" = cPopulationFutureSSP2Ariadne(),
-                 "SDPs"        = cPopulationFutureSDPs(),
+                 "SSPs"   = cPopulationFutureSSPs(),
+                 "SSP2EU" = cPopulationFutureSSP2EU(),
+                 "SDPs"   = cPopulationFutureSDPs(),
                  #
                  # Deprecated options ? 
                  "SSPs_old" = cPopulationFutureSSPsOld(),
@@ -62,7 +62,7 @@ cPopulationFutureSDPs <- function() {
     mbind()
 }
 
-cPopulationFutureSSP2Ariadne <- function() {
+cPopulationFutureSSP2EU <- function() {
   data_eurostat <- readSource("Eurostat", "population_projections") / 1e+6
   data_ssp2 <- cPopulationFutureSSPs()[,, "pop_SSP2"]
 
@@ -78,7 +78,7 @@ cPopulationFutureSSP2Ariadne <- function() {
   # Start with the SSP2 scenario until 2100. Change the name, and overwrite the EUR
   # countries with the Eurostat data.
   data <- data_ssp2[, getYears(data_ssp2)[getYears(data_ssp2, as.integer = TRUE) <= 2100], ] %>% 
-    setNames("pop_SSP2Ariadne")
+    setNames("pop_SSP2EU")
   data[EUR_countries,,] <- 0
   data[EUR_countries, cy, ] <- data_eurostat[EUR_countries, cy,]
   data

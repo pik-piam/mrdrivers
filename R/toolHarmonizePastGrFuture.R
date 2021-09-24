@@ -1,4 +1,4 @@
-harmonizePastGrFuture <- function(past, future) {
+toolHarmonizePastGrFuture <- function(past, future) {
   lastPastYear <- max(intersect(getYears(past, as.integer = TRUE),
                                 getYears(future, as.integer = TRUE)))
   firstFutureYear <- min(getYears(future, as.integer = TRUE))

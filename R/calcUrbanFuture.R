@@ -18,9 +18,9 @@ calcUrbanFuture <- function(UrbanFuture = "SSPs", extension2150 = "none") {
   
   data <- switch(
     UrbanFuture,
-    "SSPs"        = cUrbanFutureSSPs(),
-    "SDPs"        = cUrbanFutureSDPs(),
-    "SSP2Ariadne" = cUrbanFutureSSP2Ariadne(),
+    "SSPs"   = cUrbanFutureSSPs(),
+    "SDPs"   = cUrbanFutureSDPs(),
+    "SSP2EU" = cUrbanFutureSSP2EU(),
     stop("Bad input for UrbanFuture. Invalid 'UrbanFuture' argument.")
   )
 
@@ -73,7 +73,7 @@ cUrbanFutureSDPs <- function() {
     mbind()
 }
 
-cUrbanFutureSSP2Ariadne <- function() {
+cUrbanFutureSSP2EU <- function() {
   ssp2_urb <- calcOutput("UrbanFuture", UrbanFuture = "SSPs", aggregate = FALSE)[,, "urb_SSP2"]
-  ssp2ariadne_urb <- setNames(ssp2_urb, sub("SSP2", "SSP2Ariadne", getNames(ssp2_urb)))
+  SSP2EU_urb <- setNames(ssp2_urb, sub("SSP2", "SSP2EU", getNames(ssp2_urb)))
 }

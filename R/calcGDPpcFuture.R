@@ -17,24 +17,34 @@ calcGDPpcFuture <- function(GDPpcFuture = "SSPs",
 
   data <- switch(
     GDPpcFuture,
-    "SSPs" = cGDPpcFutureSSPs(useMIData),
-    "SDPs" = cGDPpcFutureSDPs(useMIData), 
+    "SSPs" = cGDPpcFutureSSPs(useMIData, unit),
+    "SDPs" = cGDPpcFutureSDPs(useMIData, unit), 
     stop("Bad input for calcGDPFuture. Invalid 'GDPFuture' argument.")
   )
 
   data <- finishingTouches(data, extension2150)
 
-  list(x = data, weight = NULL, unit = unit, description = glue("GDPpc data from {GDPpcFuture}"))
+  weight <- calcOutput("PopulationFuture", 
+                       PopulationFuture = GDPpcFuture,
+                       useMIData = useMIData,
+                       aggregate = FALSE)
+  # Give weight same names as data, so that aggregate doesn't mess up data dim
+  getNames(weight) <- gsub("pop", "gdppc", getNames(weight))
+
+  data <- data[, getYears(weight), ]
+
+  list(x = data, weight = weight, unit = unit, description = glue("GDPpc data from {GDPpcFuture}"))
 }
 
 
 ######################################################################################
 # Functions
 ######################################################################################
-cGDPpcFutureSSPs <- function(useMIData) {
+cGDPpcFutureSSPs <- function(useMIData, unit) {
   gdp <- calcOutput("GDPFuture", 
                     GDPFuture = "SSPs", 
                     useMIData = useMIData, 
+                    unit = unit,
                     extension2150 = "none", 
                     aggregate = FALSE)
   gdp <- setNames(gdp, c("gdppc_SSP1", "gdppc_SSP2", "gdppc_SSP3", "gdppc_SSP4", "gdppc_SSP5"))
@@ -52,8 +62,8 @@ cGDPpcFutureSSPs <- function(useMIData) {
   data 
 }
 
-cGDPpcFutureSDPs <- function(useMIData) {
-  data_SSP1 <- cGDPpcFutureSSPs(useMIData)[,, "gdppc_SSP1"]
+cGDPpcFutureSDPs <- function(useMIData, unit) {
+  data_SSP1 <- cGDPpcFutureSSPs(useMIData, unit)[,, "gdppc_SSP1"]
 
   data <- purrr::map(c("SDP", "SDP_EI", "SDP_RC", "SDP_MC"),
                      ~ setNames(data_SSP1, gsub("SSP1", .x, getNames(data_SSP1)))) %>%

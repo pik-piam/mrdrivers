@@ -14,9 +14,9 @@
 #' library(mrdrivers)
 #' calcOutput("GDPpc")}
 #'
-calcGDPpc <- function(GDPpcCalib  = c("past_IMF_SSP", "past_IMF_SDP"),
-                      GDPpcPast   = c("WDI",          "WDI"),
-                      GDPpcFuture = c("SSPs",         "SDPs"),
+calcGDPpc <- function(GDPpcCalib  = c("calibSSPs", "calibSDPs", "calibSSP2EU"),
+                      GDPpcPast   = c("WDI",       "WDI",       "Eurostat_WDI"),
+                      GDPpcFuture = c("SSPs",      "SDPs",      "SSP2EU"),
                       unit = "constant 2005 Int$PPP",
                       useMIData = TRUE,
                       extension2150 = "bezier",
@@ -40,13 +40,10 @@ internal_calcGDPpc <- function(GDPpcCalib,
                                FiveYearSteps,
                                naming){
   # Depending on the chosen GDPpcCalib, the harmonization function either requires 'past' and
-  # 'future' GDPpc scenarios, OR NOT, which is the case for "past_IMF_SDP" for example, where
+  # 'future' GDPpc scenarios, OR NOT, which is the case for "calibSDPs" for example, where
   # the computations are done based off of the combined SSP1 GDPpc scenario.
 
-  if (GDPpcCalib == "past_IMF_SDP") {
-    # Save arguments as list.
-     args <- as.list(environment())
-  } else {
+  if (GDPpcCalib == "calibSSPs") {
     # Compute "past" and "future" time series.
     past <- calcOutput("GDPpcPast",
                        GDPpcPast = GDPpcPast,
@@ -59,19 +56,27 @@ internal_calcGDPpc <- function(GDPpcCalib,
                          useMIData = useMIData,
                          extension2150 = "none",
                          aggregate = FALSE)
+  } else {
+    # Save arguments as list.
+    args <- as.list(environment())
   }
 
   # Combine "past" and "future" time series.
   combined <- switch(
     GDPpcCalib,
-    "past_IMF_SSP" = gdppcHarmonizePastIMFSSP(past, future, yEnd = 2100),
-    "past_IMF_SDP" = gdppcHarmonizePastIMFSDP(args),
+    "calibSSPs"   = gdppcHarmonizeSSP(past, future, unit, yEnd = 2100),
+    "calibSDPs"   = gdppcHarmonizeSDP(args),
+    "calibSSP2EU" = gdppcHarmonizeSSP2EU(args),
     stop("Bad input for calcGDPpc. Invalid 'GDPpcCalib' argument.")
   )
 
   # Get description of harmonization function.
   description <- switch(
     GDPpcCalib,
+    "calibSSP2EU" = glue("use past data, short term growth rates from IMF and afterwards transition \\
+                          between {GDPpcPast} and {GDPpcFuture} with a transition period until 2100. For \\
+                          European countries, just glue past with future and after 2070 converge \\
+                          to 2150 SSP2 values."),
     glue("use past data, short term growth rates from IMF and \\
           afterwards transition between {GDPpcPast} and {GDPpcFuture} \\
           with a transition period until 2100")
@@ -80,8 +85,20 @@ internal_calcGDPpc <- function(GDPpcCalib,
   # Apply finishing touches to combined time-series
   combined <- finishingTouches(combined, extension2150, FiveYearSteps, naming)
 
+  # Get weigth
+  weight <- calcOutput("Population", 
+                       PopulationCalib = GDPpcCalib,
+                       PopulationPast = GDPpcPast, 
+                       PopulationFuture = GDPpcFuture,
+                       useMIData = useMIData,
+                       FiveYearSteps = FiveYearSteps,
+                       extension2150 = extension2150,
+                       aggregate = FALSE)
+  # Give weight same names as data, so that aggregate doesn't mess up data dim
+  getNames(weight) <- gsub("pop", "gdppc", getNames(weight))
+
   list(x = combined,
-       weight = NULL,
+       weight = weight,
        unit = unit,
        description = glue("Datasource for the Past: {GDPpcPast}. Datasource for the Future: \\
                            {GDPpcFuture}. Calibrated to {description}."))
@@ -92,17 +109,18 @@ internal_calcGDPpc <- function(GDPpcCalib,
 ######################################################################################
 # GDPpc Harmonization Functions
 ######################################################################################
-gdppcHarmonizePastIMFSSP <- function(past_gdppc, future_gdppc, yEnd) {
+gdppcHarmonizeSSP <- function(past_gdppc, future_gdppc, unit, yEnd) {
   # Get IMF short-term income projcetions and fill missing with SSP2
   imf_gdppc <- readSource("IMF", "GDPpc")
   fill <- calcOutput("GDPpcFuture", 
                      GDPpcFuture = "SSPs", 
+                     unit = unit,
                      extension2150 = "none",
                      aggregate = FALSE)[,, "gdppc_SSP2"]
   imf_gdppc <- completeData(imf_gdppc, fill)
 
   # Use short term IMF growth rates (here, as far as possible = 2026)
-  tmp_gdppc <- harmonizePastGrFuture(past_gdppc, imf_gdppc)
+  tmp_gdppc <- toolHarmonizePastGrFuture(past_gdppc, imf_gdppc)
 
   # Transform into tibble, combine past and future tibbles
   tmp_gdppc <- tmp_gdppc %>%
@@ -139,6 +157,60 @@ gdppcHarmonizePastIMFSSP <- function(past_gdppc, future_gdppc, yEnd) {
 }
 
 
+gdppcHarmonizeSDP <- function(args) {
+
+  gdppcap_SSP1 <- calcOutput("GDPpc",
+                             GDPpcCalib  = "calibSSPs",
+                             GDPpcPast   = args$GDPpcPast,
+                             GDPpcFuture = "SSPs",
+                             unit = args$unit,
+                             extension2150 = "none",
+                             FiveYearSteps = FALSE,
+                             aggregate = FALSE)[,, "gdppc_SSP1"]
+
+  # standard SDP inherits SSP1 GDP
+  gdppcap_SDP <- gdppcap_SSP1
+  getNames(gdppcap_SDP) <- gsub("SSP1", "SDP", getNames(gdppcap_SDP))
+  # SHAPE SDP_XX variants are calculated as modifications of SSP1 GDP/cap growth rates
+  combined <- purrr::map(c("gdppc_SDP_EI", "gdppc_SDP_MC", "gdppc_SDP_RC"),
+                         compute_SHAPE_growth,
+                         gdppcap_SSP1 = gdppcap_SSP1,
+                         startFromYear = 2020) %>%
+    mbind() %>%
+    mbind(gdppcap_SDP)
+
+  combined[is.nan(combined) | combined == Inf] <- 0
+  combined
+}
+
+
+gdppcHarmonizeSSP2EU <- function(args) {
+  gdp <- calcOutput("GDP",
+                    GDPCalib = args$GDPpcCalib,
+                    GDPPast = args$GDPpcPast,
+                    GDPFuture = args$GDPpcFuture,
+                    unit = args$unit,
+                    useMIData = args$useMIData,
+                    extension2150 = "none",
+                    FiveYearSteps = FALSE,
+                    aggregate = FALSE)
+
+  pop <- calcOutput("Population",
+                    PopulationCalib = args$GDPpcCalib,
+                    PopulationPast = args$GDPpcPast,
+                    PopulationFuture = args$GDPpcFuture,
+                    extension2150 = "none",
+                    FiveYearSteps = FALSE,
+                    aggregate = FALSE)
+
+  getNames(gdp) <- getNames(pop) <- gsub("pop", "gdppc", getNames(pop))
+  gdppc <- gdp / pop
+}
+
+
+#########################
+### Helper functions
+#########################
 convergeSpecial <- function(x) {
 
   dif <- x %>%
@@ -190,41 +262,15 @@ convergeSpecial <- function(x) {
             )
         ),
         .data$value
-      )
+      ),
+      # Add a minimum value for value here. This can occur when the d computed in 2025 is 
+      # so large relative to the original GDPpc value in 2025, that a further dercease in the
+      # years 2030 and 2035 pushes the GDPpc into the negative.
+      value = pmax(.data$value, 0.01)
     ) %>%
     dplyr::select(-.data$d)
   x
 }
-
-
-
-gdppcHarmonizePastIMFSDP <- function(args) {
-
-  gdppcap_SSP1 <- calcOutput("GDPpc",
-                             GDPpcCalib  = "past_IMF_SSP",
-                             GDPpcPast   = args$GDPpcPast,
-                             GDPpcFuture = "SSPs",
-                             extension2150 = "none",
-                             FiveYearSteps = FALSE,
-                             aggregate = FALSE)[,, "gdppc_SSP1"]
-
-  # standard SDP inherits SSP1 GDP
-  gdppcap_SDP <- gdppcap_SSP1
-  getNames(gdppcap_SDP) <- gsub("SSP1", "SDP", getNames(gdppcap_SDP))
-  # SHAPE SDP_XX variants are calculated as modifications of SSP1 GDP/cap growth rates
-  combined <- purrr::map(c("gdppc_SDP_EI", "gdppc_SDP_MC", "gdppc_SDP_RC"),
-                         compute_SHAPE_growth,
-                         gdppcap_SSP1 = gdppcap_SSP1,
-                         startFromYear = 2020) %>%
-    mbind() %>%
-    mbind(gdppcap_SDP)
-
-  combined[is.nan(combined) | combined == Inf] <- 0
-  combined
-}
-
-
-
 
 ###########################################
 #Additional functions to derive the SHAPE GDP scenarios from the SSP1 scenario
