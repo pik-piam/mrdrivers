@@ -1,4 +1,4 @@
-harmonizeTransition <- function(past, future, yEnd) {
+toolHarmonizeTransition <- function(past, future, yEnd) {
   # yEnd = end of transisiton, from this time on the future values are used
   # generate past data for all future scenarios
   firstyear <- min(getYears(future, as.integer = TRUE))

@@ -16,18 +16,23 @@ calcGDPpcPast <- function(GDPpcPast = "WDI",
 
   # Call appropriate calcGDPPast function.
   data <- switch(GDPpcPast,
-                 "WDI" = cGDPpcPastWDI(useMIData),
+                 "WDI" = cGDPpcPastWDI(unit, useMIData),
                  stop("Bad input for calcGDPpcPast. Invalid 'GDPpcPast' argument."))
 
-  list(x = data, weight = NULL, unit = unit, description = glue("GDPpc data from {GDPpcPast}."))
+  weight <- calcOutput("PopulationPast", 
+                       PopulationPast = GDPpcPast,
+                       useMIData = useMIData,
+                       aggregate = FALSE)
+
+  list(x = data, weight = weight, unit = unit, description = glue("GDPpc data from {GDPpcPast}."))
 }
 
 
 ######################################################################################
 # Functions
 ######################################################################################
-cGDPpcPastWDI <- function(useMIData) {
-  gdp <- calcOutput("GDPPast", GDPPast = "WDI", useMIData = useMIData, aggregate = FALSE)
+cGDPpcPastWDI <- function(unit, useMIData) {
+  gdp <- calcOutput("GDPPast", GDPPast = "WDI", unit = unit, useMIData = useMIData, aggregate = FALSE)
   pop <- calcOutput("PopulationPast", PopulationPast = "WDI", useMIData = useMIData, aggregate = FALSE)
   years <- intersect(getYears(gdp), getYears(pop))
 

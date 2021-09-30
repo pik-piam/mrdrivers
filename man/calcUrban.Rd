@@ -7,7 +7,7 @@
 calcUrban(
   UrbanCalib = "past",
   UrbanPast = "WDI",
-  UrbanFuture = c("SSPs", "SDPs", "SSP2Ariadne"),
+  UrbanFuture = c("SSPs", "SDPs", "SSP2EU"),
   extension2150 = "constant",
   FiveYearSteps = TRUE,
   naming = "indicator_scenario"

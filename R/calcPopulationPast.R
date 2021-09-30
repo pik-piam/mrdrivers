@@ -61,7 +61,7 @@ cPopulationPastEurostatWDI <- function() {
   # Fill in missing ( == 0) eurostat data using wdi growth rates 
   for (c in EUR_countries) {
     if (any(data_eurostat[c,,] == 0) && !all(data_eurostat[c,,] == 0)) {
-       data_eurostat[c,,] <- harmonizeFutureGrPast(
+       data_eurostat[c,,] <- toolHarmonizeFutureGrPast(
          past = data_wdi[c,,], 
          future = data_eurostat[c, data_eurostat[c,,] != 0, ]
         )

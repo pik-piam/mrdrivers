@@ -28,9 +28,9 @@
 #' library(mrdrivers)
 #' calcOutput("GDP")}
 #'
-calcGDP <- function(GDPCalib  = c("past_IMF_SSP", "past_IMF_SDP", "Ariadne"),
-                    GDPPast   = c("WDI",          "WDI",          "Eurostat_WDI"),
-                    GDPFuture = c("SSPs",         "SDPs",         "SSP2Ariadne"),
+calcGDP <- function(GDPCalib  = c("calibSSPs", "calibSDPs", "calibSSP2EU"),
+                    GDPPast   = c("WDI",       "WDI",       "Eurostat_WDI"),
+                    GDPFuture = c("SSPs",      "SDPs",      "SSP2EU"),
                     unit = "constant 2005 Int$PPP",
                     useMIData = TRUE,
                     extension2150 = "bezier",
@@ -55,12 +55,12 @@ internal_calcGDP <- function(GDPCalib,
                              naming){
 
   # Depending on the chose GDPCalib, the harmonization function either requires 'past' and
-  # 'future' GDP scenarios, OR NOT, which is the case for "past_IMF_SSP" for example, where
+  # 'future' GDP scenarios, OR NOT, which is the case for "calibSSPs" for example, where
   # the underlying computations are done on the GDPpc level, meaning that 'past' and 'future'
   # GDPpc (not GDP) are actually required. The harmonization on the GDP level, simply takes
   # the combined GDPpc scenario and multiplies it with the population sceanario.
 
-  if (GDPCalib %in% c("past_IMF_SSP", "past_IMF_SDP")) {
+  if (GDPCalib %in% c("calibSSPs", "calibSDPs")) {
     # Save arguments as list.
      args <- as.list(environment())
   } else {
@@ -81,13 +81,14 @@ internal_calcGDP <- function(GDPCalib,
   # Combine "past" and "future" time series.
   combined <- switch(
     GDPCalib,
-    "past"            = harmonizePast(past, future),
-    "future"          = harmonizeFuture(past, future),
-    "transition"      = harmonizeTransition(past, future, yEnd = 2020),
-    "past_transition" = harmonizePastTransition(past, future, yEnd = 2050),
-    "past_IMF_SSP"    = harmonizePastIMFSSPSDP(args),
-    "past_IMF_SDP"    = harmonizePastIMFSSPSDP(args),
-    "Ariadne"         = harmonizeAriadneGDP(past, future),
+    "calibSSPs"       = gdpHarmonizeSSPsSPDs(args),
+    "calibSDPs"       = gdpHarmonizeSSPsSPDs(args),
+    "calibSSP2EU"     = gdpHarmonizeSSP2EU(past, future, unit),
+    # Deprecated?
+    "past"            = toolHarmonizePast(past, future),
+    "future"          = toolHarmonizeFuture(past, future),
+    "transition"      = toolHarmonizeTransition(past, future, yEnd = 2020),
+    "past_transition" = toolHarmonizePastTransition(past, future, yEnd = 2050),    
     stop("Bad input for calcGDP. Invalid 'GDPCalib' argument.")
   )
 
@@ -100,15 +101,15 @@ internal_calcGDP <- function(GDPCalib,
                              until 2020"),
     "past_transition" = glue("use past data and afterwards transition between {GDPPast} and \\
                              {GDPFuture} with a transition period until 2050"),
-    "past_IMF_SSP"    = glue("use past data, short term growth rates from IMF and \\
+    "calibSSPs"    = glue("use past data, short term growth rates from IMF and \\
                               afterwards transition between {GDPPast} and {GDPFuture} \\
                               with a transition period until 2100"),
-    "past_IMF_SDP"    = glue("use past data, short term growth rates from IMF and \\
+    "calibSDPs"    = glue("use past data, short term growth rates from IMF and \\
                               afterwards transition between {GDPPast} and {GDPFuture} \\
                               with a transition period until 2100"),
-    "Ariadne"         = glue("use past data, short term growth rates from IMF and afterwards transition \\
+    "calibSSP2EU"     = glue("use past data, short term growth rates from IMF and afterwards transition \\
                               between {GDPPast} and {GDPFuture} with a transition period until 2100. For \\
-                              EUR/ARIADNE countries, just glue past with future and after 2070 converge \\
+                              European countries, just glue past with future and after 2070 converge \\
                               to 2150 SSP2 values.")
   )
 
@@ -126,7 +127,7 @@ internal_calcGDP <- function(GDPCalib,
 ######################################################################################
 # GDP Harmonization Functions
 ######################################################################################
-harmonizePastIMFSSPSDP <- function(args) {
+gdpHarmonizeSSPsSPDs <- function(args) {
   gdppc <- calcOutput("GDPpc",
                       GDPpcCalib = args$GDPCalib,
                       GDPpcPast = args$GDPPast,
@@ -138,7 +139,7 @@ harmonizePastIMFSSPSDP <- function(args) {
                       aggregate = FALSE)
 
   pop <- calcOutput("Population",
-                    PopulationCalib = "past_grPEAP_grFuture",
+                    PopulationCalib = args$GDPCalib,
                     PopulationPast = args$GDPPast,
                     PopulationFuture = args$GDPFuture,
                     extension2150 = "none",
@@ -151,36 +152,37 @@ harmonizePastIMFSSPSDP <- function(args) {
 
 
 
-harmonizeAriadneGDP <- function(past, future) {
+gdpHarmonizeSSP2EU <- function(past, future, unit) {
   # We explicitly use the bezier Extension for SSP2 here, but only for harmonization purposes.
   # We return only up until 2100.
   ssp2_data <- calcOutput("GDP",
-                          GDPCalib = "past_IMF_SSP",
+                          GDPCalib = "calibSSPs",
                           GDPPast = "WDI",
                           GDPFuture = "SSPs",
+                          unit = unit,
                           extension2150 = "bezier",
                           aggregate = FALSE,
                           FiveYearSteps = FALSE) %>%
   `[`(,, "gdp_SSP2")
 
-  # For SSP2-Ariadne: simply glue past (until 2019) with future (starting 2020)
+  # For SSP2EU: simply glue past (until 2019) with future (starting 2020)
   # Get EUR countries.
   EUR_countries <- where(readSource("ARIADNE", "gdp_corona") != 0 )$true$regions
   fut_years <- getYears(future)[getYears(future, as.integer = TRUE) >= max(getYears(past, as.integer = TRUE))]
 
-  ssp2Ariadne_data <- ssp2_data
-  ssp2Ariadne_data[EUR_countries, getYears(past),] <- past[EUR_countries,,]
-  ssp2Ariadne_data[EUR_countries, fut_years,] <- future[EUR_countries, fut_years,]
+  SSP2EU_data <- ssp2_data
+  SSP2EU_data[EUR_countries, getYears(past),] <- past[EUR_countries,,]
+  SSP2EU_data[EUR_countries, fut_years,] <- future[EUR_countries, fut_years,]
 
   # After 2070, transition to SSP2 values by 2150
   past_years <- getYears(future)[getYears(future, as.integer = TRUE) <= 2070]
-  combined_Ariadne <- harmonizePastTransition(ssp2Ariadne_data[EUR_countries, past_years,],
+  combined_SSP2EU <- toolHarmonizePastTransition(SSP2EU_data[EUR_countries, past_years,],
                                               ssp2_data[EUR_countries,,],
                                               2150)
 
   combined <- ssp2_data
-  combined[EUR_countries, getYears(combined_Ariadne),]  <- combined_Ariadne[EUR_countries,,]
-  getNames(combined) <- "gdp_SSP2Ariadne"
+  combined[EUR_countries, getYears(combined_SSP2EU),]  <- combined_SSP2EU[EUR_countries,,]
+  getNames(combined) <- "gdp_SSP2EU"
 
   combined[, getYears(combined)[getYears(combined, as.integer = TRUE) <= 2100], ]
 }

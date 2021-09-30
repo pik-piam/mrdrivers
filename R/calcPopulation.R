@@ -22,9 +22,9 @@
 #' library(mrdrivers)
 #' calcOutput("GDPpc")}
 #' 
-calcPopulation <- function(PopulationCalib  = c("past_grPEAP_grFuture", "past_grPEAP_grFuture", "Ariadne"),
-                           PopulationPast   = c("WDI",                  "WDI",                  "Eurostat_WDI"), 
-                           PopulationFuture = c("SSPs",                 "SDPs",                 "SSP2Ariadne"), 
+calcPopulation <- function(PopulationCalib  = c("calibSSPs", "calibSDPs", "calibSSP2EU"),
+                           PopulationPast   = c("WDI",       "WDI",       "Eurostat_WDI"), 
+                           PopulationFuture = c("SSPs",      "SDPs",      "SSP2EU"), 
                            useMIData = TRUE,
                            extension2150 = "bezier",
                            FiveYearSteps = TRUE, 
@@ -60,35 +60,40 @@ internal_calcPopulation <- function(PopulationCalib,
   # Combine "past" and "future" time series.
   combined <- switch(
     PopulationCalib,
+    "calibSSPs"            = harmonizeSSPsSDPs(past, future),
+    "calibSDPs"            = harmonizeSSPsSDPs(past, future),
+    "calibSSP2EU"          = harmonizeSSP2EU(past, future),
+    # Deprecated?
     "past"                 = popHarmonizePast(past, future),
-    "future"               = harmonizeFuture(past, future),
-    "transition"           = harmonizeTransition(past, future, yEnd = 2020),
-    "past_transition"      = harmonizePastTransition(past, future, yEnd = 2050),
-    "past_grFuture"        = harmonizePastGrFuture(past, future),
-    "past_grPEAP_grFuture" = harmonizePastGrPEAPGrFuture(past, future),
-    "Ariadne"              = harmonizeAriadne(past, future),
+    "future"               = toolHarmonizeFuture(past, future),
+    "transition"           = toolHarmonizeTransition(past, future, yEnd = 2020),
+    "past_transition"      = toolHarmonizePastTransition(past, future, yEnd = 2050),
+    "past_grFuture"        = toolHarmonizePastGrFuture(past, future),
     stop("Bad input for calcPopulation. Invalid 'PopulationCalib' argument.")
   )
 
   # Get description of harmonization function.
   datasettype <- switch(
     PopulationCalib,
-    "past"                 = PopulationPast,
-    "future"               = PopulationFuture,
-    "transition"           = glue("transition between {PopulationPast} and {PopulationFuture} \\
-                                  with a transition period until 2020"),
-    "past_transition"      = glue("use past data and afterwards transition between \\
-                                  {PopulationPast} and {PopulationFuture} with a transition \\
-                                  period until 2050"),
-    "past_grFuture"        = glue("use past data from {PopulationPast} and then the growth rates \\
-                                  from {PopulationFuture}."),
-    "past_grPEAP_grFuture" = glue("use past data from {PopulationPast}, then the growth rates \\
-                                  from the Wolrld Bank's PEAP until 2025, and then the growth \\
-                                  rates from {PopulationFuture}."),
-    "Ariadne"              = glue("use past data from {PopulationPast}, then the growth rates \\
-                                  from the Wolrld Bank's PEAP until 2025, and then the growth \\
-                                  rates from {PopulationFuture}. For EUR/ARIADNE countries, \\
-                                  just glue past with future.")
+    "calibSSPs"       = glue("use past data from {PopulationPast}, then the growth rates \\
+                             from the Wolrld Bank's PEAP until 2025, and then the growth \\
+                             rates from {PopulationFuture}."),
+    "calibSDPs"       = glue("use past data from {PopulationPast}, then the growth rates \\
+                             from the Wolrld Bank's PEAP until 2025, and then the growth \\
+                             rates from {PopulationFuture}."),
+    "calibSSP2EU"     = glue("use past data from {PopulationPast}, then the growth rates \\
+                             from the Wolrld Bank's PEAP until 2025, and then the growth \\
+                             rates from {PopulationFuture}. For European countries, \\
+                             just glue past with future."),
+    "past"            = PopulationPast,
+    "future"          = PopulationFuture,
+    "transition"      = glue("transition between {PopulationPast} and {PopulationFuture} \\
+                             with a transition period until 2020"),
+    "past_transition" = glue("use past data and afterwards transition between \\
+                             {PopulationPast} and {PopulationFuture} with a transition \\
+                             period until 2050"),
+    "past_grFuture"   = glue("use past data from {PopulationPast} and then the growth rates \\
+                             from {PopulationFuture}."),
   )
 
   # Apply finishing touches to combined time-series
@@ -106,6 +111,36 @@ internal_calcPopulation <- function(PopulationCalib,
 ######################################################################################
 # Population Harmonization Functions
 ######################################################################################
+harmonizeSSPsSDPs <- function(past, future) {
+  # Get PEAP data and fill in missing islands
+  short_term <- readSource("PEAP")
+  fill <- readSource("MissingIslands", subtype = "pop", convert = FALSE)
+  short_term <- completeData(short_term, fill)
+  
+  # Use PEAP growth rates until 2025
+  tmp <- toolHarmonizePastGrFuture(past, short_term[,getYears(short_term, as.integer = TRUE) <= 2025,])
+  # Use future growth rates after that
+  combined <- toolHarmonizePastGrFuture(tmp, future)
+  combined
+}
+
+harmonizeSSP2EU <- function(past, future) {
+  combined <- harmonizeSSPsSDPs(past, future)
+
+  # For SSP2EU: simply glue past (until 2019) with future (starting 2020)
+  # Get EUR countries. 
+  EUR_countries <- toolGetMapping("regionmappingH12.csv") %>% 
+    tibble::as_tibble() %>% 
+    dplyr::filter(.data$RegionCode == "EUR") %>% 
+    dplyr::pull(.data$CountryCode)
+
+  fut_years <- getYears(future)[getYears(future) >= 2020]
+  combined[EUR_countries, fut_years,] <- future[EUR_countries, fut_years,]
+
+  combined
+}
+
+# Legacy?
 popHarmonizePast <- function(past, future) {
   firstyear <- min(getYears(future, as.integer = TRUE))
   tmp <- future / setYears(future[,firstyear,], NULL)
@@ -119,34 +154,5 @@ popHarmonizePast <- function(past, future) {
     combined <- tmp
   }
   combined[combined == Inf] <- 0
-  combined
-}
-
-harmonizePastGrPEAPGrFuture <- function(past, future) {
-  # Get PEAP data and fill in missing islands
-  short_term <- readSource("PEAP")
-  fill <- readSource("MissingIslands", subtype = "pop", convert = FALSE)
-  short_term <- completeData(short_term, fill)
-  
-  # Use PEAP growth rates until 2025
-  tmp <- harmonizePastGrFuture(past, short_term[,getYears(short_term, as.integer = TRUE) <= 2025,])
-  # Use future growth rates after that
-  combined <- harmonizePastGrFuture(tmp, future)
-  combined
-}
-
-harmonizeAriadne <- function(past, future) {
-  combined <- harmonizePastGrPEAPGrFuture(past, future)
-
-  # For SSP2-Ariadne: simply glue past (until 2019) with future (starting 2020)
-  # Get EUR countries. 
-  EUR_countries <- toolGetMapping("regionmappingH12.csv") %>% 
-    tibble::as_tibble() %>% 
-    dplyr::filter(.data$RegionCode == "EUR") %>% 
-    dplyr::pull(.data$CountryCode)
-
-  fut_years <- getYears(future)[getYears(future) >= 2020]
-  combined[EUR_countries, fut_years,] <- future[EUR_countries, fut_years,]
-
   combined
 }

@@ -5,9 +5,9 @@
 \title{calcPopulation}
 \usage{
 calcPopulation(
-  PopulationCalib = c("past_grPEAP_grFuture", "past_grPEAP_grFuture", "Ariadne"),
+  PopulationCalib = c("calibSSPs", "calibSDPs", "calibSSP2EU"),
   PopulationPast = c("WDI", "WDI", "Eurostat_WDI"),
-  PopulationFuture = c("SSPs", "SDPs", "SSP2Ariadne"),
+  PopulationFuture = c("SSPs", "SDPs", "SSP2EU"),
   useMIData = TRUE,
   extension2150 = "bezier",
   FiveYearSteps = TRUE,

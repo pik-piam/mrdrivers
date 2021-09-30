@@ -4,7 +4,7 @@
 \alias{calcDefaultDrivers}
 \title{Collect Default Model Drivers}
 \usage{
-calcDefaultDrivers(drivers = c("Population", "UrbanPop", "GDP", "GDPpc"))
+calcDefaultDrivers(drivers = c("Population", "GDP", "UrbanPop"))
 }
 \arguments{
 \item{drivers}{Vector of strings.}

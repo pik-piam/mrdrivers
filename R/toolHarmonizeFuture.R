@@ -1,4 +1,4 @@
-harmonizeFuture <- function(past, future) {
+toolHarmonizeFuture <- function(past, future) {
   firstyear <- min(getYears(future, as.integer = TRUE))
   tmp <- dimSums(past/setYears(past[,firstyear,],NULL) * setYears(future[,firstyear,],NULL),
                  dim = 3.2)

@@ -5,9 +5,9 @@
 \title{calcGDP}
 \usage{
 calcGDP(
-  GDPCalib = c("past_IMF_SSP", "past_IMF_SDP", "Ariadne"),
+  GDPCalib = c("calibSSPs", "calibSDPs", "calibSSP2EU"),
   GDPPast = c("WDI", "WDI", "Eurostat_WDI"),
-  GDPFuture = c("SSPs", "SDPs", "SSP2Ariadne"),
+  GDPFuture = c("SSPs", "SDPs", "SSP2EU"),
   unit = "constant 2005 Int$PPP",
   useMIData = TRUE,
   extension2150 = "bezier",

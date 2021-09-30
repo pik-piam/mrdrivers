@@ -13,7 +13,7 @@
 #' 
 calcUrbanPop <- function(UrbanCalib = "past", 
                          UrbanPast = "WDI", 
-                         UrbanFuture = "SSPs",
+                         UrbanFuture = c("SSPs", "SDPs", "SSP2EU"),
                          extension2150 = "constant",
                          FiveYearSteps = TRUE,
                          naming = "indicator_scenario") {

@@ -24,8 +24,6 @@ calcUrbanPast <- function(UrbanPast = "WDI") {
   data <- finishingTouches(data)
 
   wp <- calcOutput("PopulationPast", PopulationPast = UrbanPast, useMIData = FALSE, aggregate = FALSE)
-  
-  data <- data[getRegions(wp), getYears(wp),]
 
   list(x = data, weight = wp, unit = "per 1", description = glue("Urbanisation data from {UrbanPast}"))
 }
