@@ -31,7 +31,7 @@ calcPopulation <- function(PopulationCalib  = c("calibSSPs", "calibSDPs", "calib
                            naming = "indicator_scenario") {
   # Check user input
   toolCheckUserInput("Population", as.list(environment()))
-  # Call internal_calcPop function the appropriate number of times              
+  # Call internal_calcPopulation function the appropriate number of times              
   toolInternalCalc("Population", as.list(environment()))
 }
 
@@ -134,7 +134,7 @@ harmonizeSSP2EU <- function(past, future) {
     dplyr::filter(.data$RegionCode == "EUR") %>% 
     dplyr::pull(.data$CountryCode)
 
-  fut_years <- getYears(future)[getYears(future) >= 2020]
+  fut_years <- getYears(future)[getYears(future, as.integer = TRUE) >= 2020]
   combined[EUR_countries, fut_years,] <- future[EUR_countries, fut_years,]
 
   combined

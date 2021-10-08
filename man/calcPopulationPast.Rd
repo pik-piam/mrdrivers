@@ -34,6 +34,7 @@ calcOutput("PopulationPast")}
 \link[madrat:calcOutput]{madrat::calcOutput}
 
 Other Population functions: 
+\code{\link{calcLabour}()},
 \code{\link{calcPopulationFuture}()},
 \code{\link{calcPopulation}()}
 }

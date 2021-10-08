@@ -11,6 +11,7 @@
 readSSP <- function(subtype) {
   files <- c(all = "SspDb_country_data_2013-06-12.csv.zip",
              pop2018Update = "Population in 000 by Age and Sex, countries, SSPs 2018vers wide.csv",
+             lab2018Update = "Population in 000 by Age and Sex, countries, SSPs 2018vers wide.csv",
              ratioPM = "WB_PPP_MER_2005_conversion_rates.xlsx")
   
   file <- toolSubtypeSelect(subtype, files)
@@ -26,11 +27,11 @@ readSSP <- function(subtype) {
       dplyr::mutate(value = as.double(.data$value)) %>% 
       as.magpie(spatial = "iso3c", temporal = "year", tidy = TRUE, filter = FALSE)  
 
-  } else if(subtype == "pop2018Update") {
+  } else if(subtype %in% c("pop2018Update", "lab2018Update")) {
     # Specifying the col_types quickens the read process
-    my_col_types <- readr::cols(.default = "d", scenario = "c", vers = "c", sex = "c", agegrp = "c")
+    my_col_types <- readr::cols(.default = "d", scenario = "c", vers = "_", sex = "c", agegrp = "c")
     x <- readr::read_csv(file, col_types = my_col_types) %>% 
-      tidyr::pivot_longer(6:206, names_to = "iso3c") %>% 
+      tidyr::pivot_longer(5:205, names_to = "iso3c") %>% 
       dplyr::rename("variable" = "scenario") %>%
       as.magpie(spatial = "iso3c", temporal = "year", tidy = TRUE) 
     

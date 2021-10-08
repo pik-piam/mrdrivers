@@ -26,6 +26,7 @@ test_that("set names", {
   expect_correct_set_names(suppressMessages(calcOutput("GDPFuture")))
   expect_correct_set_names(suppressMessages(calcOutput("GDP")))
   expect_correct_set_names(suppressMessages(calcOutput("DefaultDrivers")))
+  expect_correct_set_names(suppressMessages(calcOutput("Labour")))
 })
 
 
@@ -43,4 +44,5 @@ test_that("variable names", {
   expect_correct_variable_names(suppressMessages(calcOutput("UrbanPop")), "urb")
   expect_correct_variable_names(suppressMessages(calcOutput("GDPpc")), "gdppc")
   expect_correct_variable_names(suppressMessages(calcOutput("GDP")), "gdp")
+  expect_correct_variable_names(suppressMessages(calcOutput("Labour")), "lab")
 })

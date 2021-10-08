@@ -12,15 +12,23 @@ convertSSP <- function(x, subtype) {
     x <- toolGeneralConvert(x)
 
   } else if (subtype == "pop2018Update") {
-    # Sum over sex, agegrp and version
-    x <- dimSums(x, dim = c(3.2, 3.3, 3.4))
+    # Sum over sex and agegrp
+    x <- dimSums(x, dim = c(3.2, 3.3))
     # Add the Channel Islands (GB_CHA) to Great Britain (GBR)
     x["GBR",,] <- x["GBR",,] + x["GB_CHA",,]
     x <- x["GB_CHA",, invert = TRUE]
-
     x <- toolGeneralConvert(x)
 
-  }  else if (subtype == "ratioPM") {
+  } else if (subtype == "lab2018Update") {
+    # Sum over sex and agegrp
+    agegrps <- getNames(x)[grepl("\\.(15|2|3|4|50|55|60)", getNames(x))]
+    x <- dimSums(x[,, agegrps], dim = c(3.2, 3.3))
+    # Add the Channel Islands (GB_CHA) to Great Britain (GBR)
+    x["GBR",,] <- x["GBR",,] + x["GB_CHA",,]
+    x <- x["GB_CHA",, invert = TRUE]
+    x <- toolGeneralConvert(x)
+
+  } else if (subtype == "ratioPM") {
     x <- toolGeneralConvert(x, countryFillWith = 1)
   }  
 
