@@ -4,16 +4,10 @@
 \alias{calcPopulationFuture}
 \title{calcPopulationFuture}
 \usage{
-calcPopulationFuture(
-  PopulationFuture = "SSPs",
-  useMIData = TRUE,
-  extension2150 = "none"
-)
+calcPopulationFuture(PopulationFuture = "SSPs-MI", extension2150 = "none")
 }
 \arguments{
 \item{PopulationFuture}{population future data source}
-
-\item{useMIData}{logical}
 
 \item{extension2150}{string, either "bezier", "constant" or "none"}
 }
@@ -32,7 +26,7 @@ calcOutput("PopulationFuture")}
 
 }
 \seealso{
-\link[madrat:calcOutput]{madrat::calcOutput}
+\code{\link[madrat:calcOutput]{madrat::calcOutput()}}
 
 Other Population functions: 
 \code{\link{calcLabour}()},

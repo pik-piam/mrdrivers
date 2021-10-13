@@ -4,15 +4,13 @@
 \alias{calcGDPPast}
 \title{calcGDPPast}
 \usage{
-calcGDPPast(GDPPast = "WDI", unit = "constant 2005 Int$PPP", useMIData = TRUE)
+calcGDPPast(GDPPast = "WDI-MI", unit = "constant 2005 Int$PPP")
 }
 \arguments{
 \item{GDPPast}{GDP past data source}
 
 \item{unit}{A string. Either 'constant 2005 Int$PPP', 'constant 2005 US$MER',
 'constant 2017 Int$PPP' or 'constant 2017 US$MER'.}
-
-\item{useMIData}{logical}
 }
 \value{
 A magpie object with sets "iso3c", "year" and "variable".
@@ -46,7 +44,7 @@ calcOutput("GDPPast")}
 
 }
 \seealso{
-[madrat::calcOutput()
+\code{\link[madrat:calcOutput]{madrat::calcOutput()}}
 
 Other GDP functions: 
 \code{\link{calcGDPFuture}()},

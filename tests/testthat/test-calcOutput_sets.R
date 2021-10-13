@@ -19,15 +19,49 @@ test_that("set names", {
   expect_correct_set_names(suppressMessages(calcOutput("UrbanFuture")))
   expect_correct_set_names(suppressMessages(calcOutput("Urban")))
   expect_correct_set_names(suppressMessages(calcOutput("UrbanPop")))
+  expect_correct_set_names(suppressMessages(calcOutput("GDPPast")))
+  expect_correct_set_names(suppressMessages(calcOutput("GDPFuture")))
   expect_correct_set_names(suppressMessages(calcOutput("GDPpcPast")))
   expect_correct_set_names(suppressMessages(calcOutput("GDPpcFuture")))
   expect_correct_set_names(suppressMessages(calcOutput("GDPpc")))
-  expect_correct_set_names(suppressMessages(calcOutput("GDPPast")))
-  expect_correct_set_names(suppressMessages(calcOutput("GDPFuture")))
   expect_correct_set_names(suppressMessages(calcOutput("GDP")))
   expect_correct_set_names(suppressMessages(calcOutput("DefaultDrivers")))
   expect_correct_set_names(suppressMessages(calcOutput("Labour")))
+  expect_correct_set_names(suppressMessages(calcOutput("RatioPPP2MER")))
 })
+
+# Save all calcOutputs for later use
+calcs <- list("PopulationPast" = suppressMessages(calcOutput("PopulationPast")),
+              "PopulationFuture" = suppressMessages(calcOutput("PopulationFuture")),
+              "Population" = suppressMessages(calcOutput("Population")),
+              "UrbanPast" = suppressMessages(calcOutput("UrbanPast")),
+              "UrbanFuture" = suppressMessages(calcOutput("UrbanFuture")),
+              "Urban" = suppressMessages(calcOutput("Urban")),
+              "UrbanPop" = suppressMessages(calcOutput("UrbanPop")),
+              "GDPpcPast" = suppressMessages(calcOutput("GDPpcPast")),
+              "GDPpcFuture" = suppressMessages(calcOutput("GDPpcFuture")),
+              "GDPpc" = suppressMessages(calcOutput("GDPpc")),
+              "GDPPast" = suppressMessages(calcOutput("GDPPast")),
+              "GDPFuture" = suppressMessages(calcOutput("GDPFuture")),
+              "GDP" = suppressMessages(calcOutput("GDP")),
+              "DefaultDrivers" = suppressMessages(calcOutput("DefaultDrivers")),
+              "Labour" = suppressMessages(calcOutput("Labour")))
+
+calcs2 <- list("PopulationPast" = suppressMessages(calcOutput("PopulationPast", aggregate = FALSE)),
+               "PopulationFuture" = suppressMessages(calcOutput("PopulationFuture", aggregate = FALSE)),
+               "Population" = suppressMessages(calcOutput("Population", aggregate = FALSE)),
+               "UrbanPast" = suppressMessages(calcOutput("UrbanPast", aggregate = FALSE)),
+               "UrbanFuture" = suppressMessages(calcOutput("UrbanFuture", aggregate = FALSE)),
+               "Urban" = suppressMessages(calcOutput("Urban", aggregate = FALSE)),
+               "UrbanPop" = suppressMessages(calcOutput("UrbanPop", aggregate = FALSE)),
+               "GDPpcPast" = suppressMessages(calcOutput("GDPpcPast", aggregate = FALSE)),
+               "GDPpcFuture" = suppressMessages(calcOutput("GDPpcFuture", aggregate = FALSE)),
+               "GDPpc" = suppressMessages(calcOutput("GDPpc", aggregate = FALSE)),
+               "GDPPast" = suppressMessages(calcOutput("GDPPast", aggregate = FALSE)),
+               "GDPFuture" = suppressMessages(calcOutput("GDPFuture", aggregate = FALSE)),
+               "GDP" = suppressMessages(calcOutput("GDP", aggregate = FALSE)),
+               "DefaultDrivers" = suppressMessages(calcOutput("DefaultDrivers", aggregate = FALSE)),
+               "Labour" = suppressMessages(calcOutput("Labour", aggregate = FALSE)))
 
 
 test_that("variable names", {
@@ -36,13 +70,26 @@ test_that("variable names", {
     correct_names <- paste0(y, "_",
                             c("SSP1", "SSP2", "SSP3", "SSP4", "SSP5",
                               "SDP", "SDP_EI", "SDP_MC", "SDP_RC", "SSP2EU"))
-    expect_equal(getNames(x), correct_names)
+    expect_equal(getNames(calcs[[x]]), correct_names)
+    expect_equal(getNames(calcs2[[x]]), correct_names)
   }
 
-  expect_correct_variable_names(suppressMessages(calcOutput("Population")), "pop")
-  expect_correct_variable_names(suppressMessages(calcOutput("Urban")), "urb")
-  expect_correct_variable_names(suppressMessages(calcOutput("UrbanPop")), "urb")
-  expect_correct_variable_names(suppressMessages(calcOutput("GDPpc")), "gdppc")
-  expect_correct_variable_names(suppressMessages(calcOutput("GDP")), "gdp")
-  expect_correct_variable_names(suppressMessages(calcOutput("Labour")), "lab")
+  purrr::map2(c("Population", "Urban", "UrbanPop", "GDPpc", "GDP", "Labour"),
+              c("pop",        "urb",   "urb",      "gdppc", "gdp", "lab"),
+              expect_correct_variable_names)
+})
+
+test_that("all positive", {
+  purrr::map(calcs, ~ expect_equal(where(.x < 0)$summary[["TRUE"]], 0))
+  purrr::map(calcs2, ~ expect_equal(where(.x < 0)$summary[["TRUE"]], 0))
+})
+
+test_that("no INF", {
+  purrr::map(calcs, ~ expect_equal(where(is.infinite(.x))$summary[["TRUE"]], 0))
+  purrr::map(calcs2, ~ expect_equal(where(is.infinite(.x))$summary[["TRUE"]], 0))
+})
+
+test_that("no NA", {
+  purrr::map(calcs, ~ expect_equal(where(is.na(.x))$summary[["TRUE"]], 0))
+  purrr::map(calcs2, ~ expect_equal(where(is.na(.x))$summary[["TRUE"]], 0))
 })

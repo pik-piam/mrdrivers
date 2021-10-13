@@ -3,37 +3,42 @@
 #' @inheritParams calcGDP
 #' @inherit calcGDP return
 #' 
-#' @seealso [madrat::calcOutput()
+#' @seealso [madrat::calcOutput()]
 #' @family GDP functions
 #'
 #' @examples \dontrun{
 #' library(mrdrivers)
 #' calcOutput("GDPFuture")}
 #'
-calcGDPFuture <- function(GDPFuture = "SSPs",
+calcGDPFuture <- function(GDPFuture = "SSPs-MI",
                           unit = "constant 2005 Int$PPP",
-                          useMIData = TRUE,
                           extension2150 = "none") {
+  # Call internal_calcGDPFuture function the appropriate number of times
+  toolInternalCalc("GDPFuture", 
+                   list("GDPFuture" = strsplit(GDPFuture, "-")[[1]],
+                        "unit" = unit,
+                        "extension2150" = extension2150),
+                   mbind_or_fillWith = "fillWith")
+}
 
+
+######################################################################################
+# Internal Function
+######################################################################################
+internal_calcGDPFuture <- function(GDPFuture, unit, extension2150) {
   data <- switch(
     GDPFuture,
     "SSPs"   = cGDPFutureSSPs(unit),
     "SSP2EU" = cGDPFutureSSP2EU(unit),
     "SDPs"   = cGDPFutureSDPs(unit),
+    "MI"     = cGDPMI(unit),
     # Deprecated options ?
     "OECD"   = readSource("OECD", subtype = "gdp") * 1000,
     "SRES"   = cGDPFutureSRES(),
     stop("Bad input for calcGDPFuture. Invalid 'GDPFuture' argument.")
   )
 
-  # Fill in data with Missing Islands dataset, if opted for
-  if (useMIData) {
-    fill <- readSource("MissingIslands", subtype = "gdp", convert = FALSE) %>%
-      GDPuc::convertGDP("constant 2005 Int$PPP", unit, replace_NAs = 1)
-    data <- completeData(data, fill)
-  }
-
-  data <- finishingTouches(data, extension2150)
+  data <- toolFinishingTouches(data, extension2150)
 
   list(x = data, weight = NULL, unit = unit, description = glue("GDP data from {GDPFuture}"))
 }
@@ -44,7 +49,7 @@ calcGDPFuture <- function(GDPFuture = "SSPs",
 # Functions
 ######################################################################################
 cGDPFutureSSPs <- function(unit) {
-  data <- readSource("SSP", subtype = "all")[,,"GDP|PPP"][,,"OECD Env-Growth"] * 1000
+  data <- readSource("SSP", subtype = "gdp") * 1000
 
   # Refactor names
   data <- collapseNames(data)
@@ -120,6 +125,11 @@ cGDPFutureSSP2EU <- function(unit) {
   data
 }
 
+cGDPMI <- function(unit) {
+  readSource("MissingIslands", "gdp") %>%
+    GDPuc::convertGDP("constant 2005 Int$PPP", unit, replace_NAs = 1)
+}
+
 ######################################################################################
 # Legacy
 ######################################################################################
@@ -142,9 +152,9 @@ cGDPFutureSRES <- function() {
 
   fill <- calcOutput("GDPFuture",
                      GDPFuture = "SSPs",
-                     useMIData = FALSE,
                      extension2150 = "none",
                      aggregate = FALSE)[,,"gdp_SSP2"]
-  data <- completeData(data, fill)
+  data <- toolFillWith(data, fill)
+  data <- toolInterpolateAndExtrapolate(data)
 }
 

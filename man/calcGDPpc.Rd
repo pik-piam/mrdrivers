@@ -6,10 +6,9 @@
 \usage{
 calcGDPpc(
   GDPpcCalib = c("calibSSPs", "calibSDPs", "calibSSP2EU"),
-  GDPpcPast = c("WDI", "WDI", "Eurostat_WDI"),
-  GDPpcFuture = c("SSPs", "SDPs", "SSP2EU"),
+  GDPpcPast = c("WDI-MI", "WDI-MI", "Eurostat-WDI-MI"),
+  GDPpcFuture = c("SSPs-MI", "SDPs-MI", "SSP2EU-MI"),
   unit = "constant 2005 Int$PPP",
-  useMIData = TRUE,
   extension2150 = "bezier",
   FiveYearSteps = TRUE,
   naming = "indicator_scenario"
@@ -24,8 +23,6 @@ calcGDPpc(
 
 \item{unit}{A string. Either 'constant 2005 Int$PPP', 'constant 2005 US$MER',
 'constant 2017 Int$PPP' or 'constant 2017 US$MER'.}
-
-\item{useMIData}{logical}
 
 \item{extension2150}{string, either "bezier", "constant" or "none"}
 
@@ -46,7 +43,7 @@ calcOutput("GDPpc")}
 
 }
 \seealso{
-[madrat::calcOutput()
+\code{\link[madrat:calcOutput]{madrat::calcOutput()}}
 
 Other GDPpc functions: 
 \code{\link{calcGDPpcFuture}()},

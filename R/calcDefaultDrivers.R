@@ -3,7 +3,7 @@
 #' @param drivers Vector of strings.
 #' @inherit calcGDP return
 #' 
-#' @seealso [madrat::calcOutput]
+#' @seealso [madrat::calcOutput()]
 #' 
 #' @examples \dontrun{
 #' library(mrdrivers)

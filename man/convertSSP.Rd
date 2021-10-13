@@ -9,7 +9,8 @@ convertSSP(x, subtype)
 \arguments{
 \item{x}{MAgPIE object returned from readSSP}
 
-\item{subtype}{A string, either "all", "pop2018Update" or "ratioPM".}
+\item{subtype}{A string, either "all", "gdp", "pop", "urb", "pop2018Update",
+"lab2018Update" or "ratioPM".}
 }
 \value{
 Magpie object of the SSP data
@@ -19,7 +20,7 @@ Convert SSP data on ISO country level.
 }
 \examples{
 \dontrun{
-readSource("SSP", subtype = "all")}
+readSource("SSP", subtype = "gdp")}
 
 }
 \concept{SSP functions}

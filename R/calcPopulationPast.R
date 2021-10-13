@@ -12,30 +12,37 @@
 #' @inheritParams calcPopulation
 #' @inherit calcPopulation return
 #' 
-#' @seealso [madrat::calcOutput]
+#' @seealso [madrat::calcOutput()]
 #' @family Population functions
 #'
 #' @examples \dontrun{
 #' library(mrdrivers)
 #' calcOutput("PopulationPast")}
 #'
-calcPopulationPast <- function(PopulationPast = "WDI", useMIData = TRUE) {
+calcPopulationPast <- function(PopulationPast = "WDI-MI") {
+  # Call internal_calcPopulationPast function the appropriate number of times
+  toolInternalCalc("PopulationPast", 
+                   list("PopulationPast" = strsplit(PopulationPast, "-")[[1]]),
+                   mbind_or_fillWith = "fillWith")
+}
 
+
+######################################################################################
+# Internal Function
+######################################################################################
+internal_calcPopulationPast <- function(PopulationPast) {
   data <- switch(
     PopulationPast,
-    "WDI"          = readSource("WDI", "SP.POP.TOTL"),
-    "UN_PopDiv"    = readSource("UN_PopDiv"),
-    "Eurostat_WDI" = cPopulationPastEurostatWDI(),
+    "WDI"      = readSource("WDI", "SP.POP.TOTL"),
+    "UN_PopDiv"= readSource("UN_PopDiv", "WPP2019_estimates") * 1e-3,
+    "MI"       = readSource("MissingIslands", "pop"),
+    "Eurostat" = cPopulationPastEurostat(),
+    "HYDE"     = cPopulationPastHYDE(),
     stop("Bad input for PopulationPast. Invalid 'PopulationPast' argument.")
   )
 
-  if (useMIData) {
-    fill <- readSource("MissingIslands", subtype = "pop", convert = FALSE)
-    data <- completeData(data, fill)
-  }
-
   getNames(data) <- "population"
-  data <- finishingTouches(data)
+  data <- toolFinishingTouches(data)
 
   list(x = data, 
        weight = NULL, 
@@ -44,19 +51,16 @@ calcPopulationPast <- function(PopulationPast = "WDI", useMIData = TRUE) {
 }
 
 
-
 ######################################################################################
 # Functions
 ######################################################################################
-cPopulationPastEurostatWDI <- function() {
-  data_eurostat <- readSource("Eurostat", "population") / 1e+6
+cPopulationPastEurostat <- function() {
+  # Scale to milions
+  data_eurostat <- readSource("Eurostat", "population") * 1e-6
   data_wdi <- readSource("WDI", "SP.POP.TOTL")
 
   # Get EUR countries. 
-  EUR_countries <- toolGetMapping("regionmappingH12.csv") %>% 
-    tibble::as_tibble() %>% 
-    dplyr::filter(.data$RegionCode == "EUR") %>% 
-    dplyr::pull(.data$CountryCode)
+  EUR_countries <- toolGetEURcountries()
   
   # Fill in missing ( == 0) eurostat data using wdi growth rates 
   for (c in EUR_countries) {
@@ -68,9 +72,13 @@ cPopulationPastEurostatWDI <- function() {
     }
   }
 
-  # Use WDI data for everything but the EUR_countries. Use Eurostat stat for those.
-  data <- data_wdi
-  data[EUR_countries,,] <- data_eurostat[EUR_countries,,]
+  data_eurostat[!getRegions(data_eurostat) %in% EUR_countries,,] <- 0
+  data_eurostat
+}
 
-  data
+cPopulationPastHYDE <- function() {
+  # Scale to milions
+  data <- readSource("HYDE") * 1e-3
+  # Remove years past 2017: these are projections. 
+  data[, getYears(data)[getYears(data, as.integer = TRUE) <= 2017], ]
 }

@@ -7,7 +7,7 @@
 #' @inheritParams calcUrban
 #' @inherit calcUrban return
 #' 
-#' @seealso [madrat::calcOutput]
+#' @seealso [madrat::calcOutput()]
 #' @family Urban functions
 #'
 #' @examples \dontrun{
@@ -24,11 +24,10 @@ calcUrbanFuture <- function(UrbanFuture = "SSPs", extension2150 = "none") {
     stop("Bad input for UrbanFuture. Invalid 'UrbanFuture' argument.")
   )
 
-  data <- finishingTouches(data, extension2150)
+  data <- toolFinishingTouches(data, extension2150)
 
   wp <- calcOutput("PopulationFuture", 
                    PopulationFuture = UrbanFuture, 
-                   useMIData = FALSE, 
                    extension2150 = extension2150,
                    aggregate = FALSE)
   # Give weight same names as data, so that aggregate doesn't mess up data dim
@@ -44,7 +43,7 @@ calcUrbanFuture <- function(UrbanFuture = "SSPs", extension2150 = "none") {
 # Functions
 ######################################################################################
 cUrbanFutureSSPs <- function() {
-  data <- collapseNames(readSource("SSP", subtype = "all")[,,"Population|Urban|Share"][,,"NCAR"]) / 100
+  data <- collapseNames(readSource("SSP", "urb")) / 100
   getSets(data)[3] <- "variable"
   getNames(data) <- paste0("urb_", gsub("_v[[:alnum:],[:punct:]]*", "", getNames(data)))
   

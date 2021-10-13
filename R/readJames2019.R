@@ -19,7 +19,9 @@
 #' readSource("James2019", subtype = "IHME_USD05_PPP_pc")}
 #' 
 readJames2019 <- function(subtype) {
-  readr::read_csv("james2019.csv", show_col_types = FALSE) %>%
+  readr::read_csv("james2019.csv", 
+                  col_types = c("ISO3" = "c", ".default" = "d"), 
+                  progress = FALSE) %>%
     `[`(, c("ISO3", "Year", subtype)) %>%
     as.magpie(spatial = 1, temporal = 2)    
 }  

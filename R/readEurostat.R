@@ -26,7 +26,7 @@ readEurostat <- function(subtype) {
 # Functions
 ######################################################################################
 rEurostatPopulation <- function() {
-  readr::read_csv("estat_demo_gind.csv.gz", col_types = "ccccdd_") %>% 
+  readr::read_csv("estat_demo_gind.csv.gz", col_types = "ccccdd_", progress = FALSE) %>% 
     # Filter for "AVG" = average population. 
     dplyr::filter(.data$indic_de == "AVG") %>% 
     # Convert to magpie
@@ -34,7 +34,7 @@ rEurostatPopulation <- function() {
 }
 
 rEurostatPopulationProjections <- function() {
-  readr::read_csv("estat_proj_19np.csv.gz", col_types = "cccccccdd_") %>% 
+  readr::read_csv("estat_proj_19np.csv.gz", col_types = "cccccccdd_", progress = FALSE) %>% 
     # Filter for baseline projection of total population. 
     dplyr::filter(.data$sex == "T", 
                   .data$age == "TOTAL",
@@ -44,7 +44,7 @@ rEurostatPopulationProjections <- function() {
 }
 
 rEurostatGDP <- function() {
-  readr::read_csv("estat_nama_10_gdp.csv.gz", col_types = "cccccdd_") %>% 
+  readr::read_csv("estat_nama_10_gdp.csv.gz", col_types = "cccccdd_", progress = FALSE) %>% 
     # Filter for GDP at market prices (=B1GQ) in Chained-Linked Volumes in 
     # 2005 mil. National Currencies (= CLV05_MNAC)
     dplyr::filter(.data$na_item == "B1GQ", .data$unit == "CLV05_MNAC") %>% 

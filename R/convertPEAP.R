@@ -6,5 +6,5 @@
 #' @inherit readPEAP return
 #' @family PEAP functions
 convertPEAP <- function(x) {
-  toolGeneralConvert(x, warn = FALSE)
+  toolGeneralConvert(x, warn = FALSE, note = FALSE)
 }

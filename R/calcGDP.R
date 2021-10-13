@@ -13,7 +13,6 @@
 #' @param GDPFuture GDP future data source
 #' @param unit A string. Either 'constant 2005 Int$PPP', 'constant 2005 US$MER',
 #'   'constant 2017 Int$PPP' or 'constant 2017 US$MER'.
-#' @param useMIData logical
 #' @param extension2150 string, either "bezier", "constant" or "none"
 #' @param FiveYearSteps Only five year steps if TRUE, FALSE returns years from source data
 #' @param naming naming scheme
@@ -29,10 +28,9 @@
 #' calcOutput("GDP")}
 #'
 calcGDP <- function(GDPCalib  = c("calibSSPs", "calibSDPs", "calibSSP2EU"),
-                    GDPPast   = c("WDI",       "WDI",       "Eurostat_WDI"),
-                    GDPFuture = c("SSPs",      "SDPs",      "SSP2EU"),
+                    GDPPast   = c("WDI-MI",    "WDI-MI",    "Eurostat-WDI-MI"),
+                    GDPFuture = c("SSPs-MI",   "SDPs-MI",   "SSP2EU-MI"),
                     unit = "constant 2005 Int$PPP",
-                    useMIData = TRUE,
                     extension2150 = "bezier",
                     FiveYearSteps = TRUE,
                     naming = "indicator_scenario") {
@@ -49,7 +47,6 @@ internal_calcGDP <- function(GDPCalib,
                              GDPPast,
                              GDPFuture,
                              unit,
-                             useMIData,
                              extension2150,
                              FiveYearSteps,
                              naming){
@@ -68,12 +65,10 @@ internal_calcGDP <- function(GDPCalib,
     past <- calcOutput("GDPPast",
                        GDPPast = GDPPast,
                        unit = unit,
-                       useMIData = useMIData,
                        aggregate = FALSE)
     future <- calcOutput("GDPFuture",
                          GDPFuture = GDPFuture,
                          unit = unit,
-                         useMIData = useMIData,
                          extension2150 = "none",
                          aggregate = FALSE)
   }
@@ -114,7 +109,7 @@ internal_calcGDP <- function(GDPCalib,
   )
 
   # Apply finishing touches to combined time-series
-  combined <- finishingTouches(combined, extension2150, FiveYearSteps, naming)
+  combined <- toolFinishingTouches(combined, extension2150, FiveYearSteps, naming)
 
   list(x = combined,
        weight = NULL,
@@ -133,7 +128,6 @@ gdpHarmonizeSSPsSPDs <- function(args) {
                       GDPpcPast = args$GDPPast,
                       GDPpcFuture = args$GDPFuture,
                       unit = args$unit,
-                      useMIData = args$useMIData,
                       extension2150 = "none",
                       FiveYearSteps = FALSE,
                       aggregate = FALSE)
@@ -157,8 +151,8 @@ gdpHarmonizeSSP2EU <- function(past, future, unit) {
   # We return only up until 2100.
   ssp2_data <- calcOutput("GDP",
                           GDPCalib = "calibSSPs",
-                          GDPPast = "WDI",
-                          GDPFuture = "SSPs",
+                          GDPPast = "WDI-MI",
+                          GDPFuture = "SSPs-MI",
                           unit = unit,
                           extension2150 = "bezier",
                           aggregate = FALSE,

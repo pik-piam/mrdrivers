@@ -4,10 +4,12 @@
 \alias{convertUN_PopDiv}
 \title{Convert UN Population Divison Data}
 \usage{
-convertUN_PopDiv(x)
+convertUN_PopDiv(x, subtype = "WPP2019_estimates")
 }
 \arguments{
 \item{x}{\code{magclass} object containing UN Population Division data.}
+
+\item{subtype}{String indicating version and sheet}
 }
 \value{
 \code{magclass} object; population in millions.

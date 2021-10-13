@@ -25,12 +25,17 @@ readSource("MissingIslands", subtype = "pop", convert = FALSE)}
 
 Other "Past" population functions: 
 \code{\link{readEurostat}()},
+\code{\link{readHYDE}()},
 \code{\link{readUN_PopDiv}()},
 \code{\link{readWDI}()}
 
 Other "Past" GDP functions: 
 \code{\link{readEurostat}()},
 \code{\link{readWDI}()}
+
+Other MissingIslands functions: 
+\code{\link{convertMissingIslands}()},
+\code{\link{downloadMissingIslands}()}
 }
 \concept{"Past" GDP functions}
 \concept{"Past" population functions}

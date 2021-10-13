@@ -1,6 +1,6 @@
 # Extend beyond 2100 in 5 year time steps. Either with bezierExtension or constant.
 # TODO: generalize the dates
-extend2150 <- function (data, extension2150){
+toolExtend2150 <- function (data, extension2150){
   if (extension2150 != "none") {
     time_extend <- seq(2105, 2150, 5)
     if (extension2150 == "bezier") {

@@ -9,7 +9,7 @@
 readPEAP <- function() {
   file <- "Data_Extract_From_Population_estimates_and_projections.xlsx"
   x <- readxl::read_xlsx(file, sheet = 1, range = "B1:CQ260") %>% 
-    tidyr::pivot_longer(cols = tidyselect::starts_with(c("1","2")), names_to = "year") %>% 
+    tidyr::pivot_longer(cols = tidyselect::starts_with(c("1", "2")), names_to = "year") %>% 
     dplyr::select("iso3c" = .data$`Country Code`, .data$year, .data$value) %>% 
     dplyr::mutate(variable = "population",
                   year = as.integer(sub(" .*", "", .data$year)),

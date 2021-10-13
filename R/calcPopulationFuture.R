@@ -7,35 +7,39 @@
 #' @inheritParams calcPopulation
 #' @inherit calcPopulation return
 #' 
-#' @seealso [madrat::calcOutput]
+#' @seealso [madrat::calcOutput()]
 #' @family Population functions
 #'
 #' @examples \dontrun{
 #' library(mrdrivers)
 #' calcOutput("PopulationFuture")}
 #'
-calcPopulationFuture <- function(PopulationFuture = "SSPs",
-                                 useMIData = TRUE,
+calcPopulationFuture <- function(PopulationFuture = "SSPs-MI",
                                  extension2150 = "none") {
+  # Call internal_calcPopulationFuture function the appropriate number of times
+  toolInternalCalc("PopulationFuture", 
+                   list("PopulationFuture" = strsplit(PopulationFuture, "-")[[1]],
+                        "extension2150" = extension2150),
+                   mbind_or_fillWith = "fillWith")
+}
 
+######################################################################################
+# Internal Function
+######################################################################################
+internal_calcPopulationFuture <- function(PopulationFuture, extension2150) {
   data <- switch(PopulationFuture,
-                 "SSPs"   = cPopulationFutureSSPs(),
-                 "SSP2EU" = cPopulationFutureSSP2EU(),
-                 "SDPs"   = cPopulationFutureSDPs(),
-                 #
+                 "SSPs"      = cPopulationFutureSSPs(),
+                 "SSP2EU"    = cPopulationFutureSSP2EU(),
+                 "SDPs"      = cPopulationFutureSDPs(),
+                 "UN_PopDiv" = cPopulationFutureUN_PopDiv(),
+                 "MI"        = readSource("MissingIslands", "pop"),
+                 "SSPs_old"  = cPopulationFutureSSPsOld(),
                  # Deprecated options ? 
-                 "SSPs_old" = cPopulationFutureSSPsOld(),
                  "SRES"     = cPopulationFutureSRES(),
-                 "IIASApop" = readSource("IIASApop") / 1e+6,
+                 "IIASApop" = readSource("IIASApop") * 1e-6,
                  stop("Bad input for PopulationFuture. Invalid 'PopulationFuture' argument."))
 
-  # Fill in data with Missing Islands dataset
-  if (useMIData) {
-    fill <- readSource("MissingIslands", subtype = "pop", convert = FALSE)
-    data <- completeData(data, fill)
-  }
-
-  data <- finishingTouches(data, extension2150)
+  data <- toolFinishingTouches(data, extension2150)
 
   list(x = data,
        weight = NULL,
@@ -67,10 +71,7 @@ cPopulationFutureSSP2EU <- function() {
   data_ssp2 <- cPopulationFutureSSPs()[,, "pop_SSP2"]
 
   # Get EUR countries - GBR. (Great Britatin still in EUR mapping, but no Eurostat projections exist.) 
-  EUR_countries <- toolGetMapping("regionmappingH12.csv") %>% 
-    tibble::as_tibble() %>% 
-    dplyr::filter(.data$RegionCode == "EUR", .data$CountryCode != "GBR") %>% 
-    dplyr::pull(.data$CountryCode)
+  EUR_countries <- toolGetEURcountries()
   
   # Get common years
   cy <- intersect(getYears(data_ssp2),  getYears(data_eurostat))
@@ -85,7 +86,7 @@ cPopulationFutureSSP2EU <- function() {
 }
 
 cPopulationFutureSSPsOld <- function() {
-  data <- readSource("SSP", subtype = "all")[,,"Population"][,,"IIASA-WiC POP"]
+  data <- readSource("SSP", "pop")
   
   # Refactor names
   data <- collapseNames(data) 
@@ -94,6 +95,12 @@ cPopulationFutureSSPsOld <- function() {
 
   # Remove 2000 and 2005, because these years are not complete
   data <- data[,setdiff(getYears(data), c("y2000", "y2005")),]
+}
+
+cPopulationFutureUN_PopDiv <- function() {
+  data <- readSource("UN_PopDiv", "WPP2019_medium") * 1e-3
+  getNames(data) <- "pop_medium_variant"
+  data
 }
 
 ######################################################################################
@@ -107,9 +114,10 @@ cPopulationFutureSRES <- function() {
   getNames(data) <- paste0("pop_", substr(getNames(data), 6, 7))
   
   fill <- calcOutput("PopulationFuture", 
-                     PopulationFuture = "SSP", 
-                     useMIData = FALSE,
+                     PopulationFuture = "SSPs", 
                      extension2150 = "none",
                      aggregate = FALSE)[,,"pop_SSP2"]
-  data <- completeData(data, fill)
+  data <- data %>% 
+    toolFillWith(fill) %>% 
+    toolInterpolateAndExtrapolate()
 }

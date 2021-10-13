@@ -11,7 +11,7 @@
 #' @inheritParams calcGDP
 #' @inherit calcGDP return
 #' 
-#' @seealso [madrat::calcOutput]
+#' @seealso [madrat::calcOutput()]
 #' @family Population functions
 #' 
 #' @examples \dontrun{
@@ -38,7 +38,7 @@ internal_calcLabour <- function(LabourFuture, extension2150) {
   )
 
   # Apply finishing touches to combined time-series
-  x <- finishingTouches(x, extension2150)
+  x <- toolFinishingTouches(x, extension2150)
   
   list(x = x,
        weight = NULL,
@@ -71,15 +71,13 @@ cLabourFutureSSP2EU <- function() {
                          PopulationCalib = "calibSSPs",
                          PopulationPast = "WDI", 
                          PopulationFuture = "SSPs",
-                         useMIData = FALSE,
                          FiveYearSteps = FALSE,
                          extension2150 = "none",
                          aggregate = FALSE)[,, "pop_SSP2"]
   pop_SSP2EU <- calcOutput("Population", 
                            PopulationCalib = "calibSSP2EU",
-                           PopulationPast = "Eurostat_WDI", 
+                           PopulationPast = "Eurostat-WDI", 
                            PopulationFuture = "SSP2EU",
-                           useMIData = FALSE,
                            FiveYearSteps = FALSE,
                            extension2150 = "none",
                            aggregate = FALSE)[,, "pop_SSP2EU"]
@@ -94,26 +92,11 @@ cLabourFutureSSP2EU <- function() {
 
 #Legacy
 cLabourFutureSSPsOld <- function() {
-  aged <- c( "Population|Female|Aged15-19",
-             "Population|Female|Aged20-24",
-             "Population|Female|Aged25-29",
-             "Population|Female|Aged30-34",
-             "Population|Female|Aged35-39",
-             "Population|Female|Aged40-44",
-             "Population|Female|Aged45-49",
-             "Population|Female|Aged50-54",
-             "Population|Female|Aged55-59",
-             "Population|Female|Aged60-64",
-             "Population|Male|Aged15-19",
-             "Population|Male|Aged20-24",
-             "Population|Male|Aged25-29",
-             "Population|Male|Aged30-34",
-             "Population|Male|Aged35-39",
-             "Population|Male|Aged40-44",
-             "Population|Male|Aged45-49",
-             "Population|Male|Aged50-54",
-             "Population|Male|Aged55-59",
-             "Population|Male|Aged60-64" )
+  aged <- purrr::cross3("Population", 
+                        c("Male", "Female"), 
+                        c("Aged15-19", "Aged20-24", "Aged25-29", "Aged30-34", "Aged35-39", 
+                          "Aged40-44", "Aged45-49", "Aged50-54", "Aged55-59", "Aged60-64")) %>% 
+    purrr::map_chr(paste, collapse = "|")
  
   readSource("SSP",subtype="all")[,,aged]
   

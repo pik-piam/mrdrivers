@@ -8,7 +8,7 @@
 #' @family James2019 functions
 #' 
 convertJames2019 <- function(x, subtype) {
-  x <- toolGeneralConvert(x, no_remove_warning = c("CHN_354", "CHN_361", "USSR_FRMR"))
+  x <- toolGeneralConvert(x, no_remove_warning = c("CHN_354", "CHN_361", "USSR_FRMR"), note = FALSE)
  
   #fill missing islands not in MissingIslands, using older James
   old <- readSource("James", subtype = subtype)
@@ -34,7 +34,7 @@ convertJames2019 <- function(x, subtype) {
   x[c("HKG","MAC"),1950:1959,] <- setYears(x[c("HKG","MAC"),1960,],NULL)
   
   # South Sudan values are very large, likely inaccurate. In their stead, the Missing island gdp values and WDI pop numbers are used.
-  ssd_gdp <- readSource("MissingIslands", subtype = "gdp", convert = FALSE)["SSD",,]
+  ssd_gdp <- readSource("MissingIslands", "gdp")["SSD",,]
   ssd_pop <- readSource("WDI", subtype = "SP.POP.TOTL")["SSD",,] %>% dimReduce()
   
   ssd_gdp <- time_interpolate(ssd_gdp, c(1950:2019)) 

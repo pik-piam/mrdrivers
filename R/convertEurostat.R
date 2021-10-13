@@ -36,7 +36,7 @@ convEurostatPopulation <- function(x) {
   # ABOVE Warning: Some values were not matched unambiguously: FX, XK
   # Fix set names
   
-  toolGeneralConvert(x)
+  toolGeneralConvert(x, note = FALSE)
  }
 
 convEurostatGDP <- function(x) {
@@ -45,7 +45,7 @@ convEurostatGDP <- function(x) {
   # ABOVE warning that is being ignored: 
   # Some values were not matched unambiguously: EA, EA12, EA19, EU15, EU27_2020, EU28
 
-  x <- toolGeneralConvert(x)
+  x <- toolGeneralConvert(x, note = FALSE)
   
   # Convert from constant 2005 LCU to constant 2005 Int$PPP.
   getNames(x) <- "GDP"

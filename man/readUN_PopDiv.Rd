@@ -4,7 +4,10 @@
 \alias{readUN_PopDiv}
 \title{Read UN Population Division Data}
 \usage{
-readUN_PopDiv()
+readUN_PopDiv(subtype = "WPP2019_estimates")
+}
+\arguments{
+\item{subtype}{String indicating version and sheet}
 }
 \value{
 \code{magclass} object; population in thousands.
@@ -20,6 +23,7 @@ Population Division} "World Population Prospects: The 2015 Revision"
 
 Other "Past" population functions: 
 \code{\link{readEurostat}()},
+\code{\link{readHYDE}()},
 \code{\link{readMissingIslands}()},
 \code{\link{readWDI}()}
 

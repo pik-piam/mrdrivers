@@ -10,7 +10,7 @@ readWDI(subtype)
 \item{subtype}{A string. Type of WDI data that should be read. Use the
 worldbank indicator abbreviation. Available subtypes are: \itemize{
 \item \code{"SP.POP.TOTL"}: Population, total
-\item \code{"NY.GDP.MKTP.PP.KD"}: GDP,PPP (constant 2011 international Dollar)
+\item \code{"NY.GDP.MKTP.PP.KD"}: GDP,PPP (constant 2017 international Dollar)
 \item \code{"NY.GDP.MKTP.PP.CD"}: GDP, PPP (current international Dollar)
 \item \code{"NY.GDP.MKTP.CD"}: GDP MER (current US Dollar)
 \item \code{"NY.GDP.MKTP.KD"}: GDP MER (constant 2010 USDollar)
@@ -44,6 +44,7 @@ readSource("WDI", subtype = "SP.POP.TOTL")}
 
 Other "Past" population functions: 
 \code{\link{readEurostat}()},
+\code{\link{readHYDE}()},
 \code{\link{readMissingIslands}()},
 \code{\link{readUN_PopDiv}()}
 

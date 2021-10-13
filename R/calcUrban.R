@@ -16,7 +16,7 @@
 #' @inheritParams calcGDP
 #' @inherit calcGDP return
 #' 
-#' @seealso [madrat::calcOutput]
+#' @seealso [madrat::calcOutput()]
 #' @family Urban functions
 #' @family Combined scenario functions
 #' 
@@ -66,14 +66,13 @@ internal_calcUrban <- function(UrbanCalib,
   )
 
   # Apply finishing touches to combined time-series
-  combined <- finishingTouches(combined, extension2150, FiveYearSteps, naming)
+  combined <- toolFinishingTouches(combined, extension2150, FiveYearSteps, naming)
   
   # Get weigth
   wp <- calcOutput("Population", 
                    PopulationCalib = UrbanCalib,
                    PopulationPast = UrbanPast, 
                    PopulationFuture = UrbanFuture,
-                   useMIData = FALSE,
                    FiveYearSteps = FiveYearSteps,
                    extension2150 = extension2150,
                    aggregate = FALSE)

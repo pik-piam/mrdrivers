@@ -7,7 +7,7 @@
 #' @inheritParams readOECD
 #' @inherit readOECD return examples
 #' @family OECD functions
-convertOECD <- function(x,subtype) {
+convertOECD <- function(x, subtype) {
 
   if(subtype=="gdp") {
     # disaggregate "ROW"

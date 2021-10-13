@@ -23,5 +23,5 @@ convertIMF <- function(x, subtype = "current_account") {
     x <- x + x_rest
   }
   
-  toolGeneralConvert(x, no_remove_warning = c("UVK", "WBG"))
+  toolGeneralConvert(x, no_remove_warning = c("UVK", "WBG"), warn = FALSE, note = FALSE)
 }

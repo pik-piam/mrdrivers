@@ -27,6 +27,6 @@ convertARIADNE <- function(x, subtype){
     getNames(x) <- "GDP|PPP (million US$2005/yr)"
   }
 
-  toolGeneralConvert(x)
+  toolGeneralConvert(x, note = FALSE)
 }
 

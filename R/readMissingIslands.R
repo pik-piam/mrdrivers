@@ -19,7 +19,5 @@ readMissingIslands <- function(subtype) {
   
   x <- utils::read.csv(file, header = TRUE)
   names(x) <- substring(names(x), 1, 5)
-  x <- as.magpie(x)
-  
-  x
+  as.magpie(x)
 }  

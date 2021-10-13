@@ -6,10 +6,9 @@
 \usage{
 calcGDP(
   GDPCalib = c("calibSSPs", "calibSDPs", "calibSSP2EU"),
-  GDPPast = c("WDI", "WDI", "Eurostat_WDI"),
-  GDPFuture = c("SSPs", "SDPs", "SSP2EU"),
+  GDPPast = c("WDI-MI", "WDI-MI", "Eurostat-WDI-MI"),
+  GDPFuture = c("SSPs-MI", "SDPs-MI", "SSP2EU-MI"),
   unit = "constant 2005 Int$PPP",
-  useMIData = TRUE,
   extension2150 = "bezier",
   FiveYearSteps = TRUE,
   naming = "indicator_scenario"
@@ -24,8 +23,6 @@ calcGDP(
 
 \item{unit}{A string. Either 'constant 2005 Int$PPP', 'constant 2005 US$MER',
 'constant 2017 Int$PPP' or 'constant 2017 US$MER'.}
-
-\item{useMIData}{logical}
 
 \item{extension2150}{string, either "bezier", "constant" or "none"}
 

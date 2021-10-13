@@ -6,9 +6,8 @@
 \usage{
 calcPopulation(
   PopulationCalib = c("calibSSPs", "calibSDPs", "calibSSP2EU"),
-  PopulationPast = c("WDI", "WDI", "Eurostat_WDI"),
-  PopulationFuture = c("SSPs", "SDPs", "SSP2EU"),
-  useMIData = TRUE,
+  PopulationPast = c("WDI-MI", "WDI-MI", "Eurostat-WDI-MI"),
+  PopulationFuture = c("SSPs-MI", "SDPs-MI", "SSP2EU-MI"),
   extension2150 = "bezier",
   FiveYearSteps = TRUE,
   naming = "indicator_scenario"
@@ -20,8 +19,6 @@ calcPopulation(
 \item{PopulationPast}{population past data source}
 
 \item{PopulationFuture}{population future data source}
-
-\item{useMIData}{logical}
 
 \item{extension2150}{string, either "bezier", "constant" or "none"}
 
@@ -47,7 +44,7 @@ calcOutput("GDPpc")}
 
 }
 \seealso{
-\link[madrat:calcOutput]{madrat::calcOutput}
+\code{\link[madrat:calcOutput]{madrat::calcOutput()}}
 
 Other Population functions: 
 \code{\link{calcLabour}()},

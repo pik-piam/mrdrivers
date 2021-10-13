@@ -25,6 +25,7 @@ readSource("Eurostat", subtype = "population")
 \code{\link[madrat:readSource]{madrat::readSource()}}
 
 Other "Past" population functions: 
+\code{\link{readHYDE}()},
 \code{\link{readMissingIslands}()},
 \code{\link{readUN_PopDiv}()},
 \code{\link{readWDI}()}

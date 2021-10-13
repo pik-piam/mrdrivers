@@ -13,7 +13,7 @@
 #' \dontrun{ a <- convertSRES(x,subtype="pop_a1")
 #' }
 #' 
-convertSRES<-function(x,subtype){
+convertSRES<-function(x, subtype){
   
   split_series<-function(split,by,from,to,splityear){
     if (any(!to%in%getRegions(by))) {

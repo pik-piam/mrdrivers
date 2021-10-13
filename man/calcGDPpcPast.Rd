@@ -4,19 +4,13 @@
 \alias{calcGDPpcPast}
 \title{calcGDPpcPast}
 \usage{
-calcGDPpcPast(
-  GDPpcPast = "WDI",
-  unit = "constant 2005 Int$PPP",
-  useMIData = TRUE
-)
+calcGDPpcPast(GDPpcPast = "WDI-MI", unit = "constant 2005 Int$PPP")
 }
 \arguments{
 \item{GDPpcPast}{String or vector of strings}
 
 \item{unit}{A string. Either 'constant 2005 Int$PPP', 'constant 2005 US$MER',
 'constant 2017 Int$PPP' or 'constant 2017 US$MER'.}
-
-\item{useMIData}{logical}
 }
 \value{
 A magpie object with sets "iso3c", "year" and "variable".
@@ -31,7 +25,7 @@ calcOutput("GDPpcPast")}
 
 }
 \seealso{
-\link[madrat:calcOutput]{madrat::calcOutput}
+\code{\link[madrat:calcOutput]{madrat::calcOutput()}}
 
 Other GDPpc functions: 
 \code{\link{calcGDPpcFuture}()},

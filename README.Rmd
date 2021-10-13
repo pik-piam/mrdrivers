@@ -42,13 +42,13 @@ The readSource and calcOutput functions provided by this package are listed belo
 readSource:
 ```{r, echo=FALSE}
 x <- madrat::getSources(packages = "mrdrivers", type = "read")
-x[!x %in% c("James", "PopulationTWN", "SRES", "IIASApop", "UN_PopDiv", "PWT", "OECD")]
+x[!x %in% c("SRES", "IIASApop", "PWT", "OECD")]
 ```
 
 readSource (deprecated?!):
 ```{r, echo=FALSE}
 x <- madrat::getSources(packages = "mrdrivers", type = "read")
-x[x %in% c("James", "PopulationTWN", "SRES", "IIASApop", "UN_PopDiv", "PWT", "OECD")]
+x[x %in% c("SRES", "IIASApop", "PWT", "OECD")]
 ```
 
 calcOutput:

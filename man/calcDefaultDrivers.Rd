@@ -22,5 +22,5 @@ calcOutput("DefaultDrivers")}
 
 }
 \seealso{
-\link[madrat:calcOutput]{madrat::calcOutput}
+\code{\link[madrat:calcOutput]{madrat::calcOutput()}}
 }

@@ -6,7 +6,7 @@
 #' @inheritParams calcGDP
 #' @inherit calcGDP return
 #'
-#' @seealso [madrat::calcOutput()
+#' @seealso [madrat::calcOutput()]
 #' @family GDPpc functions
 #' @family Combined scenario functions
 #'
@@ -15,10 +15,9 @@
 #' calcOutput("GDPpc")}
 #'
 calcGDPpc <- function(GDPpcCalib  = c("calibSSPs", "calibSDPs", "calibSSP2EU"),
-                      GDPpcPast   = c("WDI",       "WDI",       "Eurostat_WDI"),
-                      GDPpcFuture = c("SSPs",      "SDPs",      "SSP2EU"),
+                      GDPpcPast   = c("WDI-MI",    "WDI-MI",    "Eurostat-WDI-MI"),
+                      GDPpcFuture = c("SSPs-MI",   "SDPs-MI",   "SSP2EU-MI"),
                       unit = "constant 2005 Int$PPP",
-                      useMIData = TRUE,
                       extension2150 = "bezier",
                       FiveYearSteps = TRUE,
                       naming = "indicator_scenario") {
@@ -35,7 +34,6 @@ internal_calcGDPpc <- function(GDPpcCalib,
                                GDPpcPast,
                                GDPpcFuture,
                                unit,
-                               useMIData,
                                extension2150,
                                FiveYearSteps,
                                naming){
@@ -48,12 +46,10 @@ internal_calcGDPpc <- function(GDPpcCalib,
     past <- calcOutput("GDPpcPast",
                        GDPpcPast = GDPpcPast,
                        unit = unit,
-                       useMIData = useMIData,
                        aggregate = FALSE)
     future <- calcOutput("GDPpcFuture",
                          GDPpcFuture = GDPpcFuture,
                          unit = unit,
-                         useMIData = useMIData,
                          extension2150 = "none",
                          aggregate = FALSE)
   } else {
@@ -83,14 +79,13 @@ internal_calcGDPpc <- function(GDPpcCalib,
   )
 
   # Apply finishing touches to combined time-series
-  combined <- finishingTouches(combined, extension2150, FiveYearSteps, naming)
+  combined <- toolFinishingTouches(combined, extension2150, FiveYearSteps, naming)
 
   # Get weigth
   weight <- calcOutput("Population", 
                        PopulationCalib = GDPpcCalib,
                        PopulationPast = GDPpcPast, 
                        PopulationFuture = GDPpcFuture,
-                       useMIData = useMIData,
                        FiveYearSteps = FiveYearSteps,
                        extension2150 = extension2150,
                        aggregate = FALSE)
@@ -113,11 +108,13 @@ gdppcHarmonizeSSP <- function(past_gdppc, future_gdppc, unit, yEnd) {
   # Get IMF short-term income projcetions and fill missing with SSP2
   imf_gdppc <- readSource("IMF", "GDPpc")
   fill <- calcOutput("GDPpcFuture", 
-                     GDPpcFuture = "SSPs", 
+                     GDPpcFuture = "SSPs-MI", 
                      unit = unit,
                      extension2150 = "none",
                      aggregate = FALSE)[,, "gdppc_SSP2"]
-  imf_gdppc <- completeData(imf_gdppc, fill)
+  imf_gdppc <- imf_gdppc %>% 
+    toolFillWith(fill) %>% 
+    toolInterpolateAndExtrapolate()
 
   # Use short term IMF growth rates (here, as far as possible = 2026)
   tmp_gdppc <- toolHarmonizePastGrFuture(past_gdppc, imf_gdppc)
@@ -162,7 +159,7 @@ gdppcHarmonizeSDP <- function(args) {
   gdppcap_SSP1 <- calcOutput("GDPpc",
                              GDPpcCalib  = "calibSSPs",
                              GDPpcPast   = args$GDPpcPast,
-                             GDPpcFuture = "SSPs",
+                             GDPpcFuture = "SSPs-MI",
                              unit = args$unit,
                              extension2150 = "none",
                              FiveYearSteps = FALSE,
@@ -190,7 +187,6 @@ gdppcHarmonizeSSP2EU <- function(args) {
                     GDPPast = args$GDPpcPast,
                     GDPFuture = args$GDPpcFuture,
                     unit = args$unit,
-                    useMIData = args$useMIData,
                     extension2150 = "none",
                     FiveYearSteps = FALSE,
                     aggregate = FALSE)

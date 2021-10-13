@@ -24,48 +24,43 @@
 #' @inheritParams calcGDP
 #' @inherit calcGDP return
 #' 
-#' @seealso [madrat::calcOutput()
+#' @seealso [madrat::calcOutput()]
 #' @family GDP functions
 #'
 #' @examples \dontrun{
 #' library(mrdrivers)
 #' calcOutput("GDPPast")}
 #'
-calcGDPPast <- function(GDPPast = "WDI",
-                        unit = "constant 2005 Int$PPP",
-                        useMIData = TRUE) {
+calcGDPPast <- function(GDPPast = "WDI-MI", unit = "constant 2005 Int$PPP") {
+  # Call internal_calcGDPPast function the appropriate number of times
+  toolInternalCalc("GDPPast", 
+                   list("GDPPast" = strsplit(GDPPast, "-")[[1]],
+                        "unit" = unit),
+                   mbind_or_fillWith = "fillWith")
+}
 
+######################################################################################
+# Internal Function
+######################################################################################
+internal_calcGDPPast <- function(GDPPast, unit) {
   # Check input argument
-  valid_inputs <- c(
-    "WDI",
-    "Eurostat_WDI",
-    "IHME_USD05_PPP_pc",
-    "IHME_USD05_MER_pc",
-    "IMF_USD05_PPP_pc",
-    "PENN_USD05_PPP_pc",
-    "WB_USD05_PPP_pc",
-    "MADDISON_USD05_PPP_pc",
-    "WB_USD05_MER_pc",
-    "IMF_USD05_MER_pc",
-    "UN_USD05_MER_pc",
-    "PWT"
-  )
-  if (!GDPPast %in% valid_inputs) {
+  if (!GDPPast %in% c("WDI", "Eurostat", "MI", "PWT", 
+                      # All called through readJames
+                      "IHME_USD05_PPP_pc", "IHME_USD05_MER_pc", "IMF_USD05_PPP_pc", 
+                      "PENN_USD05_PPP_pc", "WB_USD05_PPP_pc", "MADDISON_USD05_PPP_pc", 
+                      "WB_USD05_MER_pc", "IMF_USD05_MER_pc", "UN_USD05_MER_pc")) {
     stop("Bad input for calcGDPPast. Invalid 'GDPPast' argument.")
   }
 
   # Call appropriate calcGDPPast function.
   data <- switch(GDPPast,
-                 "PWT"          = cGDPPastPWT(),
-                 "WDI"          = cGDPPastWDI(unit),
-                 "Eurostat_WDI" = cGDPPastEurostatWDI(unit),
+                 "PWT"      = cGDPPastPWT(),
+                 "WDI"      = cGDPPastWDI(unit),
+                 "Eurostat" = cGDPPastEurostat(unit),
+                 "MI"       = cGDPMI(unit),
                  cGDPPastJames(GDPPast))
 
-  if (useMIData) {
-    fill <- readSource("MissingIslands", subtype = "gdp", convert = FALSE) %>%
-      GDPuc::convertGDP("constant 2005 Int$PPP", unit, replace_NAs = 1)
-    data <- completeData(data, fill)
-  }
+  data <- toolFinishingTouches(data)
 
   list(x = data, weight = NULL, unit = unit, description = glue("GDP data from {GDPPast}."))
 }
@@ -80,70 +75,24 @@ cGDPPastWDI <- function(unit) {
   # "NY.GDP.MKTP.PP.KD" = GDP in constant 2017 Int$PPP (as of time of writing this function)
   data <- readSource("WDI", "NY.GDP.MKTP.PP.KD") %>%
      GDPuc::convertGDP("constant 2017 Int$PPP", unit, replace_NAs = 0) 
-  # TODO: Decide if use JAMES 2019 data for NA countries, e.g. DJI (as is now) or
-  # convert using regional averages and use JAMES 2019 growth rates
 
-  # There is no PPP data available before 1990, so we shall extrapolate back using constant LCU growth rates
-  # data <- toolHarmonizeFutureGrPast(past = readSource("WDI", "NY.GDP.MKTP.KN"),
-  #                               future = data)
-
-  # Use the James2019  WB_USD05_PPP_pc series to fill in past data.
-  # Using mainly growth rates, since conversion of James2019 data into 2005 Int$PPP not certain to be correct.
-  gdppc <- readSource("James2019", "WB_USD05_PPP_pc") %>%
-    GDPuc::convertGDP("constant 2005 Int$PPP", unit, replace_NAs = 1) 
-  
-  pop <- readSource("WDI", "SP.POP.TOTL")
-  
-  cy <- intersect(getYears(gdppc), getYears(pop))
-  past_gdp <- gdppc[, cy,] * pop[, cy,]
-  getSets(past_gdp) <- c("iso3c", "year", "variable")
-  getNames(past_gdp) <- "WB_USD05_PPP"
-
-  x <- new.magpie(getRegions(data), getYears(past_gdp), getNames(data), fill = 0)
-  getSets(x) <- getSets(past_gdp)
-  for (i in getRegions(data)) {
-    tmp <- data[i, getYears(data)[data[i,,] != 0], ]
-    ihme_data <- past_gdp[i, getYears(past_gdp)[past_gdp[i,,] != 0], ]
-
-    if (length(tmp) == 0 && length(ihme_data) == 0) {
-      next
-    } else if (length(tmp) != 0 && length(ihme_data) == 0) {
-      x[i, getYears(tmp),] <- tmp
-    } else if (length(tmp) == 0 && length(ihme_data) != 0) {
-      x[i, getYears(past_gdp),] <- toolFillYears(ihme_data, getYears(past_gdp))
-    } else {
-      r <- toolHarmonizeFutureGrPast(past = toolFillYears(ihme_data, getYears(past_gdp)),
-                                     future = tmp)
-      x[i, getYears(r),] <- r
-    }
-  }
-  data <- x
+  data <- fillWithWBFromJames2019(data, unit)
 
   getNames(data) <- glue("gdp in {unit}")
   data
 }
 
-cGDPPastEurostatWDI <- function(unit) {
-  data_eurostat <- readSource("Eurostat", "GDP") %>%
-    GDPuc::convertGDP("constant 2005 Int$PPP", unit, replace_NAs = 0) 
+cGDPPastEurostat <- function(unit) {
+  EUR_countries <- toolGetEURcountries()
 
-  data_wdi <- readSource("WDI", "NY.GDP.MKTP.PP.KD") %>%
-    GDPuc::convertGDP("constant 2017 Int$PPP", unit, replace_NAs = 0) 
+  data <- readSource("Eurostat", "GDP") %>%
+    GDPuc::convertGDP("constant 2005 Int$PPP", unit, replace_NAs = 0) %>%
+    # Drop 2020 values and keep only EUR countries
+    `[`(, 2020, , invert = TRUE) %>%
+    `[`(EUR_countries,,)
 
-  # Get EUR countries.
-  EUR_countries <- toolGetMapping("regionmappingH12.csv") %>%
-    tibble::as_tibble() %>%
-    dplyr::filter(.data$RegionCode == "EUR") %>%
-    dplyr::pull(.data$CountryCode)
-
-  # Use WDI data for everything but the EUR_countries. Use Eurostat stat for those.
-  data <- data_wdi
-  cy <- intersect(getYears(data_wdi),  getYears(data_eurostat))
-  data[EUR_countries, cy,] <- data_eurostat[EUR_countries, cy,]
-
-  # There is no PPP data available before 1990, so we shall extrapolate back using constant LCU growth rates
-  data <- toolHarmonizeFutureGrPast(past = readSource("WDI", "NY.GDP.MKTP.KN"),
-                                    future = data)
+  data <- fillWithWBFromJames2019(data[EUR_countries,,], unit) 
+  data <- data %>% toolCountryFill(fill = 0) %>% suppressMessages() 
 
   getNames(data) <- glue("gdp in {unit}")
   data
@@ -159,6 +108,40 @@ cGDPPastJames <- function(type) {
 
   data
 }
+
+# Use the James2019  WB_USD05_PPP_pc series to fill in past data.
+# Using mainly growth rates, since conversion of James2019 data into 2005 Int$PPP not certain to be correct.
+fillWithWBFromJames2019 <- function(data, unit) {
+  gdppc <- readSource("James2019", "WB_USD05_PPP_pc") %>%
+    GDPuc::convertGDP("constant 2005 Int$PPP", unit, replace_NAs = 1) 
+  
+  pop <- readSource("WDI", "SP.POP.TOTL")
+
+  cy <- intersect(getYears(gdppc), getYears(pop))
+  past_gdp <- gdppc[, cy,] * pop[, cy,]
+  getSets(past_gdp) <- c("iso3c", "year", "variable")
+  getNames(past_gdp) <- "WB_USD05_PPP"
+
+  x <- new.magpie(getRegions(data), cy, getNames(data), fill = 0)
+  getSets(x) <- getSets(past_gdp)
+  for (i in getRegions(data)) {
+    tmp <- data[i, getYears(data)[data[i,,] != 0], ]
+    ihme_data <- past_gdp[i, cy[past_gdp[i,,] != 0], ]
+
+    if (length(tmp) == 0 && length(ihme_data) == 0) {
+      next
+    } else if (length(tmp) != 0 && length(ihme_data) == 0) {
+      x[i, getYears(tmp),] <- tmp
+    } else if (length(tmp) == 0 && length(ihme_data) != 0) {
+      x[i, cy,] <- toolFillYears(ihme_data, cy)
+    } else {
+      r <- toolHarmonizeFutureGrPast(past = toolFillYears(ihme_data, cy), future = tmp)
+      x[i, getYears(r),] <- r
+    }
+  }
+  x
+}
+
 
 
 ######################################################################################

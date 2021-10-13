@@ -32,7 +32,7 @@ calcLabour()}
 
 }
 \seealso{
-\link[madrat:calcOutput]{madrat::calcOutput}
+\code{\link[madrat:calcOutput]{madrat::calcOutput()}}
 
 Other Population functions: 
 \code{\link{calcPopulationFuture}()},

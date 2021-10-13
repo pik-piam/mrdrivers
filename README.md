@@ -5,7 +5,7 @@
 
 <!-- badges: start -->
 
-[![R-cmd-check](https://github.com/pik-piam/mrdrivers/actions/workflows/test-buildlibrary.yaml/badge.svg)](https://github.com/pik-piam/mrdrivers/actions/workflows/test-buildlibrary.yaml)
+[![check](https://github.com/pik-piam/mrdrivers/actions/workflows/test-buildlibrary.yaml/badge.svg)](https://github.com/pik-piam/mrdrivers/actions/workflows/test-buildlibrary.yaml)
 [![Lifecycle:
 maturing](https://img.shields.io/badge/lifecycle-experimental-orange.svg)](https://lifecycle.r-lib.org/articles/stages.html#experimental)
 
@@ -39,17 +39,17 @@ listed below.
 
 readSource:
 
-    #> [1] "ARIADNE"        "Eurostat"       "IMF"            "James2019"     
-    #> [5] "MissingIslands" "PEAP"           "SSP"            "WDI"
+    #>  [1] "ARIADNE"        "Eurostat"       "HYDE"           "IMF"           
+    #>  [5] "James"          "James2019"      "MissingIslands" "PEAP"          
+    #>  [9] "PopulationTWN"  "SSP"            "UN_PopDiv"      "WDI"
 
 readSource (deprecated?!):
 
-    #> [1] "IIASApop"      "James"         "OECD"          "PopulationTWN"
-    #> [5] "PWT"           "SRES"          "UN_PopDiv"
+    #> [1] "IIASApop" "OECD"     "PWT"      "SRES"
 
 calcOutput:
 
     #>  [1] "DefaultDrivers"   "GDP"              "GDPFuture"        "GDPPast"         
-    #>  [5] "GDPpc"            "GDPpcFuture"      "GDPpcPast"        "Population"      
-    #>  [9] "PopulationFuture" "PopulationPast"   "Urban"            "UrbanFuture"     
-    #> [13] "UrbanPast"        "UrbanPop"
+    #>  [5] "GDPpc"            "GDPpcFuture"      "GDPpcPast"        "Labour"          
+    #>  [9] "Population"       "PopulationFuture" "PopulationPast"   "RatioPPP2MER"    
+    #> [13] "Urban"            "UrbanFuture"      "UrbanPast"        "UrbanPop"

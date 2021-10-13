@@ -3,7 +3,7 @@
 #' @inheritParams calcUrban
 #' @inherit calcUrban return
 #' 
-#' @seealso [madrat::calcOutput]
+#' @seealso [madrat::calcOutput()]
 #' @family Urban functions
 #' @family Combined scenario functions
 #' 
