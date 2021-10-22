@@ -83,12 +83,11 @@ cGDPPastWDI <- function(unit) {
 }
 
 cGDPPastEurostat <- function(unit) {
-  EUR_countries <- toolGetEURcountries()
+  EUR_countries <- toolGetEUcountries()
 
   data <- readSource("Eurostat", "GDP") %>%
     GDPuc::convertGDP("constant 2005 Int$PPP", unit, replace_NAs = 0) %>%
-    # Drop 2020 values and keep only EUR countries
-    `[`(, 2020, , invert = TRUE) %>%
+    # Keep only EUR countries
     `[`(EUR_countries,,)
 
   data <- fillWithWBFromJames2019(data[EUR_countries,,], unit) 
@@ -109,7 +108,7 @@ cGDPPastJames <- function(type) {
   data
 }
 
-# Use the James2019  WB_USD05_PPP_pc series to fill in past data.
+# Use the James2019  WB_USD05_PPP_pc series to fill in past data until 1960.
 # Using mainly growth rates, since conversion of James2019 data into 2005 Int$PPP not certain to be correct.
 fillWithWBFromJames2019 <- function(data, unit) {
   gdppc <- readSource("James2019", "WB_USD05_PPP_pc") %>%
@@ -122,7 +121,10 @@ fillWithWBFromJames2019 <- function(data, unit) {
   getSets(past_gdp) <- c("iso3c", "year", "variable")
   getNames(past_gdp) <- "WB_USD05_PPP"
 
-  x <- new.magpie(getRegions(data), cy, getNames(data), fill = 0)
+  x <- new.magpie(getRegions(data), 
+                  1960:max(getYears(data, as.integer = TRUE)), 
+                  getNames(data), 
+                  fill = 0)
   getSets(x) <- getSets(past_gdp)
   for (i in getRegions(data)) {
     tmp <- data[i, getYears(data)[data[i,,] != 0], ]

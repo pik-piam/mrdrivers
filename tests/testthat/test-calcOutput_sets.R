@@ -63,6 +63,22 @@ calcs2 <- list("PopulationPast" = suppressMessages(calcOutput("PopulationPast", 
                "DefaultDrivers" = suppressMessages(calcOutput("DefaultDrivers", aggregate = FALSE)),
                "Labour" = suppressMessages(calcOutput("Labour", aggregate = FALSE)))
 
+calcs3 <- list("PopulationPast" = suppressMessages(calcOutput("PopulationPast", supplementary = TRUE)),
+               "PopulationFuture" = suppressMessages(calcOutput("PopulationFuture", supplementary = TRUE)),
+               "Population" = suppressMessages(calcOutput("Population", supplementary = TRUE)),
+               "UrbanPast" = suppressMessages(calcOutput("UrbanPast", supplementary = TRUE)),
+               "UrbanFuture" = suppressMessages(calcOutput("UrbanFuture", supplementary = TRUE)),
+               "Urban" = suppressMessages(calcOutput("Urban", supplementary = TRUE)),
+               "UrbanPop" = suppressMessages(calcOutput("UrbanPop", supplementary = TRUE)),
+               "GDPpcPast" = suppressMessages(calcOutput("GDPpcPast", supplementary = TRUE)),
+               "GDPpcFuture" = suppressMessages(calcOutput("GDPpcFuture", supplementary = TRUE)),
+               "GDPpc" = suppressMessages(calcOutput("GDPpc", supplementary = TRUE)),
+               "GDPPast" = suppressMessages(calcOutput("GDPPast", supplementary = TRUE)),
+               "GDPFuture" = suppressMessages(calcOutput("GDPFuture", supplementary = TRUE)),
+               "GDP" = suppressMessages(calcOutput("GDP", supplementary = TRUE)),
+               "DefaultDrivers" = suppressMessages(calcOutput("DefaultDrivers", supplementary = TRUE)),
+               "Labour" = suppressMessages(calcOutput("Labour", supplementary = TRUE)))
+
 
 test_that("variable names", {
 
@@ -93,3 +109,11 @@ test_that("no NA", {
   purrr::map(calcs, ~ expect_equal(where(is.na(.x))$summary[["TRUE"]], 0))
   purrr::map(calcs2, ~ expect_equal(where(is.na(.x))$summary[["TRUE"]], 0))
 })
+
+test_that("no newline in descriptions", {
+  print(purrr::map(calcs3, ~ .x$description))
+  purrr::map(calcs3, ~ expect_true(!grepl("\n", .x$description)))
+})
+
+
+

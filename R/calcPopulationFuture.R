@@ -71,7 +71,7 @@ cPopulationFutureSSP2EU <- function() {
   data_ssp2 <- cPopulationFutureSSPs()[,, "pop_SSP2"]
 
   # Get EUR countries - GBR. (Great Britatin still in EUR mapping, but no Eurostat projections exist.) 
-  EUR_countries <- toolGetEURcountries()
+  EUR_countries <- toolGetEUcountries()
   
   # Get common years
   cy <- intersect(getYears(data_ssp2),  getYears(data_eurostat))

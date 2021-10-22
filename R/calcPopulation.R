@@ -73,16 +73,19 @@ internal_calcPopulation <- function(PopulationCalib,
   datasettype <- switch(
     PopulationCalib,
     "calibSSPs"       = glue("use past data from {PopulationPast}, then the growth rates \\
-                             from the Wolrld Bank's PEAP until 2025, and then the growth \\
-                             rates from {PopulationFuture}."),
+                             from the Wolrld Bank's PEAP until \\
+                             {max(getYears(readSource('IMF'), as.integer = TRUE))}, \\
+                             and then the growth rates from {PopulationFuture}."),
     "calibSDPs"       = glue("use past data from {PopulationPast}, then the growth rates \\
-                             from the Wolrld Bank's PEAP until 2025, and then the growth \\
-                             rates from {PopulationFuture}."),
+                             from the Wolrld Bank's PEAP until \\
+                             {max(getYears(readSource('IMF'), as.integer = TRUE))}, \\
+                             and then the growth rates from {PopulationFuture}."),
     "calibSSP2EU"     = glue("use past data from {PopulationPast}, then the growth rates \\
-                             from the Wolrld Bank's PEAP until 2025, and then the growth \\
-                             rates from {PopulationFuture}. For European countries, \\
-                             just glue past with future."),
-    "calibUN_PopDiv"            = glue("use past data from {PopulationPast} and then future data from \\
+                             from the Wolrld Bank's PEAP until \\
+                             {max(getYears(readSource('IMF'), as.integer = TRUE))}, \\
+                             and then the growth rates from {PopulationFuture}. \\
+                             For European countries, just glue past with future."),
+    "calibUN_PopDiv"  = glue("use past data from {PopulationPast} and then future data from \\
                               {PopulationFuture}."),
     "past"            = PopulationPast,
     "future"          = PopulationFuture,
@@ -111,18 +114,20 @@ internal_calcPopulation <- function(PopulationCalib,
 # Population Harmonization Functions
 ######################################################################################
 harmonizeSSPsSDPs <- function(past, future) {
-  # Get PEAP data and fill in missing islands
+  # Get PEAP data and fill in missing islands. Then drop everything that is not
+  # "short-term", defined as being later than the last year of the IMF WEO data.
   short_term <- readSource("PEAP")
   fill <- readSource("MissingIslands", subtype = "pop", convert = FALSE)
   short_term <- short_term %>% 
     toolFillWith(fill) %>%
     toolInterpolateAndExtrapolate()
+  last_year_IMF <- max(getYears(readSource("IMF"), as.integer = TRUE))
+  short_term <- short_term[, getYears(short_term, as.integer = TRUE) <= last_year_IMF, ]
   
-  # Use PEAP growth rates until 2025
-  tmp <- toolHarmonizePastGrFuture(past, short_term[,getYears(short_term, as.integer = TRUE) <= 2025,])
-  # Use future growth rates after that
-  combined <- toolHarmonizePastGrFuture(tmp, future)
-  combined
+  # Use PEAP growth rates until last year of IMF WEO data, and future growth rates after that
+  past %>%
+    toolHarmonizePastGrFuture(short_term) %>%
+    toolHarmonizePastGrFuture(future)
 }
 
 harmonizeSSP2EU <- function(past, future) {
@@ -130,7 +135,7 @@ harmonizeSSP2EU <- function(past, future) {
 
   # For SSP2EU: simply glue past (until 2019) with future (starting 2020)
   # Get EUR countries. 
-  EUR_countries <- toolGetEURcountries()
+  EUR_countries <- toolGetEUcountries()
 
   fut_years <- getYears(future)[getYears(future, as.integer = TRUE) >= 2020]
   combined[EUR_countries, fut_years,] <- future[EUR_countries, fut_years,]
@@ -140,8 +145,9 @@ harmonizeSSP2EU <- function(past, future) {
 
 harmonizeUN_PopDiv <- function(past, future) {
   # Glue future to past
-  year <- max(intersect(getYears(past, as.integer = TRUE),
-                        getYears(future, as.integer = TRUE)))
+  # year <- max(intersect(getYears(past, as.integer = TRUE),
+  #                       getYears(future, as.integer = TRUE)))
+  year <- 2017
   fut_years <- getYears(future)[getYears(future, as.integer = TRUE) > year]
   getNames(past) <- getNames(future)
   mbind(past, future[, fut_years, ])

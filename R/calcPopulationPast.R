@@ -37,7 +37,6 @@ internal_calcPopulationPast <- function(PopulationPast) {
     "UN_PopDiv"= readSource("UN_PopDiv", "WPP2019_estimates") * 1e-3,
     "MI"       = readSource("MissingIslands", "pop"),
     "Eurostat" = cPopulationPastEurostat(),
-    "HYDE"     = cPopulationPastHYDE(),
     stop("Bad input for PopulationPast. Invalid 'PopulationPast' argument.")
   )
 
@@ -60,7 +59,7 @@ cPopulationPastEurostat <- function() {
   data_wdi <- readSource("WDI", "SP.POP.TOTL")
 
   # Get EUR countries. 
-  EUR_countries <- toolGetEURcountries()
+  EUR_countries <- toolGetEUcountries()
   
   # Fill in missing ( == 0) eurostat data using wdi growth rates 
   for (c in EUR_countries) {
@@ -74,11 +73,4 @@ cPopulationPastEurostat <- function() {
 
   data_eurostat[!getRegions(data_eurostat) %in% EUR_countries,,] <- 0
   data_eurostat
-}
-
-cPopulationPastHYDE <- function() {
-  # Scale to milions
-  data <- readSource("HYDE") * 1e-3
-  # Remove years past 2017: these are projections. 
-  data[, getYears(data)[getYears(data, as.integer = TRUE) <= 2017], ]
 }

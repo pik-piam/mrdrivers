@@ -116,17 +116,20 @@ gdppcHarmonizeSSP <- function(past_gdppc, future_gdppc, unit, yEnd) {
     toolFillWith(fill) %>% 
     toolInterpolateAndExtrapolate()
 
-  # Use short term IMF growth rates (here, as far as possible = 2026)
+  # Use short term IMF growth rates (here, as far as possible)
   tmp_gdppc <- toolHarmonizePastGrFuture(past_gdppc, imf_gdppc)
 
   # Transform into tibble, combine past and future tibbles
   tmp_gdppc <- tmp_gdppc %>%
     as.data.frame(rev = 2) %>% 
     tibble::as_tibble() %>% 
-    dplyr::select("iso3c", "year", "value" = ".value") %>% 
-    dplyr::filter(.data$year != 2026)
+    dplyr::select("iso3c", "year", "value" = ".value") 
 
+  # Make sure to add the last IMF year to the future SSP data, jsut in case
+  # it's not there. That is the year from which convergence begins.
+  yStart <- max(getYears(imf_gdppc, as.integer = TRUE))
   future_gdppc <- future_gdppc %>% 
+    toolAddInterpolatedYear(yStart) %>% 
     as.data.frame(rev = 2) %>% 
     tibble::as_tibble() %>% 
     dplyr::select("iso3c", "year", "variable", "value" = ".value")
@@ -142,7 +145,7 @@ gdppcHarmonizeSSP <- function(past_gdppc, future_gdppc, unit, yEnd) {
     dplyr::mutate(SSP = sub("^......", "", .data$SSP))
 
   # Pass to special convergence function
-  combined_gdppc <- convergeSpecial(combined_gdppc)
+  combined_gdppc <- convergeSpecial(combined_gdppc, year_start = yStart, year_end = yEnd)
 
   # Retransform into magpie
   combined_gdppc <- combined_gdppc %>%
@@ -207,25 +210,31 @@ gdppcHarmonizeSSP2EU <- function(args) {
 #########################
 ### Helper functions
 #########################
-convergeSpecial <- function(x) {
-
+convergeSpecial <- function(x, year_start, year_end) {
+  
+  # Compute the difference in year_start.
   dif <- x %>%
-    dplyr::filter(.data$year == 2025) %>%
+    dplyr::filter(.data$year == year_start) %>%
     dplyr::mutate(d = .data$iiasa_gdppc - .data$value) %>%
     dplyr::select(.data$iso3c, .data$SSP, .data$d)
+
+  # Define the years marking the start of medium, and slow convergence
+  # (year_start being the start for fast convergence)
+  y1 <- year_start + 5
+  y2 <- year_start + 10
 
   x <- x %>%
     dplyr::left_join(dif, by = c("iso3c", "SSP")) %>%
     dplyr::mutate(
       # Medium convergence
       value = dplyr::if_else(
-        .data$year > 2025 & .data$SSP == "SSP2",
+        .data$year > year_start & .data$SSP == "SSP2",
         dplyr::if_else(
-          .data$year == 2030,
+          .data$year == y1,
           .data$iiasa_gdppc - .data$d,
           dplyr::if_else(
-            .data$year <= 2100,
-            .data$iiasa_gdppc - .data$d * (2100 - .data$year) / 70,
+            .data$year <= year_end,
+            .data$iiasa_gdppc - .data$d * (year_end - .data$year) / (year_end - y1),
             .data$iiasa_gdppc
           )
         ),
@@ -233,35 +242,35 @@ convergeSpecial <- function(x) {
       ),
       # Fast convergence
       value = dplyr::if_else(
-         .data$year > 2025 &
+         .data$year > year_start &
             ((.data$SSP %in% c("SSP1", "SSP5") & .data$d >= 0) |
              (.data$SSP %in% c("SSP3", "SSP4") & .data$d < 0)),
          dplyr::if_else(
-             .data$year <= 2100,
-             .data$iiasa_gdppc - .data$d * (2100 - .data$year) / 75,
+             .data$year <= year_end,
+             .data$iiasa_gdppc - .data$d * (year_end - .data$year) / (year_end - year_start),
              .data$iiasa_gdppc
          ),
          .data$value
       ),
       # Slow convergence
       value = dplyr::if_else(
-        .data$year > 2025 &
+        .data$year > year_start &
             ((.data$SSP %in% c("SSP3", "SSP4") & .data$d >=0 ) |
              (.data$SSP %in% c("SSP1", "SSP5") & .data$d < 0)),
         dplyr::if_else(
-            .data$year <= 2035,
+            .data$year <= y2,
             .data$iiasa_gdppc - .data$d,
             dplyr::if_else(
-              .data$year <= 2100,
-              .data$iiasa_gdppc - .data$d * (2100 - .data$year) / 65,
+              .data$year <= year_end,
+              .data$iiasa_gdppc - .data$d * (year_end - .data$year) / (year_end - y2),
               .data$iiasa_gdppc
             )
         ),
         .data$value
       ),
-      # Add a minimum value for value here. This can occur when the d computed in 2025 is 
-      # so large relative to the original GDPpc value in 2025, that a further dercease in the
-      # years 2030 and 2035 pushes the GDPpc into the negative.
+      # Add a minimum value for value here. This can occur when the d computed in year_start is 
+      # so large relative to the original GDPpc value in year_start, that a further dercease in the
+      # years y1 and y2 pushes the GDPpc into the negative.
       value = pmax(.data$value, 0.01)
     ) %>%
     dplyr::select(-.data$d)

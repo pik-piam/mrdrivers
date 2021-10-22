@@ -1,9 +1,15 @@
 toolHarmonizePastGrFuture <- function(past, future) {
-  lastPastYear <- max(intersect(getYears(past, as.integer = TRUE),
-                                getYears(future, as.integer = TRUE)))
+
+  lastPastYear <- max(getYears(past, as.integer = TRUE))
   firstFutureYear <- min(getYears(future, as.integer = TRUE))
   if (lastPastYear < firstFutureYear) {
     stop("The past and future data need to have some overlap")
+  }
+
+  # If lastPastYear is not in future data, then create future data for lastPastYear
+  # by linear interpolation. That way the return object really has all the past data. 
+  if (!lastPastYear %in% getYears(future, as.integer = TRUE)) {
+     future <- toolAddInterpolatedYear(future, lastPastYear)
   }
 
   # Create past data for all future scenarios

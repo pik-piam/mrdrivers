@@ -111,8 +111,8 @@ cGDPFutureSSP2EU <- function(unit) {
       GDPuc::convertGDP("constant 2005 Int$PPP", unit, replace_NAs = 0)
   data_ssp <- cGDPFutureSSPs(unit)
 
-  # Get countries for which Eurostat GDP projections exist.)
-  EUR_countries <- where(data_SSP2EU != 0 )$true$regions
+  # Get EU-27 countries
+  EUR_countries <- toolGetEUcountries(only_countries_with_ARIADNE_gdp_data = TRUE)
 
   # Get common years
   cy <- intersect(getYears(data_ssp),  getYears(data_SSP2EU))

@@ -19,6 +19,9 @@ convertJames2019 <- function(x, subtype) {
   # new james has much higher (double in earliest time steps)
   # historical china values
   pop <- readSource("WDI", subtype = "SP.POP.TOTL")[c("CHN","HKG","MAC"),,]
+  # Drop WDI years not in James2019
+  pop <- pop[, intersect(getYears(pop), getYears(x)),]
+  
   oldyears <- intersect(getYears(pop), getYears(old))
   old <- pop[,oldyears,]*old[c("CHN","HKG","MAC"),oldyears,]
   old <- collapseNames(old)

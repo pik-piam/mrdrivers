@@ -97,11 +97,11 @@ internal_calcGDP <- function(GDPCalib,
     "past_transition" = glue("use past data and afterwards transition between {GDPPast} and \\
                              {GDPFuture} with a transition period until 2050"),
     "calibSSPs"    = glue("use past data, short term growth rates from IMF and \\
-                              afterwards transition between {GDPPast} and {GDPFuture} \\
-                              with a transition period until 2100"),
+                           afterwards transition between {GDPPast} and {GDPFuture} \\
+                           with a transition period until 2100"),
     "calibSDPs"    = glue("use past data, short term growth rates from IMF and \\
-                              afterwards transition between {GDPPast} and {GDPFuture} \\
-                              with a transition period until 2100"),
+                            afterwards transition between {GDPPast} and {GDPFuture} \\
+                            with a transition period until 2100"),
     "calibSSP2EU"     = glue("use past data, short term growth rates from IMF and afterwards transition \\
                               between {GDPPast} and {GDPFuture} with a transition period until 2100. For \\
                               European countries, just glue past with future and after 2070 converge \\
@@ -161,7 +161,7 @@ gdpHarmonizeSSP2EU <- function(past, future, unit) {
 
   # For SSP2EU: simply glue past (until 2019) with future (starting 2020)
   # Get EUR countries.
-  EUR_countries <- where(readSource("ARIADNE", "gdp_corona") != 0 )$true$regions
+  EUR_countries <- toolGetEUcountries(only_countries_with_ARIADNE_gdp_data = TRUE)
   fut_years <- getYears(future)[getYears(future, as.integer = TRUE) >= max(getYears(past, as.integer = TRUE))]
 
   SSP2EU_data <- ssp2_data
