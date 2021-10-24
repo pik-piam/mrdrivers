@@ -26,9 +26,10 @@ calcGDP(
 
 \item{extension2150}{string, either "bezier", "constant" or "none"}
 
-\item{FiveYearSteps}{Only five year steps if TRUE, FALSE returns years from source data}
-
 \item{naming}{naming scheme}
+
+\item{`r}{lifecycle::badge("deprecated")\verb{}FiveYearSteps = TRUE\verb{is no longer supported; use the calcOutput argument}years`  instead, to retrieve
+specific years.}
 }
 \value{
 A magpie object with sets "iso3c", "year" and "variable".

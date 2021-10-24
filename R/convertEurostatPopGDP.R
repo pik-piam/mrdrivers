@@ -8,7 +8,7 @@
 #' @examples \dontrun{
 #' convertEurostat(x, subtype = "population")
 #' }
-convertEurostat <- function(x, subtype) {
+convertEurostatPopGDP <- function(x, subtype) {
 
   switch(
     subtype,

@@ -67,7 +67,7 @@ cPopulationFutureSDPs <- function() {
 }
 
 cPopulationFutureSSP2EU <- function() {
-  data_eurostat <- readSource("Eurostat", "population_projections") * 1e-6
+  data_eurostat <- readSource("EurostatPopGDP", "population_projections") * 1e-6
   data_ssp2 <- cPopulationFutureSSPs()[,, "pop_SSP2"]
 
   # Get EUR countries - GBR. (Great Britatin still in EUR mapping, but no Eurostat projections exist.) 

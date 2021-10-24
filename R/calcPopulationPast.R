@@ -55,7 +55,7 @@ internal_calcPopulationPast <- function(PopulationPast) {
 ######################################################################################
 cPopulationPastEurostat <- function() {
   # Scale to milions
-  data_eurostat <- readSource("Eurostat", "population") * 1e-6
+  data_eurostat <- readSource("EurostatPopGDP", "population") * 1e-6
   data_wdi <- readSource("WDI", "SP.POP.TOTL")
 
   # Get EUR countries. 

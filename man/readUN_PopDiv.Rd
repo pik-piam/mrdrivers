@@ -22,7 +22,7 @@ Population Division} "World Population Prospects: The 2015 Revision"
 \code{\link[madrat:readSource]{madrat::readSource()}}
 
 Other "Past" population functions: 
-\code{\link{readEurostat}()},
+\code{\link{readEurostatPopGDP}()},
 \code{\link{readHYDE}()},
 \code{\link{readMissingIslands}()},
 \code{\link{readWDI}()}

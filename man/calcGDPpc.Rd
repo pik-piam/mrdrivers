@@ -26,8 +26,6 @@ calcGDPpc(
 
 \item{extension2150}{string, either "bezier", "constant" or "none"}
 
-\item{FiveYearSteps}{Only five year steps if TRUE, FALSE returns years from source data}
-
 \item{naming}{naming scheme}
 }
 \value{

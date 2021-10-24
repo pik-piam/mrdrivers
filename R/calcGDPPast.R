@@ -85,7 +85,7 @@ cGDPPastWDI <- function(unit) {
 cGDPPastEurostat <- function(unit) {
   EUR_countries <- toolGetEUcountries()
 
-  data <- readSource("Eurostat", "GDP") %>%
+  data <- readSource("EurostatPopGDP", "GDP") %>%
     GDPuc::convertGDP("constant 2005 Int$PPP", unit, replace_NAs = 0) %>%
     # Keep only EUR countries
     `[`(EUR_countries,,)

@@ -11,9 +11,9 @@
 #' @family "Past" GDP functions
 #' @family Eurostat functions
 #' @examples \dontrun{
-#' readSource("Eurostat", subtype = "population")
+#' readSource("EurostatPopGDP", subtype = "population")
 #' }
-readEurostat <- function(subtype) {
+readEurostatPopGDP <- function(subtype) {
 
   switch(subtype,
          "population" = rEurostatPopulation(),

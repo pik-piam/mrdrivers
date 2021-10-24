@@ -43,13 +43,13 @@ readSource("WDI", subtype = "SP.POP.TOTL")}
 \code{\link[madrat:readSource]{madrat::readSource()}}
 
 Other "Past" population functions: 
-\code{\link{readEurostat}()},
+\code{\link{readEurostatPopGDP}()},
 \code{\link{readHYDE}()},
 \code{\link{readMissingIslands}()},
 \code{\link{readUN_PopDiv}()}
 
 Other "Past" GDP functions: 
-\code{\link{readEurostat}()},
+\code{\link{readEurostatPopGDP}()},
 \code{\link{readMissingIslands}()}
 
 Other "Past" GDPpc functions: 

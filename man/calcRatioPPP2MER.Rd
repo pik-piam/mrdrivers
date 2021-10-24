@@ -4,10 +4,10 @@
 \alias{calcRatioPPP2MER}
 \title{Get PPP to MER ratio}
 \usage{
-calcRatioPPP2MER(RatioPPP2MER = "SSP")
+calcRatioPPP2MER(from = "WDI", when = 2005)
 }
 \arguments{
-\item{RatioPPP2MER}{A string indicating the source}
+\item{from}{A string indicating the source}
 }
 \description{
 Get PPP to MER ratio
@@ -15,7 +15,7 @@ Get PPP to MER ratio
 \examples{
 \dontrun{
 library(mrdrivers)
-calcOutput("calcRatioPPP2MER")}
+calcOutput("calcfrom")}
 
 }
 \seealso{
