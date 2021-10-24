@@ -14,7 +14,9 @@
 #' @param unit A string. Either 'constant 2005 Int$PPP', 'constant 2005 US$MER',
 #'   'constant 2017 Int$PPP' or 'constant 2017 US$MER'.
 #' @param extension2150 string, either "bezier", "constant" or "none"
-#' @param FiveYearSteps Only five year steps if TRUE, FALSE returns years from source data
+#' @param `r lifecycle::badge("deprecated")` `FiveYearSteps = TRUE` is no
+#'   longer supported; use the calcOutput argument `years`  instead, to retrieve
+#'   specific years.
 #' @param naming naming scheme
 #'
 #' @return A magpie object with sets "iso3c", "year" and "variable".

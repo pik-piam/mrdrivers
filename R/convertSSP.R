@@ -31,11 +31,7 @@ convertSSP <- function(x, subtype) {
     x <- x["GB_CHA",, invert = TRUE]
     x <- toolGeneralConvert(x)
 
-  } else if (subtype == "ratioPM") {
-
-    x <- toolGeneralConvert(x, countryFillWith = 1)
-  }  
-
+  } 
   x
 }  
 

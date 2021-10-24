@@ -27,7 +27,7 @@ test_that("set names", {
   expect_correct_set_names(suppressMessages(calcOutput("GDP")))
   expect_correct_set_names(suppressMessages(calcOutput("DefaultDrivers")))
   expect_correct_set_names(suppressMessages(calcOutput("Labour")))
-  expect_correct_set_names(suppressMessages(calcOutput("RatioPPP2MER")))
+  #expect_correct_set_names(suppressMessages(calcOutput("RatioPPP2MER")))
 })
 
 # Save all calcOutputs for later use

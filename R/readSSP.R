@@ -10,7 +10,7 @@
 #' readSource("SSP", subtype = "gdp")}
 #' 
 readSSP <- function(subtype) {
-  if (! subtype %in% c("all", "gdp", "pop", "urb", "pop2018Update", "lab2018Update", "ratioPM")) {
+  if (! subtype %in% c("all", "gdp", "pop", "urb", "pop2018Update", "lab2018Update")) {
      stop("Bad input for readSSP. Invalid 'subtype' argument.")
   }
   
@@ -42,11 +42,6 @@ readSSP <- function(subtype) {
       dplyr::rename("variable" = "scenario") %>%
       as.magpie(spatial = "iso3c", temporal = "year", tidy = TRUE) 
     
-  } else if(subtype == "ratioPM") {
-
-    x <- readxl::read_excel("WB_PPP_MER_2005_conversion_rates.xlsx") %>% as.magpie()
-
-  }
-
+  } 
   x
 }

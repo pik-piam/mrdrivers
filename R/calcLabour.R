@@ -53,6 +53,14 @@ internal_calcLabour <- function(LabourFuture, extension2150) {
 ######################################################################################
 cLabourFutureSSPs <- function() {
   x <- readSource("SSP", "lab2018Update") * 1e-3
+  
+  # lab2018Update only starts in 2015. However data is needed back until 2005.
+  # Use old Labour growth rates to fill in.
+  y <- calcOutput("Labour", LabourFuture = "SSPsOld", extension = "none", aggregate = FALSE)
+  y <- y[,1:3,paste0("pop_", getNames(x))]
+  getNames(y) <- getNames(x)
+  x <- toolHarmonizeFutureGrPast(future = x, past = y)
+
   getNames(x) <- paste0("lab_", getNames(x))
   x
 }

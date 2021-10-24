@@ -1,28 +1,33 @@
 #' Get PPP to MER ratio
 #' 
-#' @param RatioPPP2MER A string indicating the source
+#' @param from A string indicating the source
 #' 
 #' @seealso [madrat::calcOutput()]
 #' 
 #' @examples \dontrun{
 #' library(mrdrivers)
-#' calcOutput("calcRatioPPP2MER")}
+#' calcOutput("calcfrom")}
 #' 
-calcRatioPPP2MER <- function(RatioPPP2MER = "SSP") {
+calcRatioPPP2MER <- function(from = "WDI", when = 2005) {
 
-  if (RatioPPP2MER == "SSP") {
-    data <- readSource("SSP", subtype = "ratioPM")
-  } else if (RatioPPP2MER == "OECD") {
+  if (from == "WDI") {
+    data <- readSource("WDI", "PA.NUS.PPPC.RF")[, when, ]
+  } else if (from == "OECD") {
     data <- readSource("OECD", subtype = "ratioPM")
   } else {
-    stop("Bad input for calcRatioPPP2MER. Invalid 'RatioPPP2MER' argument.")
+    stop("Bad input for calcfrom. Invalid 'from' argument.")
   }
 
-  weight <- calcOutput("GDPPast", aggregate = FALSE)[, 2005, ] 
+  weight <- calcOutput("GDPPast", aggregate = FALSE)[, when, ] 
+
+  # TMP: have to use old sets and names for now, to not break interfaces
+  getSets(data) <- c("Region", "year", "d3")
+  getNames(data) <- NULL
+  getYears(data) <- NULL
 
   return(list(x = data,
               weight = weight,
               unit = "-",
               description = glue::glue("Ratio of GDP in constant 2005 Int$PPP over GDP \\
-                                        in constant 2005 US$MER (source: {RatioPPP2MER}).")))
+                                        in constant 2005 US$MER (source: {from}).")))
 }

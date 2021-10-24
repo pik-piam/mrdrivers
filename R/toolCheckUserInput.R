@@ -12,6 +12,9 @@ toolCheckUserInput <- function(driver, args) {
 
   # Check 'FiveYearSteps' argument
   if (!is.logical(args$FiveYearSteps)) {
+     if (FiveYearSteps) {
+        warning("FiveYearSteps will be deprecated in the next release. Use the `years` argument of calcOutput instead.")
+     }
      stop(glue("Bad argument to calc{driver}. 'FiveYearSteps' must be TRUE or FALSE."))
   }
 
