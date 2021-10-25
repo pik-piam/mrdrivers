@@ -71,3 +71,8 @@ rARIADNEGDP <- function(corona) {
 
   as.magpie(gdp, spatial = "eurostat", temporal = "year", tidy = TRUE)
 }
+
+# Alias
+readARIADNE_ReferenceScenario <- function(subtype){
+  readSource("ARIADNE", subtype = subtype)
+}
