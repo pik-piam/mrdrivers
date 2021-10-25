@@ -26,6 +26,10 @@ calcGDPpc(
 
 \item{extension2150}{string, either "bezier", "constant" or "none"}
 
+\item{FiveYearSteps}{\ifelse{html}{\href{https://lifecycle.r-lib.org/articles/stages.html#deprecated}{\figure{lifecycle-deprecated.svg}{options: alt='[Deprecated]'}}}{\strong{[Deprecated]}} \code{FiveYearSteps = TRUE} is no
+longer supported; use the calcOutput argument \code{years}  instead, to retrieve
+specific years.}
+
 \item{naming}{naming scheme}
 }
 \value{

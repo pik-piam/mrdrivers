@@ -14,7 +14,7 @@
 #' library(mrdrivers)
 #' calcOutput("PopulationFuture")}
 #'
-calcPopulationFuture <- function(PopulationFuture = "SSPs-MI",
+calcPopulationFuture <- function(PopulationFuture = "SSPs-UN_PopDiv-MI",
                                  extension2150 = "none") {
   # Call internal_calcPopulationFuture function the appropriate number of times
   toolInternalCalc("PopulationFuture", 

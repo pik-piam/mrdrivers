@@ -4,7 +4,7 @@
 \alias{calcPopulationPast}
 \title{calcPopulationPast}
 \usage{
-calcPopulationPast(PopulationPast = "WDI-MI")
+calcPopulationPast(PopulationPast = "WDI-UN_PopDiv-MI")
 }
 \arguments{
 \item{PopulationPast}{population past data source}

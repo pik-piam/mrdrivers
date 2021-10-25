@@ -111,7 +111,6 @@ test_that("no NA", {
 })
 
 test_that("no newline in descriptions", {
-  print(purrr::map(calcs3, ~ .x$description))
   purrr::map(calcs3, ~ expect_true(!grepl("\n", .x$description)))
 })
 

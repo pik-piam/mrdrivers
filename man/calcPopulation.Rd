@@ -6,8 +6,9 @@
 \usage{
 calcPopulation(
   PopulationCalib = c("calibSSPs", "calibSDPs", "calibSSP2EU"),
-  PopulationPast = c("WDI-MI", "WDI-MI", "Eurostat-WDI-MI"),
-  PopulationFuture = c("SSPs-MI", "SDPs-MI", "SSP2EU-MI"),
+  PopulationPast = c("WDI-UN_PopDiv-MI", "WDI-UN_PopDiv-MI",
+    "Eurostat-WDI-UN_PopDiv-MI"),
+  PopulationFuture = c("SSPs-UN_PopDiv-MI", "SDPs-UN_PopDiv-MI", "SSP2EU-UN_PopDiv-MI"),
   extension2150 = "bezier",
   FiveYearSteps = TRUE,
   naming = "indicator_scenario"
@@ -21,6 +22,10 @@ calcPopulation(
 \item{PopulationFuture}{population future data source}
 
 \item{extension2150}{string, either "bezier", "constant" or "none"}
+
+\item{FiveYearSteps}{\ifelse{html}{\href{https://lifecycle.r-lib.org/articles/stages.html#deprecated}{\figure{lifecycle-deprecated.svg}{options: alt='[Deprecated]'}}}{\strong{[Deprecated]}} \code{FiveYearSteps = TRUE} is no
+longer supported; use the calcOutput argument \code{years}  instead, to retrieve
+specific years.}
 
 \item{naming}{naming scheme}
 }

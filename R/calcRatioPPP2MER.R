@@ -1,6 +1,8 @@
 #' Get PPP to MER ratio
 #' 
 #' @param from A string indicating the source
+#' @param when An integer with the year for which the PPP2MER ratio is to
+#'   be returned.
 #' 
 #' @seealso [madrat::calcOutput()]
 #' 

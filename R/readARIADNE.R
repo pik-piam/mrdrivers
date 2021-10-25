@@ -72,7 +72,16 @@ rARIADNEGDP <- function(corona) {
   as.magpie(gdp, spatial = "eurostat", temporal = "year", tidy = TRUE)
 }
 
-# Alias
+#' Read ARIADNE Reference Scenario
+#' 
+#' Alias to [readARIADNE].
+#' 
+#' @param subtype data subtype. Either "population", "gdp", or "gdp_corona"
+#' 
+#' @seealso [madrat::readSource()]
+#' @family ARIADNE functions
+#' 
+#' @return magpie object of ARIADNE reference scenario data by country
 readARIADNE_ReferenceScenario <- function(subtype){
   readSource("ARIADNE", subtype = subtype)
 }

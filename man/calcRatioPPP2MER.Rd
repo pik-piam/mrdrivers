@@ -8,6 +8,9 @@ calcRatioPPP2MER(from = "WDI", when = 2005)
 }
 \arguments{
 \item{from}{A string indicating the source}
+
+\item{when}{An integer with the year for which the PPP2MER ratio is to
+be returned.}
 }
 \description{
 Get PPP to MER ratio

@@ -4,7 +4,10 @@
 \alias{calcPopulationFuture}
 \title{calcPopulationFuture}
 \usage{
-calcPopulationFuture(PopulationFuture = "SSPs-MI", extension2150 = "none")
+calcPopulationFuture(
+  PopulationFuture = "SSPs-UN_PopDiv-MI",
+  extension2150 = "none"
+)
 }
 \arguments{
 \item{PopulationFuture}{population future data source}

@@ -14,7 +14,7 @@
 #' @param unit A string. Either 'constant 2005 Int$PPP', 'constant 2005 US$MER',
 #'   'constant 2017 Int$PPP' or 'constant 2017 US$MER'.
 #' @param extension2150 string, either "bezier", "constant" or "none"
-#' @param `r lifecycle::badge("deprecated")` `FiveYearSteps = TRUE` is no
+#' @param FiveYearSteps `r lifecycle::badge("deprecated")` `FiveYearSteps = TRUE` is no
 #'   longer supported; use the calcOutput argument `years`  instead, to retrieve
 #'   specific years.
 #' @param naming naming scheme

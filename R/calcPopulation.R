@@ -23,8 +23,8 @@
 #' calcOutput("GDPpc")}
 #' 
 calcPopulation <- function(PopulationCalib  = c("calibSSPs", "calibSDPs", "calibSSP2EU"),
-                           PopulationPast   = c("WDI-MI",    "WDI-MI",    "Eurostat-WDI-MI"), 
-                           PopulationFuture = c("SSPs-MI",   "SDPs-MI",   "SSP2EU-MI"), 
+                           PopulationPast   = c("WDI-UN_PopDiv-MI",    "WDI-UN_PopDiv-MI",    "Eurostat-WDI-UN_PopDiv-MI"), 
+                           PopulationFuture = c("SSPs-UN_PopDiv-MI",   "SDPs-UN_PopDiv-MI",   "SSP2EU-UN_PopDiv-MI"), 
                            extension2150 = "bezier",
                            FiveYearSteps = TRUE, 
                            naming = "indicator_scenario") {

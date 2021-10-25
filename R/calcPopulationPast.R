@@ -19,7 +19,7 @@
 #' library(mrdrivers)
 #' calcOutput("PopulationPast")}
 #'
-calcPopulationPast <- function(PopulationPast = "WDI-MI") {
+calcPopulationPast <- function(PopulationPast = "WDI-UN_PopDiv-MI") {
   # Call internal_calcPopulationPast function the appropriate number of times
   toolInternalCalc("PopulationPast", 
                    list("PopulationPast" = strsplit(PopulationPast, "-")[[1]]),

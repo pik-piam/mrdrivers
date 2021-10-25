@@ -59,7 +59,9 @@ cLabourFutureSSPs <- function() {
   y <- calcOutput("Labour", LabourFuture = "SSPsOld", extension = "none", aggregate = FALSE)
   y <- y[,1:3,paste0("pop_", getNames(x))]
   getNames(y) <- getNames(x)
+  getSets(y) <- getSets(x)
   x <- toolHarmonizeFutureGrPast(future = x, past = y)
+  getSets(x) <- c("iso3c", "year", "variable")
 
   getNames(x) <- paste0("lab_", getNames(x))
   x
