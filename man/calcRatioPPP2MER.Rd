@@ -18,7 +18,8 @@ Get PPP to MER ratio
 \examples{
 \dontrun{
 library(mrdrivers)
-calcOutput("calcfrom")}
+calcOutput("calcfrom")
+}
 
 }
 \seealso{

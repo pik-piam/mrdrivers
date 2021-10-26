@@ -1,5 +1,5 @@
 #' calcUrban
-#' 
+#'
 #' Merges time series of urban shares for the past and present.  See
 #' \code{\link{calcUrbanPast}} for past datasets, and
 #' \code{\link{calcUrbanFuture}} for future datasets.  The time series are
@@ -8,48 +8,49 @@
 #' or the "future" dataset.  Currently, the SSP (future) and WDI (past) data
 #' have some inconsistencies, which leads to unrealistic figures if the one is
 #' scaled on the other.
-#' 
+#'
 #' @param UrbanCalib To what should be calibrated? past or future?
 #' @param UrbanPast Urban past data source
 #' @param UrbanFuture Urban future data source
-#' 
+#'
 #' @inheritParams calcGDP
 #' @inherit calcGDP return
-#' 
+#'
 #' @seealso [madrat::calcOutput()]
 #' @family Urban functions
 #' @family Combined scenario functions
-#' 
+#'
 #' @examples \dontrun{
 #' library(mrdrivers)
-#' calcOutput("Urban")}
-#' 
-calcUrban <- function(UrbanCalib = "past", 
-                      UrbanPast = "WDI", 
+#' calcOutput("Urban")
+#' }
+#'
+calcUrban <- function(UrbanCalib = "past",
+                      UrbanPast = "WDI",
                       UrbanFuture = c("SSPs", "SDPs", "SSP2EU"),
                       extension2150 = "constant",
                       FiveYearSteps = TRUE,
                       naming = "indicator_scenario") {
   # Check user input
   toolCheckUserInput("Urban", as.list(environment()))
-  # Call internal_calcUrban function the appropriate number of times              
+  # Call internalCalcUrban function the appropriate number of times
   toolInternalCalc("Urban", as.list(environment()))
 }
 
 ######################################################################################
 # Internal Function
 ######################################################################################
-internal_calcUrban <- function(UrbanCalib, 
-                               UrbanPast, 
-                               UrbanFuture, 
-                               FiveYearSteps, 
-                               extension2150, 
-                               naming){
+internalCalcUrban <- function(UrbanCalib,
+                              UrbanPast,
+                              UrbanFuture,
+                              FiveYearSteps,
+                              extension2150,
+                              naming) {
 
   # Compute "past" and "future" time series.
   past <- calcOutput("UrbanPast", UrbanPast = UrbanPast, aggregate = FALSE)
   future <- calcOutput("UrbanFuture", UrbanFuture = UrbanFuture, extension2150 = "none", aggregate = FALSE)
-  
+
   # Combine "past" and "future" time series.
   combined <- switch(
     UrbanCalib,
@@ -67,19 +68,19 @@ internal_calcUrban <- function(UrbanCalib,
 
   # Apply finishing touches to combined time-series
   combined <- toolFinishingTouches(combined, extension2150, FiveYearSteps, naming)
-  
+
   # Get weigth
-  wp <- calcOutput("Population", 
+  wp <- calcOutput("Population",
                    PopulationCalib = UrbanCalib,
-                   PopulationPast = UrbanPast, 
+                   PopulationPast = UrbanPast,
                    PopulationFuture = UrbanFuture,
                    FiveYearSteps = FiveYearSteps,
                    extension2150 = extension2150,
                    aggregate = FALSE)
   # Give weight same names as data, so that aggregate doesn't mess up data dim
   getNames(wp) <- gsub("pop", "urb", getNames(wp))
-  
-  combined <- combined[getRegions(wp), getYears(wp),]
+
+  combined <- combined[getItems(wp, 1), getYears(wp), ]
 
   list(x = combined,
        weight = wp,

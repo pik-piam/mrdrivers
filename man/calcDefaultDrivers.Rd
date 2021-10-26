@@ -18,7 +18,8 @@ Collect Default Model Drivers
 \examples{
 \dontrun{
 library(mrdrivers)
-calcOutput("DefaultDrivers")}
+calcOutput("DefaultDrivers")
+}
 
 }
 \seealso{

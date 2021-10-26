@@ -18,9 +18,10 @@ magpie object of the GDP data
 Convert GDP / ratioPM data from OECD to data on ISO country level.
 }
 \examples{
-\dontrun{ 
+\dontrun{
 readSource("OECD", "gdp")
-readSource("OECD", "ratioPM")}
+readSource("OECD", "ratioPM")
+}
 
 }
 \concept{OECD functions}

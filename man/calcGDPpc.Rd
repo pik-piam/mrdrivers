@@ -41,7 +41,8 @@ calcGDPpc
 \examples{
 \dontrun{
 library(mrdrivers)
-calcOutput("GDPpc")}
+calcOutput("GDPpc")
+}
 
 }
 \seealso{

@@ -12,9 +12,10 @@ Data is downloaded from 1960 until "current year - 1".
 The WDI data is updated with the function "WDISearch(cache = WDIcache())"
 }
 \examples{
-\dontrun{ 
+\dontrun{
 library(mrdrivers)
-downloadSource("WDI")}
+downloadSource("WDI")
+}
 
 }
 \seealso{

@@ -8,9 +8,9 @@ toolAddInterpolatedYear <- function(x, year) {
      return(x)
   }
 
-  tmp <- new.magpie(getRegions(x), 
-                    years = c(getYears(x, as.integer = TRUE), year), 
-                    names = getNames(x), 
+  tmp <- new.magpie(getItems(x, 1),
+                    years = c(getYears(x, as.integer = TRUE), year),
+                    names = getNames(x),
                     sets = getSets(x),
                     fill = 0)
   tmp <- tmp[, order(getYears(tmp)), ]

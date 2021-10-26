@@ -13,7 +13,7 @@ readARIADNE_ReferenceScenario(subtype)
 magpie object of ARIADNE reference scenario data by country
 }
 \description{
-Alias to \link{readARIADNE}.
+Alias to \link{readARIADNE}. May be deprecated in the future.
 }
 \seealso{
 \code{\link[madrat:readSource]{madrat::readSource()}}

@@ -28,7 +28,8 @@ the "future" dataset as specified by PopulationCalib.
 \examples{
 \dontrun{
 library(mrdrivers)
-calcLabour()}
+calcLabour()
+}
 
 }
 \seealso{

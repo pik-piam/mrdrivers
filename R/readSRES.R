@@ -28,7 +28,7 @@ readSRES <- function(subtype) {
   x<-as.magpie(x,spatial=1)
   
   dimnames(x)[[1]]<-as.integer(dimnames(x)[[1]])
-  getItems(x, 1) <- countrycode::countrycode(getRegions(x), origin = "iso3n", destination = "iso3c", 
+  getItems(x, 1) <- countrycode::countrycode(getItems(x, 1), origin = "iso3n", destination = "iso3c", 
                                              custom_match = c("530" = "ANT", "736" = "SDN", "891" = "YUG"))
   dimnames(x)[[1]][which(dimnames(x)[[1]]=="YUG")]<-"SCG"
   getSets(x)<-c("iso3c", "year", "variable")

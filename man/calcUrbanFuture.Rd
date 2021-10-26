@@ -22,7 +22,8 @@ with WDI in 2010
 \examples{
 \dontrun{
 library(mrdrivers)
-calcOutput("UrbanFuture")}
+calcOutput("UrbanFuture")
+}
 
 }
 \seealso{

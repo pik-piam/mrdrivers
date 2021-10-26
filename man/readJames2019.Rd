@@ -24,7 +24,8 @@ from a .csv file to a magclass object
 }
 \examples{
 \dontrun{
-readSource("James2019", subtype = "IHME_USD05_PPP_pc")}
+readSource("James2019", subtype = "IHME_USD05_PPP_pc")
+}
 
 }
 \seealso{

@@ -1,56 +1,63 @@
 #' calcPopulation
-#' 
+#'
 #' Merges time series of population for the past and present. See
 #' \code{\link{calcPopulationPast}} for past datasets, and
 #' \code{\link{calcPopulationFuture}} for future datasets. The time series are
 #' merged via the growth rates. The first year of the future scenarios
 #' determines the merging point. All data is calibrated either to the "past" or
 #' the "future" dataset as specified by PopulationCalib.
-#' 
+#'
 #' @param PopulationCalib to what should be calibrated? past, future or a transition?
 #' @param PopulationPast population past data source
 #' @param PopulationFuture population future data source
-#' 
+#'
 #' @inheritParams calcGDP
 #' @inherit calcGDP return
-#' 
+#'
 #' @seealso [madrat::calcOutput()]
 #' @family Population functions
 #' @family Combined scenario functions
-#' 
+#'
 #' @examples \dontrun{
 #' library(mrdrivers)
-#' calcOutput("GDPpc")}
-#' 
-calcPopulation <- function(PopulationCalib  = c("calibSSPs", "calibSDPs", "calibSSP2EU"),
-                           PopulationPast   = c("WDI-UN_PopDiv-MI",    "WDI-UN_PopDiv-MI",    "Eurostat-WDI-UN_PopDiv-MI"), 
-                           PopulationFuture = c("SSPs-UN_PopDiv-MI",   "SDPs-UN_PopDiv-MI",   "SSP2EU-UN_PopDiv-MI"), 
+#' calcOutput("GDPpc")
+#' }
+#'
+calcPopulation <- function(PopulationCalib  = c("calibSSPs",
+                                                "calibSDPs",
+                                                "calibSSP2EU"),
+                           PopulationPast   = c("WDI-UN_PopDiv-MI",
+                                                "WDI-UN_PopDiv-MI",
+                                                "Eurostat-WDI-UN_PopDiv-MI"),
+                           PopulationFuture = c("SSPs-UN_PopDiv-MI",
+                                                "SDPs-UN_PopDiv-MI",
+                                                "SSP2EU-UN_PopDiv-MI"),
                            extension2150 = "bezier",
-                           FiveYearSteps = TRUE, 
+                           FiveYearSteps = TRUE,
                            naming = "indicator_scenario") {
   # Check user input
   toolCheckUserInput("Population", as.list(environment()))
-  # Call internal_calcPopulation function the appropriate number of times              
+  # Call internalCalcPopulation function the appropriate number of times
   toolInternalCalc("Population", as.list(environment()))
 }
 
 ######################################################################################
 # Internal Function
 ######################################################################################
-internal_calcPopulation <- function(PopulationCalib, 
-                                    PopulationPast, 
-                                    PopulationFuture, 
-                                    extension2150,
-                                    FiveYearSteps, 
-                                    naming){
+internalCalcPopulation <- function(PopulationCalib,
+                                   PopulationPast,
+                                   PopulationFuture,
+                                   extension2150,
+                                   FiveYearSteps,
+                                   naming) {
 
   # Compute "past" and "future" time series.
-  past <- calcOutput("PopulationPast", 
-                     PopulationPast = PopulationPast, 
+  past <- calcOutput("PopulationPast",
+                     PopulationPast = PopulationPast,
                      aggregate = FALSE)
-  future <- calcOutput("PopulationFuture", 
-                       PopulationFuture = PopulationFuture, 
-                       extension2150 = "none", 
+  future <- calcOutput("PopulationFuture",
+                       PopulationFuture = PopulationFuture,
+                       extension2150 = "none",
                        aggregate = FALSE)
 
   # Combine "past" and "future" time series.
@@ -100,7 +107,7 @@ internal_calcPopulation <- function(PopulationCalib,
 
   # Apply finishing touches to combined time-series
   combined <- toolFinishingTouches(combined, extension2150, FiveYearSteps, naming)
-  
+
   list(x = combined,
        weight = NULL,
        unit = "million",
@@ -116,17 +123,17 @@ internal_calcPopulation <- function(PopulationCalib,
 harmonizeSSPsSDPs <- function(past, future) {
   # Get PEAP data and fill in missing islands. Then drop everything that is not
   # "short-term", defined as being later than the last year of the IMF WEO data.
-  short_term <- readSource("PEAP")
+  shortTerm <- readSource("PEAP")
   fill <- readSource("MissingIslands", subtype = "pop", convert = FALSE)
-  short_term <- short_term %>% 
+  shortTerm <- shortTerm %>%
     toolFillWith(fill) %>%
     toolInterpolateAndExtrapolate()
-  last_year_IMF <- max(getYears(readSource("IMF"), as.integer = TRUE))
-  short_term <- short_term[, getYears(short_term, as.integer = TRUE) <= last_year_IMF, ]
-  
+  lastYearIMF <- max(getYears(readSource("IMF"), as.integer = TRUE))
+  shortTerm <- shortTerm[, getYears(shortTerm, as.integer = TRUE) <= lastYearIMF, ]
+
   # Use PEAP growth rates until last year of IMF WEO data, and future growth rates after that
   past %>%
-    toolHarmonizePastGrFuture(short_term) %>%
+    toolHarmonizePastGrFuture(shortTerm) %>%
     toolHarmonizePastGrFuture(future)
 }
 
@@ -134,11 +141,11 @@ harmonizeSSP2EU <- function(past, future) {
   combined <- harmonizeSSPsSDPs(past, future)
 
   # For SSP2EU: simply glue past (until 2019) with future (starting 2020)
-  # Get EUR countries. 
-  EUR_countries <- toolGetEUcountries()
+  # Get EUR countries.
+  euCountries <- toolGetEUcountries()
 
-  fut_years <- getYears(future)[getYears(future, as.integer = TRUE) >= 2020]
-  combined[EUR_countries, fut_years,] <- future[EUR_countries, fut_years,]
+  futYears <- getYears(future)[getYears(future, as.integer = TRUE) >= 2020]
+  combined[euCountries, futYears, ] <- future[euCountries, futYears, ]
 
   combined
 }
@@ -148,21 +155,21 @@ harmonizeUN_PopDiv <- function(past, future) {
   # year <- max(intersect(getYears(past, as.integer = TRUE),
   #                       getYears(future, as.integer = TRUE)))
   year <- 2017
-  fut_years <- getYears(future)[getYears(future, as.integer = TRUE) > year]
+  futYears <- getYears(future)[getYears(future, as.integer = TRUE) > year]
   getNames(past) <- getNames(future)
-  mbind(past, future[, fut_years, ])
+  mbind(past, future[, futYears, ])
 }
 
 # Legacy?
 popHarmonizePast <- function(past, future) {
   firstyear <- min(getYears(future, as.integer = TRUE))
-  tmp <- future / setYears(future[,firstyear,], NULL)
+  tmp <- future / setYears(future[, firstyear, ], NULL)
   tmp[is.nan(tmp)] <- 1
-  tmp <- dimSums(tmp * setYears(past[,firstyear,], NULL), dim = 3.2)
-  if (firstyear>min(getYears(past,as.integer = TRUE))) {                                                 
-    years_past <- getYears(past)[which(getYears(past,as.integer = TRUE)<firstyear)]
-    tmp2       <- setNames(past[,years_past,rep(1,ndata(future))],getNames(future))
-    combined   <- mbind(tmp2,tmp)
+  tmp <- dimSums(tmp * setYears(past[, firstyear, ], NULL), dim = 3.2)
+  if (firstyear > min(getYears(past, as.integer = TRUE))) {
+    yearsPast <- getYears(past)[which(getYears(past, as.integer = TRUE) < firstyear)]
+    tmp2       <- setNames(past[, yearsPast, rep(1, ndata(future))], getNames(future))
+    combined   <- mbind(tmp2, tmp)
   } else {
     combined <- tmp
   }

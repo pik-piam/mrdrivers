@@ -16,7 +16,9 @@ magpie object of the data
 Read-in iMF data
 }
 \examples{
-\dontrun{ a <- readSource(type="IMF")}
+\dontrun{
+a <- readSource(type = "IMF")
+}
 }
 \seealso{
 \code{\link[madrat:readSource]{madrat::readSource()}}

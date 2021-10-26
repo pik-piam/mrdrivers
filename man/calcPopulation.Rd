@@ -43,7 +43,8 @@ the "future" dataset as specified by PopulationCalib.
 \examples{
 \dontrun{
 library(mrdrivers)
-calcOutput("GDPpc")}
+calcOutput("GDPpc")
+}
 
 }
 \seealso{

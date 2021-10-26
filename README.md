@@ -8,7 +8,8 @@
 [![check](https://github.com/pik-piam/mrdrivers/actions/workflows/test-buildlibrary.yaml/badge.svg)](https://github.com/pik-piam/mrdrivers/actions/workflows/test-buildlibrary.yaml)
 [![Lifecycle:
 maturing](https://img.shields.io/badge/lifecycle-experimental-orange.svg)](https://lifecycle.r-lib.org/articles/stages.html#experimental)
-
+[![Codecov test
+coverage](https://codecov.io/gh/pik-piam/mrdrivers/branch/main/graph/badge.svg)](https://app.codecov.io/gh/pik-piam/mrdrivers?branch=main)
 <!-- badges: end -->
 
 The goal of **mrdrivers** is to handle the construction of GDP, GDP per
@@ -39,13 +40,18 @@ listed below.
 
 readSource:
 
-    #>  [1] "ARIADNE"        "Eurostat"       "HYDE"           "IMF"           
-    #>  [5] "James"          "James2019"      "MissingIslands" "PEAP"          
-    #>  [9] "PopulationTWN"  "SSP"            "UN_PopDiv"      "WDI"
+    #>  [1] "ARIADNE"                   "ARIADNE_ReferenceScenario"
+    #>  [3] "EurostatPopGDP"            "HYDE"                     
+    #>  [5] "IMF"                       "James"                    
+    #>  [7] "James2019"                 "MissingIslands"           
+    #>  [9] "OECD"                      "PEAP"                     
+    #> [11] "PopulationTWN"             "PWT"                      
+    #> [13] "SSP"                       "UN_PopDiv"                
+    #> [15] "WDI"
 
 readSource (deprecated?!):
 
-    #> [1] "IIASApop" "OECD"     "PWT"      "SRES"
+    #> [1] "IIASApop" "SRES"
 
 calcOutput:
 

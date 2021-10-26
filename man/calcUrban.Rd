@@ -44,7 +44,8 @@ scaled on the other.
 \examples{
 \dontrun{
 library(mrdrivers)
-calcOutput("Urban")}
+calcOutput("Urban")
+}
 
 }
 \seealso{

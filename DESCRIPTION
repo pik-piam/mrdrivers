@@ -46,6 +46,7 @@ Imports:
     WDI,
     zoo
 Suggests: 
+    covr,
     crayon,
     testthat (>= 3.0.0),
     withr (>= 2.4.2)
@@ -53,5 +54,5 @@ Encoding: UTF-8
 LazyData: true
 Roxygen: list(markdown = TRUE)
 RoxygenNote: 7.1.2
-Date: 2021-09-09
+Date: 2021-10-26
 Config/testthat/edition: 3

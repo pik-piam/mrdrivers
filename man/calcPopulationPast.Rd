@@ -25,7 +25,8 @@ values set to zero.
 \examples{
 \dontrun{
 library(mrdrivers)
-calcOutput("PopulationPast")}
+calcOutput("PopulationPast")
+}
 
 }
 \seealso{

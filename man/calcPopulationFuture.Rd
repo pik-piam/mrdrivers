@@ -25,7 +25,8 @@ Calculates a time series of Pop. Different sources are available:
 \examples{
 \dontrun{
 library(mrdrivers)
-calcOutput("PopulationFuture")}
+calcOutput("PopulationFuture")
+}
 
 }
 \seealso{

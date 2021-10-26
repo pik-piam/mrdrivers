@@ -14,8 +14,9 @@ Download MissingIslands data (on population or GDP) for filling in data gaps fro
 full datasets.
 }
 \examples{
-\dontrun{ 
-a <- downloadSource("MissingIslands", subtype = "pop")}
+\dontrun{
+a <- downloadSource("MissingIslands", subtype = "pop")
+}
 
 }
 \seealso{

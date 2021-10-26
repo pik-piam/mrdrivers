@@ -7,17 +7,17 @@ toolHarmonizeFutureGrPast <- function(past, future) {
   }
 
   # Create future data for all past scenarios
-  years_future <- getYears(future)[which(getYears(future, as.integer = TRUE) >= firstFutureYear)]
-  tmpFuture <- future[, years_future, rep(1, ndata(past))]
+  yearsFuture <- getYears(future)[which(getYears(future, as.integer = TRUE) >= firstFutureYear)]
+  tmpFuture <- future[, yearsFuture, rep(1, ndata(past))]
   tmpFuture <- setNames(tmpFuture, getNames(past))
   tmpFuture[is.nan(tmpFuture)] <- 0
 
   # Create transition magpie object for all future scenarios
-  years_past <- getYears(past)[which(getYears(past, as.integer = TRUE) < firstFutureYear)]
-  tmpPast <- new.magpie(getRegions(past), years_past, getNames(past), fill = 0)
+  yearsPast <- getYears(past)[which(getYears(past, as.integer = TRUE) < firstFutureYear)]
+  tmpPast <- new.magpie(getItems(past, 1), yearsPast, getNames(past), fill = 0)
 
   # Use growth rates of future object
-  tmpPast[,,] <- tmpFuture[,firstFutureYear,] * past[,years_past,] / past[,firstFutureYear,]
+  tmpPast[, , ] <- tmpFuture[, firstFutureYear, ] * past[, yearsPast, ] / past[, firstFutureYear, ]
   tmpPast[is.nan(tmpPast)] <- 0
 
   mbind(tmpPast, tmpFuture)

@@ -18,7 +18,8 @@ Read-in an SSP data csv.zip file as magclass object
 }
 \examples{
 \dontrun{
-readSource("SSP", subtype = "gdp")}
+readSource("SSP", subtype = "gdp")
+}
 
 }
 \seealso{

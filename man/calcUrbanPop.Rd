@@ -37,7 +37,8 @@ calcUrbanPop
 \examples{
 \dontrun{
 library(mrdrivers)
-calcOutput("UrbanPop")}
+calcOutput("UrbanPop")
+}
 
 }
 \seealso{

@@ -7,21 +7,21 @@
 convertIMF <- function(x, subtype = "current_account") {
   if (subtype == "current_account") {
     # delete "World"
-    x <- x["World",,,invert=TRUE]
+    x <- x["World", , , invert = TRUE]
     # delete Kosovo
-    x <- x["KOS",,,invert=TRUE]
-    
+    x <- x["KOS", , , invert = TRUE]
+
     ### allocate global current account to the countries
     # calculate global sum which is not 0
-    x_sum <- - dimSums(x, dim=1, na.rm=TRUE)
+    xSum <- -dimSums(x, dim = 1, na.rm = TRUE)
     # calculate global absolute share of current account
-    x_abs     <-  abs(x)
-    x_abs_sum <- dimSums(x_abs, dim=1, na.rm=TRUE)
+    xAbs     <-  abs(x)
+    xAbsSum <- dimSums(xAbs, dim = 1, na.rm = TRUE)
     # calculate additional value for each country
-    x_rest <- x_abs / x_abs_sum * x_sum
+    xRest <- xAbs / xAbsSum * xSum
     # add global rest to the countries
-    x <- x + x_rest
+    x <- x + xRest
   }
-  
+
   toolGeneralConvert(x, no_remove_warning = c("UVK", "WBG"), warn = FALSE, note = FALSE)
 }

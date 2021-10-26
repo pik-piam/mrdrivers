@@ -16,8 +16,9 @@ Magpie object
 Read in core data for minor islands which are not included in big inventories but have a countrycode
 }
 \examples{
-\dontrun{ 
-readSource("MissingIslands", subtype = "pop", convert = FALSE)}
+\dontrun{
+readSource("MissingIslands", subtype = "pop", convert = FALSE)
+}
 
 }
 \seealso{

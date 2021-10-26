@@ -27,7 +27,8 @@ calcGDPpcFuture
 \examples{
 \dontrun{
 library(mrdrivers)
-calcOutput("GDPpcFuture")}
+calcOutput("GDPpcFuture")
+}
 
 }
 \seealso{

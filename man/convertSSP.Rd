@@ -20,7 +20,8 @@ Convert SSP data on ISO country level.
 }
 \examples{
 \dontrun{
-readSource("SSP", subtype = "gdp")}
+readSource("SSP", subtype = "gdp")
+}
 
 }
 \concept{SSP functions}

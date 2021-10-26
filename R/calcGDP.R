@@ -38,20 +38,20 @@ calcGDP <- function(GDPCalib  = c("calibSSPs", "calibSDPs", "calibSSP2EU"),
                     naming = "indicator_scenario") {
   # Check user input
   toolCheckUserInput("GDP", as.list(environment()))
-  # Call internal_calcGDP function the appropriate number of times
+  # Call internalCalcGDP function the appropriate number of times
   toolInternalCalc("GDP", as.list(environment()))
 }
 
 ######################################################################################
 # Internal Function
 ######################################################################################
-internal_calcGDP <- function(GDPCalib,
-                             GDPPast,
-                             GDPFuture,
-                             unit,
-                             extension2150,
-                             FiveYearSteps,
-                             naming){
+internalCalcGDP <- function(GDPCalib,
+                            GDPPast,
+                            GDPFuture,
+                            unit,
+                            extension2150,
+                            FiveYearSteps,
+                            naming){
 
   # Depending on the chose GDPCalib, the harmonization function either requires 'past' and
   # 'future' GDP scenarios, OR NOT, which is the case for "calibSSPs" for example, where
@@ -163,21 +163,21 @@ gdpHarmonizeSSP2EU <- function(past, future, unit) {
 
   # For SSP2EU: simply glue past (until 2019) with future (starting 2020)
   # Get EUR countries.
-  EUR_countries <- toolGetEUcountries(only_countries_with_ARIADNE_gdp_data = TRUE)
+  euCountries <- toolGetEUcountries(onlyWithARIADNEgdpData = TRUE)
   fut_years <- getYears(future)[getYears(future, as.integer = TRUE) >= max(getYears(past, as.integer = TRUE))]
 
   SSP2EU_data <- ssp2_data
-  SSP2EU_data[EUR_countries, getYears(past),] <- past[EUR_countries,,]
-  SSP2EU_data[EUR_countries, fut_years,] <- future[EUR_countries, fut_years,]
+  SSP2EU_data[euCountries, getYears(past),] <- past[euCountries,,]
+  SSP2EU_data[euCountries, fut_years,] <- future[euCountries, fut_years,]
 
   # After 2070, transition to SSP2 values by 2150
   past_years <- getYears(future)[getYears(future, as.integer = TRUE) <= 2070]
-  combined_SSP2EU <- toolHarmonizePastTransition(SSP2EU_data[EUR_countries, past_years,],
-                                              ssp2_data[EUR_countries,,],
+  combined_SSP2EU <- toolHarmonizePastTransition(SSP2EU_data[euCountries, past_years,],
+                                              ssp2_data[euCountries,,],
                                               2150)
 
   combined <- ssp2_data
-  combined[EUR_countries, getYears(combined_SSP2EU),]  <- combined_SSP2EU[EUR_countries,,]
+  combined[euCountries, getYears(combined_SSP2EU),]  <- combined_SSP2EU[euCountries,,]
   getNames(combined) <- "gdp_SSP2EU"
 
   combined[, getYears(combined)[getYears(combined, as.integer = TRUE) <= 2100], ]

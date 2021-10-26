@@ -34,9 +34,10 @@ Read-in WDI (World development indicators) data .Rds file as magpie
 object.
 }
 \examples{
-\dontrun{ 
+\dontrun{
 library(mrdrivers)
-readSource("WDI", subtype = "SP.POP.TOTL")}
+readSource("WDI", subtype = "SP.POP.TOTL")
+}
 
 }
 \seealso{

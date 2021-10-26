@@ -1,10 +1,10 @@
 toolCheckUserInput <- function(driver, args) {
   # Check 'extension2150' argument
-  if ("unit" %in% names(args) && 
+  if ("unit" %in% names(args) &&
       !args$unit %in% c("constant 2005 Int$PPP", "constant 2017 Int$PPP")) {
      stop(glue("Bad argument to calc{driver}. 'unit' argument unknown."))
   }
-  
+
   # Check 'extension2150' argument
   if (!args$extension2150 %in% c("none", "bezier", "constant")) {
      stop(glue("Bad argument to calc{driver}. 'extension2150' argument unknown."))

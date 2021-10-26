@@ -7,27 +7,27 @@ skip_if_not(dir.exists(getOption("madrat_cfg")$mainfolder),
 
 test_that("set names", {
 
-  expect_correct_set_names <- function(x) {
-    correct_sets <- c("d1.1" = "iso3c", "d2.1" = "year", "d3.1" = "variable")
-    expect_equal(getSets(x), correct_sets)
+  expectCorrectSetNames <- function(x) {
+    correctSets <- c("d1.1" = "iso3c", "d2.1" = "year", "d3.1" = "variable")
+    expect_equal(getSets(x), correctSets)
   }
 
-  expect_correct_set_names(suppressMessages(calcOutput("PopulationPast")))
-  expect_correct_set_names(suppressMessages(calcOutput("PopulationFuture")))
-  expect_correct_set_names(suppressMessages(calcOutput("Population")))
-  expect_correct_set_names(suppressMessages(calcOutput("UrbanPast")))
-  expect_correct_set_names(suppressMessages(calcOutput("UrbanFuture")))
-  expect_correct_set_names(suppressMessages(calcOutput("Urban")))
-  expect_correct_set_names(suppressMessages(calcOutput("UrbanPop")))
-  expect_correct_set_names(suppressMessages(calcOutput("GDPPast")))
-  expect_correct_set_names(suppressMessages(calcOutput("GDPFuture")))
-  expect_correct_set_names(suppressMessages(calcOutput("GDPpcPast")))
-  expect_correct_set_names(suppressMessages(calcOutput("GDPpcFuture")))
-  expect_correct_set_names(suppressMessages(calcOutput("GDPpc")))
-  expect_correct_set_names(suppressMessages(calcOutput("GDP")))
-  expect_correct_set_names(suppressMessages(calcOutput("DefaultDrivers")))
-  expect_correct_set_names(suppressMessages(calcOutput("Labour")))
-  #expect_correct_set_names(suppressMessages(calcOutput("RatioPPP2MER")))
+  expectCorrectSetNames(suppressMessages(calcOutput("PopulationPast")))
+  expectCorrectSetNames(suppressMessages(calcOutput("PopulationFuture")))
+  expectCorrectSetNames(suppressMessages(calcOutput("Population")))
+  expectCorrectSetNames(suppressMessages(calcOutput("UrbanPast")))
+  expectCorrectSetNames(suppressMessages(calcOutput("UrbanFuture")))
+  expectCorrectSetNames(suppressMessages(calcOutput("Urban")))
+  expectCorrectSetNames(suppressMessages(calcOutput("UrbanPop")))
+  expectCorrectSetNames(suppressMessages(calcOutput("GDPPast")))
+  expectCorrectSetNames(suppressMessages(calcOutput("GDPFuture")))
+  expectCorrectSetNames(suppressMessages(calcOutput("GDPpcPast")))
+  expectCorrectSetNames(suppressMessages(calcOutput("GDPpcFuture")))
+  expectCorrectSetNames(suppressMessages(calcOutput("GDPpc")))
+  expectCorrectSetNames(suppressMessages(calcOutput("GDP")))
+  expectCorrectSetNames(suppressMessages(calcOutput("DefaultDrivers")))
+  expectCorrectSetNames(suppressMessages(calcOutput("Labour")))
+  # I want to keep; expectCorrectSetNames(suppressMessages(calcOutput("RatioPPP2MER")))
 })
 
 # Save all calcOutputs for later use
@@ -82,17 +82,17 @@ calcs3 <- list("PopulationPast" = suppressMessages(calcOutput("PopulationPast", 
 
 test_that("variable names", {
 
-  expect_correct_variable_names <- function(x, y) {
-    correct_names <- paste0(y, "_",
+  expectCorrectVariableNames <- function(x, y) {
+    correctNames <- paste0(y, "_",
                             c("SSP1", "SSP2", "SSP3", "SSP4", "SSP5",
                               "SDP", "SDP_EI", "SDP_MC", "SDP_RC", "SSP2EU"))
-    expect_equal(getNames(calcs[[x]]), correct_names)
-    expect_equal(getNames(calcs2[[x]]), correct_names)
+    expect_equal(getNames(calcs[[x]]), correctNames)
+    expect_equal(getNames(calcs2[[x]]), correctNames)
   }
 
   purrr::map2(c("Population", "Urban", "UrbanPop", "GDPpc", "GDP", "Labour"),
               c("pop",        "urb",   "urb",      "gdppc", "gdp", "lab"),
-              expect_correct_variable_names)
+              expectCorrectVariableNames)
 })
 
 test_that("all positive", {
@@ -113,6 +113,3 @@ test_that("no NA", {
 test_that("no newline in descriptions", {
   purrr::map(calcs3, ~ expect_true(!grepl("\n", .x$description)))
 })
-
-
-

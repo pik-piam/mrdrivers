@@ -1,17 +1,18 @@
 #' calcUrbanPast
-#' 
+#'
 #' Calculates a time series of urban shares
-#' 
+#'
 #' @inheritParams calcUrban
 #' @inherit calcUrban return
-#' 
+#'
 #' @seealso [madrat::calcOutput()]
 #' @family Urban functions
-#' 
+#'
 #' @examples \dontrun{
 #' library(mrdrivers)
-#' calcOutput("UrbanPast")}
-#' 
+#' calcOutput("UrbanPast")
+#' }
+#'
 calcUrbanPast <- function(UrbanPast = "WDI") {
 
   data <- switch(

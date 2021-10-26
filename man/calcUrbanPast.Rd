@@ -18,7 +18,8 @@ Calculates a time series of urban shares
 \examples{
 \dontrun{
 library(mrdrivers)
-calcOutput("UrbanPast")}
+calcOutput("UrbanPast")
+}
 
 }
 \seealso{

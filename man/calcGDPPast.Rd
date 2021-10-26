@@ -40,7 +40,8 @@ used. }
 \examples{
 \dontrun{
 library(mrdrivers)
-calcOutput("GDPPast")}
+calcOutput("GDPPast")
+}
 
 }
 \seealso{
