@@ -72,7 +72,7 @@
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">mrdrivers</a>
-        <span class="version label label-danger" data-toggle="tooltip" data-placement="bottom" title="Unreleased version">0.0.0.9001</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.1.0</span>
       </span>
     </div>
 
@@ -117,11 +117,7 @@
     <p>calcGDPpcPast</p>
     </div>
 
-    <pre class="usage"><span class='fu'>calcGDPpcPast</span><span class='op'>(</span>
-  GDPpcPast <span class='op'>=</span> <span class='st'>"WDI"</span>,
-  unit <span class='op'>=</span> <span class='st'>"constant 2005 Int$PPP"</span>,
-  useMIData <span class='op'>=</span> <span class='cn'>TRUE</span>
-<span class='op'>)</span></pre>
+    <pre class="usage"><span class='fu'>calcGDPpcPast</span><span class='op'>(</span>GDPpcPast <span class='op'>=</span> <span class='st'>"WDI-MI"</span>, unit <span class='op'>=</span> <span class='st'>"constant 2005 Int$PPP"</span><span class='op'>)</span></pre>
 
     <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a>Arguments</h2>
     <table class="ref-arguments">
@@ -135,10 +131,6 @@
       <td><p>A string. Either 'constant 2005 Int$PPP', 'constant 2005 US$MER',
 'constant 2017 Int$PPP' or 'constant 2017 US$MER'.</p></td>
     </tr>
-    <tr>
-      <th>useMIData</th>
-      <td><p>logical</p></td>
-    </tr>
     </table>
 
     <h2 class="hasAnchor" id="value"><a class="anchor" href="#value"></a>Value</h2>
@@ -146,7 +138,7 @@
     <p>A magpie object with sets "iso3c", "year" and "variable".</p>
     <h2 class="hasAnchor" id="see-also"><a class="anchor" href="#see-also"></a>See also</h2>
 
-    <div class='dont-index'><p><a href='https://rdrr.io/pkg/madrat/man/calcOutput.html'>madrat::calcOutput</a></p>
+    <div class='dont-index'><p><code><a href='https://rdrr.io/pkg/madrat/man/calcOutput.html'>madrat::calcOutput()</a></code></p>
 <p>Other GDPpc functions: 
 <code><a href='calcGDPpcFuture.html'>calcGDPpcFuture</a>()</code>,
 <code><a href='calcGDPpc.html'>calcGDPpc</a>()</code></p></div>
@@ -154,7 +146,8 @@
     <h2 class="hasAnchor" id="examples"><a class="anchor" href="#examples"></a>Examples</h2>
     <pre class="examples"><div class='input'><span class='kw'>if</span> <span class='op'>(</span><span class='cn'>FALSE</span><span class='op'>)</span> <span class='op'>{</span>
 <span class='kw'><a href='https://rdrr.io/r/base/library.html'>library</a></span><span class='op'>(</span><span class='va'><a href='https://pik-piam.github.io/mrdrivers'>mrdrivers</a></span><span class='op'>)</span>
-<span class='fu'>calcOutput</span><span class='op'>(</span><span class='st'>"GDPpcPast"</span><span class='op'>)</span><span class='op'>}</span>
+<span class='fu'>calcOutput</span><span class='op'>(</span><span class='st'>"GDPpcPast"</span><span class='op'>)</span>
+<span class='op'>}</span>
 
 </div></pre>
   </div>
@@ -168,7 +161,7 @@
 
       <footer>
       <div class="copyright">
-  <p>Developed by Johannes Koch, Benjamin Leon Bodirsky, Lavinia Baumstark, Xiaoxi Wang, David Chen, Falk Benke, Araujo Eweron, Renato Rodrigues, Anastasis Giannousakis, Antoine Levesque, Michaja Pehl, Bjoern Soergel, Jan Philipp Dietrich.</p>
+  <p>Developed by Johannes Koch, Benjamin Leon Bodirsky, Lavinia Baumstark, Xiaoxi Wang, David Chen, Deborra Leip, Falk Benke, Araujo Eweron, Renato Rodrigues, Anastasis Giannousakis, Antoine Levesque, Michaja Pehl, Bjoern Soergel, Jan Philipp Dietrich.</p>
 </div>
 
 <div class="pkgdown">

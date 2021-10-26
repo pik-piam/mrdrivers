@@ -6,7 +6,7 @@
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-<title>Convert James data — convertJames • mrdrivers</title>
+<title>Read Eurostat historical emissions — readEurostatPopGDP • mrdrivers</title>
 
 
 <!-- jquery -->
@@ -39,8 +39,8 @@
 
 
 
-<meta property="og:title" content="Convert James data — convertJames" />
-<meta property="og:description" content="Convert James data on ISO country level." />
+<meta property="og:title" content="Read Eurostat historical emissions — readEurostatPopGDP" />
+<meta property="og:description" content="Read-in Eurostat historical emissions csv files as magclass object" />
 
 
 
@@ -108,34 +108,52 @@
 <div class="row">
   <div class="col-md-9 contents">
     <div class="page-header">
-    <h1>Convert James data</h1>
-    <small class="dont-index">Source: <a href='https://github.com/pik-piam/mrdrivers/blob/master/R/convertJames.R'><code>R/convertJames.R</code></a></small>
-    <div class="hidden name"><code>convertJames.Rd</code></div>
+    <h1>Read Eurostat historical emissions</h1>
+    <small class="dont-index">Source: <a href='https://github.com/pik-piam/mrdrivers/blob/master/R/readEurostatPopGDP.R'><code>R/readEurostatPopGDP.R</code></a></small>
+    <div class="hidden name"><code>readEurostatPopGDP.Rd</code></div>
     </div>
 
     <div class="ref-description">
-    <p>Convert James data on ISO country level.</p>
+    <p>Read-in Eurostat historical emissions csv files as magclass object</p>
     </div>
 
-    <pre class="usage"><span class='fu'>convertJames</span><span class='op'>(</span><span class='va'>x</span>, <span class='va'>subtype</span><span class='op'>)</span></pre>
+    <pre class="usage"><span class='fu'>readEurostatPopGDP</span><span class='op'>(</span><span class='va'>subtype</span><span class='op'>)</span></pre>
 
     <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a>Arguments</h2>
     <table class="ref-arguments">
     <colgroup><col class="name" /><col class="desc" /></colgroup>
     <tr>
-      <th>x</th>
-      <td><p>MAgPIE object returned by readJames</p></td>
-    </tr>
-    <tr>
       <th>subtype</th>
-      <td><p>String indicating the data series</p></td>
+      <td><p>emissions for original eurostat emissions split, MACCemi for MACC historical emissions, or
+sectorEmi for sector specific emissions</p></td>
     </tr>
     </table>
 
     <h2 class="hasAnchor" id="value"><a class="anchor" href="#value"></a>Value</h2>
 
-    <p>GDP per capita in USD05 in PPP or MER as magpie object</p>
+    <p>magpie object of Eurostat historical emissions (MtCO2)</p>
+    <h2 class="hasAnchor" id="see-also"><a class="anchor" href="#see-also"></a>See also</h2>
 
+    <div class='dont-index'><p><code><a href='https://rdrr.io/pkg/madrat/man/readSource.html'>madrat::readSource()</a></code></p>
+<p>Other "Past" population functions: 
+<code>readHYDE()</code>,
+<code><a href='readMissingIslands.html'>readMissingIslands</a>()</code>,
+<code><a href='readUN_PopDiv.html'>readUN_PopDiv</a>()</code>,
+<code><a href='readWDI.html'>readWDI</a>()</code></p>
+<p>Other "Future" population functions: 
+<code><a href='readPEAP.html'>readPEAP</a>()</code>,
+<code><a href='readPopulationTWN.html'>readPopulationTWN</a>()</code></p>
+<p>Other "Past" GDP functions: 
+<code><a href='readMissingIslands.html'>readMissingIslands</a>()</code>,
+<code><a href='readWDI.html'>readWDI</a>()</code></p>
+<p>Other Eurostat functions: 
+<code><a href='convertEurostatPopGDP.html'>convertEurostatPopGDP</a>()</code></p></div>
+
+    <h2 class="hasAnchor" id="examples"><a class="anchor" href="#examples"></a>Examples</h2>
+    <pre class="examples"><div class='input'><span class='kw'>if</span> <span class='op'>(</span><span class='cn'>FALSE</span><span class='op'>)</span> <span class='op'>{</span>
+<span class='fu'>readSource</span><span class='op'>(</span><span class='st'>"EurostatPopGDP"</span>, subtype <span class='op'>=</span> <span class='st'>"population"</span><span class='op'>)</span>
+<span class='op'>}</span>
+</div></pre>
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="pkgdown-sidebar">
     <nav id="toc" data-toggle="toc" class="sticky-top">

@@ -33,7 +33,7 @@
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="index.html">mrdrivers</a>
-        <span class="version label label-danger" data-toggle="tooltip" data-placement="bottom" title="Unreleased version">0.0.0.9001</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.1.0</span>
       </span>
     </div>
 
@@ -73,7 +73,6 @@
 <a href="#mrdrivers" class="anchor"></a>mrdrivers</h1></div>
 <!-- badges: start -->
 
-<!-- badges: end -->
 <p>The goal of <strong>mrdrivers</strong> is to handle the construction of GDP, GDP per capita, Population and Urbanization scenarios: all of which are important drivers to the REMIND and MAgPIE models.</p>
 <div id="installation" class="section level2">
 <h2 class="hasAnchor">
@@ -88,16 +87,21 @@
 <p>This package depends upon the <a href="https://github.com/pik-piam/madrat#readme">madrat</a> and <a href="https://github.com/pik-piam/magclass#readme">magclass</a> packages. It integrates into the madrat framework and is structured accordingly. It mainly uses magpie objects (from the magclass package). For more information on madrat or magclass, please visit the respective github repositories (<a href="https://github.com/pik-piam/madrat#readme">madrat</a>, <a href="https://github.com/pik-piam/magclass#readme">magclass</a>).</p>
 <p>The readSource and calcOutput functions provided by this package are listed below.</p>
 <p>readSource:</p>
-<div class="sourceCode" id="cb2"><pre class="sourceCode R"><code class="sourceCode r"><span id="cb2-1"><a href="#cb2-1"></a><span class="co">#&gt; [1] "ARIADNE"        "Eurostat"       "IMF"            "James2019"     </span></span>
-<span id="cb2-2"><a href="#cb2-2"></a><span class="co">#&gt; [5] "MissingIslands" "PEAP"           "SSP"            "WDI"</span></span></code></pre></div>
+<div class="sourceCode" id="cb2"><pre class="sourceCode R"><code class="sourceCode r"><span id="cb2-1"><a href="#cb2-1"></a><span class="co">#&gt;  [1] "ARIADNE"                   "ARIADNE_ReferenceScenario"</span></span>
+<span id="cb2-2"><a href="#cb2-2"></a><span class="co">#&gt;  [3] "EurostatPopGDP"            "HYDE"                     </span></span>
+<span id="cb2-3"><a href="#cb2-3"></a><span class="co">#&gt;  [5] "IMF"                       "James"                    </span></span>
+<span id="cb2-4"><a href="#cb2-4"></a><span class="co">#&gt;  [7] "James2019"                 "MissingIslands"           </span></span>
+<span id="cb2-5"><a href="#cb2-5"></a><span class="co">#&gt;  [9] "OECD"                      "PEAP"                     </span></span>
+<span id="cb2-6"><a href="#cb2-6"></a><span class="co">#&gt; [11] "PopulationTWN"             "PWT"                      </span></span>
+<span id="cb2-7"><a href="#cb2-7"></a><span class="co">#&gt; [13] "SSP"                       "UN_PopDiv"                </span></span>
+<span id="cb2-8"><a href="#cb2-8"></a><span class="co">#&gt; [15] "WDI"</span></span></code></pre></div>
 <p>readSource (deprecated?!):</p>
-<div class="sourceCode" id="cb3"><pre class="sourceCode R"><code class="sourceCode r"><span id="cb3-1"><a href="#cb3-1"></a><span class="co">#&gt; [1] "IIASApop"      "James"         "OECD"          "PopulationTWN"</span></span>
-<span id="cb3-2"><a href="#cb3-2"></a><span class="co">#&gt; [5] "PWT"           "SRES"          "UN_PopDiv"</span></span></code></pre></div>
+<div class="sourceCode" id="cb3"><pre class="sourceCode R"><code class="sourceCode r"><span id="cb3-1"><a href="#cb3-1"></a><span class="co">#&gt; [1] "IIASApop" "SRES"</span></span></code></pre></div>
 <p>calcOutput:</p>
 <div class="sourceCode" id="cb4"><pre class="sourceCode R"><code class="sourceCode r"><span id="cb4-1"><a href="#cb4-1"></a><span class="co">#&gt;  [1] "DefaultDrivers"   "GDP"              "GDPFuture"        "GDPPast"         </span></span>
-<span id="cb4-2"><a href="#cb4-2"></a><span class="co">#&gt;  [5] "GDPpc"            "GDPpcFuture"      "GDPpcPast"        "Population"      </span></span>
-<span id="cb4-3"><a href="#cb4-3"></a><span class="co">#&gt;  [9] "PopulationFuture" "PopulationPast"   "Urban"            "UrbanFuture"     </span></span>
-<span id="cb4-4"><a href="#cb4-4"></a><span class="co">#&gt; [13] "UrbanPast"        "UrbanPop"</span></span></code></pre></div>
+<span id="cb4-2"><a href="#cb4-2"></a><span class="co">#&gt;  [5] "GDPpc"            "GDPpcFuture"      "GDPpcPast"        "Labour"          </span></span>
+<span id="cb4-3"><a href="#cb4-3"></a><span class="co">#&gt;  [9] "Population"       "PopulationFuture" "PopulationPast"   "RatioPPP2MER"    </span></span>
+<span id="cb4-4"><a href="#cb4-4"></a><span class="co">#&gt; [13] "Urban"            "UrbanFuture"      "UrbanPast"        "UrbanPop"</span></span></code></pre></div>
 </div>
 </div>
   </div>
@@ -127,6 +131,7 @@
 <li>Lavinia Baumstark <br><small class="roles"> Author </small>  </li>
 <li>Xiaoxi Wang <br><small class="roles"> Author </small>  </li>
 <li>David Chen <br><small class="roles"> Author </small>  </li>
+<li>Deborra Leip <br><small class="roles"> Author </small>  </li>
 <li>Falk Benke <br><small class="roles"> Author </small>  </li>
 <li>Araujo Eweron <br><small class="roles"> Author </small>  </li>
 <li>Renato Rodrigues <br><small class="roles"> Author </small>  </li>
@@ -141,8 +146,9 @@
   <div class="dev-status">
 <h2>Dev status</h2>
 <ul class="list-unstyled">
-<li><a href="https://github.com/pik-piam/mrdrivers/actions/workflows/test-buildlibrary.yaml"><img src="https://github.com/pik-piam/mrdrivers/actions/workflows/test-buildlibrary.yaml/badge.svg" alt="R-cmd-check"></a></li>
+<li><a href="https://github.com/pik-piam/mrdrivers/actions/workflows/test-buildlibrary.yaml"><img src="https://github.com/pik-piam/mrdrivers/actions/workflows/test-buildlibrary.yaml/badge.svg" alt="check"></a></li>
 <li><a href="https://lifecycle.r-lib.org/articles/stages.html#experimental"><img src="https://img.shields.io/badge/lifecycle-experimental-orange.svg" alt="Lifecycle: maturing"></a></li>
+<li><a href="https://app.codecov.io/gh/pik-piam/mrdrivers?branch=main"><img src="https://codecov.io/gh/pik-piam/mrdrivers/branch/main/graph/badge.svg" alt="Codecov test coverage"></a></li>
 </ul>
 </div>
 </div>
@@ -150,7 +156,7 @@
 
 
       <footer><div class="copyright">
-  <p>Developed by Johannes Koch, Benjamin Leon Bodirsky, Lavinia Baumstark, Xiaoxi Wang, David Chen, Falk Benke, Araujo Eweron, Renato Rodrigues, Anastasis Giannousakis, Antoine Levesque, Michaja Pehl, Bjoern Soergel, Jan Philipp Dietrich.</p>
+  <p>Developed by Johannes Koch, Benjamin Leon Bodirsky, Lavinia Baumstark, Xiaoxi Wang, David Chen, Deborra Leip, Falk Benke, Araujo Eweron, Renato Rodrigues, Anastasis Giannousakis, Antoine Levesque, Michaja Pehl, Bjoern Soergel, Jan Philipp Dietrich.</p>
 </div>
 
 <div class="pkgdown">

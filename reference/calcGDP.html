@@ -78,7 +78,7 @@ calibration method affected the future extension" />
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">mrdrivers</a>
-        <span class="version label label-danger" data-toggle="tooltip" data-placement="bottom" title="Unreleased version">0.0.0.9001</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.1.0</span>
       </span>
     </div>
 
@@ -131,10 +131,9 @@ calibration method affected the future extension</p>
 
     <pre class="usage"><span class='fu'>calcGDP</span><span class='op'>(</span>
   GDPCalib <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span><span class='op'>(</span><span class='st'>"calibSSPs"</span>, <span class='st'>"calibSDPs"</span>, <span class='st'>"calibSSP2EU"</span><span class='op'>)</span>,
-  GDPPast <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span><span class='op'>(</span><span class='st'>"WDI"</span>, <span class='st'>"WDI"</span>, <span class='st'>"Eurostat_WDI"</span><span class='op'>)</span>,
-  GDPFuture <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span><span class='op'>(</span><span class='st'>"SSPs"</span>, <span class='st'>"SDPs"</span>, <span class='st'>"SSP2EU"</span><span class='op'>)</span>,
+  GDPPast <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span><span class='op'>(</span><span class='st'>"WDI-MI"</span>, <span class='st'>"WDI-MI"</span>, <span class='st'>"Eurostat-WDI-MI"</span><span class='op'>)</span>,
+  GDPFuture <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span><span class='op'>(</span><span class='st'>"SSPs-MI"</span>, <span class='st'>"SDPs-MI"</span>, <span class='st'>"SSP2EU-MI"</span><span class='op'>)</span>,
   unit <span class='op'>=</span> <span class='st'>"constant 2005 Int$PPP"</span>,
-  useMIData <span class='op'>=</span> <span class='cn'>TRUE</span>,
   extension2150 <span class='op'>=</span> <span class='st'>"bezier"</span>,
   FiveYearSteps <span class='op'>=</span> <span class='cn'>TRUE</span>,
   naming <span class='op'>=</span> <span class='st'>"indicator_scenario"</span>
@@ -161,16 +160,14 @@ calibration method affected the future extension</p>
 'constant 2017 Int$PPP' or 'constant 2017 US$MER'.</p></td>
     </tr>
     <tr>
-      <th>useMIData</th>
-      <td><p>logical</p></td>
-    </tr>
-    <tr>
       <th>extension2150</th>
       <td><p>string, either "bezier", "constant" or "none"</p></td>
     </tr>
     <tr>
       <th>FiveYearSteps</th>
-      <td><p>Only five year steps if TRUE, FALSE returns years from source data</p></td>
+      <td><p><a href='https://lifecycle.r-lib.org/articles/stages.html#deprecated'><img src='figures/lifecycle-deprecated.svg' alt='[Deprecated]' /></a> <code>FiveYearSteps = TRUE</code> is no
+longer supported; use the calcOutput argument <code>years</code>  instead, to retrieve
+specific years.</p></td>
     </tr>
     <tr>
       <th>naming</th>
@@ -210,7 +207,7 @@ calibration method affected the future extension</p>
 
       <footer>
       <div class="copyright">
-  <p>Developed by Johannes Koch, Benjamin Leon Bodirsky, Lavinia Baumstark, Xiaoxi Wang, David Chen, Falk Benke, Araujo Eweron, Renato Rodrigues, Anastasis Giannousakis, Antoine Levesque, Michaja Pehl, Bjoern Soergel, Jan Philipp Dietrich.</p>
+  <p>Developed by Johannes Koch, Benjamin Leon Bodirsky, Lavinia Baumstark, Xiaoxi Wang, David Chen, Deborra Leip, Falk Benke, Araujo Eweron, Renato Rodrigues, Anastasis Giannousakis, Antoine Levesque, Michaja Pehl, Bjoern Soergel, Jan Philipp Dietrich.</p>
 </div>
 
 <div class="pkgdown">
