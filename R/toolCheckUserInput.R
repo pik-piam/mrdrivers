@@ -1,7 +1,8 @@
 toolCheckUserInput <- function(driver, args) {
-  # Check 'useMIData' argument
-  if ("useMIData" %in% names(args) && !is.logical(args$useMIData)) {
-     stop(glue("Bad argument to calc{driver}. 'useMIData' must be TRUE or FALSE."))
+  # Check 'extension2150' argument
+  if ("unit" %in% names(args) &&
+      !args$unit %in% c("constant 2005 Int$PPP", "constant 2017 Int$PPP")) {
+     stop(glue("Bad argument to calc{driver}. 'unit' argument unknown."))
   }
 
   # Check 'extension2150' argument
@@ -11,6 +12,9 @@ toolCheckUserInput <- function(driver, args) {
 
   # Check 'FiveYearSteps' argument
   if (!is.logical(args$FiveYearSteps)) {
+     if (args$FiveYearSteps) {
+        warning("FiveYearSteps will be deprecated in the next release. Use the `years` argument of calcOutput instead.")
+     }
      stop(glue("Bad argument to calc{driver}. 'FiveYearSteps' must be TRUE or FALSE."))
   }
 

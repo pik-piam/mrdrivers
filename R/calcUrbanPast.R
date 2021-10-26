@@ -1,17 +1,18 @@
 #' calcUrbanPast
-#' 
+#'
 #' Calculates a time series of urban shares
-#' 
+#'
 #' @inheritParams calcUrban
 #' @inherit calcUrban return
-#' 
-#' @seealso [madrat::calcOutput]
+#'
+#' @seealso [madrat::calcOutput()]
 #' @family Urban functions
-#' 
+#'
 #' @examples \dontrun{
 #' library(mrdrivers)
-#' calcOutput("UrbanPast")}
-#' 
+#' calcOutput("UrbanPast")
+#' }
+#'
 calcUrbanPast <- function(UrbanPast = "WDI") {
 
   data <- switch(
@@ -21,9 +22,9 @@ calcUrbanPast <- function(UrbanPast = "WDI") {
   )
 
   getNames(data) <- "urbanPop"
-  data <- finishingTouches(data)
+  data <- toolFinishingTouches(data)
 
-  wp <- calcOutput("PopulationPast", PopulationPast = UrbanPast, useMIData = FALSE, aggregate = FALSE)
+  wp <- calcOutput("PopulationPast", PopulationPast = UrbanPast, aggregate = FALSE)
 
   list(x = data, weight = wp, unit = "per 1", description = glue("Urbanisation data from {UrbanPast}"))
 }

@@ -18,9 +18,10 @@ Collect Default Model Drivers
 \examples{
 \dontrun{
 library(mrdrivers)
-calcOutput("DefaultDrivers")}
+calcOutput("DefaultDrivers")
+}
 
 }
 \seealso{
-\link[madrat:calcOutput]{madrat::calcOutput}
+\code{\link[madrat:calcOutput]{madrat::calcOutput()}}
 }

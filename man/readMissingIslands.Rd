@@ -16,21 +16,27 @@ Magpie object
 Read in core data for minor islands which are not included in big inventories but have a countrycode
 }
 \examples{
-\dontrun{ 
-readSource("MissingIslands", subtype = "pop", convert = FALSE)}
+\dontrun{
+readSource("MissingIslands", subtype = "pop", convert = FALSE)
+}
 
 }
 \seealso{
 \code{\link[madrat:readSource]{madrat::readSource()}}
 
 Other "Past" population functions: 
-\code{\link{readEurostat}()},
+\code{\link{readEurostatPopGDP}()},
+\code{\link{readHYDE}()},
 \code{\link{readUN_PopDiv}()},
 \code{\link{readWDI}()}
 
 Other "Past" GDP functions: 
-\code{\link{readEurostat}()},
+\code{\link{readEurostatPopGDP}()},
 \code{\link{readWDI}()}
+
+Other MissingIslands functions: 
+\code{\link{convertMissingIslands}()},
+\code{\link{downloadMissingIslands}()}
 }
 \concept{"Past" GDP functions}
 \concept{"Past" population functions}

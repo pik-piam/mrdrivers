@@ -6,9 +6,9 @@
 \usage{
 calcPopulation(
   PopulationCalib = c("calibSSPs", "calibSDPs", "calibSSP2EU"),
-  PopulationPast = c("WDI", "WDI", "Eurostat_WDI"),
-  PopulationFuture = c("SSPs", "SDPs", "SSP2EU"),
-  useMIData = TRUE,
+  PopulationPast = c("WDI-UN_PopDiv-MI", "WDI-UN_PopDiv-MI",
+    "Eurostat-WDI-UN_PopDiv-MI"),
+  PopulationFuture = c("SSPs-UN_PopDiv-MI", "SDPs-UN_PopDiv-MI", "SSP2EU-UN_PopDiv-MI"),
   extension2150 = "bezier",
   FiveYearSteps = TRUE,
   naming = "indicator_scenario"
@@ -21,11 +21,11 @@ calcPopulation(
 
 \item{PopulationFuture}{population future data source}
 
-\item{useMIData}{logical}
-
 \item{extension2150}{string, either "bezier", "constant" or "none"}
 
-\item{FiveYearSteps}{Only five year steps if TRUE, FALSE returns years from source data}
+\item{FiveYearSteps}{\ifelse{html}{\href{https://lifecycle.r-lib.org/articles/stages.html#deprecated}{\figure{lifecycle-deprecated.svg}{options: alt='[Deprecated]'}}}{\strong{[Deprecated]}} \code{FiveYearSteps = TRUE} is no
+longer supported; use the calcOutput argument \code{years}  instead, to retrieve
+specific years.}
 
 \item{naming}{naming scheme}
 }
@@ -43,13 +43,15 @@ the "future" dataset as specified by PopulationCalib.
 \examples{
 \dontrun{
 library(mrdrivers)
-calcOutput("GDPpc")}
+calcOutput("GDPpc")
+}
 
 }
 \seealso{
-\link[madrat:calcOutput]{madrat::calcOutput}
+\code{\link[madrat:calcOutput]{madrat::calcOutput()}}
 
 Other Population functions: 
+\code{\link{calcLabour}()},
 \code{\link{calcPopulationFuture}()},
 \code{\link{calcPopulationPast}()}
 

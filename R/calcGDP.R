@@ -13,9 +13,10 @@
 #' @param GDPFuture GDP future data source
 #' @param unit A string. Either 'constant 2005 Int$PPP', 'constant 2005 US$MER',
 #'   'constant 2017 Int$PPP' or 'constant 2017 US$MER'.
-#' @param useMIData logical
 #' @param extension2150 string, either "bezier", "constant" or "none"
-#' @param FiveYearSteps Only five year steps if TRUE, FALSE returns years from source data
+#' @param FiveYearSteps `r lifecycle::badge("deprecated")` `FiveYearSteps = TRUE` is no
+#'   longer supported; use the calcOutput argument `years`  instead, to retrieve
+#'   specific years.
 #' @param naming naming scheme
 #'
 #' @return A magpie object with sets "iso3c", "year" and "variable".
@@ -29,30 +30,28 @@
 #' calcOutput("GDP")}
 #'
 calcGDP <- function(GDPCalib  = c("calibSSPs", "calibSDPs", "calibSSP2EU"),
-                    GDPPast   = c("WDI",       "WDI",       "Eurostat_WDI"),
-                    GDPFuture = c("SSPs",      "SDPs",      "SSP2EU"),
+                    GDPPast   = c("WDI-MI",    "WDI-MI",    "Eurostat-WDI-MI"),
+                    GDPFuture = c("SSPs-MI",   "SDPs-MI",   "SSP2EU-MI"),
                     unit = "constant 2005 Int$PPP",
-                    useMIData = TRUE,
                     extension2150 = "bezier",
                     FiveYearSteps = TRUE,
                     naming = "indicator_scenario") {
   # Check user input
   toolCheckUserInput("GDP", as.list(environment()))
-  # Call internal_calcGDP function the appropriate number of times
+  # Call internalCalcGDP function the appropriate number of times
   toolInternalCalc("GDP", as.list(environment()))
 }
 
 ######################################################################################
 # Internal Function
 ######################################################################################
-internal_calcGDP <- function(GDPCalib,
-                             GDPPast,
-                             GDPFuture,
-                             unit,
-                             useMIData,
-                             extension2150,
-                             FiveYearSteps,
-                             naming){
+internalCalcGDP <- function(GDPCalib,
+                            GDPPast,
+                            GDPFuture,
+                            unit,
+                            extension2150,
+                            FiveYearSteps,
+                            naming){
 
   # Depending on the chose GDPCalib, the harmonization function either requires 'past' and
   # 'future' GDP scenarios, OR NOT, which is the case for "calibSSPs" for example, where
@@ -68,12 +67,10 @@ internal_calcGDP <- function(GDPCalib,
     past <- calcOutput("GDPPast",
                        GDPPast = GDPPast,
                        unit = unit,
-                       useMIData = useMIData,
                        aggregate = FALSE)
     future <- calcOutput("GDPFuture",
                          GDPFuture = GDPFuture,
                          unit = unit,
-                         useMIData = useMIData,
                          extension2150 = "none",
                          aggregate = FALSE)
   }
@@ -102,11 +99,11 @@ internal_calcGDP <- function(GDPCalib,
     "past_transition" = glue("use past data and afterwards transition between {GDPPast} and \\
                              {GDPFuture} with a transition period until 2050"),
     "calibSSPs"    = glue("use past data, short term growth rates from IMF and \\
-                              afterwards transition between {GDPPast} and {GDPFuture} \\
-                              with a transition period until 2100"),
+                           afterwards transition between {GDPPast} and {GDPFuture} \\
+                           with a transition period until 2100"),
     "calibSDPs"    = glue("use past data, short term growth rates from IMF and \\
-                              afterwards transition between {GDPPast} and {GDPFuture} \\
-                              with a transition period until 2100"),
+                            afterwards transition between {GDPPast} and {GDPFuture} \\
+                            with a transition period until 2100"),
     "calibSSP2EU"     = glue("use past data, short term growth rates from IMF and afterwards transition \\
                               between {GDPPast} and {GDPFuture} with a transition period until 2100. For \\
                               European countries, just glue past with future and after 2070 converge \\
@@ -114,7 +111,7 @@ internal_calcGDP <- function(GDPCalib,
   )
 
   # Apply finishing touches to combined time-series
-  combined <- finishingTouches(combined, extension2150, FiveYearSteps, naming)
+  combined <- toolFinishingTouches(combined, extension2150, FiveYearSteps, naming)
 
   list(x = combined,
        weight = NULL,
@@ -133,7 +130,6 @@ gdpHarmonizeSSPsSPDs <- function(args) {
                       GDPpcPast = args$GDPPast,
                       GDPpcFuture = args$GDPFuture,
                       unit = args$unit,
-                      useMIData = args$useMIData,
                       extension2150 = "none",
                       FiveYearSteps = FALSE,
                       aggregate = FALSE)
@@ -157,8 +153,8 @@ gdpHarmonizeSSP2EU <- function(past, future, unit) {
   # We return only up until 2100.
   ssp2_data <- calcOutput("GDP",
                           GDPCalib = "calibSSPs",
-                          GDPPast = "WDI",
-                          GDPFuture = "SSPs",
+                          GDPPast = "WDI-MI",
+                          GDPFuture = "SSPs-MI",
                           unit = unit,
                           extension2150 = "bezier",
                           aggregate = FALSE,
@@ -167,21 +163,21 @@ gdpHarmonizeSSP2EU <- function(past, future, unit) {
 
   # For SSP2EU: simply glue past (until 2019) with future (starting 2020)
   # Get EUR countries.
-  EUR_countries <- where(readSource("ARIADNE", "gdp_corona") != 0 )$true$regions
+  euCountries <- toolGetEUcountries(onlyWithARIADNEgdpData = TRUE)
   fut_years <- getYears(future)[getYears(future, as.integer = TRUE) >= max(getYears(past, as.integer = TRUE))]
 
   SSP2EU_data <- ssp2_data
-  SSP2EU_data[EUR_countries, getYears(past),] <- past[EUR_countries,,]
-  SSP2EU_data[EUR_countries, fut_years,] <- future[EUR_countries, fut_years,]
+  SSP2EU_data[euCountries, getYears(past),] <- past[euCountries,,]
+  SSP2EU_data[euCountries, fut_years,] <- future[euCountries, fut_years,]
 
   # After 2070, transition to SSP2 values by 2150
   past_years <- getYears(future)[getYears(future, as.integer = TRUE) <= 2070]
-  combined_SSP2EU <- toolHarmonizePastTransition(SSP2EU_data[EUR_countries, past_years,],
-                                              ssp2_data[EUR_countries,,],
+  combined_SSP2EU <- toolHarmonizePastTransition(SSP2EU_data[euCountries, past_years,],
+                                              ssp2_data[euCountries,,],
                                               2150)
 
   combined <- ssp2_data
-  combined[EUR_countries, getYears(combined_SSP2EU),]  <- combined_SSP2EU[EUR_countries,,]
+  combined[euCountries, getYears(combined_SSP2EU),]  <- combined_SSP2EU[euCountries,,]
   getNames(combined) <- "gdp_SSP2EU"
 
   combined[, getYears(combined)[getYears(combined, as.integer = TRUE) <= 2100], ]

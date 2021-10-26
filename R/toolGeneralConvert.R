@@ -1,26 +1,34 @@
 toolGeneralConvert <- function(x,
                                useDefaultSetNames = TRUE,
                                countryFillWith = 0,
-                               NASubstituteWith = 0,
+                               substituteNAsWith = 0,
                                warn = TRUE,
-                               no_remove_warning = NULL) {
+                               note = TRUE,
+                               ...) {
 
   # Remove any NA-countries
-  x <- x[!is.na(getCells(x)),,]
-  
+  x <- x[!is.na(getCells(x)), , ]
+
   # Use default setNames
   if (useDefaultSetNames) getSets(x) <- c("iso3c", "year", "variable")
-    
+
   # Substitute NAs
-  x[is.na(x)] <- NASubstituteWith    
+  x[is.na(x)] <- substituteNAsWith
 
   # Check whether the country list agrees with the list of countries in the madrat library
-  # and remove unrequired data, add missing data 
-  if (warn) {
-    x <- toolCountryFill(x, fill = countryFillWith, no_remove_warning = no_remove_warning)
-  } else {
-    x <- toolCountryFill(x, fill = countryFillWith , no_remove_warning = no_remove_warning) %>%
+  # and remove unrequired data, add missing data
+  if (warn && note) {
+    x <- toolCountryFill(x, fill = countryFillWith, ...)
+  } else if (!warn && note) {
+    x <- toolCountryFill(x, fill = countryFillWith, ...) %>%
       suppressWarnings()
+  } else if (warn && !note) {
+    x <- toolCountryFill(x, fill = countryFillWith, ...) %>%
+      suppressMessages()
+  } else {
+    x <- toolCountryFill(x, fill = countryFillWith, ...) %>%
+      suppressWarnings() %>%
+      suppressMessages()
   }
 
   # Sort by year

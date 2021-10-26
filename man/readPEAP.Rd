@@ -16,7 +16,7 @@ Read-in xlsx file from the World Bank's Population Estimates And Projections
 \code{\link[madrat:readSource]{madrat::readSource()}}
 
 Other "Future" population functions: 
-\code{\link{readEurostat}()},
+\code{\link{readEurostatPopGDP}()},
 \code{\link{readPopulationTWN}()}
 
 Other PEAP functions: 

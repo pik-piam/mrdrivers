@@ -4,12 +4,10 @@
 \alias{calcPopulationPast}
 \title{calcPopulationPast}
 \usage{
-calcPopulationPast(PopulationPast = "WDI", useMIData = TRUE)
+calcPopulationPast(PopulationPast = "WDI-UN_PopDiv-MI")
 }
 \arguments{
 \item{PopulationPast}{population past data source}
-
-\item{useMIData}{logical}
 }
 \value{
 A magpie object with sets "iso3c", "year" and "variable".
@@ -27,13 +25,15 @@ values set to zero.
 \examples{
 \dontrun{
 library(mrdrivers)
-calcOutput("PopulationPast")}
+calcOutput("PopulationPast")
+}
 
 }
 \seealso{
-\link[madrat:calcOutput]{madrat::calcOutput}
+\code{\link[madrat:calcOutput]{madrat::calcOutput()}}
 
 Other Population functions: 
+\code{\link{calcLabour}()},
 \code{\link{calcPopulationFuture}()},
 \code{\link{calcPopulation}()}
 }

@@ -22,7 +22,9 @@ calcUrban(
 
 \item{extension2150}{string, either "bezier", "constant" or "none"}
 
-\item{FiveYearSteps}{Only five year steps if TRUE, FALSE returns years from source data}
+\item{FiveYearSteps}{\ifelse{html}{\href{https://lifecycle.r-lib.org/articles/stages.html#deprecated}{\figure{lifecycle-deprecated.svg}{options: alt='[Deprecated]'}}}{\strong{[Deprecated]}} \code{FiveYearSteps = TRUE} is no
+longer supported; use the calcOutput argument \code{years}  instead, to retrieve
+specific years.}
 
 \item{naming}{naming scheme}
 }
@@ -42,11 +44,12 @@ scaled on the other.
 \examples{
 \dontrun{
 library(mrdrivers)
-calcOutput("Urban")}
+calcOutput("Urban")
+}
 
 }
 \seealso{
-\link[madrat:calcOutput]{madrat::calcOutput}
+\code{\link[madrat:calcOutput]{madrat::calcOutput()}}
 
 Other Urban functions: 
 \code{\link{calcUrbanFuture}()},

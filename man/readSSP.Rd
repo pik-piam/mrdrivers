@@ -7,7 +7,8 @@
 readSSP(subtype)
 }
 \arguments{
-\item{subtype}{A string, either "all", "pop2018Update" or "ratioPM".}
+\item{subtype}{A string, either "all", "gdp", "pop", "urb", "pop2018Update",
+"lab2018Update" or "ratioPM".}
 }
 \value{
 Magpie object of the SSP data
@@ -17,7 +18,8 @@ Read-in an SSP data csv.zip file as magclass object
 }
 \examples{
 \dontrun{
-readSource("SSP", subtype = "all")}
+readSource("SSP", subtype = "gdp")
+}
 
 }
 \seealso{

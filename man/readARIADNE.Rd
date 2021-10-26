@@ -19,7 +19,8 @@ Read ARIADNE Reference Scenario data from various .xls files as magpie object
 \code{\link[madrat:readSource]{madrat::readSource()}}
 
 Other ARIADNE functions: 
-\code{\link{convertARIADNE}()}
+\code{\link{convertARIADNE}()},
+\code{\link{readARIADNE_ReferenceScenario}()}
 }
 \concept{"Future" GDP functions}
 \concept{"Future" Population functions}

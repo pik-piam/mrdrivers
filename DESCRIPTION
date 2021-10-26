@@ -1,7 +1,7 @@
 Package: mrdrivers
 Type: Package
 Title: Create GDP and population scenarios
-Version: 0.0.0.9001
+Version: 0.1.0
 Authors@R: c(person(given = "Johannes", 
                     family = "Koch", 
                     email = "jokoch@pik-potsdam.de", 
@@ -10,6 +10,7 @@ Authors@R: c(person(given = "Johannes",
              person("Lavinia", "Baumstark", role = "aut"),
              person("Xiaoxi", "Wang", role = "aut"),
              person("David", "Chen", role = "aut"),
+             person("Deborra", "Leip", role = "aut"),
              person("Falk", "Benke", role = "aut"),
              person("Araujo", "Eweron", role = "aut"),
              person("Renato", "Rodrigues", role = "aut"),
@@ -45,6 +46,7 @@ Imports:
     WDI,
     zoo
 Suggests: 
+    covr,
     crayon,
     testthat (>= 3.0.0),
     withr (>= 2.4.2)
@@ -52,5 +54,5 @@ Encoding: UTF-8
 LazyData: true
 Roxygen: list(markdown = TRUE)
 RoxygenNote: 7.1.2
-Date: 2021-09-09
+Date: 2021-10-26
 Config/testthat/edition: 3

@@ -1,5 +1,3 @@
-
-
 #' MadRat drivers Input Data Library
 #' 
 #' @description
@@ -16,4 +14,3 @@
 #' @importFrom glue glue
 #' @exportPattern "^(calc|read|convert|download).*"
 NULL
-

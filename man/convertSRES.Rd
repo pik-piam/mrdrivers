@@ -20,8 +20,8 @@ all SRES-scenarios, GDP+Population. Units:
 Convert SRES data on ISO country level.
 }
 \examples{
-
-\dontrun{ a <- convertSRES(x,subtype="pop_a1")
+\dontrun{
+a <- convertSRES(x, subtype = "pop_a1")
 }
 
 }

@@ -22,11 +22,12 @@ with WDI in 2010
 \examples{
 \dontrun{
 library(mrdrivers)
-calcOutput("UrbanFuture")}
+calcOutput("UrbanFuture")
+}
 
 }
 \seealso{
-\link[madrat:calcOutput]{madrat::calcOutput}
+\code{\link[madrat:calcOutput]{madrat::calcOutput()}}
 
 Other Urban functions: 
 \code{\link{calcUrbanPast}()},

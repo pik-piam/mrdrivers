@@ -7,13 +7,15 @@
 downloadWDI()
 }
 \description{
-Download World development indicators (WDI) data .Rds file.
-the WDI data is updated with the function "WDISearch(cache = WDIcache())"
+Download World development indicators (WDI) data to .Rds file.
+Data is downloaded from 1960 until "current year - 1".
+The WDI data is updated with the function "WDISearch(cache = WDIcache())"
 }
 \examples{
-\dontrun{ 
+\dontrun{
 library(mrdrivers)
-downloadSource("WDI")}
+downloadSource("WDI")
+}
 
 }
 \seealso{

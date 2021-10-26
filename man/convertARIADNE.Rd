@@ -19,6 +19,7 @@ Read ARIADNE Reference Scenario data from various .xls files as magpie object
 }
 \seealso{
 Other ARIADNE functions: 
+\code{\link{readARIADNE_ReferenceScenario}()},
 \code{\link{readARIADNE}()}
 }
 \concept{ARIADNE functions}

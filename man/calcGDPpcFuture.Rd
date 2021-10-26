@@ -5,9 +5,8 @@
 \title{calcGDPpcFuture}
 \usage{
 calcGDPpcFuture(
-  GDPpcFuture = "SSPs",
+  GDPpcFuture = "SSPs-MI",
   unit = "constant 2005 Int$PPP",
-  useMIData = TRUE,
   extension2150 = "none"
 )
 }
@@ -16,8 +15,6 @@ calcGDPpcFuture(
 
 \item{unit}{A string. Either 'constant 2005 Int$PPP', 'constant 2005 US$MER',
 'constant 2017 Int$PPP' or 'constant 2017 US$MER'.}
-
-\item{useMIData}{logical}
 
 \item{extension2150}{string, either "bezier", "constant" or "none"}
 }
@@ -30,11 +27,12 @@ calcGDPpcFuture
 \examples{
 \dontrun{
 library(mrdrivers)
-calcOutput("GDPpcFuture")}
+calcOutput("GDPpcFuture")
+}
 
 }
 \seealso{
-\link[madrat:calcOutput]{madrat::calcOutput}
+\code{\link[madrat:calcOutput]{madrat::calcOutput()}}
 
 Other GDPpc functions: 
 \code{\link{calcGDPpcPast}()},

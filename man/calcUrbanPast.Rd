@@ -18,11 +18,12 @@ Calculates a time series of urban shares
 \examples{
 \dontrun{
 library(mrdrivers)
-calcOutput("UrbanPast")}
+calcOutput("UrbanPast")
+}
 
 }
 \seealso{
-\link[madrat:calcOutput]{madrat::calcOutput}
+\code{\link[madrat:calcOutput]{madrat::calcOutput()}}
 
 Other Urban functions: 
 \code{\link{calcUrbanFuture}()},

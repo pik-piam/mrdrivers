@@ -5,15 +5,12 @@
 \title{calcPopulationFuture}
 \usage{
 calcPopulationFuture(
-  PopulationFuture = "SSPs",
-  useMIData = TRUE,
+  PopulationFuture = "SSPs-UN_PopDiv-MI",
   extension2150 = "none"
 )
 }
 \arguments{
 \item{PopulationFuture}{population future data source}
-
-\item{useMIData}{logical}
 
 \item{extension2150}{string, either "bezier", "constant" or "none"}
 }
@@ -28,13 +25,15 @@ Calculates a time series of Pop. Different sources are available:
 \examples{
 \dontrun{
 library(mrdrivers)
-calcOutput("PopulationFuture")}
+calcOutput("PopulationFuture")
+}
 
 }
 \seealso{
-\link[madrat:calcOutput]{madrat::calcOutput}
+\code{\link[madrat:calcOutput]{madrat::calcOutput()}}
 
 Other Population functions: 
+\code{\link{calcLabour}()},
 \code{\link{calcPopulationPast}()},
 \code{\link{calcPopulation}()}
 }
