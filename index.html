@@ -33,7 +33,7 @@
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="index.html">mrdrivers</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.1.0</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.1.1</span>
       </span>
     </div>
 
@@ -77,9 +77,12 @@
 <div id="installation" class="section level2">
 <h2 class="hasAnchor">
 <a href="#installation" class="anchor"></a>Installation</h2>
-<p>Install the package from github:</p>
 <div class="sourceCode" id="cb1"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span class="fu">remotes</span><span class="fu">::</span><span class="fu">install_github</span><span class="op">(</span><span class="st">"pik-piam/mrdrivers"</span><span class="op">)</span></code></pre></div>
+<code class="sourceCode R"><span class="co"># From the PIK rse-server</span>
+<span class="fu"><a href="https://rdrr.io/r/utils/install.packages.html">install.packages</a></span><span class="op">(</span><span class="st">"mrdrivers"</span>, repos <span class="op">=</span> <span class="st">"https://rse.pik-potsdam.de/r/packages"</span><span class="op">)</span>
+
+<span class="co"># or from Github</span>
+<span class="fu">remotes</span><span class="fu">::</span><span class="fu">install_github</span><span class="op">(</span><span class="st">"pik-piam/mrdrivers"</span><span class="op">)</span></code></pre></div>
 </div>
 <div id="framework-madrat-and-magclass" class="section level2">
 <h2 class="hasAnchor">
@@ -102,6 +105,19 @@
 <span id="cb4-2"><a href="#cb4-2"></a><span class="co">#&gt;  [5] "GDPpc"            "GDPpcFuture"      "GDPpcPast"        "Labour"          </span></span>
 <span id="cb4-3"><a href="#cb4-3"></a><span class="co">#&gt;  [9] "Population"       "PopulationFuture" "PopulationPast"   "RatioPPP2MER"    </span></span>
 <span id="cb4-4"><a href="#cb4-4"></a><span class="co">#&gt; [13] "Urban"            "UrbanFuture"      "UrbanPast"        "UrbanPop"</span></span></code></pre></div>
+</div>
+<div id="citation" class="section level2">
+<h2 class="hasAnchor">
+<a href="#citation" class="anchor"></a>Citation</h2>
+<p>To cite package <strong>mrdrivers</strong> in publications use:</p>
+<p>Koch J, Bodirsky B, Baumstark L, Wang X, Chen D, Leip D, Benke F, Eweron A, Rodrigues R, Giannousakis A, Levesque A, Pehl M, Soergel B, Dietrich J (2021). <em>mrdrivers: Create GDP and population scenarios</em>. <a href="https://pik-piam.github.io/mrdrivers" class="uri">https://pik-piam.github.io/mrdrivers</a>, <a href="https://github.com/pik-piam/mrdrivers" class="uri">https://github.com/pik-piam/mrdrivers</a>.</p>
+<p>A BibTeX entry for LaTeX users is</p>
+<div class="sourceCode" id="cb5"><pre class="sourceCode latex"><code class="sourceCode latex"><span id="cb5-1"><a href="#cb5-1"></a>@Manual{,</span>
+<span id="cb5-2"><a href="#cb5-2"></a> title = {mrdrivers: Create GDP and population scenarios},</span>
+<span id="cb5-3"><a href="#cb5-3"></a> author = {Johannes Koch and Benjamin Leon Bodirsky and Lavinia Baumstark and Xiaoxi Wang and David Chen and Deborra Leip and Falk Benke and Araujo Eweron and Renato Rodrigues and Anastasis Giannousakis and Antoine Levesque and Michaja Pehl and Bjoern Soergel and Jan Philipp Dietrich},</span>
+<span id="cb5-4"><a href="#cb5-4"></a> year = {2021},</span>
+<span id="cb5-5"><a href="#cb5-5"></a> note = {https://pik-piam.github.io/mrdrivers, https://github.com/pik-piam/mrdrivers},</span>
+<span id="cb5-6"><a href="#cb5-6"></a>}</span></code></pre></div>
 </div>
 </div>
   </div>
@@ -146,8 +162,8 @@
   <div class="dev-status">
 <h2>Dev status</h2>
 <ul class="list-unstyled">
-<li><a href="https://github.com/pik-piam/mrdrivers/actions/workflows/test-buildlibrary.yaml"><img src="https://github.com/pik-piam/mrdrivers/actions/workflows/test-buildlibrary.yaml/badge.svg" alt="check"></a></li>
-<li><a href="https://lifecycle.r-lib.org/articles/stages.html#experimental"><img src="https://img.shields.io/badge/lifecycle-experimental-orange.svg" alt="Lifecycle: maturing"></a></li>
+<li><a href="https://github.com/pik-piam/mrdrivers/actions/workflows/lucode2-check.yaml"><img src="https://github.com/pik-piam/mrdrivers/actions/workflows/lucode2-check.yaml/badge.svg" alt="lucode2-check"></a></li>
+<li><a href="https://lifecycle.r-lib.org/articles/stages.html#stable"><img src="https://img.shields.io/badge/lifecycle-stable-bright_green.svg" alt="Lifecycle: stable"></a></li>
 <li><a href="https://app.codecov.io/gh/pik-piam/mrdrivers?branch=main"><img src="https://codecov.io/gh/pik-piam/mrdrivers/branch/main/graph/badge.svg" alt="Codecov test coverage"></a></li>
 </ul>
 </div>
