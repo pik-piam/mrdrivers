@@ -38,19 +38,26 @@ internalCalcGDPpc <- function(GDPpcCalib,
                               extension2150,
                               FiveYearSteps,
                               naming) {
+   # GDPpc scenarios are constructed in PPPs. If MERs are desired, scenarios with the 
+   # same base year but in PPPs are constructed, and converted to MERs at the end.
+  if (grepl("^constant .* US\\$MER$", unit)) {
+    construct_unit <- paste0("constant ",  substr(unit, 10, 13), " Int$PPP")
+  } else {
+    construct_unit <- unit
+  }
+  
   # Depending on the chosen GDPpcCalib, the harmonization function either requires 'past' and
   # 'future' GDPpc scenarios, OR NOT, which is the case for "calibSDPs" for example, where
   # the computations are done based off of the combined SSP1 GDPpc scenario.
-
   if (GDPpcCalib == "calibSSPs") {
     # Compute "past" and "future" time series.
     past <- calcOutput("GDPpcPast",
                        GDPpcPast = GDPpcPast,
-                       unit = unit,
+                       unit = construct_unit,
                        aggregate = FALSE)
     future <- calcOutput("GDPpcFuture",
                          GDPpcFuture = GDPpcFuture,
-                         unit = unit,
+                         unit = construct_unit,
                          extension2150 = "none",
                          aggregate = FALSE)
   } else {
@@ -61,7 +68,7 @@ internalCalcGDPpc <- function(GDPpcCalib,
   # Combine "past" and "future" time series.
   combined <- switch(
     GDPpcCalib,
-    "calibSSPs"   = gdppcHarmonizeSSP(past, future, unit, yEnd = 2100),
+    "calibSSPs"   = gdppcHarmonizeSSP(past, future, construct_unit, yEnd = 2100),
     "calibSDPs"   = gdppcHarmonizeSDP(args),
     "calibSSP2EU" = gdppcHarmonizeSSP2EU(args),
     stop("Bad input for calcGDPpc. Invalid 'GDPpcCalib' argument.")
@@ -80,9 +87,9 @@ internalCalcGDPpc <- function(GDPpcCalib,
   )
 
   # Apply finishing touches to combined time-series
-  combined <- toolFinishingTouches(combined, extension2150, FiveYearSteps, naming)
+  combined <- toolFinishingTouches(combined, extension2150, FiveYearSteps, naming, unit, construct_unit)
 
-  # Get weigth
+  # Get weight
   weight <- calcOutput("Population",
                        PopulationCalib = GDPpcCalib,
                        PopulationPast = GDPpcPast,

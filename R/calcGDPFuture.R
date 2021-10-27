@@ -60,9 +60,21 @@ cGDPFutureSSPs <- function(unit) {
   # Remove 2000 and 2005, because these years are not complete
   data <- data[, setdiff(getYears(data), c("y2000", "y2005")), ]
 
-  if (unit == "constant 2017 Int$PPP") {
-    # Construct SSP pathways in constant 2017 Int$PPP, by converting the US GDP, and
-    # building the other countries in relation to the US. Same ratio as in 2005 Int$PPP.
+  # GDPFutureSSP is constructed in PPPs.
+  if (grepl("^constant .* US\\$MER$", unit)) {
+    construct_unit <- paste0("constant ",  substr(unit, 10, 13), " Int$PPP")
+  } else {
+    construct_unit <- unit
+  }
+
+  # The default construct unit is "constant 2005 Int$PPP". If another unit is
+  # demanded, then some modifications have to be done.
+  if (construct_unit != "constant 2005 Int$PPP") {
+    # Construct SSP pathways in constant YYYY Int$PPP.
+    # Until 2035, convert using current conversion factors.
+    # After that the scenarios are built by converting the US GDP, and building
+    # the other countries in relation to the US so that by 2100, they have the
+    # same ratio as in 2005 Int$PPP.
     data2005PPP <- data
 
     y1 <- getYears(data2005PPP)[getYears(data2005PPP, as.integer = TRUE) <= 2035]
@@ -75,6 +87,7 @@ cGDPFutureSSPs <- function(unit) {
 
     # Convert to 2017 Int$PPP using the 2017 value of base 2005 GDP deflator
     # (in constant 2017 LCU per constant 2005 LCU) of the USA
+    # LONGTERM: allow other PPP units
     data2100 <- data2005PPP[, 2100, ] * 1.23304244543521
 
     data2017PPP <- mbind(dataPre2035, dataBetween2035and2100, data2100)
@@ -95,7 +108,12 @@ cGDPFutureSSPs <- function(unit) {
     # Above should probably be "<- 0"
     ##################
     data <- data2017PPP
+  } 
+
+  if (construct_unit != unit) {
+     data <- GDPuc::convertGDP(data, construct_unit, unit, replace_NAs = 0)
   }
+
 
   data
 }
