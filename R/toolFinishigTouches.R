@@ -29,10 +29,14 @@ toolFinishingTouches <- function(x,
   # Order by names
   x <- x[, , order(getNames(x))]
 
-  # Split scenario dimension
+  # Split indicator from scenario 
   if (naming == "indicator.scenario") {
     getNames(x) <- sub("_",  ".", getNames(x))
     getSets(x) <- c(getSets(x)[1], getSets(x)[2], "indicator", "scenario")
+  }
+  # Drop indicator
+  if (naming == "scenario") {
+    getNames(x) <- sub("(.*)_",  "", getNames(x))
   }
 
   x

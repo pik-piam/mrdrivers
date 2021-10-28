@@ -96,6 +96,7 @@ internalCalcGDPpc <- function(GDPpcCalib,
                        PopulationFuture = GDPpcFuture,
                        FiveYearSteps = FiveYearSteps,
                        extension2150 = extension2150,
+                       naming = naming,
                        aggregate = FALSE)
   # Give weight same names as data, so that aggregate doesn't mess up data dim
   getNames(weight) <- gsub("pop", "gdppc", getNames(weight))

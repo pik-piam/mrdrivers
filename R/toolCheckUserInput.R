@@ -18,7 +18,7 @@ toolCheckUserInput <- function(driver, args) {
   }
 
   # Check 'naming' argument
-  if (!args$naming %in% c("indicator_scenario", "indicator.scenario")) {
+  if (!args$naming %in% c("indicator_scenario", "indicator.scenario", "scenario")) {
      stop(glue("Bad argument to calc{driver}. 'naming' argument unknown."))
   }
 }

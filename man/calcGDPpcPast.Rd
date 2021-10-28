@@ -10,7 +10,8 @@ calcGDPpcPast(GDPpcPast = "WDI-MI", unit = "constant 2005 Int$PPP")
 \item{GDPpcPast}{String or vector of strings}
 
 \item{unit}{A string. Either 'constant 2005 Int$PPP', 'constant 2005 US$MER',
-'constant 2017 Int$PPP' or 'constant 2017 US$MER'.}
+'constant 2017 Int$PPP' or 'constant 2017 US$MER'. In either case, the scenario
+construction is done in Int$PPP, with the conversion to US$MER coming afterward.}
 }
 \value{
 A magpie object with sets "iso3c", "year" and "variable".
