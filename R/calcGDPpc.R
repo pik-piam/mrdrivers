@@ -38,14 +38,14 @@ internalCalcGDPpc <- function(GDPpcCalib,
                               extension2150,
                               FiveYearSteps,
                               naming) {
-   # GDPpc scenarios are constructed in PPPs. If MERs are desired, scenarios with the 
+   # GDPpc scenarios are constructed in PPPs. If MERs are desired, scenarios with the
    # same base year but in PPPs are constructed, and converted to MERs at the end.
   if (grepl("^constant .* US\\$MER$", unit)) {
     construct_unit <- paste0("constant ",  substr(unit, 10, 13), " Int$PPP")
   } else {
     construct_unit <- unit
   }
-  
+
   # Depending on the chosen GDPpcCalib, the harmonization function either requires 'past' and
   # 'future' GDPpc scenarios, OR NOT, which is the case for "calibSDPs" for example, where
   # the computations are done based off of the combined SSP1 GDPpc scenario.

@@ -108,7 +108,7 @@ cGDPFutureSSPs <- function(unit) {
     # Above should probably be "<- 0"
     ##################
     data <- data2017PPP
-  } 
+  }
 
   if (construct_unit != unit) {
      data <- GDPuc::convertGDP(data, construct_unit, unit, replace_NAs = 0)
