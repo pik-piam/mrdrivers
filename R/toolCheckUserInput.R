@@ -1,8 +1,7 @@
 toolCheckUserInput <- function(driver, args) {
-  # Check 'extension2150' argument
-  if ("unit" %in% names(args) &&
-      !args$unit %in% c("constant 2005 Int$PPP", "constant 2017 Int$PPP")) {
-     stop(glue("Bad argument to calc{driver}. 'unit' argument unknown."))
+  # Check 'unit' argument
+  if ("unit" %in% names(args) && !grepl("^constant (2005|2017) ", args$unit)) {
+     stop(glue("Bad argument to calc{driver}. Currently, only constant 2005 or 2017 dollars are accepted."))
   }
 
   # Check 'extension2150' argument
@@ -19,7 +18,7 @@ toolCheckUserInput <- function(driver, args) {
   }
 
   # Check 'naming' argument
-  if (!args$naming %in% c("indicator_scenario", "indicator.scenario")) {
+  if (!args$naming %in% c("indicator_scenario", "indicator.scenario", "scenario")) {
      stop(glue("Bad argument to calc{driver}. 'naming' argument unknown."))
   }
 }

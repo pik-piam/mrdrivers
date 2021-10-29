@@ -23,7 +23,6 @@ Population Division} "World Population Prospects: The 2015 Revision"
 
 Other "Past" population functions: 
 \code{\link{readEurostatPopGDP}()},
-\code{\link{readHYDE}()},
 \code{\link{readMissingIslands}()},
 \code{\link{readWDI}()}
 

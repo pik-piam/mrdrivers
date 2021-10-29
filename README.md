@@ -43,13 +43,12 @@ listed below.
 readSource:
 
     #>  [1] "ARIADNE"                   "ARIADNE_ReferenceScenario"
-    #>  [3] "EurostatPopGDP"            "HYDE"                     
-    #>  [5] "IMF"                       "James"                    
-    #>  [7] "James2019"                 "MissingIslands"           
-    #>  [9] "OECD"                      "PEAP"                     
-    #> [11] "PopulationTWN"             "PWT"                      
-    #> [13] "SSP"                       "UN_PopDiv"                
-    #> [15] "WDI"
+    #>  [3] "EurostatPopGDP"            "IMF"                      
+    #>  [5] "James"                     "James2019"                
+    #>  [7] "MissingIslands"            "OECD"                     
+    #>  [9] "PEAP"                      "PopulationTWN"            
+    #> [11] "PWT"                       "SSP"                      
+    #> [13] "UN_PopDiv"                 "WDI"
 
 readSource (deprecated?!):
 
@@ -71,14 +70,3 @@ A, Rodrigues R, Giannousakis A, Levesque A, Pehl M, Soergel B, Dietrich
 J (2021). *mrdrivers: Create GDP and population scenarios*.
 <https://pik-piam.github.io/mrdrivers>,
 <https://github.com/pik-piam/mrdrivers>.
-
-A BibTeX entry for LaTeX users is
-
-``` latex
-@Manual{,
- title = {mrdrivers: Create GDP and population scenarios},
- author = {Johannes Koch and Benjamin Leon Bodirsky and Lavinia Baumstark and Xiaoxi Wang and David Chen and Deborra Leip and Falk Benke and Araujo Eweron and Renato Rodrigues and Anastasis Giannousakis and Antoine Levesque and Michaja Pehl and Bjoern Soergel and Jan Philipp Dietrich},
- year = {2021},
- note = {https://pik-piam.github.io/mrdrivers, https://github.com/pik-piam/mrdrivers},
-}
-```

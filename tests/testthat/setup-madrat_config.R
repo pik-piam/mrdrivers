@@ -1,6 +1,6 @@
 oldCfg <- getConfig()
 setConfig(mainfolder =  "/home/johannes/madrat_folder", # nolint
-          cachefolder = "test_mrdrivers",
+          cachefolder = "test_mrdrivers_newWDIdata",
           forcecache = TRUE,
           .verbose = FALSE)
 

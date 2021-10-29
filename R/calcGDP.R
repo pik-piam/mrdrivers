@@ -12,7 +12,8 @@
 #' @param GDPPast GDP past data source
 #' @param GDPFuture GDP future data source
 #' @param unit A string. Either 'constant 2005 Int$PPP', 'constant 2005 US$MER',
-#'   'constant 2017 Int$PPP' or 'constant 2017 US$MER'.
+#'   'constant 2017 Int$PPP' or 'constant 2017 US$MER'. In either case, the scenario
+#'   construction is done in Int$PPP, with the conversion to US$MER coming afterward.
 #' @param extension2150 string, either "bezier", "constant" or "none"
 #' @param FiveYearSteps `r lifecycle::badge("deprecated")` `FiveYearSteps = TRUE` is no
 #'   longer supported; use the calcOutput argument `years`  instead, to retrieve
@@ -52,13 +53,19 @@ internalCalcGDP <- function(GDPCalib,
                             extension2150,
                             FiveYearSteps,
                             naming){
+  # GDP scenarios are constructed in PPPs. If MERs are desired, scenarios with the 
+  # same base year but in PPPs are constructed, and converted to MERs at the end.
+  if (grepl("^constant .* US\\$MER$", unit)) {
+    construct_unit <- paste0("constant ",  substr(unit, 10, 13), " Int$PPP")
+  } else {
+    construct_unit <- unit
+  }
 
   # Depending on the chose GDPCalib, the harmonization function either requires 'past' and
   # 'future' GDP scenarios, OR NOT, which is the case for "calibSSPs" for example, where
   # the underlying computations are done on the GDPpc level, meaning that 'past' and 'future'
   # GDPpc (not GDP) are actually required. The harmonization on the GDP level, simply takes
   # the combined GDPpc scenario and multiplies it with the population sceanario.
-
   if (GDPCalib %in% c("calibSSPs", "calibSDPs")) {
     # Save arguments as list.
      args <- as.list(environment())
@@ -66,11 +73,11 @@ internalCalcGDP <- function(GDPCalib,
     # Compute "past" and "future" GDP time series.
     past <- calcOutput("GDPPast",
                        GDPPast = GDPPast,
-                       unit = unit,
+                       unit = construct_unit,
                        aggregate = FALSE)
     future <- calcOutput("GDPFuture",
                          GDPFuture = GDPFuture,
-                         unit = unit,
+                         unit = construct_unit,
                          extension2150 = "none",
                          aggregate = FALSE)
   }
@@ -80,7 +87,7 @@ internalCalcGDP <- function(GDPCalib,
     GDPCalib,
     "calibSSPs"       = gdpHarmonizeSSPsSPDs(args),
     "calibSDPs"       = gdpHarmonizeSSPsSPDs(args),
-    "calibSSP2EU"     = gdpHarmonizeSSP2EU(past, future, unit),
+    "calibSSP2EU"     = gdpHarmonizeSSP2EU(past, future, construct_unit),
     # Deprecated?
     "past"            = toolHarmonizePast(past, future),
     "future"          = toolHarmonizeFuture(past, future),
@@ -111,7 +118,7 @@ internalCalcGDP <- function(GDPCalib,
   )
 
   # Apply finishing touches to combined time-series
-  combined <- toolFinishingTouches(combined, extension2150, FiveYearSteps, naming)
+  combined <- toolFinishingTouches(combined, extension2150, FiveYearSteps, naming, unit, construct_unit)
 
   list(x = combined,
        weight = NULL,

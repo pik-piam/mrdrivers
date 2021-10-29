@@ -45,7 +45,6 @@ readSource("WDI", subtype = "SP.POP.TOTL")
 
 Other "Past" population functions: 
 \code{\link{readEurostatPopGDP}()},
-\code{\link{readHYDE}()},
 \code{\link{readMissingIslands}()},
 \code{\link{readUN_PopDiv}()}
 

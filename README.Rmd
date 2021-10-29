@@ -64,17 +64,3 @@ madrat::getCalculations(packages = "mrdrivers")[, "type"]
 To cite package **mrdrivers** in publications use:
 
 Koch J, Bodirsky B, Baumstark L, Wang X, Chen D, Leip D, Benke F, Eweron A, Rodrigues R, Giannousakis A, Levesque A, Pehl M, Soergel B, Dietrich J (2021). _mrdrivers: Create GDP and population scenarios_. https://pik-piam.github.io/mrdrivers, https://github.com/pik-piam/mrdrivers.
-
-A BibTeX entry for LaTeX users is
-
- ```latex
-@Manual{,
-  title = {mrdrivers: Create GDP and population scenarios},
-  author = {Johannes Koch and Benjamin Leon Bodirsky and Lavinia Baumstark and Xiaoxi Wang and David Chen and Deborra Leip and Falk Benke and Araujo Eweron and Renato Rodrigues and Anastasis Giannousakis and Antoine Levesque and Michaja Pehl and Bjoern Soergel and Jan Philipp Dietrich},
-  year = {2021},
-  note = {https://pik-piam.github.io/mrdrivers, https://github.com/pik-piam/mrdrivers},
-}
-```
-
-
-

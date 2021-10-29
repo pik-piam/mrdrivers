@@ -1,5 +1,10 @@
 # Apply finishig touches to the combined object, as found in calcGDP, calcGDPpc and calcPopulation
-toolFinishingTouches <- function(x, extension2150 = "none", FiveYearSteps = FALSE, naming = "indicator_scenario") {
+toolFinishingTouches <- function(x,
+                                 extension2150 = "none",
+                                 FiveYearSteps = FALSE,
+                                 naming = "indicator_scenario",
+                                 unit = "none",
+                                 construct_unit = "none") {
 
   x <- toolInterpolateAndExtrapolate(x)
 
@@ -17,14 +22,21 @@ toolFinishingTouches <- function(x, extension2150 = "none", FiveYearSteps = FALS
     x <- x[, getYears(x, as.integer = TRUE) != 1960, ]
   }
 
+  if (construct_unit != unit) {
+     x <- GDPuc::convertGDP(x, construct_unit, unit, replace_NAs = 1)
+  }
 
   # Order by names
   x <- x[, , order(getNames(x))]
 
-  # Split scenario dimension
+  # Split indicator from scenario
   if (naming == "indicator.scenario") {
     getNames(x) <- sub("_",  ".", getNames(x))
     getSets(x) <- c(getSets(x)[1], getSets(x)[2], "indicator", "scenario")
+  }
+  # Drop indicator
+  if (naming == "scenario") {
+    getNames(x) <- sub("(.*)_",  "", getNames(x))
   }
 
   x

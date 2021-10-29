@@ -26,7 +26,6 @@ readSource("MissingIslands", subtype = "pop", convert = FALSE)
 
 Other "Past" population functions: 
 \code{\link{readEurostatPopGDP}()},
-\code{\link{readHYDE}()},
 \code{\link{readUN_PopDiv}()},
 \code{\link{readWDI}()}
 

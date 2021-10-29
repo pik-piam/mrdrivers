@@ -76,6 +76,7 @@ internalCalcUrban <- function(UrbanCalib,
                    PopulationFuture = UrbanFuture,
                    FiveYearSteps = FiveYearSteps,
                    extension2150 = extension2150,
+                   naming = naming,
                    aggregate = FALSE)
   # Give weight same names as data, so that aggregate doesn't mess up data dim
   getNames(wp) <- gsub("pop", "urb", getNames(wp))
