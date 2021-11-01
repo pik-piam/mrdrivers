@@ -14,26 +14,26 @@ knitr::opts_chunk$set(
 )
 ```
 
-# mrdrivers
+<!-- # mrdrivers -->
 
 <!-- badges: start -->
 
-[![lucode2-check](https://github.com/pik-piam/mrdrivers/actions/workflows/lucode2-check.yaml/badge.svg)](https://github.com/pik-piam/mrdrivers/actions/workflows/lucode2-check.yaml)
-[![Lifecycle: stable](https://img.shields.io/badge/lifecycle-stable-bright_green.svg)](https://lifecycle.r-lib.org/articles/stages.html#stable)
-[![Codecov test coverage](https://codecov.io/gh/pik-piam/mrdrivers/branch/main/graph/badge.svg)](https://app.codecov.io/gh/pik-piam/mrdrivers?branch=main)
+<!-- [![lucode2-check](https://github.com/pik-piam/mrdrivers/actions/workflows/lucode2-check.yaml/badge.svg)](https://github.com/pik-piam/mrdrivers/actions/workflows/lucode2-check.yaml) -->
+<!-- [![Lifecycle: stable](https://img.shields.io/badge/lifecycle-stable-bright_green.svg)](https://lifecycle.r-lib.org/articles/stages.html#stable) -->
+<!-- [![Codecov test coverage](https://codecov.io/gh/pik-piam/mrdrivers/branch/main/graph/badge.svg)](https://app.codecov.io/gh/pik-piam/mrdrivers?branch=main) -->
 <!-- badges: end -->
 
-The goal of **mrdrivers** is to handle the construction of GDP, GDP per capita, Population and Urbanization scenarios: all of which are important drivers to the REMIND and MAgPIE models.
+<!-- The goal of **mrdrivers** is to handle the construction of GDP, GDP per capita, Population and Urbanization scenarios: all of which are important drivers to the REMIND and MAgPIE models. -->
 
-## Installation
+<!-- ## Installation -->
 
-```{r, eval=FALSE}
-# From the PIK rse-server
-install.packages("mrdrivers", repos = "https://rse.pik-potsdam.de/r/packages")
+<!-- ```{r, eval=FALSE} -->
+<!-- # From the PIK rse-server -->
+<!-- install.packages("mrdrivers", repos = "https://rse.pik-potsdam.de/r/packages") -->
 
-# or from Github
-remotes::install_github("pik-piam/mrdrivers")
-```
+<!-- # or from Github -->
+<!-- remotes::install_github("pik-piam/mrdrivers") -->
+<!-- ``` -->
 
 ## Framework: madrat and magclass
 
@@ -57,10 +57,3 @@ calcOutput:
 ```{r, echo=FALSE}
 madrat::getCalculations(packages = "mrdrivers")[, "type"]
 ```
-
-
-## Citation
-
-To cite package **mrdrivers** in publications use:
-
-Koch J, Bodirsky B, Baumstark L, Wang X, Chen D, Leip D, Benke F, Eweron A, Rodrigues R, Giannousakis A, Levesque A, Pehl M, Soergel B, Dietrich J (2021). _mrdrivers: Create GDP and population scenarios_. https://pik-piam.github.io/mrdrivers, https://github.com/pik-piam/mrdrivers.

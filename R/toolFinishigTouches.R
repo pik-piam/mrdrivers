@@ -4,7 +4,7 @@ toolFinishingTouches <- function(x,
                                  FiveYearSteps = FALSE,
                                  naming = "indicator_scenario",
                                  unit = "none",
-                                 construct_unit = "none") {
+                                 constructUnit = "none") {
 
   x <- toolInterpolateAndExtrapolate(x)
 
@@ -22,8 +22,13 @@ toolFinishingTouches <- function(x,
     x <- x[, getYears(x, as.integer = TRUE) != 1960, ]
   }
 
-  if (construct_unit != unit) {
-     x <- GDPuc::convertGDP(x, construct_unit, unit, replace_NAs = 1)
+  if (constructUnit != unit) {
+    # Convert using regional averages for now.
+    regmap <- toolGetMapping("regionmappingH12.csv") %>%
+      tibble::as_tibble() %>%
+      dplyr::select("iso3c" = .data$CountryCode, "region" = .data$RegionCode)
+
+    x <- GDPuc::convertGDP(x, constructUnit, unit, with_regions = regmap, replace_NAs = "regional_average")
   }
 
   # Order by names
@@ -36,7 +41,7 @@ toolFinishingTouches <- function(x,
   }
   # Drop indicator
   if (naming == "scenario") {
-    getNames(x) <- sub("(.*)_",  "", getNames(x))
+    getNames(x) <- sub(".*?_",  "", getNames(x))
   }
 
   x

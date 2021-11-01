@@ -10,7 +10,18 @@ calcPopulationFuture(
 )
 }
 \arguments{
-\item{PopulationFuture}{population future data source}
+\item{PopulationFuture}{A string designating the source for the future population data.
+Available sources are:
+\itemize{
+\item "SSPs":
+\item "SSP2EU":
+\item "SDPs":
+\item "UN_PopDiv":
+\item "MI":
+\item "SSPs_old":
+\item "SRES": deprecated
+\item "IIASApop": deprecated
+}}
 
 \item{extension2150}{string, either "bezier", "constant" or "none"}
 }
@@ -18,9 +29,7 @@ calcPopulationFuture(
 A magpie object with sets "iso3c", "year" and "variable".
 }
 \description{
-Calculates a time series of Pop. Different sources are available:
-\itemize{ \item \code{"IIASApop"}: Source: IIASA? Lavinia?  \item
-\code{"IIASApop"}: Source: Lavinia? }
+Calculate a time series of future population data.
 }
 \examples{
 \dontrun{

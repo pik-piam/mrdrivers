@@ -41,6 +41,9 @@ internalCalcLabour <- function(LabourFuture, extension2150) {
   # Apply finishing touches to combined time-series
   x <- toolFinishingTouches(x, extension2150)
 
+  # Hopefully temporary: rename lab scnearios pop. Necessary for REMIND to work.
+  getNames(x) <- sub("lab_", "pop_", getNames(x))
+
   list(x = x,
        weight = NULL,
        unit = "million",

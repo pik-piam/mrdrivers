@@ -91,7 +91,7 @@ test_that("variable names", {
   }
 
   purrr::map2(c("Population", "Urban", "UrbanPop", "GDPpc", "GDP", "Labour"),
-              c("pop",        "urb",   "urb",      "gdppc", "gdp", "lab"),
+              c("pop",        "urb",   "urb",      "gdppc", "gdp", "pop"),
               expectCorrectVariableNames)
 })
 
