@@ -33,7 +33,7 @@
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="index.html">mrdrivers</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.2.0</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.2.1</span>
       </span>
     </div>
 
@@ -68,21 +68,30 @@
 
       </header><div class="row">
   <div class="contents col-md-9">
-<div id="mrdrivers" class="section level1">
+<div id="create-gdp-and-population-scenarios" class="section level1">
 <div class="page-header"><h1 class="hasAnchor">
-<a href="#mrdrivers" class="anchor"></a>mrdrivers</h1></div>
-<!-- badges: start -->
-
-<p>The goal of <strong>mrdrivers</strong> is to handle the construction of GDP, GDP per capita, Population and Urbanization scenarios: all of which are important drivers to the REMIND and MAgPIE models.</p>
-<div id="installation" class="section level2">
+<a href="#create-gdp-and-population-scenarios" class="anchor"></a>Create GDP and population scenarios</h1></div>
+<p>R package <strong>mrdrivers</strong>, version <strong>0.2.1</strong></p>
+<p><a href="https://cran.r-project.org/package=mrdrivers"><img src="https://www.r-pkg.org/badges/version/mrdrivers" alt="CRAN status"></a> <a href="https://pik-piam.github.io/mrdrivers/actions"><img src="https://pik-piam.github.io/mrdrivers/workflows/check/badge.svg" alt="R build status"></a> <a href="https://codecov.io/gh/mrdrivers"><img src="https://codecov.io/gh/mrdrivers/branch/master/graph/badge.svg" alt="codecov"></a> <a href="https://pik-piam.r-universe.dev/ui#builds"><img src="https://pik-piam.r-universe.dev/badges/mrdrivers" alt="r-universe"></a></p>
+<div id="purpose-and-functionality" class="section level2">
 <h2 class="hasAnchor">
-<a href="#installation" class="anchor"></a>Installation</h2>
-<div class="sourceCode" id="cb1"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span class="co"># From the PIK rse-server</span>
-<span class="fu"><a href="https://rdrr.io/r/utils/install.packages.html">install.packages</a></span><span class="op">(</span><span class="st">"mrdrivers"</span>, repos <span class="op">=</span> <span class="st">"https://rse.pik-potsdam.de/r/packages"</span><span class="op">)</span>
-
-<span class="co"># or from Github</span>
-<span class="fu">remotes</span><span class="fu">::</span><span class="fu">install_github</span><span class="op">(</span><span class="st">"pik-piam/mrdrivers"</span><span class="op">)</span></code></pre></div>
+<a href="#purpose-and-functionality" class="anchor"></a>Purpose and Functionality</h2>
+<p>Create GDP and population scenarios This package takes care of GDP and population scenario construction, which are important drivers to both the REMIND and MAgPIE models.</p>
+<!-- README.md is generated from README.Rmd. Please edit that file -->
+<!-- # mrdrivers -->
+<!-- badges: start -->
+<!-- [![lucode2-check](https://github.com/pik-piam/mrdrivers/actions/workflows/lucode2-check.yaml/badge.svg)](https://github.com/pik-piam/mrdrivers/actions/workflows/lucode2-check.yaml) -->
+<!-- [![Lifecycle: stable](https://img.shields.io/badge/lifecycle-stable-bright_green.svg)](https://lifecycle.r-lib.org/articles/stages.html#stable) -->
+<!-- [![Codecov test coverage](https://codecov.io/gh/pik-piam/mrdrivers/branch/main/graph/badge.svg)](https://app.codecov.io/gh/pik-piam/mrdrivers?branch=main) -->
+<!-- badges: end -->
+<!-- The goal of **mrdrivers** is to handle the construction of GDP, GDP per capita, Population and Urbanization scenarios: all of which are important drivers to the REMIND and MAgPIE models. -->
+<!-- ## Installation -->
+<!-- ```{r, eval=FALSE} -->
+<!-- # From the PIK rse-server -->
+<!-- install.packages("mrdrivers", repos = "https://rse.pik-potsdam.de/r/packages") -->
+<!-- # or from Github -->
+<!-- remotes::install_github("pik-piam/mrdrivers") -->
+<!-- ``` -->
 </div>
 <div id="framework-madrat-and-magclass" class="section level2">
 <h2 class="hasAnchor">
@@ -90,26 +99,52 @@
 <p>This package depends upon the <a href="https://github.com/pik-piam/madrat#readme">madrat</a> and <a href="https://github.com/pik-piam/magclass#readme">magclass</a> packages. It integrates into the madrat framework and is structured accordingly. It mainly uses magpie objects (from the magclass package). For more information on madrat or magclass, please visit the respective github repositories (<a href="https://github.com/pik-piam/madrat#readme">madrat</a>, <a href="https://github.com/pik-piam/magclass#readme">magclass</a>).</p>
 <p>The readSource and calcOutput functions provided by this package are listed below.</p>
 <p>readSource:</p>
-<div class="sourceCode" id="cb2"><pre class="sourceCode R"><code class="sourceCode r"><span id="cb2-1"><a href="#cb2-1"></a><span class="co">#&gt;  [1] "ARIADNE"                   "ARIADNE_ReferenceScenario"</span></span>
-<span id="cb2-2"><a href="#cb2-2"></a><span class="co">#&gt;  [3] "EurostatPopGDP"            "IMF"                      </span></span>
-<span id="cb2-3"><a href="#cb2-3"></a><span class="co">#&gt;  [5] "James"                     "James2019"                </span></span>
-<span id="cb2-4"><a href="#cb2-4"></a><span class="co">#&gt;  [7] "MissingIslands"            "OECD"                     </span></span>
-<span id="cb2-5"><a href="#cb2-5"></a><span class="co">#&gt;  [9] "PEAP"                      "PopulationTWN"            </span></span>
-<span id="cb2-6"><a href="#cb2-6"></a><span class="co">#&gt; [11] "PWT"                       "SSP"                      </span></span>
-<span id="cb2-7"><a href="#cb2-7"></a><span class="co">#&gt; [13] "UN_PopDiv"                 "WDI"</span></span></code></pre></div>
+<div class="sourceCode" id="cb1"><pre class="sourceCode R"><code class="sourceCode r"><span id="cb1-1"><a href="#cb1-1"></a><span class="co">#&gt;  [1] "ARIADNE"                   "ARIADNE_ReferenceScenario"</span></span>
+<span id="cb1-2"><a href="#cb1-2"></a><span class="co">#&gt;  [3] "EurostatPopGDP"            "IMF"                      </span></span>
+<span id="cb1-3"><a href="#cb1-3"></a><span class="co">#&gt;  [5] "James"                     "James2019"                </span></span>
+<span id="cb1-4"><a href="#cb1-4"></a><span class="co">#&gt;  [7] "MissingIslands"            "OECD"                     </span></span>
+<span id="cb1-5"><a href="#cb1-5"></a><span class="co">#&gt;  [9] "PEAP"                      "PopulationTWN"            </span></span>
+<span id="cb1-6"><a href="#cb1-6"></a><span class="co">#&gt; [11] "PWT"                       "SSP"                      </span></span>
+<span id="cb1-7"><a href="#cb1-7"></a><span class="co">#&gt; [13] "UN_PopDiv"                 "WDI"</span></span></code></pre></div>
 <p>readSource (deprecated?!):</p>
-<div class="sourceCode" id="cb3"><pre class="sourceCode R"><code class="sourceCode r"><span id="cb3-1"><a href="#cb3-1"></a><span class="co">#&gt; [1] "IIASApop" "SRES"</span></span></code></pre></div>
+<div class="sourceCode" id="cb2"><pre class="sourceCode R"><code class="sourceCode r"><span id="cb2-1"><a href="#cb2-1"></a><span class="co">#&gt; [1] "IIASApop" "SRES"</span></span></code></pre></div>
 <p>calcOutput:</p>
-<div class="sourceCode" id="cb4"><pre class="sourceCode R"><code class="sourceCode r"><span id="cb4-1"><a href="#cb4-1"></a><span class="co">#&gt;  [1] "DefaultDrivers"   "GDP"              "GDPFuture"        "GDPPast"         </span></span>
-<span id="cb4-2"><a href="#cb4-2"></a><span class="co">#&gt;  [5] "GDPpc"            "GDPpcFuture"      "GDPpcPast"        "Labour"          </span></span>
-<span id="cb4-3"><a href="#cb4-3"></a><span class="co">#&gt;  [9] "Population"       "PopulationFuture" "PopulationPast"   "RatioPPP2MER"    </span></span>
-<span id="cb4-4"><a href="#cb4-4"></a><span class="co">#&gt; [13] "Urban"            "UrbanFuture"      "UrbanPast"        "UrbanPop"</span></span></code></pre></div>
+<div class="sourceCode" id="cb3"><pre class="sourceCode R"><code class="sourceCode r"><span id="cb3-1"><a href="#cb3-1"></a><span class="co">#&gt;  [1] "DefaultDrivers"   "GDP"              "GDPFuture"        "GDPPast"         </span></span>
+<span id="cb3-2"><a href="#cb3-2"></a><span class="co">#&gt;  [5] "GDPpc"            "GDPpcFuture"      "GDPpcPast"        "Labour"          </span></span>
+<span id="cb3-3"><a href="#cb3-3"></a><span class="co">#&gt;  [9] "Population"       "PopulationFuture" "PopulationPast"   "RatioPPP2MER"    </span></span>
+<span id="cb3-4"><a href="#cb3-4"></a><span class="co">#&gt; [13] "Urban"            "UrbanFuture"      "UrbanPast"        "UrbanPop"</span></span></code></pre></div>
+</div>
+<div id="installation" class="section level2">
+<h2 class="hasAnchor">
+<a href="#installation" class="anchor"></a>Installation</h2>
+<p>For installation of the most recent package version an additional repository has to be added in R:</p>
+<div class="sourceCode" id="cb4"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span class="fu"><a href="https://rdrr.io/r/base/options.html">options</a></span><span class="op">(</span>repos <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span>CRAN <span class="op">=</span> <span class="st">"@CRAN@"</span>, pik <span class="op">=</span> <span class="st">"https://rse.pik-potsdam.de/r/packages"</span><span class="op">)</span><span class="op">)</span></code></pre></div>
+<p>The additional repository can be made available permanently by adding the line above to a file called <code>.Rprofile</code> stored in the home folder of your system (<code>Sys.glob("~")</code> in R returns the home directory).</p>
+<p>After that the most recent version of the package can be installed using <code>install.packages</code>:</p>
+<div class="sourceCode" id="cb5"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span class="fu"><a href="https://rdrr.io/r/utils/install.packages.html">install.packages</a></span><span class="op">(</span><span class="st">"mrdrivers"</span><span class="op">)</span></code></pre></div>
+<p>Package updates can be installed using <code>update.packages</code> (make sure that the additional repository has been added before running that command):</p>
+<div class="sourceCode" id="cb6"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span class="fu"><a href="https://rdrr.io/r/utils/update.packages.html">update.packages</a></span><span class="op">(</span><span class="op">)</span></code></pre></div>
+</div>
+<div id="questions--problems" class="section level2">
+<h2 class="hasAnchor">
+<a href="#questions--problems" class="anchor"></a>Questions / Problems</h2>
+<p>In case of questions / problems please contact Johannes Koch <a href="mailto:jokoch@pik-potsdam.de" class="email">jokoch@pik-potsdam.de</a>.</p>
 </div>
 <div id="citation" class="section level2">
 <h2 class="hasAnchor">
 <a href="#citation" class="anchor"></a>Citation</h2>
 <p>To cite package <strong>mrdrivers</strong> in publications use:</p>
 <p>Koch J, Bodirsky B, Baumstark L, Wang X, Chen D, Leip D, Benke F, Eweron A, Rodrigues R, Giannousakis A, Levesque A, Pehl M, Soergel B, Dietrich J (2021). <em>mrdrivers: Create GDP and population scenarios</em>. <a href="https://pik-piam.github.io/mrdrivers" class="uri">https://pik-piam.github.io/mrdrivers</a>, <a href="https://github.com/pik-piam/mrdrivers" class="uri">https://github.com/pik-piam/mrdrivers</a>.</p>
+<p>A BibTeX entry for LaTeX users is</p>
+<div class="sourceCode" id="cb7"><pre class="sourceCode latex"><code class="sourceCode latex"><span id="cb7-1"><a href="#cb7-1"></a>@Manual{,</span>
+<span id="cb7-2"><a href="#cb7-2"></a> title = {mrdrivers: Create GDP and population scenarios},</span>
+<span id="cb7-3"><a href="#cb7-3"></a> author = {Johannes Koch and Benjamin Leon Bodirsky and Lavinia Baumstark and Xiaoxi Wang and David Chen and Deborra Leip and Falk Benke and Araujo Eweron and Renato Rodrigues and Anastasis Giannousakis and Antoine Levesque and Michaja Pehl and Bjoern Soergel and Jan Philipp Dietrich},</span>
+<span id="cb7-4"><a href="#cb7-4"></a> year = {2021},</span>
+<span id="cb7-5"><a href="#cb7-5"></a> note = {https://pik-piam.github.io/mrdrivers, https://github.com/pik-piam/mrdrivers},</span>
+<span id="cb7-6"><a href="#cb7-6"></a>}</span></code></pre></div>
 </div>
 </div>
   </div>
@@ -151,15 +186,7 @@
 </ul>
 </div>
 
-  <div class="dev-status">
-<h2>Dev status</h2>
-<ul class="list-unstyled">
-<li><a href="https://github.com/pik-piam/mrdrivers/actions/workflows/lucode2-check.yaml"><img src="https://github.com/pik-piam/mrdrivers/actions/workflows/lucode2-check.yaml/badge.svg" alt="lucode2-check"></a></li>
-<li><a href="https://lifecycle.r-lib.org/articles/stages.html#stable"><img src="https://img.shields.io/badge/lifecycle-stable-bright_green.svg" alt="Lifecycle: stable"></a></li>
-<li><a href="https://app.codecov.io/gh/pik-piam/mrdrivers?branch=main"><img src="https://codecov.io/gh/pik-piam/mrdrivers/branch/main/graph/badge.svg" alt="Codecov test coverage"></a></li>
-</ul>
-</div>
-</div>
+  </div>
 </div>
 
 

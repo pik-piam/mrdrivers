@@ -78,7 +78,7 @@ calibration method affected the future extension" />
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">mrdrivers</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.2.0</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.2.1</span>
       </span>
     </div>
 
@@ -179,6 +179,17 @@ specific years.</p></td>
     <h2 class="hasAnchor" id="value"><a class="anchor" href="#value"></a>Value</h2>
 
     <p>A magpie object with sets "iso3c", "year" and "variable".</p>
+    <h2 class="hasAnchor" id="details"><a class="anchor" href="#details"></a>Details</h2>
+
+    <p>The function accepts vectors for the harmonization function and past and future data sources.
+If given a vector, different combinations are created and returned all at once. If more than one
+argument is vectorised, the arguments have to have the same length. Which time series are created can be
+illustrated with the following example. Let's sy the harmonization function and past data source are vetors of
+length 3. Then there will be in total 3 time series that are produced: the first time series is the result of
+combining the first hamonization function with the first past data source, the second time series the result of
+combining the second hamonization function with the second past data source, and the third time series the result
+of  using the repective third entry. The future data source used in each case is the same, since in this example
+only one future data source is provided.</p>
     <h2 class="hasAnchor" id="see-also"><a class="anchor" href="#see-also"></a>See also</h2>
 
     <div class='dont-index'><p><code><a href='https://rdrr.io/pkg/madrat/man/calcOutput.html'>madrat::calcOutput()</a></code></p>
@@ -192,11 +203,11 @@ specific years.</p></td>
 <code><a href='calcUrban.html'>calcUrban</a>()</code></p></div>
 
     <h2 class="hasAnchor" id="examples"><a class="anchor" href="#examples"></a>Examples</h2>
-    <pre class="examples"><div class='input'><span class='kw'>if</span> <span class='op'>(</span><span class='cn'>FALSE</span><span class='op'>)</span> <span class='op'>{</span>
-<span class='kw'><a href='https://rdrr.io/r/base/library.html'>library</a></span><span class='op'>(</span><span class='va'><a href='https://pik-piam.github.io/mrdrivers'>mrdrivers</a></span><span class='op'>)</span>
-<span class='fu'>calcOutput</span><span class='op'>(</span><span class='st'>"GDP"</span><span class='op'>)</span><span class='op'>}</span>
-
-</div></pre>
+    <pre class="examples"><span class='r-in'><span class='kw'>if</span> <span class='op'>(</span><span class='cn'>FALSE</span><span class='op'>)</span> <span class='op'>{</span></span>
+<span class='r-in'><span class='kw'><a href='https://rdrr.io/r/base/library.html'>library</a></span><span class='op'>(</span><span class='va'><a href='https://pik-piam.github.io/mrdrivers'>mrdrivers</a></span><span class='op'>)</span></span>
+<span class='r-in'><span class='fu'><a href='https://rdrr.io/pkg/madrat/man/calcOutput.html'>calcOutput</a></span><span class='op'>(</span><span class='st'>"GDP"</span><span class='op'>)</span><span class='op'>}</span></span>
+<span class='r-in'></span>
+</pre>
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="pkgdown-sidebar">
     <nav id="toc" data-toggle="toc" class="sticky-top">

@@ -40,11 +40,7 @@
 
 
 <meta property="og:title" content="calcPopulationFuture — calcPopulationFuture" />
-<meta property="og:description" content="Calculates a time series of Pop. Different sources are available:
-&quot;IIASApop&quot;: Source: IIASA? Lavinia?
-&quot;IIASApop&quot;: Source: Lavinia?
-
-" />
+<meta property="og:description" content="Calculate a time series of future population data." />
 
 
 
@@ -76,7 +72,7 @@
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">mrdrivers</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.2.0</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.2.1</span>
       </span>
     </div>
 
@@ -118,11 +114,7 @@
     </div>
 
     <div class="ref-description">
-    <p>Calculates a time series of Pop. Different sources are available:</p><ul>
-<li><p><code>"IIASApop"</code>: Source: IIASA? Lavinia?</p></li>
-<li><p><code>"IIASApop"</code>: Source: Lavinia?</p></li>
-</ul>
-
+    <p>Calculate a time series of future population data.</p>
     </div>
 
     <pre class="usage"><span class='fu'>calcPopulationFuture</span><span class='op'>(</span>
@@ -135,7 +127,17 @@
     <colgroup><col class="name" /><col class="desc" /></colgroup>
     <tr>
       <th>PopulationFuture</th>
-      <td><p>population future data source</p></td>
+      <td><p>A string designating the source for the future population data.
+Available sources are:</p><ul>
+<li><p>"SSPs":</p></li>
+<li><p>"SSP2EU":</p></li>
+<li><p>"SDPs":</p></li>
+<li><p>"UN_PopDiv":</p></li>
+<li><p>"MI":</p></li>
+<li><p>"SSPs_old":</p></li>
+<li><p>"SRES": deprecated</p></li>
+<li><p>"IIASApop": deprecated</p></li>
+</ul></td>
     </tr>
     <tr>
       <th>extension2150</th>
@@ -155,12 +157,12 @@
 <code><a href='calcPopulation.html'>calcPopulation</a>()</code></p></div>
 
     <h2 class="hasAnchor" id="examples"><a class="anchor" href="#examples"></a>Examples</h2>
-    <pre class="examples"><div class='input'><span class='kw'>if</span> <span class='op'>(</span><span class='cn'>FALSE</span><span class='op'>)</span> <span class='op'>{</span>
-<span class='kw'><a href='https://rdrr.io/r/base/library.html'>library</a></span><span class='op'>(</span><span class='va'><a href='https://pik-piam.github.io/mrdrivers'>mrdrivers</a></span><span class='op'>)</span>
-<span class='fu'>calcOutput</span><span class='op'>(</span><span class='st'>"PopulationFuture"</span><span class='op'>)</span>
-<span class='op'>}</span>
-
-</div></pre>
+    <pre class="examples"><span class='r-in'><span class='kw'>if</span> <span class='op'>(</span><span class='cn'>FALSE</span><span class='op'>)</span> <span class='op'>{</span></span>
+<span class='r-in'><span class='kw'><a href='https://rdrr.io/r/base/library.html'>library</a></span><span class='op'>(</span><span class='va'><a href='https://pik-piam.github.io/mrdrivers'>mrdrivers</a></span><span class='op'>)</span></span>
+<span class='r-in'><span class='fu'><a href='https://rdrr.io/pkg/madrat/man/calcOutput.html'>calcOutput</a></span><span class='op'>(</span><span class='st'>"PopulationFuture"</span><span class='op'>)</span></span>
+<span class='r-in'><span class='op'>}</span></span>
+<span class='r-in'></span>
+</pre>
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="pkgdown-sidebar">
     <nav id="toc" data-toggle="toc" class="sticky-top">
