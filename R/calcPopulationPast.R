@@ -1,13 +1,6 @@
 #' calcPopulationPast
 #'
-#' Calculates a time series of Population. Different sources are available:
-#' \itemize{
-#'   \item \code{WDI}: Source: Worldbank. Taiwan was estimated as the
-#'         difference between all countries and the global total.
-#'   \item \code{UN_PopDiv}: UN Population Division data. Taiwan is estimated
-#'         from "other, non-specified areas". Missing countries have their
-#'         values set to zero.
-#' }
+#' Calculate a time series of past population data.
 #'
 #' @inheritParams calcPopulation
 #' @inherit calcPopulation return

@@ -1,18 +1,42 @@
 #' calcPopulation
 #'
-#' Merges time series of population for the past and present. See
-#' \code{\link{calcPopulationPast}} for past datasets, and
-#' \code{\link{calcPopulationFuture}} for future datasets. The time series are
-#' merged via the growth rates. The first year of the future scenarios
-#' determines the merging point. All data is calibrated either to the "past" or
-#' the "future" dataset as specified by PopulationCalib.
+#' Create population time series by harmonizing future projections onto historical data.
 #'
-#' @param PopulationCalib to what should be calibrated? past, future or a transition?
-#' @param PopulationPast population past data source
-#' @param PopulationFuture population future data source
-#'
+#' @param PopulationCalib A string designating the harmonization function.
+#'   Available harmonization functions are:
+#'   \itemize{
+#'     \item "calibSSPs":
+#'     \item "calibSSP2EU":
+#'     \item "calibSDPs":
+#'     \item "calibUN_PopDiv":
+#'     \item "past": deprecated
+#'     \item "future": deprecated
+#'     \item "transition": deprecated
+#'     \item "past_transition":
+#'     \item "past_grFuture":
+#'   }
+#' @param PopulationPast A string designating the source for the historical population data.
+#'   Available sources are:
+#'   \itemize{
+#'     \item "WDI": World development indicators from the World Bank
+#'     \item "UN_PopDiv": United Nations
+#'     \item "MI": Missing island dataset
+#'     \item "Eurostat": Eurostat
+#'   }
+#' @param PopulationFuture A string designating the source for the future population data.
+#'   Available sources are:
+#'   \itemize{
+#'     \item "SSPs":
+#'     \item "SSP2EU":
+#'     \item "SDPs":
+#'     \item "UN_PopDiv":
+#'     \item "MI":
+#'     \item "SSPs_old":
+#'     \item "SRES": deprecated
+#'     \item "IIASApop": deprecated
+#'   }
 #' @inheritParams calcGDP
-#' @inherit calcGDP return
+#' @inherit calcGDP details return
 #'
 #' @seealso [madrat::calcOutput()]
 #' @family Population functions

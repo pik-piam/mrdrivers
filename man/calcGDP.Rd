@@ -45,6 +45,17 @@ determines the merging point. All data is calibrated specified by GDPCalib.
 The extension comes after the combination of past and future, in case the
 calibration method affected the future extension
 }
+\details{
+The function accepts vectors for the harmonization function and past and future data sources.
+If given a vector, different combinations are created and returned all at once. If more than one
+argument is vectorised, the arguments have to have the same length. Which time series are created can be
+illustrated with the following example. Let's sy the harmonization function and past data source are vetors of
+length 3. Then there will be in total 3 time series that are produced: the first time series is the result of
+combining the first hamonization function with the first past data source, the second time series the result of
+combining the second hamonization function with the second past data source, and the third time series the result
+of  using the repective third entry. The future data source used in each case is the same, since in this example
+only one future data source is provided.
+}
 \examples{
 \dontrun{
 library(mrdrivers)

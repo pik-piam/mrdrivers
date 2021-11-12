@@ -8,7 +8,8 @@ readWDI(subtype)
 }
 \arguments{
 \item{subtype}{A string. Type of WDI data that should be read. Use the
-worldbank indicator abbreviation. Available subtypes are: \itemize{
+worldbank indicator abbreviation. Available subtypes are:
+\itemize{
 \item \code{"SP.POP.TOTL"}: Population, total
 \item \code{"NY.GDP.MKTP.PP.KD"}: GDP,PPP (constant 2017 international Dollar)
 \item \code{"NY.GDP.MKTP.PP.CD"}: GDP, PPP (current international Dollar)
@@ -24,7 +25,9 @@ worldbank indicator abbreviation. Available subtypes are: \itemize{
 \item \code{"NV.AGR.TOTL.KD"}: Ag GDP, MER, (2010 US$)
 \item \code{"NV.AGR.TOTL.CD"}: Ag GDP, MER, (current US$)
 \item \code{"NY.GDP.PCAP.CD"}: GDP MER, per capita(current US$)
-\item \code{"NY.GDP.PCAP.PP.CD"}: GDP PPP, per capita (current int$)}}
+\item \code{"NY.GDP.PCAP.PP.CD"}: GDP PPP, per capita (current int$)
+\item \code{"PA.NUS.PPPC.RF"}: Price level ratio of PPP conversion factor (GDP) to market exchange rate
+}}
 }
 \value{
 A magpie object of the WDI data

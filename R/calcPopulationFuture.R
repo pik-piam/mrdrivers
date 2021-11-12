@@ -1,8 +1,6 @@
 #' calcPopulationFuture
 #'
-#' Calculates a time series of Pop. Different sources are available:
-#' \itemize{ \item \code{"IIASApop"}: Source: IIASA? Lavinia?  \item
-#' \code{"IIASApop"}: Source: Lavinia? }
+#' Calculate a time series of future population data.
 #'
 #' @inheritParams calcPopulation
 #' @inherit calcPopulation return

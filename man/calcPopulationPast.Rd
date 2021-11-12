@@ -7,20 +7,20 @@
 calcPopulationPast(PopulationPast = "WDI-UN_PopDiv-MI")
 }
 \arguments{
-\item{PopulationPast}{population past data source}
+\item{PopulationPast}{A string designating the source for the historical population data.
+Available sources are:
+\itemize{
+\item "WDI": World development indicators from the World Bank
+\item "UN_PopDiv": United Nations
+\item "MI": Missing island dataset
+\item "Eurostat": Eurostat
+}}
 }
 \value{
 A magpie object with sets "iso3c", "year" and "variable".
 }
 \description{
-Calculates a time series of Population. Different sources are available:
-\itemize{
-\item \code{WDI}: Source: Worldbank. Taiwan was estimated as the
-difference between all countries and the global total.
-\item \code{UN_PopDiv}: UN Population Division data. Taiwan is estimated
-from "other, non-specified areas". Missing countries have their
-values set to zero.
-}
+Calculate a time series of past population data.
 }
 \examples{
 \dontrun{

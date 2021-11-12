@@ -62,14 +62,14 @@ cGDPFutureSSPs <- function(unit) {
 
   # GDPFutureSSP is constructed in PPPs.
   if (grepl("^constant .* US\\$MER$", unit)) {
-    construct_unit <- paste0("constant ",  substr(unit, 10, 13), " Int$PPP")
+    constructUnit <- paste0("constant ",  substr(unit, 10, 13), " Int$PPP")
   } else {
-    construct_unit <- unit
+    constructUnit <- unit
   }
 
   # The default construct unit is "constant 2005 Int$PPP". If another unit is
   # demanded, then some modifications have to be done.
-  if (construct_unit != "constant 2005 Int$PPP") {
+  if (constructUnit != "constant 2005 Int$PPP") {
     # Construct SSP pathways in constant YYYY Int$PPP.
     # Until 2035, convert using current conversion factors.
     # After that the scenarios are built by converting the US GDP, and building
@@ -110,8 +110,8 @@ cGDPFutureSSPs <- function(unit) {
     data <- data2017PPP
   }
 
-  if (construct_unit != unit) {
-     data <- GDPuc::convertGDP(data, construct_unit, unit, replace_NAs = 0)
+  if (constructUnit != unit) {
+     data <- GDPuc::convertGDP(data, constructUnit, unit, replace_NAs = 0)
   }
 
 

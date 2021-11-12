@@ -15,11 +15,41 @@ calcPopulation(
 )
 }
 \arguments{
-\item{PopulationCalib}{to what should be calibrated? past, future or a transition?}
+\item{PopulationCalib}{A string designating the harmonization function.
+Available harmonization functions are:
+\itemize{
+\item "calibSSPs":
+\item "calibSSP2EU":
+\item "calibSDPs":
+\item "calibUN_PopDiv":
+\item "past": deprecated
+\item "future": deprecated
+\item "transition": deprecated
+\item "past_transition":
+\item "past_grFuture":
+}}
 
-\item{PopulationPast}{population past data source}
+\item{PopulationPast}{A string designating the source for the historical population data.
+Available sources are:
+\itemize{
+\item "WDI": World development indicators from the World Bank
+\item "UN_PopDiv": United Nations
+\item "MI": Missing island dataset
+\item "Eurostat": Eurostat
+}}
 
-\item{PopulationFuture}{population future data source}
+\item{PopulationFuture}{A string designating the source for the future population data.
+Available sources are:
+\itemize{
+\item "SSPs":
+\item "SSP2EU":
+\item "SDPs":
+\item "UN_PopDiv":
+\item "MI":
+\item "SSPs_old":
+\item "SRES": deprecated
+\item "IIASApop": deprecated
+}}
 
 \item{extension2150}{string, either "bezier", "constant" or "none"}
 
@@ -33,12 +63,18 @@ specific years.}
 A magpie object with sets "iso3c", "year" and "variable".
 }
 \description{
-Merges time series of population for the past and present. See
-\code{\link{calcPopulationPast}} for past datasets, and
-\code{\link{calcPopulationFuture}} for future datasets. The time series are
-merged via the growth rates. The first year of the future scenarios
-determines the merging point. All data is calibrated either to the "past" or
-the "future" dataset as specified by PopulationCalib.
+Create population time series by harmonizing future projections onto historical data.
+}
+\details{
+The function accepts vectors for the harmonization function and past and future data sources.
+If given a vector, different combinations are created and returned all at once. If more than one
+argument is vectorised, the arguments have to have the same length. Which time series are created can be
+illustrated with the following example. Let's sy the harmonization function and past data source are vetors of
+length 3. Then there will be in total 3 time series that are produced: the first time series is the result of
+combining the first hamonization function with the first past data source, the second time series the result of
+combining the second hamonization function with the second past data source, and the third time series the result
+of  using the repective third entry. The future data source used in each case is the same, since in this example
+only one future data source is provided.
 }
 \examples{
 \dontrun{
