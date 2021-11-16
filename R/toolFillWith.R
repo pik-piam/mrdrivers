@@ -1,4 +1,4 @@
-# Complete GDP or population data with data from "fill"
+# For countries in "data" with missing values, complete with values from "fill"
 toolFillWith <- function(data, fill) {
   # Return if one of the inputs is null
   if (is.null(fill) || is.null(data)) {

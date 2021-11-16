@@ -1,13 +1,14 @@
-# Extend beyond 2100 in 5 year time steps. Either with bezierExtension or constant.
+# Extend until 2150 in 5 year time steps. Either with bezierExtension or constant.
+# The bezier extension is only possible if there is data until 2100, and only concerns
+# the years between 2100 and 2150.
 toolExtend2150 <- function(data, extension2150) {
   if (extension2150 != "none") {
-    timeExtend <- seq(2105, 2150, 5)
-    if (extension2150 == "bezier") {
-      data <- bezierExtension(data, timeExtend)
+    if (extension2150 == "bezier" && "y2100" %in% getYears(data)) {
+      data <- bezierExtension(data, seq(2105, 2150, 5))
     } else {
       helper <- getSets(data)
       data <- time_interpolate(data,
-                               timeExtend,
+                               seq(2005, 2150, 5),
                                extrapolation_type = "constant",
                                integrate_interpolated_years = TRUE)
       # Time_interpolate destroys the setNames for some reason...
