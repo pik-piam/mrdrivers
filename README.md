@@ -1,6 +1,6 @@
 # Create GDP and population scenarios
 
-R package **mrdrivers**, version **0.2.2**
+R package **mrdrivers**, version **0.2.3**
 
 [![CRAN status](https://www.r-pkg.org/badges/version/mrdrivers)](https://cran.r-project.org/package=mrdrivers)  [![R build status](https://pik-piam.github.io/mrdrivers/workflows/check/badge.svg)](https://pik-piam.github.io/mrdrivers/actions) [![codecov](https://codecov.io/gh/mrdrivers/branch/master/graph/badge.svg)](https://codecov.io/gh/mrdrivers) [![r-universe](https://pik-piam.r-universe.dev/badges/mrdrivers)](https://pik-piam.r-universe.dev/ui#builds)
 
@@ -102,4 +102,3 @@ A BibTeX entry for LaTeX users is
   note = {https://pik-piam.github.io/mrdrivers, https://github.com/pik-piam/mrdrivers},
 }
 ```
-

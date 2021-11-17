@@ -9,3 +9,4 @@
 ^docs$
 ^pkgdown$
 ^codecov\.yml$
+^\.pre-commit-config\.yaml$

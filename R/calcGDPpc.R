@@ -239,7 +239,7 @@ convergeSpecial <- function(x, yearStart, yearEnd) {
       value = dplyr::if_else(
         .data$year > yearStart & .data$SSP == "SSP2",
         dplyr::if_else(
-          .data$year == y1,
+          .data$year <= y1,
           .data$iiasa_gdppc - .data$d,
           dplyr::if_else(
             .data$year <= yearEnd,
