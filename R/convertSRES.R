@@ -25,12 +25,12 @@ stop("countries in to already exist in split")
     by <- setYears(by[intersect(getItems(by, 1), to), splityear, ], NULL)
     out <- setNames(by / dimSums(by, dim = 1), NULL) * setCells(split[from, , ], nm = "GLO")
     out <- clean_magpie(mbind(split, out))
-    out <- out[from, , , invert = T]
+    out <- out[from, , , invert = TRUE]
     return(out)
   }
 
   isoHistorical <- utils::read.csv2(system.file("extdata", "ISOhistorical.csv", package = "madrat"),
-                                    stringsAsFactors = F)
+                                    stringsAsFactors = FALSE)
 
   if (substring(subtype, nchar(subtype) - 2) == "pop") {
     # split according to JAMES PPP

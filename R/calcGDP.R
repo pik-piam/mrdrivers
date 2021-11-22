@@ -151,10 +151,20 @@ gdpHarmonizeSSPsSPDs <- function(args) {
                       FiveYearSteps = FALSE,
                       aggregate = FALSE)
 
+  if (grepl("-MI$", args$GDPPast)) {
+    h1 <- sub("-MI", "-UN_PopDiv-MI", args$GDPPast)
+  } else {
+    h1 <- args$GDPPast
+  }
+  if (grepl("-MI$", args$GDPFuture)) {
+    h2 <- sub("-MI", "-UN_PopDiv-MI", args$GDPFuture)
+  } else {
+    h2 <- args$GDPFuture
+  }
   pop <- calcOutput("Population",
                     PopulationCalib = args$GDPCalib,
-                    PopulationPast = args$GDPPast,
-                    PopulationFuture = args$GDPFuture,
+                    PopulationPast = h1,
+                    PopulationFuture = h2,
                     extension2150 = "none",
                     FiveYearSteps = FALSE,
                     aggregate = FALSE)
@@ -190,8 +200,8 @@ gdpHarmonizeSSP2EU <- function(past, future, unit) {
   # After 2070, transition to SSP2 values by 2150
   past_years <- getYears(future)[getYears(future, as.integer = TRUE) <= 2070]
   combined_SSP2EU <- toolHarmonizePastTransition(SSP2EU_data[euCountries, past_years,],
-                                              ssp2_data[euCountries,,],
-                                              2150)
+                                                 ssp2_data[euCountries,,],
+                                                 2150)
 
   combined <- ssp2_data
   combined[euCountries, getYears(combined_SSP2EU),]  <- combined_SSP2EU[euCountries,,]
