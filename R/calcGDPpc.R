@@ -90,10 +90,20 @@ internalCalcGDPpc <- function(GDPpcCalib,
   combined <- toolFinishingTouches(combined, extension2150, FiveYearSteps, naming, unit, constructUnit)
 
   # Get weight
+  if (grepl("-MI$", GDPpcPast)) {
+    h1 <- sub("-MI", "-UN_PopDiv-MI", GDPpcPast)
+  } else {
+    h1 <- GDPpcPast
+  }
+  if (grepl("-MI$", GDPpcFuture)) {
+    h2 <- sub("-MI", "-UN_PopDiv-MI", GDPpcFuture)
+  } else {
+    h2 <- GDPpcFuture
+  }
   weight <- calcOutput("Population",
                        PopulationCalib = GDPpcCalib,
-                       PopulationPast = GDPpcPast,
-                       PopulationFuture = GDPpcFuture,
+                       PopulationPast = h1,
+                       PopulationFuture = h2,
                        FiveYearSteps = FiveYearSteps,
                        extension2150 = extension2150,
                        naming = naming,
@@ -202,11 +212,21 @@ gdppcHarmonizeSSP2EU <- function(args) {
                     extension2150 = "none",
                     FiveYearSteps = FALSE,
                     aggregate = FALSE)
-
+  
+  if (grepl("-MI$", args$GDPpcPast)) {
+    h1 <- sub("-MI", "-UN_PopDiv-MI", args$GDPpcPast)
+  } else {
+    h1 <- args$GDPpcPast
+  }
+  if (grepl("-MI$", args$GDPpcFuture)) {
+    h2 <- sub("-MI", "-UN_PopDiv-MI", args$GDPpcFuture)
+  } else {
+    h2 <- args$GDPpcFuture
+  }
   pop <- calcOutput("Population",
                     PopulationCalib = args$GDPpcCalib,
-                    PopulationPast = args$GDPpcPast,
-                    PopulationFuture = args$GDPpcFuture,
+                    PopulationPast = h1,
+                    PopulationFuture = h2,
                     extension2150 = "none",
                     FiveYearSteps = FALSE,
                     aggregate = FALSE)
@@ -334,7 +354,7 @@ computeSHAPEgrowth <- function(shapeGDPScenario, gdppcapSSP1, startFromYear) {
       # innovation-driven (SDP_EI): enhance growth rates for low-income countries by up to 15%
       if (shapeGDPScenario == "gdppc_SDP_EI") {
         modificationFactor <- logisticTransition(
-          gdppcap[, yr, ], L0 = 1.15, L = 1, k = 20, x0 = 15e3, useLog10 = TRUE
+          gdppcap[, yr, ], l0 = 1.15, l = 1, k = 20, x0 = 15e3, useLog10 = TRUE
         )
       }
       # service-driven (SDP_MC): growth rate reduced based on relative distance to technology frontier (given by the US)
@@ -343,14 +363,14 @@ computeSHAPEgrowth <- function(shapeGDPScenario, gdppcapSSP1, startFromYear) {
         frontier <- gdppcap["USA", yr, ]
         getItems(frontier, 1) <- "GLO"
         # countries with gdp/cap above US are treated the same as the US -> set diff = 0
-        reldiff_to_frontier <- pmax((frontier[, yr, ] - gdppcap[, yr, ]) / frontier[, yr, ], 0)
+        reldiff2frontier <- pmax((frontier[, yr, ] - gdppcap[, yr, ]) / frontier[, yr, ], 0)
         modificationFactor <- logisticTransition(
-          reldiff_to_frontier[, yr, ], L0 = 1, L = 0.5, k = -30, x0 = 0.2, useLog10 = FALSE
+          reldiff2frontier[, yr, ], l0 = 1, l = 0.5, k = -30, x0 = 0.2, useLog10 = FALSE
         )
       }
       # society-driven (SDP_RC): gradual transition to zero growth for high-income countries
       else if (shapeGDPScenario == "gdppc_SDP_RC") {
-        modificationFactor <- logisticTransition(gdppcap[, yr, ], L0 = 1, L = 0, k = 10, x0 = 30e3, useLog10 = TRUE)
+        modificationFactor <- logisticTransition(gdppcap[, yr, ], l0 = 1, l = 0, k = 10, x0 = 30e3, useLog10 = TRUE)
       } else {
         stop("cannot create SHAPE GDP scenarios: unknown scenario")
       }
@@ -373,12 +393,12 @@ computeSHAPEgrowth <- function(shapeGDPScenario, gdppcapSSP1, startFromYear) {
   return(gdppcap)
 }
 
-# helper function: smooth transition from LO to L, with steepness k and midpoint x0
-logisticTransition <- function(x, L0, L, k, x0, useLog10 = FALSE) {
+# helper function: smooth transition from lO to l, with steepness k and midpoint x0
+logisticTransition <- function(x, l0, l, k, x0, useLog10 = FALSE) {
   if (useLog10) {
     x <- log10(x)
     x0 <- log10(x0)
   }
   logistic <- 1. / (1 + exp(-k * (x - x0)))
-  return(L0 - (L0 - L) * logistic)
+  return(l0 - (l0 - l) * logistic)
 }

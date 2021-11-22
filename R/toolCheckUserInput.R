@@ -17,6 +17,11 @@ toolCheckUserInput <- function(driver, args) {
      stop(glue("Bad argument to calc{driver}. 'FiveYearSteps' must be TRUE or FALSE."))
   }
 
+  # Check 'average2020' argument
+  if ("average2020" %in% names(args) && !is.logical(args$average2020)) {
+     stop(glue("Bad argument to calc{driver}. 'average2020' must be TRUE or FALSE."))
+  }
+
   # Check 'naming' argument
   if (!args$naming %in% c("indicator_scenario", "indicator.scenario", "scenario")) {
      stop(glue("Bad argument to calc{driver}. 'naming' argument unknown."))

@@ -28,6 +28,7 @@
 #' @param FiveYearSteps `r lifecycle::badge("deprecated")` `FiveYearSteps = TRUE` is no
 #'   longer supported; use the calcOutput argument `years`  instead, to retrieve
 #'   specific years.
+#' @param average2020 TRUE or FALSE. If TRUE, then the 2020 value is replaced by the 2018-2022 average.
 #' @param naming naming scheme
 #'
 #' @return A magpie object with sets "iso3c", "year" and "variable".
@@ -46,6 +47,7 @@ calcGDP <- function(GDPCalib  = c("calibSSPs", "calibSDPs", "calibSSP2EU"),
                     unit = "constant 2005 Int$PPP",
                     extension2150 = "bezier",
                     FiveYearSteps = TRUE,
+                    average2020 = FALSE,
                     naming = "indicator_scenario") {
   # Check user input
   toolCheckUserInput("GDP", as.list(environment()))
@@ -62,6 +64,7 @@ internalCalcGDP <- function(GDPCalib,
                             unit,
                             extension2150,
                             FiveYearSteps,
+                            average2020,
                             naming){
   # GDP scenarios are constructed in PPPs. If MERs are desired, scenarios with the 
   # same base year but in PPPs are constructed, and converted to MERs at the end.
@@ -128,7 +131,7 @@ internalCalcGDP <- function(GDPCalib,
   )
 
   # Apply finishing touches to combined time-series
-  combined <- toolFinishingTouches(combined, extension2150, FiveYearSteps, naming, unit, constructUnit)
+  combined <- toolFinishingTouches(combined, extension2150, FiveYearSteps, naming, unit, constructUnit, average2020)
 
   list(x = combined,
        weight = NULL,
@@ -151,10 +154,20 @@ gdpHarmonizeSSPsSPDs <- function(args) {
                       FiveYearSteps = FALSE,
                       aggregate = FALSE)
 
+  if (grepl("-MI$", args$GDPPast)) {
+    h1 <- sub("-MI", "-UN_PopDiv-MI", args$GDPPast)
+  } else {
+    h1 <- args$GDPPast
+  }
+  if (grepl("-MI$", args$GDPFuture)) {
+    h2 <- sub("-MI", "-UN_PopDiv-MI", args$GDPFuture)
+  } else {
+    h2 <- args$GDPFuture
+  }
   pop <- calcOutput("Population",
                     PopulationCalib = args$GDPCalib,
-                    PopulationPast = args$GDPPast,
-                    PopulationFuture = args$GDPFuture,
+                    PopulationPast = h1,
+                    PopulationFuture = h2,
                     extension2150 = "none",
                     FiveYearSteps = FALSE,
                     aggregate = FALSE)
@@ -190,8 +203,8 @@ gdpHarmonizeSSP2EU <- function(past, future, unit) {
   # After 2070, transition to SSP2 values by 2150
   past_years <- getYears(future)[getYears(future, as.integer = TRUE) <= 2070]
   combined_SSP2EU <- toolHarmonizePastTransition(SSP2EU_data[euCountries, past_years,],
-                                              ssp2_data[euCountries,,],
-                                              2150)
+                                                 ssp2_data[euCountries,,],
+                                                 2150)
 
   combined <- ssp2_data
   combined[euCountries, getYears(combined_SSP2EU),]  <- combined_SSP2EU[euCountries,,]
