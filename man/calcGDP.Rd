@@ -11,6 +11,7 @@ calcGDP(
   unit = "constant 2005 Int$PPP",
   extension2150 = "bezier",
   FiveYearSteps = TRUE,
+  average2020 = FALSE,
   naming = "indicator_scenario"
 )
 }
@@ -30,6 +31,8 @@ construction is done in Int$PPP, with the conversion to US$MER coming afterward.
 \item{FiveYearSteps}{\ifelse{html}{\href{https://lifecycle.r-lib.org/articles/stages.html#deprecated}{\figure{lifecycle-deprecated.svg}{options: alt='[Deprecated]'}}}{\strong{[Deprecated]}} \code{FiveYearSteps = TRUE} is no
 longer supported; use the calcOutput argument \code{years}  instead, to retrieve
 specific years.}
+
+\item{average2020}{TRUE or FALSE. If TRUE, then the 2020 value is replaced by the 2018-2022 average.}
 
 \item{naming}{naming scheme}
 }
