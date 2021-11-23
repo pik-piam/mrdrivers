@@ -115,26 +115,26 @@ test_that("no newline in descriptions", {
 })
 
 test_that("GDPpc is equal to GDP divided by pop", {
-  x <- calcOutput("GDPpc", extension2150 = "none", naming = "scenario", aggregate = FALSE)
-  y <-  calcOutput("GDP", extension2150 = "none", naming = "scenario", aggregate = FALSE) /
-    calcOutput("Population", extension2150 = "none", naming = "scenario", aggregate = FALSE)
+  x <- calcOutput("GDPpc", extension2150 = "none", naming = "scenario", aggregate = FALSE) %>%
+    suppressMessages()
+  y <- {calcOutput("GDP", extension2150 = "none", naming = "scenario", aggregate = FALSE) /
+    calcOutput("Population", extension2150 = "none", naming = "scenario", aggregate = FALSE)} %>%
+    suppressMessages()
   # Remove comments before comparing
   comment(x) <- NULL
-  comment(y) <- NULL
   expect_equal(x, y)
 })
 
 test_that("average2020 works", {
-  x <-  calcOutput("GDP", extension2150 = "none", average2020 = TRUE, FiveYearSteps = FALSE)
+  x <-  calcOutput("GDP", extension2150 = "none", average2020 = TRUE, FiveYearSteps = FALSE) %>%
+    suppressMessages()
 
-  y <-  calcOutput("GDP", extension2150 = "none", average2020 = FALSE, FiveYearSteps = FALSE)
+  y <-  calcOutput("GDP", extension2150 = "none", average2020 = FALSE, FiveYearSteps = FALSE) %>%
+    suppressMessages()
   yNew2020 <- (y[, 2018, ] + y[, 2019, ] + y[, 2020, ] + y[, 2021, ] + y[, 2022, ]) / 5
   getYears(yNew2020) <- 2020
   getSets(yNew2020) <- getSets(y)
   y[, 2020, ] <- yNew2020
 
-  # Remove comments before comparing
-  comment(x) <- NULL
-  comment(y) <- NULL
   expect_equal(x, y)
 })
