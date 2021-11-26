@@ -57,9 +57,6 @@ cGDPFutureSSPs <- function(unit) {
   getSets(data)[3] <- "variable"
   getNames(data) <- paste0("gdp_", gsub("_v[[:alnum:],[:punct:]]*", "", getNames(data)))
 
-  # Remove 2000 and 2005, because these years are not complete
-  data <- data[, setdiff(getYears(data), c("y2000", "y2005")), ]
-
   # GDPFutureSSP is constructed in PPPs.
   if (grepl("^constant .* US\\$MER$", unit)) {
     constructUnit <- paste0("constant ",  substr(unit, 10, 13), " Int$PPP")
