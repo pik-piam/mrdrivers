@@ -57,19 +57,37 @@ cUrbanFutureSSPs <- function() {
 }
 
 cUrbanFutureSDPs <- function() {
-  # note on SHAPE: the alternative scenario combinations are not coded explicitly here.
+  # note on SHAPE SDPs:
+  # SDP urbanization scenarios are mapped from SSP urbanizations,
+  # (in one case with different SSP choice for OECD and non-OECD countries)
+  # The alternative scenario combinations are not coded explicitly here.
   # They will re-use urbanization settings:
   # SDP_LS = SDP_MC (Green cities), SDP_GS = SDP_EI (Tech cities)
+
   urbanizationMapping <- c("urb_SDP"    = "urb_SSP1",
-                           "urb_SDP_EI" = "urb_SSP1", # = high urbanization from SSPs
-                           "urb_SDP_RC" = "urb_SSP2", # = med urbanization from SSPs
-                           "urb_SDP_MC" = "urb_SSP1") # = high urbanization from SSPs
+                           "urb_SDP_EI" = "urb_SSP1", # = high urbanization from SSPs for all countries
+                           "urb_SDP_RC" = "urb_SSP3|urb_SSP2", # low urbanization from SSPs for OECD, med for non-OECD
+                           "urb_SDP_MC" = "urb_SSP1") # = high urbanization from SSPs for all countries
 
   sspUrb <- calcOutput("UrbanFuture", UrbanFuture = "SSPs", aggregate = FALSE) # nolint
 
-  purrr::imap(urbanizationMapping,
-              ~ setNames(sspUrb[, , .x], .y)) %>%
+  purrr::imap(urbanizationMapping, mapSHAPEurbanization, sspUrb = sspUrb) %>%
     mbind()
+}
+
+mapSHAPEurbanization <- function(ssp, sdp, sspUrb) {
+  if (grepl("|", ssp, fixed = TRUE)) {
+    # distinguish between OECD and non-OECD
+    ssp <- strsplit(ssp, split = "\\|")[[1]]
+    OECDmapping <- toolGetMapping("regionmappingOECD.csv", type = "regional")
+    OECD <- OECDmapping[OECDmapping$RegionCode == "OECD", "CountryCode"]
+    nonOECD <- OECDmapping[OECDmapping$RegionCode == "Non-OECD", "CountryCode"]
+    mbind(setNames(sspUrb[OECD, , ssp[1]], sdp),
+          setNames(sspUrb[nonOECD, , ssp[2]], sdp))
+  } else {
+    # same for OECD and non-OECD
+    setNames(sspUrb[, , ssp], sdp)
+  }
 }
 
 cUrbanFutureSSP2EU <- function() {
