@@ -11,7 +11,7 @@ calcGDP(
   unit = "constant 2005 Int$PPP",
   extension2150 = "bezier",
   FiveYearSteps = TRUE,
-  average2020 = FALSE,
+  average2020 = TRUE,
   naming = "indicator_scenario"
 )
 }

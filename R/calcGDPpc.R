@@ -21,6 +21,7 @@ calcGDPpc <- function(GDPpcCalib  = c("calibSSPs", "calibSDPs", "calibSSP2EU"),
                       unit = "constant 2005 Int$PPP",
                       extension2150 = "bezier",
                       FiveYearSteps = TRUE,
+                      average2020 = TRUE,
                       naming = "indicator_scenario") {
   # Check user input
   toolCheckUserInput("GDPpc", as.list(environment()))
@@ -37,6 +38,7 @@ internalCalcGDPpc <- function(GDPpcCalib,
                               unit,
                               extension2150,
                               FiveYearSteps,
+                              average2020,
                               naming) {
    # GDPpc scenarios are constructed in PPPs. If MERs are desired, scenarios with the
    # same base year but in PPPs are constructed, and converted to MERs at the end.
@@ -87,7 +89,7 @@ internalCalcGDPpc <- function(GDPpcCalib,
   )
 
   # Apply finishing touches to combined time-series
-  combined <- toolFinishingTouches(combined, extension2150, FiveYearSteps, naming, unit, constructUnit)
+  combined <- toolFinishingTouches(combined, extension2150, FiveYearSteps, naming, unit, constructUnit, average2020)
 
   # Get weight
   if (grepl("-MI$", GDPpcPast)) {
@@ -185,6 +187,7 @@ gdppcHarmonizeSDP <- function(args) {
                              unit = args$unit,
                              extension2150 = "none",
                              FiveYearSteps = FALSE,
+                             average2020 = FALSE,
                              aggregate = FALSE)[, , "gdppc_SSP1"]
 
   # standard SDP inherits SSP1 GDP
@@ -211,6 +214,7 @@ gdppcHarmonizeSSP2EU <- function(args) {
                     unit = args$unit,
                     extension2150 = "none",
                     FiveYearSteps = FALSE,
+                    average2020 = FALSE,
                     aggregate = FALSE)
   
   if (grepl("-MI$", args$GDPpcPast)) {

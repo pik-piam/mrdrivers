@@ -47,7 +47,7 @@ calcGDP <- function(GDPCalib  = c("calibSSPs", "calibSDPs", "calibSSP2EU"),
                     unit = "constant 2005 Int$PPP",
                     extension2150 = "bezier",
                     FiveYearSteps = TRUE,
-                    average2020 = FALSE,
+                    average2020 = TRUE,
                     naming = "indicator_scenario") {
   # Check user input
   toolCheckUserInput("GDP", as.list(environment()))
@@ -152,6 +152,7 @@ gdpHarmonizeSSPsSPDs <- function(args) {
                       unit = args$constructUnit,
                       extension2150 = "none",
                       FiveYearSteps = FALSE,
+                      average2020 = FALSE,
                       aggregate = FALSE)
 
   if (grepl("-MI$", args$GDPPast)) {
@@ -187,8 +188,9 @@ gdpHarmonizeSSP2EU <- function(past, future, unit) {
                           GDPFuture = "SSPs-MI",
                           unit = unit,
                           extension2150 = "bezier",
-                          aggregate = FALSE,
-                          FiveYearSteps = FALSE) %>%
+                          FiveYearSteps = FALSE,
+                          average2020 = FALSE,
+                          aggregate = FALSE) %>%
   `[`(,, "gdp_SSP2")
 
   # For SSP2EU: simply glue past (until 2019) with future (starting 2020)
