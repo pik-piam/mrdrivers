@@ -24,11 +24,24 @@ toolFinishingTouches <- function(x,
   # For REMIND, the concensus is to avergae the 2020 value so as to dampen the effect of the COVID shock. (The
   # reasoning being that REMIND uses 5-year time steps, and that the year-in-itself should represent the 2,5 years
   # before and after.)
+  # The dampening is supposed to take place on GDP. So for GDP per capita in 2020 to be consitstent with the dampened
+  # GDP, it has to calculated from GDP and population. (In other words we can't just use the same formula as for GDP,
+  # sind it would lead to inconsistency at the end.) This is very hacky... A prettier solution should be developed in
+  # the future. For now we assume GDP is filled with -MI!
   if (average2020) {
-    xNew2020 <- (x[, 2018, ] + x[, 2019, ] + x[, 2020, ] + x[, 2021, ] + x[, 2022, ]) / 5
-    getYears(xNew2020) <- 2020
-    getSets(xNew2020) <- getSets(x)
-    x[, 2020, ] <- xNew2020
+    if (all(grepl("^gdppc_", getNames(x)))) {
+      helper <- calcOutput("GDP", unit = unit, naming = "scenario", aggregate = FALSE)[, 2020, ] /
+        calcOutput("Population", naming = "scenario", aggregate = FALSE)[, 2020, ]
+      getNames(helper) <- paste0("gdppc_", getNames(helper))
+      helper <- helper[, , getNames(x)]
+      getSets(helper) <- getSets(x)
+      x[, 2020, ] <- helper
+    } else {
+      xNew2020 <- (x[, 2018, ] + x[, 2019, ] + x[, 2020, ] + x[, 2021, ] + x[, 2022, ]) / 5
+      getYears(xNew2020) <- 2020
+      getSets(xNew2020) <- getSets(x)
+      x[, 2020, ] <- xNew2020
+    }
   }
 
 

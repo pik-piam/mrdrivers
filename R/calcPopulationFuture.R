@@ -92,8 +92,7 @@ cPopulationFutureSSPsOld <- function() {
   getNames(data) <- paste0("pop_", gsub("_v[[:alnum:],[:punct:]]*", "", getNames(data)))
   getNames(data) <- sub("SSP4d", "SSP4", getNames(data))
 
-  # Remove 2000 and 2005, because these years are not complete
-  data[, setdiff(getYears(data), c("y2000", "y2005")), ]
+  data
 }
 
 cPopulationFutureUN_PopDiv <- function() {
