@@ -1,19 +1,15 @@
-.onLoad <- function(libname, pkgname) {
-  madrat::setConfig(packages = c(madrat::getConfig("packages"), pkgname),
-                   .cfgchecks = FALSE,
-                   .verbose = FALSE)
+#' @importFrom madrat vcat
+
+.onAttach <- function(libname, pkgname) {
+  madrat::madratAttach(pkgname)
 }
 
-# create an own warning function which redirects calls to vcat (package internal)
-warning <- function(...) madrat::vcat(0, ...)
-
-# create a own stop function which redirects calls to stop (package internal)
-stop <- if ("crayon" %in% rownames(installed.packages())) {
-  function(...) madrat::vcat(-1, crayon::red(...))
-} else {
-  function(...) madrat::vcat(-1, ...)
+.onDetach <- function(libpath) {
+  madrat::madratDetach(libpath)
 }
 
-
-# create an own cat function which redirects calls to cat (package internal)
-cat <- function(...) madrat::vcat(1, ...)
+# redirect standard messaging functions to vcat
+cat     <- function(...) vcat(1, ...)
+message <- function(...) vcat(1, ...)
+warning <- function(...) vcat(0, ...)
+stop    <- function(...) vcat(-1, ...)
