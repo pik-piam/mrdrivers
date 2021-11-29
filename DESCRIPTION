@@ -1,7 +1,7 @@
 Package: mrdrivers
 Type: Package
 Title: Create GDP and population scenarios
-Version: 0.4.1
+Version: 0.4.2
 Authors@R: c(person(given = "Johannes", 
                     family = "Koch", 
                     email = "jokoch@pik-potsdam.de", 
@@ -26,7 +26,7 @@ License: LGPL (>= 3)
 URL: https://pik-piam.github.io/mrdrivers, https://github.com/pik-piam/mrdrivers
 BugReports: https://github.com/pik-piam/mrdrivers/issues
 Depends: 
-    madrat (>= 2.2.2),
+    madrat (>= 2.5.1),
     magclass (>= 6.0.3)
 Imports: 
     bezier,
@@ -54,5 +54,5 @@ Encoding: UTF-8
 LazyData: true
 Roxygen: list(markdown = TRUE)
 RoxygenNote: 7.1.2
-Date: 2021-11-26
+Date: 2021-11-29
 Config/testthat/edition: 3
