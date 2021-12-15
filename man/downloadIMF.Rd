@@ -4,10 +4,7 @@
 \alias{downloadIMF}
 \title{downloadIMF}
 \usage{
-downloadIMF(subtype)
-}
-\arguments{
-\item{subtype}{String}
+downloadIMF()
 }
 \description{
 downloadIMF
