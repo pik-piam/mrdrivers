@@ -1,6 +1,15 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
   <url>
+    <loc>https://pik-piam.github.io/mrdrivers/404.html</loc>
+  </url>
+  <url>
+    <loc>https://pik-piam.github.io/mrdrivers/LICENSE.html</loc>
+  </url>
+  <url>
+    <loc>https://pik-piam.github.io/mrdrivers/authors.html</loc>
+  </url>
+  <url>
     <loc>https://pik-piam.github.io/mrdrivers/index.html</loc>
   </url>
   <url>
@@ -101,6 +110,9 @@
   </url>
   <url>
     <loc>https://pik-piam.github.io/mrdrivers/reference/downloadWDI.html</loc>
+  </url>
+  <url>
+    <loc>https://pik-piam.github.io/mrdrivers/reference/index.html</loc>
   </url>
   <url>
     <loc>https://pik-piam.github.io/mrdrivers/reference/mrdrivers-package.html</loc>
