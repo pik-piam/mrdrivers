@@ -29,7 +29,8 @@ Other "Past" GDPpc functions:
 \code{\link{readWDI}()}
 
 Other IMF functions: 
-\code{\link{convertIMF}()}
+\code{\link{convertIMF}()},
+\code{\link{downloadIMF}()}
 }
 \concept{"Future" GDPpc functions}
 \concept{"Past" GDPpc functions}

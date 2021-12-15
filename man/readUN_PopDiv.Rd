@@ -27,7 +27,8 @@ Other "Past" population functions:
 \code{\link{readWDI}()}
 
 Other UN_PopDiv functions: 
-\code{\link{convertUN_PopDiv}()}
+\code{\link{convertUN_PopDiv}()},
+\code{\link{downloadUN_PopDiv}()}
 }
 \concept{"Past" population functions}
 \concept{UN_PopDiv functions}

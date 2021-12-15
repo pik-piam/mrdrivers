@@ -19,6 +19,7 @@ Converts data from IMF
 }
 \seealso{
 Other IMF functions: 
+\code{\link{downloadIMF}()},
 \code{\link{readIMF}()}
 }
 \concept{IMF functions}

@@ -4,10 +4,7 @@
 \alias{downloadMissingIslands}
 \title{downloadMissingIslands}
 \usage{
-downloadMissingIslands(subtype)
-}
-\arguments{
-\item{subtype}{pop for population or gdp for GDP}
+downloadMissingIslands()
 }
 \description{
 Download MissingIslands data (on population or GDP) for filling in data gaps from the
@@ -15,9 +12,8 @@ full datasets.
 }
 \examples{
 \dontrun{
-a <- downloadSource("MissingIslands", subtype = "pop")
+downloadSource("MissingIslands")
 }
-
 }
 \seealso{
 \code{\link[=downloadSource]{downloadSource()}}
