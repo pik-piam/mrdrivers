@@ -27,5 +27,9 @@ convertARIADNE <- function(x, subtype) {
     getNames(x) <- "GDP|PPP (million US$2005/yr)"
   }
 
-  toolGeneralConvert(x, note = FALSE)
+  x <- toolGeneralConvert(x, note = FALSE, countryFillWith = NA, substituteNAsWith = NA)
+  # fill smaller EU-countries with 0s to allow for aggregation of EU-region
+  x[c("ALA", "FRO", "GIB", "GGY", "IMN", "JEY"),,] <- 0
+
+  return(x)
 }
