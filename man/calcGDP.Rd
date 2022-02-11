@@ -40,15 +40,20 @@ specific years.}
 A magpie object with sets "iso3c", "year" and "variable".
 }
 \description{
-Merges time series of GDP in Purchase Power Parity (PPP) of International
-Dollars of the year 2005. See \code{\link{calcGDPPast}} for past datasets, and
-\code{\link{calcGDPFuture}} for future datasets. The time series are
-merged via the growth rates. The first year of the future scenarios
-determines the merging point. All data is calibrated specified by GDPCalib.
-The extension comes after the combination of past and future, in case the
-calibration method affected the future extension
+Get GDP scenarios. By default the following scenarios are returned:
+\itemize{
+\item the SSPs, i.e. SSP1-5 and SSP2EU
+\item the SDPs, i.e. SDP, SDP_EI, SDP_RC, and SDP_MC
 }
-\details{
+
+The scenarios are created by harmonizing future projections onto historical data.
+}
+\section{Return supplementary information}{
+Set the \code{supplementary} argument of \code{\link[madrat:calcOutput]{madrat::calcOutput()}} to \code{TRUE} to return a list with the scenarios and
+additional information on the unit, the data sources and the harmonization function.
+}
+
+\section{Vectorization of arguments}{
 The function accepts vectors for the harmonization function and past and future data sources.
 If given a vector, different combinations are created and returned all at once. If more than one
 argument is vectorised, the arguments have to have the same length. Which time series are created can be
@@ -59,10 +64,21 @@ combining the second harmonization function with the second past data source, an
 of  using the respective third entry. The future data source used in each case is the same, since in this example
 only one future data source is provided.
 }
+
 \examples{
 \dontrun{
 library(mrdrivers)
-calcOutput("GDP")}
+calcOutput("GDP")
+# or, for the now-outdated GDP scenarios used before summer 2021,
+calcOutput("GDP",
+           GDPCalib = "past_transition",
+           GDPPast = "IHME_USD05_PPP_pc-MI",
+           GDPFuture = "SSPs-MI",
+           extension2150 = "none",
+           average2020 = FALSE,
+           aggregate = FALSE,
+           FiveYearSteps = FALSE)    
+}
 
 }
 \seealso{

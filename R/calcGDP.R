@@ -1,14 +1,20 @@
 #' calcGDP
 #'
-#' Merges time series of GDP in Purchase Power Parity (PPP) of International
-#' Dollars of the year 2005. See \code{\link{calcGDPPast}} for past datasets, and
-#' \code{\link{calcGDPFuture}} for future datasets. The time series are
-#' merged via the growth rates. The first year of the future scenarios
-#' determines the merging point. All data is calibrated specified by GDPCalib.
-#' The extension comes after the combination of past and future, in case the
-#' calibration method affected the future extension
+#' @description
+#' Get GDP scenarios. By default the following scenarios are returned: 
+#' \itemize{
+#'   \item the SSPs, i.e. SSP1-5 and SSP2EU
+#'   \item the SDPs, i.e. SDP, SDP_EI, SDP_RC, and SDP_MC
+#' }
 #'
-#' @details The function accepts vectors for the harmonization function and past and future data sources.
+#' The scenarios are created by harmonizing future projections onto historical data.
+#'
+#' @details # Return supplementary information
+#'  Set the `supplementary` argument of [madrat::calcOutput()] to `TRUE` to return a list with the scenarios and
+#'  additional information on the unit, the data sources and the harmonization function.
+#'
+#' @details # Vectorization of arguments
+#'   The function accepts vectors for the harmonization function and past and future data sources.
 #'   If given a vector, different combinations are created and returned all at once. If more than one
 #'   argument is vectorised, the arguments have to have the same length. Which time series are created can be
 #'   illustrated with the following example. Let's say the harmonization function and past data source are vectors of
@@ -39,7 +45,17 @@
 #'
 #' @examples \dontrun{
 #' library(mrdrivers)
-#' calcOutput("GDP")}
+#' calcOutput("GDP")
+#' # or, for the now-outdated GDP scenarios used before summer 2021,
+#' calcOutput("GDP",
+#'            GDPCalib = "past_transition",
+#'            GDPPast = "IHME_USD05_PPP_pc-MI",
+#'            GDPFuture = "SSPs-MI",
+#'            extension2150 = "none",
+#'            average2020 = FALSE,
+#'            aggregate = FALSE,
+#'            FiveYearSteps = FALSE)    
+#' }
 #'
 calcGDP <- function(GDPCalib  = c("calibSSPs", "calibSDPs", "calibSSP2EU"),
                     GDPPast   = c("WDI-MI",    "WDI-MI",    "Eurostat-WDI-MI"),

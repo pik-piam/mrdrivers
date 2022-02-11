@@ -2,6 +2,8 @@
 #'
 #' @param drivers Vector of strings.
 #' @inherit calcGDP return
+#' @inheritSection calcGDP Return supplementary information
+#' @inheritSection calcGDP Vectorization of arguments
 #'
 #' @seealso [madrat::calcOutput()]
 #'

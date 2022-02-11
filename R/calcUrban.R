@@ -1,13 +1,13 @@
 #' calcUrban
 #'
-#' Merges time series of urban shares for the past and present.  See
-#' \code{\link{calcUrbanPast}} for past datasets, and
-#' \code{\link{calcUrbanFuture}} for future datasets.  The time series are
-#' merged via the growth rates. The first year of the future scenarios
-#' determines the merging point.  All data is calibrated either to the "past"
-#' or the "future" dataset.  Currently, the SSP (future) and WDI (past) data
-#' have some inconsistencies, which leads to unrealistic figures if the one is
-#' scaled on the other.
+#' @description
+#' Get urbanization scenarios. By default the following scenarios are returned: 
+#' \itemize{
+#'   \item the SSPs, i.e. SSP1-5 and SSP2EU
+#'   \item the SDPs, i.e. SDP, SDP_EI, SDP_RC, and SDP_MC
+#' }
+#'
+#' The scenarios are created by harmonizing future projections onto historical data.
 #'
 #' @param UrbanCalib To what should be calibrated? past or future?
 #' @param UrbanPast Urban past data source
@@ -15,6 +15,8 @@
 #'
 #' @inheritParams calcGDP
 #' @inherit calcGDP return
+#' @inheritSection calcGDP Return supplementary information
+#' @inheritSection calcGDP Vectorization of arguments
 #'
 #' @seealso [madrat::calcOutput()]
 #' @family Urban functions

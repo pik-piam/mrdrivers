@@ -8,7 +8,6 @@
 #'     \item "calibSSPs":
 #'     \item "calibSSP2EU":
 #'     \item "calibSDPs":
-#'     \item "calibUN_PopDiv":
 #'     \item "past": deprecated
 #'     \item "future": deprecated
 #'     \item "transition": deprecated
@@ -93,12 +92,11 @@ calcInternalPopulation <- function(PopulationCalib,  # nolint
     "calibSSPs"       = toolHarmonizeSSPsSDPs(past, future),
     "calibSDPs"       = toolHarmonizeSSPsSDPs(past, future),
     "calibSSP2EU"     = toolHarmonizeSSP2EU(past, future),
-    "calibUN_PopDiv"  = toolHarmonizeUN_PopDiv(past, future),
     # Deprecated?
     "past"            = toolPopHarmonizePast(past, future),
     "future"          = toolHarmonizeFuture(past, future),
     "transition"      = toolHarmonizeTransition(past, future, yEnd = 2020),
-    "past_transition" = toolHarmonizePastTransition(past, future, yEnd = 2050),
+    "past_transition" = toolHarmonizePastTransition(past, future, yEnd = 2030),
     "past_grFuture"   = toolHarmonizePastGrFuture(past, future),
     stop("Bad input for calcPopulation. Invalid 'PopulationCalib' argument.")
   )
@@ -127,7 +125,7 @@ calcInternalPopulation <- function(PopulationCalib,  # nolint
                              with a transition period until 2020"),
     "past_transition" = glue("use past data and afterwards transition between \\
                              {PopulationPast} and {PopulationFuture} with a transition \\
-                             period until 2050"),
+                             period until 2030"),
     "past_grFuture"   = glue("use past data from {PopulationPast} and then the growth rates \\
                              from {PopulationFuture}."),
   )
@@ -175,16 +173,6 @@ toolHarmonizeSSP2EU <- function(past, future) {
   combined[euCountries, futYears, ] <- future[euCountries, futYears, ]
 
   combined
-}
-
-toolHarmonizeUN_PopDiv <- function(past, future) { # nolint
-  # Glue future to past
-  # year <- max(intersect(getYears(past, as.integer = TRUE),
-  #                       getYears(future, as.integer = TRUE)))
-  year <- 2017
-  futYears <- getYears(future)[getYears(future, as.integer = TRUE) > year]
-  getNames(past) <- getNames(future)
-  mbind(past, future[, futYears, ])
 }
 
 # Legacy?

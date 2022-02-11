@@ -2,6 +2,8 @@
 #'
 #' @inheritParams calcUrban
 #' @inherit calcUrban return
+#' @inheritSection calcGDP Return supplementary information
+#' @inheritSection calcGDP Vectorization of arguments
 #'
 #' @seealso [madrat::calcOutput()]
 #' @family Urban functions
