@@ -49,5 +49,5 @@ convEurostatGDP <- function(x) {
 
   # Convert from constant 2005 LCU to constant 2005 Int$PPP.
   getNames(x) <- "GDP"
-  x <- GDPuc::convertGDP(x, "constant 2005 LCU", "constant 2005 Int$PPP", replace_NAs = 1)
+  x <- GDPuc::convertGDP(x, "constant 2005 LCU", "constant 2005 Int$PPP", replace_NAs = c("linear", "no_conversion"))
 }

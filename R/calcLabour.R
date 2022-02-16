@@ -1,11 +1,6 @@
 #' calcLabour
 #'
-#' Merges time series of population for the past and present. See
-#' \code{\link{calcPopulationPast}} for past datasets, and
-#' \code{\link{calcPopulationFuture}} for future datasets. The time series are
-#' merged via the growth rates. The first year of the future scenarios
-#' determines the merging point. All data is calibrated either to the "past" or
-#' the "future" dataset as specified by PopulationCalib.
+#' Get Labour .
 #'
 #' @param LabourFuture Labour future data source
 #' @inheritParams calcGDP
@@ -19,22 +14,26 @@
 #' calcLabour()
 #' }
 #'
-calcLabour <- function(LabourFuture = c("SSPs", "SDPs", "SSP2EU"),
+calcLabour <- function(LabourFuture = c("SSPs", "SDPs", "SSP2EU"), # nolint
                        extension2150 = "bezier") {
-  # Call internalCalcLabour function the appropriate number of times
-  toolInternalCalc("Labour", as.list(environment()))
+  # Check user input
+  toolCheckUserInput("Labour", as.list(environment()))
+  # Call calcInternalLabour function the appropriate number of times (map) and combine (reduce)
+  # !! Keep formula syntax for madrat caching to work
+  purrr::pmap(as.list(environment()), ~calcOutput("InternalLabour", aggregate = FALSE, supplementary = TRUE, ...)) %>%
+    toolReduce()
 }
 
 ######################################################################################
 # Internal Function
 ######################################################################################
-internalCalcLabour <- function(LabourFuture, extension2150) {
+calcInternalLabour <- function(LabourFuture, extension2150) { # nolint
   x <- switch(
     LabourFuture,
-    "SSPs"    = cLabourFutureSSPs(),
-    "SDPs"    = cLabourFutureSDPs(),
-    "SSP2EU"  = cLabourFutureSSP2EU(),
-    "SSPsOld" = cLabourFutureSSPsOld(),
+    "SSPs"    = calcOutput("InternalLabourFutureSSPs", aggregate = FALSE),
+    "SDPs"    = calcOutput("InternalLabourFutureSDPs", aggregate = FALSE),
+    "SSP2EU"  = calcOutput("InternalLabourFutureSSP2EU", aggregate = FALSE),
+    "SSPsOld" = calcOutput("InternalLabourFutureSSPsOld", aggregate = FALSE),
     stop("Bad input for calcLabour. Invalid 'LabourFuture' argument.")
   )
 
@@ -55,7 +54,7 @@ internalCalcLabour <- function(LabourFuture, extension2150) {
 ######################################################################################
 # Functions
 ######################################################################################
-cLabourFutureSSPs <- function() {
+calcInternalLabourFutureSSPs <- function() {
   x <- readSource("SSP", "lab2018Update") * 1e-3
 
   # lab2018Update only starts in 2015. However data is needed back until 2005.
@@ -68,19 +67,20 @@ cLabourFutureSSPs <- function() {
   getSets(x) <- c("iso3c", "year", "variable")
 
   getNames(x) <- paste0("lab_", getNames(x))
-  x
+  list(x = x, weight = NULL, unit = "million", description = "Labor from SSPs")
 }
 
-cLabourFutureSDPs <- function() {
-  labSSP1 <- cLabourFutureSSPs()[, , "lab_SSP1"] # nolint
+calcInternalLabourFutureSDPs <- function() {
+  labSSP1 <- calcOutput("InternalLabourFutureSSPs", aggregate = FALSE)[, , "lab_SSP1"] # nolint
 
-  purrr::map(c("SDP", "SDP_EI", "SDP_RC", "SDP_MC"),
-             ~ setNames(labSSP1, gsub("SSP1", .x, getNames(labSSP1)))) %>%
+  data <- purrr::map(c("SDP", "SDP_EI", "SDP_RC", "SDP_MC"),
+                     ~ setNames(labSSP1, gsub("SSP1", .x, getNames(labSSP1)))) %>%
     mbind()
+  list(x = data, weight = NULL, unit = "million", description = "Labor from SDPs")
 }
 
-cLabourFutureSSP2EU <- function() {
-  labSSP2 <- cLabourFutureSSPs()[, , "lab_SSP2"]
+calcInternalLabourFutureSSP2EU <- function() {
+  labSSP2 <- calcOutput("InternalLabourFutureSSPs", aggregate = FALSE)[, , "lab_SSP2"]
   popSSP2 <- calcOutput("Population",
                         PopulationCalib = "calibSSPs",
                         PopulationPast = "WDI",
@@ -100,12 +100,12 @@ cLabourFutureSSP2EU <- function() {
   getNames(popSSP2) <- getNames(popSSP2EU) <- getNames(labSSP2) <- "lab_SSP2EU"
   labSSP2EU <- labSSP2 / popSSP2[, y, ] * popSSP2EU[, y, ]
   labSSP2EU[is.na(labSSP2EU)] <- 0
-  labSSP2EU
+  list(x = labSSP2EU, weight = NULL, unit = "million", description = "Labor from SSP2EU")
 }
 
 
 # Legacy
-cLabourFutureSSPsOld <- function() {
+calcInternalLabourFutureSSPsOld <- function() { # nolint
   aged <- purrr::cross3("Population",
                         c("Male", "Female"),
                         c("Aged15-19", "Aged20-24", "Aged25-29", "Aged30-34", "Aged35-39",
@@ -161,5 +161,5 @@ cLabourFutureSSPsOld <- function() {
     }
   }
 
-  data
+  list(x = data, weight = NULL, unit = "million", description = "Labor from SSPsOld")
 }

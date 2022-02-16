@@ -11,17 +11,17 @@
 #' calcOutput("GDPpcFuture")
 #' }
 #'
-calcGDPpcFuture <- function(GDPpcFuture = "SSPs-MI",
+calcGDPpcFuture <- function(GDPpcFuture = "SSPs-MI", # nolint
                             unit = "constant 2005 Int$PPP",
                             extension2150 = "none") {
 
   data <- switch(
     GDPpcFuture,
-    "SSPs"    = cGDPpcFutureSSPs(unit),
-    "SDPs"    = cGDPpcFutureSDPs(unit),
-    "SDPs-MI" = cGDPpcFutureSDPs(unit, mi = TRUE),
-    "SSPs-MI" = cGDPpcFutureSSPs(unit, mi = TRUE),
-    "MI"      = cGDPpcMI(unit),
+    "SSPs"    = toolGDPpcFutureSSPs(unit),
+    "SDPs"    = toolGDPpcFutureSDPs(unit),
+    "SDPs-MI" = toolGDPpcFutureSDPs(unit, mi = TRUE),
+    "SSPs-MI" = toolGDPpcFutureSSPs(unit, mi = TRUE),
+    "MI"      = toolGDPpcMI(unit),
     stop("Bad input for calcGDPFuture. Invalid 'GDPFuture' argument.")
   )
 
@@ -42,7 +42,7 @@ calcGDPpcFuture <- function(GDPpcFuture = "SSPs-MI",
 ######################################################################################
 # Functions
 ######################################################################################
-cGDPpcFutureSSPs <- function(unit, mi = FALSE) {
+toolGDPpcFutureSSPs <- function(unit, mi = FALSE) {
   h1 <- if (mi) "SSPs-MI" else "SSPs"
   h2 <- if (mi) "SSPs_old-MI" else "SSPs_old"
 
@@ -65,15 +65,15 @@ cGDPpcFutureSSPs <- function(unit, mi = FALSE) {
   data
 }
 
-cGDPpcFutureSDPs <- function(unit, mi = FALSE) {
-  data_SSP1 <- cGDPpcFutureSSPs(unit, mi)[, , "gdppc_SSP1"] # nolint
+toolGDPpcFutureSDPs <- function(unit, mi = FALSE) {
+  data_SSP1 <- toolGDPpcFutureSSPs(unit, mi)[, , "gdppc_SSP1"] # nolint
 
   purrr::map(c("SDP", "SDP_EI", "SDP_RC", "SDP_MC"),
              ~ setNames(data_SSP1, gsub("SSP1", .x, getNames(data_SSP1)))) %>%
     mbind()
 }
 
-cGDPpcMI <- function(unit) {
+toolGDPpcMI <- function(unit) {
   gdp <- calcOutput("GDPFuture", GDPFuture = "MI", unit = unit, aggregate = FALSE)
   pop <- calcOutput("PopulationFuture", PopulationFuture = "MI", aggregate = FALSE)
   years <- intersect(getYears(gdp), getYears(pop))

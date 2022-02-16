@@ -11,18 +11,22 @@
 #' }
 #'
 calcDefaultDrivers <- function(drivers = c("Population", "GDP", "UrbanPop")) {
-
+  # Check user input
   if (!all(drivers %in% c("Population", "GDP", "UrbanPop"))) {
      stop("Bad input for DefaultDrivers. Invalid 'drivers' argument.")
   }
 
-  toolInternalCalc("DefaultDrivers", list(drivers))
+  # Call calcInternalDefaultDrivers function the appropriate number of times (map) and combine (reduce)
+  # !! Keep formula syntax for madrat caching to work
+  purrr::pmap(list(drivers = drivers),
+              ~calcOutput("InternalDefaultDrivers", aggregate = FALSE, supplementary = TRUE, ...)) %>%
+    toolReduce()
 }
 
 ######################################################################################
 # Internal Function
 ######################################################################################
-internalCalcDefaultDrivers <- function(drivers) {
+calcInternalDefaultDrivers <- function(drivers) {
 
   d <- switch(
     drivers,

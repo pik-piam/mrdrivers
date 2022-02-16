@@ -11,7 +11,7 @@ calcGDPpcFuture(
 )
 }
 \arguments{
-\item{GDPpcFuture}{String ot vector of strings}
+\item{GDPpcFuture}{String or vector of strings}
 
 \item{unit}{A string. Either 'constant 2005 Int$PPP', 'constant 2005 US$MER',
 'constant 2017 Int$PPP' or 'constant 2017 US$MER'. In either case, the scenario

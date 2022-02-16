@@ -12,25 +12,28 @@
 #' calcOutput("UrbanPop")
 #' }
 #'
-calcUrbanPop <- function(UrbanCalib = "past",
-                         UrbanPast = "WDI",
-                         UrbanFuture = c("SSPs", "SDPs", "SSP2EU"),
+calcUrbanPop <- function(UrbanCalib = "past",                       # nolint
+                         UrbanPast = "WDI",                         # nolint
+                         UrbanFuture = c("SSPs", "SDPs", "SSP2EU"), # nolint
                          extension2150 = "constant",
-                         FiveYearSteps = TRUE,
+                         FiveYearSteps = TRUE,                      # nolint
                          naming = "indicator_scenario") {
   # Check user input
   toolCheckUserInput("UrbanPop", as.list(environment()))
-  # Call internalCalcUrban function the appropriate number of times
-  toolInternalCalc("UrbanPop", as.list(environment()))
+  # Call calcInternalUrbanPop function the appropriate number of times (map) and combine (reduce)
+  # !! Keep formula syntax for madrat caching to work
+  purrr::pmap(as.list(environment()),
+              ~calcOutput("InternalUrbanPop", aggregate = FALSE, supplementary = TRUE, ...)) %>%
+    toolReduce()
 }
 
 ######################################################################################
 # Internal Function
 ######################################################################################
-internalCalcUrbanPop <- function(UrbanCalib,
-                                 UrbanPast,
-                                 UrbanFuture,
-                                 FiveYearSteps,
+calcInternalUrbanPop <- function(UrbanCalib,    # nolint
+                                 UrbanPast,     # nolint
+                                 UrbanFuture,   # nolint
+                                 FiveYearSteps, # nolint
                                  extension2150,
                                  naming) {
   # Get urban shares

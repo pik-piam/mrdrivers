@@ -13,7 +13,7 @@
 #' calcOutput("UrbanPast")
 #' }
 #'
-calcUrbanPast <- function(UrbanPast = "WDI") {
+calcUrbanPast <- function(UrbanPast = "WDI") { # nolint
 
   data <- switch(
     UrbanPast,

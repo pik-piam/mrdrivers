@@ -19,9 +19,8 @@ convertARIADNE <- function(x, subtype) {
     # (1 US$2005 = 0.8041 €2005) to get the values in 2005 US$MER.
     # In a second step we convert from US$MER to Int$PPP
     # The reason we can't do the conversin at once here is that x is not in LCU but in €.
-    x <-  suppressWarnings(GDPuc::convertGDP(x, "constant 2010 LCU", "constant 2005 LCU") / 0.8041)
-    x <- GDPuc::convertGDP(x, "constant 2005 US$MER", "constant 2005 Int$PPP") %>%
-    suppressWarnings()
+    x <- GDPuc::convertGDP(x, "constant 2010 LCU", "constant 2005 LCU") / 0.8041
+    x <- GDPuc::convertGDP(x, "constant 2005 US$MER", "constant 2005 Int$PPP")
 
     # Rename
     getNames(x) <- "GDP|PPP (million US$2005/yr)"
@@ -29,7 +28,7 @@ convertARIADNE <- function(x, subtype) {
 
   x <- toolGeneralConvert(x, note = FALSE, countryFillWith = NA, substituteNAsWith = NA)
   # fill smaller EU-countries with 0s to allow for aggregation of EU-region
-  x[c("ALA", "FRO", "GIB", "GGY", "IMN", "JEY"),,] <- 0
+  x[c("ALA", "FRO", "GIB", "GGY", "IMN", "JEY"), , ] <- 0
 
   return(x)
 }

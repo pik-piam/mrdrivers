@@ -12,7 +12,7 @@
 #' in local currency units (LCU), as these growth rates should be approximately
 #' what the growth models predict. The price index from 2011 was transformed
 #' into 2005 equivalents using the inflation rate of the United States (US), as
-#' the PPPs are in USDollar equvialents.
+#' the PPPs are in USDollar equivalents.
 #' \item \code{PWT}: Penn World Tables
 #' \item \code{IHME_USD05_PPP_pc}: Publication: James, Spencer L., Paul Gubbins,
 #' Christopher JL Murray, and Emmanuela Gakidou. 2012. "Developing a
@@ -32,18 +32,20 @@
 #' calcOutput("GDPPast")
 #' }
 #'
-calcGDPPast <- function(GDPPast = "WDI-MI", unit = "constant 2005 Int$PPP") {
-  # Call internalCalcGDPPast function the appropriate number of times
-  toolInternalCalc("GDPPast",
-                   list("GDPPast" = strsplit(GDPPast, "-")[[1]],
-                        "unit" = unit),
-                   mbindOrFillWith = "fillWith")
+calcGDPPast <- function(GDPPast = "WDI-MI", unit = "constant 2005 Int$PPP") { # nolint
+  # Check user input
+  toolCheckUserInput("GDPpast", as.list(environment()))
+  # Call calcInternalGDPPast function the appropriate number of times (map) and combine (reduce)
+  # !! Keep formula syntax for madrat caching to work
+  purrr::pmap(list("GDPPast" = unlist(strsplit(GDPPast, "-")), "unit" = unit),
+              ~calcOutput("InternalGDPPast", aggregate = FALSE, supplementary = TRUE, ...)) %>%
+    toolReduce(mbindOrFillWith = "fillWith")
 }
 
 ######################################################################################
 # Internal Function
 ######################################################################################
-internalCalcGDPPast <- function(GDPPast, unit) {
+calcInternalGDPPast <- function(GDPPast, unit) { # nolint
   # Check input argument
   if (!GDPPast %in% c("WDI", "Eurostat", "MI", "PWT",
                       # All called through readJames
@@ -53,13 +55,13 @@ internalCalcGDPPast <- function(GDPPast, unit) {
     stop("Bad input for calcGDPPast. Invalid 'GDPPast' argument.")
   }
 
-  # Call appropriate calcGDPPast function.
+  # Call appropriate calcInternalGDPPast function.
   data <- switch(GDPPast,
-                 "PWT"      = cGDPPastPWT(),
-                 "WDI"      = cGDPPastWDI(unit),
-                 "Eurostat" = cGDPPastEurostat(unit),
-                 "MI"       = cGDPMI(unit),
-                 cGDPPastJames(GDPPast))
+                 "PWT"      = calcOutput("InternalGDPPastPWT", aggregate = FALSE),
+                 "WDI"      = calcOutput("InternalGDPPastWDI", unit = unit, aggregate = FALSE),
+                 "Eurostat" = calcOutput("InternalGDPPastEurostat", unit = unit, aggregate = FALSE),
+                 "MI"       = calcOutput("InternalGDPMI", unit = unit, aggregate = FALSE),
+                 calcOutput("InternalGDPPastJames", GDPPast = GDPPast, aggregate = FALSE))
 
   data <- toolFinishingTouches(data)
 
@@ -72,22 +74,22 @@ internalCalcGDPPast <- function(GDPPast, unit) {
 ######################################################################################
 # Functions
 ######################################################################################
-cGDPPastWDI <- function(unit) {
+calcInternalGDPPastWDI <- function(unit) {
   # "NY.GDP.MKTP.PP.KD" = GDP in constant 2017 Int$PPP (as of time of writing this function)
   data <- readSource("WDI", "NY.GDP.MKTP.PP.KD") %>%
-     GDPuc::convertGDP("constant 2017 Int$PPP", unit, replace_NAs = 0)
+     GDPuc::convertGDP("constant 2017 Int$PPP", unit, replace_NAs = c("linear", "no_conversion"))
 
   data <- fillWithWBFromJames2019(data, unit)
 
   getNames(data) <- glue("gdp in {unit}")
-  data
+  list(x = data, weight = NULL, unit = unit, description = "GDP from WDI")
 }
 
-cGDPPastEurostat <- function(unit) {
+calcInternalGDPPastEurostat <- function(unit) {
   euCountries <- toolGetEUcountries()
 
   data <- readSource("EurostatPopGDP", "GDP") %>%
-    GDPuc::convertGDP("constant 2005 Int$PPP", unit, replace_NAs = 0) %>%
+    GDPuc::convertGDP("constant 2005 Int$PPP", unit, replace_NAs = c("linear", "no_conversion")) %>%
     # Keep only EUR countries
     `[`(euCountries, , )
 
@@ -95,25 +97,25 @@ cGDPPastEurostat <- function(unit) {
   data <- data %>% toolCountryFill(fill = 0) %>% suppressMessages()
 
   getNames(data) <- glue("gdp in {unit}")
-  data
+  list(x = data, weight = NULL, unit = unit, description = "GDP from Eurostat")
 }
 
-cGDPPastJames <- function(type) {
-  PPPpc <- readSource(type = "James", subtype = type)
+calcInternalGDPPastJames <- function(type) {
+  gdpPPPpc <- readSource(type = "James", subtype = type)
   pop <- readSource("WDI", subtype = "SP.POP.TOTL")
-  years <- intersect(getYears(PPPpc), getYears(pop))
-  data <- PPPpc[, years, ] * pop[, years, ]
+  years <- intersect(getYears(gdpPPPpc), getYears(pop))
+  data <- gdpPPPpc[, years, ] * pop[, years, ]
   getNames(data) <- substr(type, 1, (nchar(type) - 3))
   getNames(data) <- "gdp" # ??
 
-  data
+  list(x = data, weight = NULL, unit = "constant 2005 Int$PPP", description = "GDP from IHME,James")
 }
 
 # Use the James2019  WB_USD05_PPP_pc series to fill in past data until 1960.
 # Using mainly growth rates, since conversion of James2019 data into 2005 Int$PPP not certain to be correct.
 fillWithWBFromJames2019 <- function(data, unit) {
   gdppc <- readSource("James2019", "WB_USD05_PPP_pc") %>%
-    GDPuc::convertGDP("constant 2005 Int$PPP", unit, replace_NAs = 1)
+    GDPuc::convertGDP("constant 2005 Int$PPP", unit, replace_NAs = c("linear", "no_conversion"))
 
   pop <- readSource("WDI", "SP.POP.TOTL")
 
@@ -150,8 +152,8 @@ fillWithWBFromJames2019 <- function(data, unit) {
 ######################################################################################
 # Legacy
 ######################################################################################
-cGDPPastPWT <- function() {
+calcInternalGDPPastPWT <- function() {
   data <- readSource("PWT")[, , "rgdpna"]
   getNames(data) <- "GDP_PWT"
-  data
+  list(x = data, weight = NULL, unit = "constant 2005 Int$PPP", description = "GDP from PWT")
 }

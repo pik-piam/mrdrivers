@@ -2,7 +2,7 @@
 #'
 #' @param GDPpcCalib String or vector of strings
 #' @param GDPpcPast String or vector of strings
-#' @param GDPpcFuture String ot vector of strings
+#' @param GDPpcFuture String or vector of strings
 #' @inheritParams calcGDP
 #' @inherit calcGDP return
 #'
@@ -15,29 +15,31 @@
 #' calcOutput("GDPpc")
 #' }
 #'
-calcGDPpc <- function(GDPpcCalib  = c("calibSSPs", "calibSDPs", "calibSSP2EU"),
-                      GDPpcPast   = c("WDI-MI",    "WDI-MI",    "Eurostat-WDI-MI"),
-                      GDPpcFuture = c("SSPs-MI",   "SDPs-MI",   "SSP2EU-MI"),
+calcGDPpc <- function(GDPpcCalib  = c("calibSSPs", "calibSDPs", "calibSSP2EU"),     # nolint
+                      GDPpcPast   = c("WDI-MI",    "WDI-MI",    "Eurostat-WDI-MI"), # nolint
+                      GDPpcFuture = c("SSPs-MI",   "SDPs-MI",   "SSP2EU-MI"),       # nolint
                       unit = "constant 2005 Int$PPP",
                       extension2150 = "bezier",
-                      FiveYearSteps = TRUE,
+                      FiveYearSteps = TRUE,                                         # nolint
                       average2020 = TRUE,
                       naming = "indicator_scenario") {
   # Check user input
   toolCheckUserInput("GDPpc", as.list(environment()))
-  # Call internalCalcGDPpc function the appropriate number of times
-  toolInternalCalc("GDPpc", as.list(environment()))
+  # Call calcInternalGDPpc function the appropriate number of times (map) and combine (reduce)
+  # !! Keep formula syntax for madrat caching to work
+  purrr::pmap(as.list(environment()), ~calcOutput("InternalGDPpc", aggregate = FALSE, supplementary = TRUE, ...)) %>%
+    toolReduce()
 }
 
 ######################################################################################
 # Internal Function
 ######################################################################################
-internalCalcGDPpc <- function(GDPpcCalib,
-                              GDPpcPast,
-                              GDPpcFuture,
+calcInternalGDPpc <- function(GDPpcCalib,    # nolint
+                              GDPpcPast,     # nolint
+                              GDPpcFuture,   # nolint
                               unit,
                               extension2150,
-                              FiveYearSteps,
+                              FiveYearSteps, # nolint
                               average2020,
                               naming) {
    # GDPpc scenarios are constructed in PPPs. If MERs are desired, scenarios with the
@@ -70,9 +72,9 @@ internalCalcGDPpc <- function(GDPpcCalib,
   # Combine "past" and "future" time series.
   combined <- switch(
     GDPpcCalib,
-    "calibSSPs"   = gdppcHarmonizeSSP(past, future, constructUnit, yEnd = 2100),
-    "calibSDPs"   = gdppcHarmonizeSDP(args),
-    "calibSSP2EU" = gdppcHarmonizeSSP2EU(args),
+    "calibSSPs"   = toolGDPpcHarmonizeSSP(past, future, constructUnit, yEnd = 2100),
+    "calibSDPs"   = toolGDPpcHarmonizeSDP(args),
+    "calibSSP2EU" = toolGDPpcHarmonizeSSP2EU(args),
     stop("Bad input for calcGDPpc. Invalid 'GDPpcCalib' argument.")
   )
 
@@ -89,7 +91,7 @@ internalCalcGDPpc <- function(GDPpcCalib,
   )
 
   # Apply finishing touches to combined time-series
-  combined <- toolFinishingTouches(combined, extension2150, FiveYearSteps, naming, unit, constructUnit, average2020)
+  combined <- toolFinishingTouches2(combined, extension2150, FiveYearSteps, naming, unit, constructUnit, average2020)
 
   # Get weight
   if (grepl("-MI$", GDPpcPast)) {
@@ -125,7 +127,7 @@ internalCalcGDPpc <- function(GDPpcCalib,
 ######################################################################################
 # GDPpc Harmonization Functions
 ######################################################################################
-gdppcHarmonizeSSP <- function(pastGDPpc, futureGDPpc, unit, yEnd) {
+toolGDPpcHarmonizeSSP <- function(pastGDPpc, futureGDPpc, unit, yEnd) {
   # Get IMF short-term income projcetions and fill missing with SSP2
   imfGDPpc <- readSource("IMF", "GDPpc")
   fill <- calcOutput("GDPpcFuture",
@@ -146,7 +148,7 @@ gdppcHarmonizeSSP <- function(pastGDPpc, futureGDPpc, unit, yEnd) {
     tibble::as_tibble() %>%
     dplyr::select("iso3c", "year", "value" = ".value")
 
-  # Make sure to add the last IMF year to the future SSP data, jsut in case
+  # Make sure to add the last IMF year to the future SSP data, just in case
   # it's not there. That is the year from which convergence begins.
   yStart <- max(getYears(imfGDPpc, as.integer = TRUE))
   futureGDPpc <- futureGDPpc %>%
@@ -156,12 +158,11 @@ gdppcHarmonizeSSP <- function(pastGDPpc, futureGDPpc, unit, yEnd) {
     dplyr::select("iso3c", "year", "variable", "value" = ".value")
 
   combinedGDPpc <- tidyr::expand_grid(iso3c = unique(tmpGDPpc$iso3c),
-                                       year = unique(c(tmpGDPpc$year, futureGDPpc$year)),
-                                       variable = unique(futureGDPpc$variable)) %>%
+                                      year = unique(c(tmpGDPpc$year, futureGDPpc$year)),
+                                      variable = unique(futureGDPpc$variable)) %>%
     dplyr::left_join(tmpGDPpc, by = c("iso3c", "year")) %>%
-    dplyr::left_join(futureGDPpc %>%
-                dplyr::select(.data$iso3c, .data$year, .data$variable, "iiasa_gdppc" = .data$value),
-              by = c("iso3c", "year", "variable")) %>%
+    dplyr::left_join(dplyr::select(futureGDPpc, .data$iso3c, .data$year, .data$variable, "iiasa_gdppc" = .data$value),
+                     by = c("iso3c", "year", "variable")) %>%
     dplyr::rename("SSP" = .data$variable) %>%
     dplyr::mutate(SSP = sub("^......", "", .data$SSP))
 
@@ -178,7 +179,7 @@ gdppcHarmonizeSSP <- function(pastGDPpc, futureGDPpc, unit, yEnd) {
 }
 
 
-gdppcHarmonizeSDP <- function(args) {
+toolGDPpcHarmonizeSDP <- function(args) {
 
   gdppcapSSP1 <- calcOutput("GDPpc",
                              GDPpcCalib  = "calibSSPs",
@@ -206,7 +207,7 @@ gdppcHarmonizeSDP <- function(args) {
 }
 
 
-gdppcHarmonizeSSP2EU <- function(args) {
+toolGDPpcHarmonizeSSP2EU <- function(args) {
   gdp <- calcOutput("GDP",
                     GDPCalib = args$GDPpcCalib,
                     GDPPast = args$GDPpcPast,
@@ -216,7 +217,7 @@ gdppcHarmonizeSSP2EU <- function(args) {
                     FiveYearSteps = FALSE,
                     average2020 = FALSE,
                     aggregate = FALSE)
-  
+
   if (grepl("-MI$", args$GDPpcPast)) {
     h1 <- sub("-MI", "-UN_PopDiv-MI", args$GDPpcPast)
   } else {

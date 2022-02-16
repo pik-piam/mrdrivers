@@ -7,16 +7,16 @@
 #' determines the merging point. All data is calibrated specified by GDPCalib.
 #' The extension comes after the combination of past and future, in case the
 #' calibration method affected the future extension
-#' 
+#'
 #' @details The function accepts vectors for the harmonization function and past and future data sources.
 #'   If given a vector, different combinations are created and returned all at once. If more than one
 #'   argument is vectorised, the arguments have to have the same length. Which time series are created can be
-#'   illustrated with the following example. Let's sy the harmonization function and past data source are vetors of
+#'   illustrated with the following example. Let's say the harmonization function and past data source are vectors of
 #'   length 3. Then there will be in total 3 time series that are produced: the first time series is the result of
-#'   combining the first hamonization function with the first past data source, the second time series the result of 
-#'   combining the second hamonization function with the second past data source, and the third time series the result
-#'   of  using the repective third entry. The future data source used in each case is the same, since in this example
-#'   only one future data source is provided. 
+#'   combining the first harmonization function with the first past data source, the second time series the result of
+#'   combining the second harmonization function with the second past data source, and the third time series the result
+#'   of  using the respective third entry. The future data source used in each case is the same, since in this example
+#'   only one future data source is provided.
 #'
 #' @param GDPCalib to what should be calibrated? past, future or a transition?
 #' @param GDPPast GDP past data source
@@ -32,7 +32,7 @@
 #' @param naming naming scheme
 #'
 #' @return A magpie object with sets "iso3c", "year" and "variable".
-#' 
+#'
 #' @seealso [madrat::calcOutput()]
 #' @family GDP functions
 #' @family Combined scenario functions
@@ -51,22 +51,24 @@ calcGDP <- function(GDPCalib  = c("calibSSPs", "calibSDPs", "calibSSP2EU"),
                     naming = "indicator_scenario") {
   # Check user input
   toolCheckUserInput("GDP", as.list(environment()))
-  # Call internalCalcGDP function the appropriate number of times
-  toolInternalCalc("GDP", as.list(environment()))
+  # Call calcInternalGDP function the appropriate number of times (map) and combine (reduce)
+  # !! Keep formula syntax for madrat caching to work
+  purrr::pmap(as.list(environment()), ~calcOutput("InternalGDP", aggregate = FALSE, supplementary = TRUE, ...)) %>%
+    toolReduce()
 }
 
 ######################################################################################
 # Internal Function
 ######################################################################################
-internalCalcGDP <- function(GDPCalib,
+calcInternalGDP <- function(GDPCalib,
                             GDPPast,
                             GDPFuture,
                             unit,
                             extension2150,
                             FiveYearSteps,
                             average2020,
-                            naming){
-  # GDP scenarios are constructed in PPPs. If MERs are desired, scenarios with the 
+                            naming) {
+  # GDP scenarios are constructed in PPPs. If MERs are desired, scenarios with the
   # same base year but in PPPs are constructed, and converted to MERs at the end.
   if (grepl("^constant .* US\\$MER$", unit)) {
     constructUnit <- paste0("constant ",  substr(unit, 10, 13), " Int$PPP")
@@ -84,10 +86,7 @@ internalCalcGDP <- function(GDPCalib,
      args <- as.list(environment())
   } else {
     # Compute "past" and "future" GDP time series.
-    past <- calcOutput("GDPPast",
-                       GDPPast = GDPPast,
-                       unit = constructUnit,
-                       aggregate = FALSE)
+    past <- calcOutput("GDPPast", GDPPast = GDPPast, unit = constructUnit, aggregate = FALSE)
     future <- calcOutput("GDPFuture",
                          GDPFuture = GDPFuture,
                          unit = constructUnit,
@@ -98,14 +97,14 @@ internalCalcGDP <- function(GDPCalib,
   # Combine "past" and "future" time series.
   combined <- switch(
     GDPCalib,
-    "calibSSPs"       = gdpHarmonizeSSPsSPDs(args),
-    "calibSDPs"       = gdpHarmonizeSSPsSPDs(args),
-    "calibSSP2EU"     = gdpHarmonizeSSP2EU(past, future, constructUnit),
+    "calibSSPs"       = toolGDPHarmonizeSSPsSPDs(args),
+    "calibSDPs"       = toolGDPHarmonizeSSPsSPDs(args),
+    "calibSSP2EU"     = toolGDPHarmonizeSSP2EU(past, future, constructUnit),
     # Deprecated?
     "past"            = toolHarmonizePast(past, future),
     "future"          = toolHarmonizeFuture(past, future),
     "transition"      = toolHarmonizeTransition(past, future, yEnd = 2020),
-    "past_transition" = toolHarmonizePastTransition(past, future, yEnd = 2050),    
+    "past_transition" = toolHarmonizePastTransition(past, future, yEnd = 2050),
     stop("Bad input for calcGDP. Invalid 'GDPCalib' argument.")
   )
 
@@ -118,12 +117,12 @@ internalCalcGDP <- function(GDPCalib,
                              until 2020"),
     "past_transition" = glue("use past data and afterwards transition between {GDPPast} and \\
                              {GDPFuture} with a transition period until 2050"),
-    "calibSSPs"    = glue("use past data, short term growth rates from IMF and \\
-                           afterwards transition between {GDPPast} and {GDPFuture} \\
-                           with a transition period until 2100"),
-    "calibSDPs"    = glue("use past data, short term growth rates from IMF and \\
-                            afterwards transition between {GDPPast} and {GDPFuture} \\
-                            with a transition period until 2100"),
+    "calibSSPs"       = glue("use past data, short term growth rates from IMF and \\
+                             afterwards transition between {GDPPast} and {GDPFuture} \\
+                             with a transition period until 2100"),
+    "calibSDPs"       = glue("use past data, short term growth rates from IMF and \\
+                             afterwards transition between {GDPPast} and {GDPFuture} \\
+                             with a transition period until 2100"),
     "calibSSP2EU"     = glue("use past data, short term growth rates from IMF and afterwards transition \\
                               between {GDPPast} and {GDPFuture} with a transition period until 2100. For \\
                               European countries, just glue past with future and after 2070 converge \\
@@ -144,7 +143,7 @@ internalCalcGDP <- function(GDPCalib,
 ######################################################################################
 # GDP Harmonization Functions
 ######################################################################################
-gdpHarmonizeSSPsSPDs <- function(args) {
+toolGDPHarmonizeSSPsSPDs <- function(args) {
   gdppc <- calcOutput("GDPpc",
                       GDPpcCalib = args$GDPCalib,
                       GDPpcPast = args$GDPPast,
@@ -179,7 +178,7 @@ gdpHarmonizeSSPsSPDs <- function(args) {
 
 
 
-gdpHarmonizeSSP2EU <- function(past, future, unit) {
+toolGDPHarmonizeSSP2EU <- function(past, future, unit) {
   # We explicitly use the bezier Extension for SSP2 here, but only for harmonization purposes.
   # We return only up until 2100.
   ssp2_data <- calcOutput("GDP",

@@ -1,4 +1,4 @@
-#' Dowload WDI
+#' Download WDI
 #'
 #' Download World development indicators (WDI) data to .Rds file.
 #' Data is downloaded from 1960 until "current year - 1".

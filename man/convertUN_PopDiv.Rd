@@ -2,7 +2,7 @@
 % Please edit documentation in R/convertUN_PopDiv.R
 \name{convertUN_PopDiv}
 \alias{convertUN_PopDiv}
-\title{Convert UN Population Divison Data}
+\title{Convert UN Population Division Data}
 \usage{
 convertUN_PopDiv(x, subtype = "WPP2019_estimates")
 }

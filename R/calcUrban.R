@@ -25,25 +25,27 @@
 #' calcOutput("Urban")
 #' }
 #'
-calcUrban <- function(UrbanCalib = "past",
-                      UrbanPast = "WDI",
-                      UrbanFuture = c("SSPs", "SDPs", "SSP2EU"),
+calcUrban <- function(UrbanCalib = "past",                       # nolint
+                      UrbanPast = "WDI",                         # nolint
+                      UrbanFuture = c("SSPs", "SDPs", "SSP2EU"), # nolint
                       extension2150 = "constant",
-                      FiveYearSteps = TRUE,
+                      FiveYearSteps = TRUE,                      # nolint
                       naming = "indicator_scenario") {
   # Check user input
   toolCheckUserInput("Urban", as.list(environment()))
-  # Call internalCalcUrban function the appropriate number of times
-  toolInternalCalc("Urban", as.list(environment()))
+  # Call calcInternalUrban function the appropriate number of times (map) and combine (reduce)
+  # !! Keep formula syntax for madrat caching to work
+  purrr::pmap(as.list(environment()), ~calcOutput("InternalUrban", aggregate = FALSE, supplementary = TRUE, ...)) %>%
+    toolReduce()
 }
 
 ######################################################################################
 # Internal Function
 ######################################################################################
-internalCalcUrban <- function(UrbanCalib,
-                              UrbanPast,
-                              UrbanFuture,
-                              FiveYearSteps,
+calcInternalUrban <- function(UrbanCalib,    # nolint
+                              UrbanPast,     # nolint
+                              UrbanFuture,   # nolint
+                              FiveYearSteps, # nolint
                               extension2150,
                               naming) {
 
