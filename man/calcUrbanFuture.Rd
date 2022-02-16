@@ -16,7 +16,7 @@ A magpie object with sets "iso3c", "year" and "variable".
 }
 \description{
 Calculates a time series of urban shares, using SSP projections Currently,
-SSP data does not differentiate between SSPs and has some unconsistencies
+SSP data does not differentiate between SSPs and has some inconsistencies
 with WDI in 2010
 }
 \examples{

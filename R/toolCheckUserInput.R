@@ -5,12 +5,12 @@ toolCheckUserInput <- function(driver, args) {
   }
 
   # Check 'extension2150' argument
-  if (!args$extension2150 %in% c("none", "bezier", "constant")) {
+  if ("extension2150" %in% names(args) && !args$extension2150 %in% c("none", "bezier", "constant")) {
      stop(glue("Bad argument to calc{driver}. 'extension2150' argument unknown."))
   }
 
   # Check 'FiveYearSteps' argument
-  if (!is.logical(args$FiveYearSteps)) {
+  if ("FiveYearSteps" %in% names(args) && !is.logical(args$FiveYearSteps)) {
      if (args$FiveYearSteps) {
         warning("FiveYearSteps will be deprecated in the next release. Use the `years` argument of calcOutput instead.")
      }
@@ -23,7 +23,13 @@ toolCheckUserInput <- function(driver, args) {
   }
 
   # Check 'naming' argument
-  if (!args$naming %in% c("indicator_scenario", "indicator.scenario", "scenario")) {
+  if ("naming" %in% names(args) && !args$naming %in% c("indicator_scenario", "indicator.scenario", "scenario")) {
      stop(glue("Bad argument to calc{driver}. 'naming' argument unknown."))
+  }
+
+  # Check parallel map-reduce compatibility
+  if (any(purrr::map_lgl(args, ~ length(.x) != 1 &&
+                                 length(.x) != max(purrr::map_dbl(args, length))))) {
+    stop(glue("Arguments to calc{driver} need to be either length 1 or equal to the length of the longest argument."))
   }
 }

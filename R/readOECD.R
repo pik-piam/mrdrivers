@@ -33,11 +33,11 @@ readOECD <- function(subtype) {
     # delete data for Kosovo
     data <- data[-which(data$`Country Name (1)` == "Kosovo"), ]
     # delete not needed information
-    data$`Country Name (1)`        <- NULL
-    data$Notes                     <- NULL
-    data$`Previous Classification` <- NULL
+    data$`Country Name (1)`        <- NULL # nolint
+    data$Notes                     <- NULL # nolint
+    data$`Previous Classification` <- NULL # nolint
     # transform into numeric
-    data$`Current Prevailing Classification` <- as.numeric(data$`Current Prevailing Classification`)
+    data$`Current Prevailing Classification` <- as.numeric(data$`Current Prevailing Classification`) # nolint
     # transfer into a magpie object
     x <- as.magpie(data)
     getSets(x)[1] <- "country"

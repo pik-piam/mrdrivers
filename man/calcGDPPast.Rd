@@ -29,7 +29,7 @@ table 2.13 Then, the 2011 estimate is extrapolated with the GDP projection
 in local currency units (LCU), as these growth rates should be approximately
 what the growth models predict. The price index from 2011 was transformed
 into 2005 equivalents using the inflation rate of the United States (US), as
-the PPPs are in USDollar equvialents.
+the PPPs are in USDollar equivalents.
 \item \code{PWT}: Penn World Tables
 \item \code{IHME_USD05_PPP_pc}: Publication: James, Spencer L., Paul Gubbins,
 Christopher JL Murray, and Emmanuela Gakidou. 2012. "Developing a

@@ -11,7 +11,7 @@
 #' calcOutput("GDPpcPast")
 #' }
 #'
-calcGDPpcPast <- function(GDPpcPast = "WDI-MI", unit = "constant 2005 Int$PPP") {
+calcGDPpcPast <- function(GDPpcPast = "WDI-MI", unit = "constant 2005 Int$PPP") { # nolint
   # Call appropriate calcGDPPast function.
   data <- switch(GDPpcPast,
                  "WDI"    = cGDPpcFromGDPAndPop(GDPpcPast, unit),
@@ -30,7 +30,7 @@ calcGDPpcPast <- function(GDPpcPast = "WDI-MI", unit = "constant 2005 Int$PPP") 
 ######################################################################################
 # Functions
 ######################################################################################
-cGDPpcFromGDPAndPop <- function(GDPpcPast, unit) {
+cGDPpcFromGDPAndPop <- function(GDPpcPast, unit) { # nolint
   gdp <- calcOutput("GDPPast", GDPPast = GDPpcPast, unit = unit, aggregate = FALSE)
   pop <- calcOutput("PopulationPast", PopulationPast = GDPpcPast, aggregate = FALSE)
   years <- intersect(getYears(gdp), getYears(pop))

@@ -47,32 +47,35 @@
 #' calcOutput("GDPpc")
 #' }
 #'
-calcPopulation <- function(PopulationCalib  = c("calibSSPs",
+calcPopulation <- function(PopulationCalib  = c("calibSSPs",                  # nolint
                                                 "calibSDPs",
                                                 "calibSSP2EU"),
-                           PopulationPast   = c("WDI-UN_PopDiv-MI",
+                           PopulationPast   = c("WDI-UN_PopDiv-MI",           # nolint
                                                 "WDI-UN_PopDiv-MI",
                                                 "Eurostat-WDI-UN_PopDiv-MI"),
-                           PopulationFuture = c("SSPs-UN_PopDiv-MI",
+                           PopulationFuture = c("SSPs-UN_PopDiv-MI",          # nolint
                                                 "SDPs-UN_PopDiv-MI",
                                                 "SSP2EU-UN_PopDiv-MI"),
                            extension2150 = "bezier",
-                           FiveYearSteps = TRUE,
+                           FiveYearSteps = TRUE,                              # nolint
                            naming = "indicator_scenario") {
   # Check user input
   toolCheckUserInput("Population", as.list(environment()))
-  # Call internalCalcPopulation function the appropriate number of times
-  toolInternalCalc("Population", as.list(environment()))
+  # Call calcInternalPopulation function the appropriate number of times (map) and combine (reduce)
+  # !! Keep formula syntax for madrat caching to work
+  purrr::pmap(as.list(environment()),
+              ~calcOutput("InternalPopulation", aggregate = FALSE, supplementary = TRUE, ...)) %>%
+    toolReduce()
 }
 
 ######################################################################################
 # Internal Function
 ######################################################################################
-internalCalcPopulation <- function(PopulationCalib,
-                                   PopulationPast,
-                                   PopulationFuture,
+calcInternalPopulation <- function(PopulationCalib,  # nolint
+                                   PopulationPast,   # nolint
+                                   PopulationFuture, # nolint
                                    extension2150,
-                                   FiveYearSteps,
+                                   FiveYearSteps,    # nolint
                                    naming) {
 
   # Compute "past" and "future" time series.
@@ -87,12 +90,12 @@ internalCalcPopulation <- function(PopulationCalib,
   # Combine "past" and "future" time series.
   combined <- switch(
     PopulationCalib,
-    "calibSSPs"       = harmonizeSSPsSDPs(past, future),
-    "calibSDPs"       = harmonizeSSPsSDPs(past, future),
-    "calibSSP2EU"     = harmonizeSSP2EU(past, future),
-    "calibUN_PopDiv"  = harmonizeUN_PopDiv(past, future),
+    "calibSSPs"       = toolHarmonizeSSPsSDPs(past, future),
+    "calibSDPs"       = toolHarmonizeSSPsSDPs(past, future),
+    "calibSSP2EU"     = toolHarmonizeSSP2EU(past, future),
+    "calibUN_PopDiv"  = toolHarmonizeUN_PopDiv(past, future),
     # Deprecated?
-    "past"            = popHarmonizePast(past, future),
+    "past"            = toolPopHarmonizePast(past, future),
     "future"          = toolHarmonizeFuture(past, future),
     "transition"      = toolHarmonizeTransition(past, future, yEnd = 2020),
     "past_transition" = toolHarmonizePastTransition(past, future, yEnd = 2050),
@@ -144,7 +147,7 @@ internalCalcPopulation <- function(PopulationCalib,
 ######################################################################################
 # Population Harmonization Functions
 ######################################################################################
-harmonizeSSPsSDPs <- function(past, future) {
+toolHarmonizeSSPsSDPs <- function(past, future) {
   # Get PEAP data and fill in missing islands. Then drop everything that is not
   # "short-term", defined as being later than the last year of the IMF WEO data.
   shortTerm <- readSource("PEAP")
@@ -161,8 +164,8 @@ harmonizeSSPsSDPs <- function(past, future) {
     toolHarmonizePastGrFuture(future)
 }
 
-harmonizeSSP2EU <- function(past, future) {
-  combined <- harmonizeSSPsSDPs(past, future)
+toolHarmonizeSSP2EU <- function(past, future) {
+  combined <- toolHarmonizeSSPsSDPs(past, future)
 
   # For SSP2EU: simply glue past (until 2019) with future (starting 2020)
   # Get EUR countries.
@@ -174,7 +177,7 @@ harmonizeSSP2EU <- function(past, future) {
   combined
 }
 
-harmonizeUN_PopDiv <- function(past, future) {
+toolHarmonizeUN_PopDiv <- function(past, future) { # nolint
   # Glue future to past
   # year <- max(intersect(getYears(past, as.integer = TRUE),
   #                       getYears(future, as.integer = TRUE)))
@@ -185,7 +188,7 @@ harmonizeUN_PopDiv <- function(past, future) {
 }
 
 # Legacy?
-popHarmonizePast <- function(past, future) {
+toolPopHarmonizePast <- function(past, future) {
   firstyear <- min(getYears(future, as.integer = TRUE))
   tmp <- future / setYears(future[, firstyear, ], NULL)
   tmp[is.nan(tmp)] <- 1

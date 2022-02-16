@@ -30,6 +30,7 @@ test_that("set names", {
   # I want to keep; expectCorrectSetNames(suppressMessages(calcOutput("RatioPPP2MER")))
 })
 
+
 # Save all calcOutputs for later use
 calcs <- list("PopulationPast" = suppressMessages(calcOutput("PopulationPast")),
               "PopulationFuture" = suppressMessages(calcOutput("PopulationFuture")),

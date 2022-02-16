@@ -1,8 +1,7 @@
-
 #' Read UN Population Division Data
 #'
 #' Read past UN population data. Covers 1950 to 2015 yearly and per M.49 area.
-#' See \emph{United Nations, Department of Economicand Social Affairs,
+#' See \emph{United Nations, Department of Economic and Social Affairs,
 #' Population Division} "World Population Prospects: The 2015 Revision"
 #' (\href{https://esa.un.org/unpd/wpp/}{website}).
 #'

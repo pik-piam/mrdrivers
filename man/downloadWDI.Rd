@@ -2,7 +2,7 @@
 % Please edit documentation in R/downloadWDI.R
 \name{downloadWDI}
 \alias{downloadWDI}
-\title{Dowload WDI}
+\title{Download WDI}
 \usage{
 downloadWDI()
 }

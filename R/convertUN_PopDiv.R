@@ -1,5 +1,4 @@
-
-#' Convert UN Population Divison Data
+#' Convert UN Population Division Data
 #'
 #' Converts data from \code{readUN_PopDiv()} to ISO country level. "Other,
 #' non-specified areas" is used as a stand-in for Taiwan, Province of China.
@@ -9,7 +8,7 @@
 #' @inheritParams readUN_PopDiv
 #' @family UN_PopDiv functions
 #' @return \code{magclass} object; population in millions.
-convertUN_PopDiv <- function(x, subtype = "WPP2019_estimates") {
+convertUN_PopDiv <- function(x, subtype = "WPP2019_estimates") { # nolint
 
   if (grepl("WPP2019", subtype)) {
     getCells(x) <- getCells(x) %>%

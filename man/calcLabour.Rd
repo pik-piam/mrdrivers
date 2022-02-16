@@ -18,12 +18,7 @@ calcLabour(
 A magpie object with sets "iso3c", "year" and "variable".
 }
 \description{
-Merges time series of population for the past and present. See
-\code{\link{calcPopulationPast}} for past datasets, and
-\code{\link{calcPopulationFuture}} for future datasets. The time series are
-merged via the growth rates. The first year of the future scenarios
-determines the merging point. All data is calibrated either to the "past" or
-the "future" dataset as specified by PopulationCalib.
+Get Labour .
 }
 \examples{
 \dontrun{

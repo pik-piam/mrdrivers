@@ -1,7 +1,7 @@
 #' calcUrbanFuture
 #'
 #' Calculates a time series of urban shares, using SSP projections Currently,
-#' SSP data does not differentiate between SSPs and has some unconsistencies
+#' SSP data does not differentiate between SSPs and has some inconsistencies
 #' with WDI in 2010
 #'
 #' @inheritParams calcUrban
@@ -15,13 +15,13 @@
 #' calcOutput("UrbanFuture")
 #' }
 #'
-calcUrbanFuture <- function(UrbanFuture = "SSPs", extension2150 = "none") {
+calcUrbanFuture <- function(UrbanFuture = "SSPs", extension2150 = "none") { # nolint
 
   data <- switch(
     UrbanFuture,
-    "SSPs"   = cUrbanFutureSSPs(),
-    "SDPs"   = cUrbanFutureSDPs(),
-    "SSP2EU" = cUrbanFutureSSP2EU(),
+    "SSPs"   = calcOutput("InternalUrbanFutureSSPs", aggregate = FALSE),
+    "SDPs"   = calcOutput("InternalUrbanFutureSDPs", aggregate = FALSE),
+    "SSP2EU" = calcOutput("InternalUrbanFutureSSP2EU", aggregate = FALSE),
     stop("Bad input for UrbanFuture. Invalid 'UrbanFuture' argument.")
   )
 
@@ -43,7 +43,7 @@ calcUrbanFuture <- function(UrbanFuture = "SSPs", extension2150 = "none") {
 ######################################################################################
 # Functions
 ######################################################################################
-cUrbanFutureSSPs <- function() {
+calcInternalUrbanFutureSSPs <- function() {
   data <- collapseNames(readSource("SSP", "urb")) / 100
   getSets(data)[3] <- "variable"
   getNames(data) <- paste0("urb_", gsub("_v[[:alnum:],[:punct:]]*", "", getNames(data)))
@@ -54,9 +54,10 @@ cUrbanFutureSSPs <- function() {
 
   timeInter <- paste0("y", seq(2015, 2095, by = 10))
   data <- time_interpolate(data, timeInter, integrate_interpolated_years = TRUE)
+  list(x = data, weight = NULL, unit = "per 1", description = "Urban data from SSP")
 }
 
-cUrbanFutureSDPs <- function() {
+calcInternalUrbanFutureSDPs <- function() {
   # note on SHAPE SDPs:
   # SDP urbanization scenarios are mapped from SSP urbanizations,
   # (in one case with different SSP choice for OECD and non-OECD countries)
@@ -71,18 +72,19 @@ cUrbanFutureSDPs <- function() {
 
   sspUrb <- calcOutput("UrbanFuture", UrbanFuture = "SSPs", aggregate = FALSE) # nolint
 
-  purrr::imap(urbanizationMapping, mapSHAPEurbanization, sspUrb = sspUrb) %>%
+  data <- purrr::imap(urbanizationMapping, mapSHAPEurbanization, sspUrb = sspUrb) %>%
     mbind()
+  list(x = data, weight = NULL, unit = "per 1", description = "Urban data from SDP")
 }
 
 mapSHAPEurbanization <- function(ssp, sdp, sspUrb) {
   if (grepl("|", ssp, fixed = TRUE)) {
     # distinguish between OECD and non-OECD
     ssp <- strsplit(ssp, split = "\\|")[[1]]
-    OECDmapping <- toolGetMapping("regionmappingOECD.csv", type = "regional")
-    OECD <- OECDmapping[OECDmapping$RegionCode == "OECD", "CountryCode"]
-    nonOECD <- OECDmapping[OECDmapping$RegionCode == "Non-OECD", "CountryCode"]
-    mbind(setNames(sspUrb[OECD, , ssp[1]], sdp),
+    oecdMapping <- toolGetMapping("regionmappingOECD.csv", type = "regional")
+    oecd <- oecdMapping[oecdMapping$RegionCode == "OECD", "CountryCode"]
+    nonOECD <- oecdMapping[oecdMapping$RegionCode == "Non-OECD", "CountryCode"]
+    mbind(setNames(sspUrb[oecd, , ssp[1]], sdp),
           setNames(sspUrb[nonOECD, , ssp[2]], sdp))
   } else {
     # same for OECD and non-OECD
@@ -90,7 +92,8 @@ mapSHAPEurbanization <- function(ssp, sdp, sspUrb) {
   }
 }
 
-cUrbanFutureSSP2EU <- function() {
+calcInternalUrbanFutureSSP2EU <- function() {
   ssp2Urb <- calcOutput("UrbanFuture", UrbanFuture = "SSPs", aggregate = FALSE)[, , "urb_SSP2"]
-  setNames(ssp2Urb, sub("SSP2", "SSP2EU", getNames(ssp2Urb)))
+  ssp2Urb <- setNames(ssp2Urb, sub("SSP2", "SSP2EU", getNames(ssp2Urb)))
+  list(x = ssp2Urb, weight = NULL, unit = "per 1", description = "Urban data from SSP2EU")
 }

@@ -1,7 +1,7 @@
 Package: mrdrivers
 Type: Package
 Title: Create GDP and population scenarios
-Version: 0.4.4
+Version: 0.5.0
 Authors@R: c(person(given = "Johannes", 
                     family = "Koch", 
                     email = "jokoch@pik-potsdam.de", 
@@ -33,7 +33,7 @@ Imports:
     countrycode,
     dplyr,
     lifecycle,
-    GDPuc (>= 0.3.0),
+    GDPuc (>= 0.8.0),
     glue,
     magrittr,
     purrr,
@@ -54,5 +54,5 @@ Encoding: UTF-8
 LazyData: true
 Roxygen: list(markdown = TRUE)
 RoxygenNote: 7.1.2
-Date: 2021-12-15
+Date: 2022-02-16
 Config/testthat/edition: 3
