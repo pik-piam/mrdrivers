@@ -65,7 +65,7 @@ calcInternalGDPPast <- function(GDPPast, unit) { # nolint
 
   data <- toolFinishingTouches(data)
 
-  list(x = data, weight = NULL, unit = unit, description = glue("GDP data from {GDPPast}."))
+  list(x = data, weight = NULL, unit = glue("mil. {unit}"), description = glue("GDP data from {GDPPast}."))
 }
 
 

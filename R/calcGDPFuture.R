@@ -40,7 +40,7 @@ calcInternalGDPFuture <- function(GDPFuture, unit, extension2150) { # nolint
 
   data <- toolFinishingTouches(data, extension2150)
 
-  list(x = data, weight = NULL, unit = unit, description = glue("GDP data from {GDPFuture}"))
+  list(x = data, weight = NULL, unit = glue("mil. {unit}"), description = glue("GDP data from {GDPFuture}"))
 }
 
 

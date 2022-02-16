@@ -134,7 +134,7 @@ calcInternalGDP <- function(GDPCalib,
 
   list(x = combined,
        weight = NULL,
-       unit = unit,
+       unit = glue("mil. {unit}"),
        description = glue("Datasource for the Past: {GDPPast}. Datasource for the Future: \\
                            {GDPFuture}. Calibrated to {description}."))
 }
