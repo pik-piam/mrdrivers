@@ -61,7 +61,7 @@ calcInternalGDPPast <- function(GDPPast, unit) { # nolint
                  "WDI"      = calcOutput("InternalGDPPastWDI", unit = unit, aggregate = FALSE),
                  "Eurostat" = calcOutput("InternalGDPPastEurostat", unit = unit, aggregate = FALSE),
                  "MI"       = calcOutput("InternalGDPMI", unit = unit, aggregate = FALSE),
-                 calcOutput("InternalGDPPastJames", GDPPast = GDPPast, aggregate = FALSE))
+                 calcOutput("InternalGDPPastJames", subtype = GDPPast, aggregate = FALSE))
 
   data <- toolFinishingTouches(data)
 
@@ -100,12 +100,12 @@ calcInternalGDPPastEurostat <- function(unit) {
   list(x = data, weight = NULL, unit = unit, description = "GDP from Eurostat")
 }
 
-calcInternalGDPPastJames <- function(type) {
-  gdpPPPpc <- readSource(type = "James", subtype = type)
+calcInternalGDPPastJames <- function(subtype) {
+  gdpPPPpc <- readSource(type = "James", subtype = subtype)
   pop <- readSource("WDI", subtype = "SP.POP.TOTL")
   years <- intersect(getYears(gdpPPPpc), getYears(pop))
   data <- gdpPPPpc[, years, ] * pop[, years, ]
-  getNames(data) <- substr(type, 1, (nchar(type) - 3))
+  getNames(data) <- substr(subtype, 1, (nchar(subtype) - 3))
   getNames(data) <- "gdp" # ??
 
   list(x = data, weight = NULL, unit = "constant 2005 Int$PPP", description = "GDP from IHME,James")
