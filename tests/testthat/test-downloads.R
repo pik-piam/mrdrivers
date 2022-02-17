@@ -11,21 +11,26 @@ localMadratCfg$enablecache <- FALSE
 
 unlink(localMadratCfg$sourcefolder, recursive = TRUE)
 
+# Suppress messages for all tests
+withr::local_file("tmp_messages.txt")
+withr::local_message_sink(new = file("tmp_messages.txt", "w"), append = TRUE)
+
+
 test_that("Download IMF", {
   withr::local_options(madrat_cfg = localMadratCfg)
-  suppressMessages(downloadSource("IMF"))
+  downloadSource("IMF")
   expect_true(file.exists(glue("{localMadratCfg$sourcefolder}/IMF/WEOall.xls")))
 })
 
 test_that("Download WDI", {
   withr::local_options(madrat_cfg = localMadratCfg)
-  suppressMessages(downloadSource("WDI"))
+  downloadSource("WDI")
   expect_true(file.exists(glue("{localMadratCfg$sourcefolder}/WDI/WDI.Rds")))
 })
 
 test_that("Download MissingIslands", {
   withr::local_options(madrat_cfg = localMadratCfg)
-  suppressMessages(downloadSource("MissingIslands"))
+  downloadSource("MissingIslands")
   expect_true(all(file.exists(
     glue("{localMadratCfg$sourcefolder}/MissingIslands/pop_past_missing.csv"),
     glue("{localMadratCfg$sourcefolder}/MissingIslands/gdp_past_missing.csv")
@@ -34,7 +39,7 @@ test_that("Download MissingIslands", {
 
 test_that("Download UN_PopDiv", {
   withr::local_options(madrat_cfg = localMadratCfg)
-  suppressMessages(downloadSource("UN_PopDiv"))
+  downloadSource("UN_PopDiv")
   expect_true(file.exists(
     glue("{localMadratCfg$sourcefolder}/UN_PopDiv/WPP2019_POP_F01_1_TOTAL_POPULATION_BOTH_SEXES.xlsx")
   ))
