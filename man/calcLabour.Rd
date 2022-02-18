@@ -12,7 +12,14 @@ calcLabour(
 \arguments{
 \item{LabourFuture}{Labour future data source}
 
-\item{extension2150}{string, either "bezier", "constant" or "none"}
+\item{extension2150}{A string specifying if/how the scenarios should be extended until 2150. Can be either:
+\itemize{
+\item "bezier" (default): A bezier curve extension that leads to a smooth flattening of the scenario: the
+slope in the last year of the scenario is halved by 2150. Currently only works for scenarios with 2100 as
+their last year.
+\item "constant": The last value of the scenarios is taken as constant until 2150.
+\item "none": No extension.
+}}
 }
 \value{
 A magpie object with sets "iso3c", "year" and "variable".
@@ -30,7 +37,7 @@ additional information on the unit, the data sources and the harmonization funct
 }
 
 \section{Vectorization of arguments}{
-The function accepts vectors for the harmonization function and past and future data sources.
+Vectors are accepted for -Calib, -Past and -Future arguments.
 If given a vector, different combinations are created and returned all at once. If more than one
 argument is vectorised, the arguments have to have the same length. Which time series are created can be
 illustrated with the following example. Let's say the harmonization function and past data source are vectors of
@@ -50,10 +57,5 @@ calcLabour()
 }
 \seealso{
 \code{\link[madrat:calcOutput]{madrat::calcOutput()}}
-
-Other Population functions: 
-\code{\link{calcPopulationFuture}()},
-\code{\link{calcPopulationPast}()},
-\code{\link{calcPopulation}()}
 }
 \concept{Population functions}

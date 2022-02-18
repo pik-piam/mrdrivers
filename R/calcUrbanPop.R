@@ -7,7 +7,7 @@
 #'
 #' @seealso [madrat::calcOutput()]
 #' @family Urban functions
-#' @family Combined scenario functions
+#' @family mrdrivers functions
 #'
 #' @examples \dontrun{
 #' library(mrdrivers)

@@ -21,7 +21,7 @@ additional information on the unit, the data sources and the harmonization funct
 }
 
 \section{Vectorization of arguments}{
-The function accepts vectors for the harmonization function and past and future data sources.
+Vectors are accepted for -Calib, -Past and -Future arguments.
 If given a vector, different combinations are created and returned all at once. If more than one
 argument is vectorised, the arguments have to have the same length. Which time series are created can be
 illustrated with the following example. Let's say the harmonization function and past data source are vectors of

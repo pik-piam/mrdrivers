@@ -1,11 +1,4 @@
-#' calcGDPFuture
-#'
-#' @inheritParams calcGDP
-#' @inherit calcGDP return
-#'
-#' @seealso [madrat::calcOutput()]
-#' @family GDP functions
-#'
+#' @describeIn calcGDP Get future GDP projections
 #' @examples \dontrun{
 #' library(mrdrivers)
 #' calcOutput("GDPFuture")

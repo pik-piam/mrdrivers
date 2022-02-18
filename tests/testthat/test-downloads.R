@@ -1,3 +1,4 @@
+skip("skip")
 skip_on_ci()
 skip_on_covr()
 skip_if_not(dir.exists(getOption("madrat_cfg")$mainfolder),
@@ -6,7 +7,7 @@ skip_if_not(dir.exists(getOption("madrat_cfg")$mainfolder),
                   If you wish to run this test please configure the file appropriately."))
 
 localMadratCfg <- getOption("madrat_cfg")
-localMadratCfg$sourcefolder <- paste0(localMadratCfg$mainfolder , "/tmp_test_download")
+localMadratCfg$sourcefolder <- paste0(localMadratCfg$mainfolder, "/tmp_test_download")
 localMadratCfg$enablecache <- FALSE
 
 unlink(localMadratCfg$sourcefolder, recursive = TRUE)

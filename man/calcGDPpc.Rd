@@ -22,19 +22,40 @@ calcGDPpc(
 
 \item{GDPpcFuture}{String or vector of strings}
 
-\item{unit}{A string. Either 'constant 2005 Int$PPP', 'constant 2005 US$MER',
-'constant 2017 Int$PPP' or 'constant 2017 US$MER'. In either case, the scenario
-construction is done in Int$PPP, with the conversion to US$MER coming afterward.}
+\item{unit}{A string specifying the unit of GDP. Can be either:
+\itemize{
+\item "constant 2005 Int$PPP" (default): Default unit in which the scenarios are constructed.
+\item "constant 2005 US$MER": Scenarios are constructed in constant 2005 Int$PPP and converted before being
+returned with \link[GDPuc:convertGDP]{GDPuc::convertGDP}.
+\item "constant 2017 Int$PPP": Scenarios are constructed in constant 2017 Int$PPP (See paper).
+\item "constant 2017 US$MER": Scenarios are constructed in constant 2017 Int$PPP and converted before being
+returned with \link[GDPuc:convertGDP]{GDPuc::convertGDP}.
+}
+In all cases, GDP is returned in millions.}
 
-\item{extension2150}{string, either "bezier", "constant" or "none"}
+\item{extension2150}{A string specifying if/how the scenarios should be extended until 2150. Can be either:
+\itemize{
+\item "bezier" (default): A bezier curve extension that leads to a smooth flattening of the scenario: the
+slope in the last year of the scenario is halved by 2150. Currently only works for scenarios with 2100 as
+their last year.
+\item "constant": The last value of the scenarios is taken as constant until 2150.
+\item "none": No extension.
+}}
 
 \item{FiveYearSteps}{\ifelse{html}{\href{https://lifecycle.r-lib.org/articles/stages.html#deprecated}{\figure{lifecycle-deprecated.svg}{options: alt='[Deprecated]'}}}{\strong{[Deprecated]}} \code{FiveYearSteps = TRUE} is no
 longer supported; use the calcOutput argument \code{years}  instead, to retrieve
 specific years.}
 
-\item{average2020}{TRUE or FALSE. If TRUE, then the 2020 value is replaced by the 2018-2022 average.}
+\item{average2020}{TRUE (default) or FALSE. If TRUE, then the 2020 value is replaced by the 2018-2022 average.}
 
-\item{naming}{naming scheme}
+\item{naming}{A string giving the naming scheme of the data dimension. Can be either:
+\itemize{
+\item "indicator_scenario" (default): Returns names of the type "gdp_SSP2", or "pop_SSP2".
+\item "indicator.scenario": Returns names of the type "gdp.SSP2", or "pop.SSP2".
+\item "scenario": Returns names of the type "SSP2".
+}
+Set naming to "scenario" when you want to operate on SSP2 gdp and population data for instance, and not have to
+worry about the conflicting names.}
 }
 \value{
 A magpie object with sets "iso3c", "year" and "variable".
@@ -54,7 +75,7 @@ additional information on the unit, the data sources and the harmonization funct
 }
 
 \section{Vectorization of arguments}{
-The function accepts vectors for the harmonization function and past and future data sources.
+Vectors are accepted for -Calib, -Past and -Future arguments.
 If given a vector, different combinations are created and returned all at once. If more than one
 argument is vectorised, the arguments have to have the same length. Which time series are created can be
 illustrated with the following example. Let's say the harmonization function and past data source are vectors of
@@ -79,11 +100,11 @@ Other GDPpc functions:
 \code{\link{calcGDPpcFuture}()},
 \code{\link{calcGDPpcPast}()}
 
-Other Combined scenario functions: 
+Other mrdrivers functions: 
 \code{\link{calcGDP}()},
 \code{\link{calcPopulation}()},
 \code{\link{calcUrbanPop}()},
 \code{\link{calcUrban}()}
 }
-\concept{Combined scenario functions}
 \concept{GDPpc functions}
+\concept{mrdrivers functions}

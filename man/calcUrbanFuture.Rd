@@ -9,7 +9,14 @@ calcUrbanFuture(UrbanFuture = "SSPs", extension2150 = "none")
 \arguments{
 \item{UrbanFuture}{Urban future data source}
 
-\item{extension2150}{string, either "bezier", "constant" or "none"}
+\item{extension2150}{A string specifying if/how the scenarios should be extended until 2150. Can be either:
+\itemize{
+\item "bezier" (default): A bezier curve extension that leads to a smooth flattening of the scenario: the
+slope in the last year of the scenario is halved by 2150. Currently only works for scenarios with 2100 as
+their last year.
+\item "constant": The last value of the scenarios is taken as constant until 2150.
+\item "none": No extension.
+}}
 }
 \value{
 A magpie object with sets "iso3c", "year" and "variable".

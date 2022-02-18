@@ -1,7 +1,7 @@
 #' calcLabour
 #'
 #' @description
-#' Get labour scenarios. By default the following scenarios are returned: 
+#' Get labour scenarios. By default the following scenarios are returned:
 #' \itemize{
 #'   \item the SSPs, i.e. SSP1-5 and SSP2EU
 #'   \item the SDPs, i.e. SDP, SDP_EI, SDP_RC, and SDP_MC
