@@ -5,80 +5,83 @@ skip_if_not(dir.exists(getOption("madrat_cfg")$mainfolder),
                   defined in 'tests/setup_madrat_config.R' could not be found.
                   If you wish to run this test please configure the file appropriately."))
 
-test_that("set names", {
+# Suppress messages for all tests
+withr::local_file("tmp_messages.txt")
+withr::local_message_sink(new = file("tmp_messages.txt", "w"), append = TRUE)
 
+test_that("set names", {
   expectCorrectSetNames <- function(x) {
     correctSets <- c("d1.1" = "iso3c", "d2.1" = "year", "d3.1" = "variable")
     expect_equal(getSets(x), correctSets)
   }
 
-  expectCorrectSetNames(suppressMessages(calcOutput("PopulationPast")))
-  expectCorrectSetNames(suppressMessages(calcOutput("PopulationFuture")))
-  expectCorrectSetNames(suppressMessages(calcOutput("Population")))
-  expectCorrectSetNames(suppressMessages(calcOutput("UrbanPast")))
-  expectCorrectSetNames(suppressMessages(calcOutput("UrbanFuture")))
-  expectCorrectSetNames(suppressMessages(calcOutput("Urban")))
-  expectCorrectSetNames(suppressMessages(calcOutput("UrbanPop")))
-  expectCorrectSetNames(suppressMessages(calcOutput("GDPPast")))
-  expectCorrectSetNames(suppressMessages(calcOutput("GDPFuture")))
-  expectCorrectSetNames(suppressMessages(calcOutput("GDPpcPast")))
-  expectCorrectSetNames(suppressMessages(calcOutput("GDPpcFuture")))
-  expectCorrectSetNames(suppressMessages(calcOutput("GDPpc")))
-  expectCorrectSetNames(suppressMessages(calcOutput("GDP")))
-  expectCorrectSetNames(suppressMessages(calcOutput("DefaultDrivers")))
-  expectCorrectSetNames(suppressMessages(calcOutput("Labour")))
-  # I want to keep; expectCorrectSetNames(suppressMessages(calcOutput("RatioPPP2MER")))
+  expectCorrectSetNames(calcOutput("PopulationPast"))
+  expectCorrectSetNames(calcOutput("PopulationFuture"))
+  expectCorrectSetNames(calcOutput("Population"))
+  expectCorrectSetNames(calcOutput("UrbanPast"))
+  expectCorrectSetNames(calcOutput("UrbanFuture"))
+  expectCorrectSetNames(calcOutput("Urban"))
+  expectCorrectSetNames(calcOutput("UrbanPop"))
+  expectCorrectSetNames(calcOutput("GDPPast"))
+  expectCorrectSetNames(calcOutput("GDPFuture"))
+  expectCorrectSetNames(calcOutput("GDPpcPast"))
+  expectCorrectSetNames(calcOutput("GDPpcFuture"))
+  expectCorrectSetNames(calcOutput("GDPpc"))
+  expectCorrectSetNames(calcOutput("GDP"))
+  expectCorrectSetNames(calcOutput("DefaultDrivers"))
+  expectCorrectSetNames(calcOutput("Labour"))
+  # I want to keep; expectCorrectSetNames(calcOutput("RatioPPP2MER"))
 })
 
 
 # Save all calcOutputs for later use
-calcs <- list("PopulationPast" = suppressMessages(calcOutput("PopulationPast")),
-              "PopulationFuture" = suppressMessages(calcOutput("PopulationFuture")),
-              "Population" = suppressMessages(calcOutput("Population")),
-              "UrbanPast" = suppressMessages(calcOutput("UrbanPast")),
-              "UrbanFuture" = suppressMessages(calcOutput("UrbanFuture")),
-              "Urban" = suppressMessages(calcOutput("Urban")),
-              "UrbanPop" = suppressMessages(calcOutput("UrbanPop")),
-              "GDPpcPast" = suppressMessages(calcOutput("GDPpcPast")),
-              "GDPpcFuture" = suppressMessages(calcOutput("GDPpcFuture")),
-              "GDPpc" = suppressMessages(calcOutput("GDPpc")),
-              "GDPPast" = suppressMessages(calcOutput("GDPPast")),
-              "GDPFuture" = suppressMessages(calcOutput("GDPFuture")),
-              "GDP" = suppressMessages(calcOutput("GDP")),
-              "DefaultDrivers" = suppressMessages(calcOutput("DefaultDrivers")),
-              "Labour" = suppressMessages(calcOutput("Labour")))
+calcs <- list("PopulationPast" = calcOutput("PopulationPast"),
+              "PopulationFuture" = calcOutput("PopulationFuture"),
+              "Population" = calcOutput("Population"),
+              "UrbanPast" = calcOutput("UrbanPast"),
+              "UrbanFuture" = calcOutput("UrbanFuture"),
+              "Urban" = calcOutput("Urban"),
+              "UrbanPop" = calcOutput("UrbanPop"),
+              "GDPpcPast" = calcOutput("GDPpcPast"),
+              "GDPpcFuture" = calcOutput("GDPpcFuture"),
+              "GDPpc" = calcOutput("GDPpc"),
+              "GDPPast" = calcOutput("GDPPast"),
+              "GDPFuture" = calcOutput("GDPFuture"),
+              "GDP" = calcOutput("GDP"),
+              "DefaultDrivers" = calcOutput("DefaultDrivers"),
+              "Labour" = calcOutput("Labour"))
 
-calcs2 <- list("PopulationPast" = suppressMessages(calcOutput("PopulationPast", aggregate = FALSE)),
-               "PopulationFuture" = suppressMessages(calcOutput("PopulationFuture", aggregate = FALSE)),
-               "Population" = suppressMessages(calcOutput("Population", aggregate = FALSE)),
-               "UrbanPast" = suppressMessages(calcOutput("UrbanPast", aggregate = FALSE)),
-               "UrbanFuture" = suppressMessages(calcOutput("UrbanFuture", aggregate = FALSE)),
-               "Urban" = suppressMessages(calcOutput("Urban", aggregate = FALSE)),
-               "UrbanPop" = suppressMessages(calcOutput("UrbanPop", aggregate = FALSE)),
-               "GDPpcPast" = suppressMessages(calcOutput("GDPpcPast", aggregate = FALSE)),
-               "GDPpcFuture" = suppressMessages(calcOutput("GDPpcFuture", aggregate = FALSE)),
-               "GDPpc" = suppressMessages(calcOutput("GDPpc", aggregate = FALSE)),
-               "GDPPast" = suppressMessages(calcOutput("GDPPast", aggregate = FALSE)),
-               "GDPFuture" = suppressMessages(calcOutput("GDPFuture", aggregate = FALSE)),
-               "GDP" = suppressMessages(calcOutput("GDP", aggregate = FALSE)),
-               "DefaultDrivers" = suppressMessages(calcOutput("DefaultDrivers", aggregate = FALSE)),
-               "Labour" = suppressMessages(calcOutput("Labour", aggregate = FALSE)))
+calcs2 <- list("PopulationPast" = calcOutput("PopulationPast", aggregate = FALSE),
+               "PopulationFuture" = calcOutput("PopulationFuture", aggregate = FALSE),
+               "Population" = calcOutput("Population", aggregate = FALSE),
+               "UrbanPast" = calcOutput("UrbanPast", aggregate = FALSE),
+               "UrbanFuture" = calcOutput("UrbanFuture", aggregate = FALSE),
+               "Urban" = calcOutput("Urban", aggregate = FALSE),
+               "UrbanPop" = calcOutput("UrbanPop", aggregate = FALSE),
+               "GDPpcPast" = calcOutput("GDPpcPast", aggregate = FALSE),
+               "GDPpcFuture" = calcOutput("GDPpcFuture", aggregate = FALSE),
+               "GDPpc" = calcOutput("GDPpc", aggregate = FALSE),
+               "GDPPast" = calcOutput("GDPPast", aggregate = FALSE),
+               "GDPFuture" = calcOutput("GDPFuture", aggregate = FALSE),
+               "GDP" = calcOutput("GDP", aggregate = FALSE),
+               "DefaultDrivers" = calcOutput("DefaultDrivers", aggregate = FALSE),
+               "Labour" = calcOutput("Labour", aggregate = FALSE))
 
-calcs3 <- list("PopulationPast" = suppressMessages(calcOutput("PopulationPast", supplementary = TRUE)),
-               "PopulationFuture" = suppressMessages(calcOutput("PopulationFuture", supplementary = TRUE)),
-               "Population" = suppressMessages(calcOutput("Population", supplementary = TRUE)),
-               "UrbanPast" = suppressMessages(calcOutput("UrbanPast", supplementary = TRUE)),
-               "UrbanFuture" = suppressMessages(calcOutput("UrbanFuture", supplementary = TRUE)),
-               "Urban" = suppressMessages(calcOutput("Urban", supplementary = TRUE)),
-               "UrbanPop" = suppressMessages(calcOutput("UrbanPop", supplementary = TRUE)),
-               "GDPpcPast" = suppressMessages(calcOutput("GDPpcPast", supplementary = TRUE)),
-               "GDPpcFuture" = suppressMessages(calcOutput("GDPpcFuture", supplementary = TRUE)),
-               "GDPpc" = suppressMessages(calcOutput("GDPpc", supplementary = TRUE)),
-               "GDPPast" = suppressMessages(calcOutput("GDPPast", supplementary = TRUE)),
-               "GDPFuture" = suppressMessages(calcOutput("GDPFuture", supplementary = TRUE)),
-               "GDP" = suppressMessages(calcOutput("GDP", supplementary = TRUE)),
-               "DefaultDrivers" = suppressMessages(calcOutput("DefaultDrivers", supplementary = TRUE)),
-               "Labour" = suppressMessages(calcOutput("Labour", supplementary = TRUE)))
+calcs3 <- list("PopulationPast" = calcOutput("PopulationPast", supplementary = TRUE),
+               "PopulationFuture" = calcOutput("PopulationFuture", supplementary = TRUE),
+               "Population" = calcOutput("Population", supplementary = TRUE),
+               "UrbanPast" = calcOutput("UrbanPast", supplementary = TRUE),
+               "UrbanFuture" = calcOutput("UrbanFuture", supplementary = TRUE),
+               "Urban" = calcOutput("Urban", supplementary = TRUE),
+               "UrbanPop" = calcOutput("UrbanPop", supplementary = TRUE),
+               "GDPpcPast" = calcOutput("GDPpcPast", supplementary = TRUE),
+               "GDPpcFuture" = calcOutput("GDPpcFuture", supplementary = TRUE),
+               "GDPpc" = calcOutput("GDPpc", supplementary = TRUE),
+               "GDPPast" = calcOutput("GDPPast", supplementary = TRUE),
+               "GDPFuture" = calcOutput("GDPFuture", supplementary = TRUE),
+               "GDP" = calcOutput("GDP", supplementary = TRUE),
+               "DefaultDrivers" = calcOutput("DefaultDrivers", supplementary = TRUE),
+               "Labour" = calcOutput("Labour", supplementary = TRUE))
 
 
 test_that("variable names", {
@@ -116,24 +119,19 @@ test_that("no newline in descriptions", {
 })
 
 test_that("GDPpc is equal to GDP divided by pop", {
-  x <- calcOutput("GDPpc", extension2150 = "none", naming = "scenario", aggregate = FALSE) %>%
-    suppressMessages()
+  x <- calcOutput("GDPpc", extension2150 = "none", naming = "scenario", aggregate = FALSE)
   y <- {
     calcOutput("GDP", extension2150 = "none", naming = "scenario", aggregate = FALSE) /
     calcOutput("Population", extension2150 = "none", naming = "scenario", aggregate = FALSE)
-    } %>%
-    suppressMessages()
+    }
   # Remove comments before comparing
   comment(x) <- NULL
   expect_equal(x, y)
 })
 
 test_that("average2020 works", {
-  x <-  calcOutput("GDP", extension2150 = "none", FiveYearSteps = FALSE) %>%
-    suppressMessages()
-
-  y <-  calcOutput("GDP", extension2150 = "none", average2020 = FALSE, FiveYearSteps = FALSE) %>%
-    suppressMessages()
+  x <-  calcOutput("GDP", extension2150 = "none", FiveYearSteps = FALSE)
+  y <-  calcOutput("GDP", extension2150 = "none", average2020 = FALSE, FiveYearSteps = FALSE)
   yNew2020 <- (y[, 2018, ] + y[, 2019, ] + y[, 2020, ] + y[, 2021, ] + y[, 2022, ]) / 5
   getYears(yNew2020) <- 2020
   getSets(yNew2020) <- getSets(y)
@@ -143,13 +141,11 @@ test_that("average2020 works", {
 })
 
 test_that("average2020 is consistent", {
-  x <- calcOutput("GDPpc", extension2150 = "none", naming = "scenario", aggregate = FALSE) %>%
-    suppressMessages()
+  x <- calcOutput("GDPpc", extension2150 = "none", naming = "scenario", aggregate = FALSE)
   y <- {
     calcOutput("GDP", extension2150 = "none", naming = "scenario", aggregate = FALSE) /
       calcOutput("Population", extension2150 = "none", naming = "scenario", aggregate = FALSE)
-    } %>%
-    suppressMessages()
+  }
   # Remove comments before comparing
   comment(x) <- NULL
   expect_equal(x, y)

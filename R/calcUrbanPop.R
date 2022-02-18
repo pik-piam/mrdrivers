@@ -2,10 +2,12 @@
 #'
 #' @inheritParams calcUrban
 #' @inherit calcUrban return
+#' @inheritSection calcGDP Return supplementary information
+#' @inheritSection calcGDP Vectorization of arguments
 #'
 #' @seealso [madrat::calcOutput()]
 #' @family Urban functions
-#' @family Combined scenario functions
+#' @family mrdrivers functions
 #'
 #' @examples \dontrun{
 #' library(mrdrivers)

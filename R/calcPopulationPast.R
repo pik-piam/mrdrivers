@@ -1,13 +1,4 @@
-#' calcPopulationPast
-#'
-#' Calculate a time series of past population data.
-#'
-#' @inheritParams calcPopulation
-#' @inherit calcPopulation return
-#'
-#' @seealso [madrat::calcOutput()]
-#' @family Population functions
-#'
+#' @describeIn calcPopulation Get historic population data
 #' @examples \dontrun{
 #' library(mrdrivers)
 #' calcOutput("PopulationPast")

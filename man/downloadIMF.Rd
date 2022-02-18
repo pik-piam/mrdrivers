@@ -7,5 +7,18 @@
 downloadIMF()
 }
 \description{
-downloadIMF
+Download Wolrd Economic Outlook from the International Monetary Fund
 }
+\examples{
+\dontrun{
+downloadSource("IMF")
+}
+}
+\seealso{
+\code{\link[=downloadSource]{downloadSource()}}
+
+Other IMF functions: 
+\code{\link{convertIMF}()},
+\code{\link{readIMF}()}
+}
+\concept{IMF functions}

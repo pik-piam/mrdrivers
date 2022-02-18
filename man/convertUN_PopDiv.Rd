@@ -21,6 +21,7 @@ Countries missing in the data set are set to zero.
 }
 \seealso{
 Other UN_PopDiv functions: 
+\code{\link{downloadUN_PopDiv}()},
 \code{\link{readUN_PopDiv}()}
 }
 \concept{UN_PopDiv functions}

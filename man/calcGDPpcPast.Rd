@@ -9,9 +9,16 @@ calcGDPpcPast(GDPpcPast = "WDI-MI", unit = "constant 2005 Int$PPP")
 \arguments{
 \item{GDPpcPast}{String or vector of strings}
 
-\item{unit}{A string. Either 'constant 2005 Int$PPP', 'constant 2005 US$MER',
-'constant 2017 Int$PPP' or 'constant 2017 US$MER'. In either case, the scenario
-construction is done in Int$PPP, with the conversion to US$MER coming afterward.}
+\item{unit}{A string specifying the unit of GDP. Can be either:
+\itemize{
+\item "constant 2005 Int$PPP" (default): Default unit in which the scenarios are constructed.
+\item "constant 2005 US$MER": Scenarios are constructed in constant 2005 Int$PPP and converted before being
+returned with \link[GDPuc:convertGDP]{GDPuc::convertGDP}.
+\item "constant 2017 Int$PPP": Scenarios are constructed in constant 2017 Int$PPP (See paper).
+\item "constant 2017 US$MER": Scenarios are constructed in constant 2017 Int$PPP and converted before being
+returned with \link[GDPuc:convertGDP]{GDPuc::convertGDP}.
+}
+In all cases, GDP is returned in millions.}
 }
 \value{
 A magpie object with sets "iso3c", "year" and "variable".

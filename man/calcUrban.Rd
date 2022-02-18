@@ -20,27 +20,57 @@ calcUrban(
 
 \item{UrbanFuture}{Urban future data source}
 
-\item{extension2150}{string, either "bezier", "constant" or "none"}
+\item{extension2150}{A string specifying if/how the scenarios should be extended until 2150. Can be either:
+\itemize{
+\item "bezier" (default): A bezier curve extension that leads to a smooth flattening of the scenario: the
+slope in the last year of the scenario is halved by 2150. Currently only works for scenarios with 2100 as
+their last year.
+\item "constant": The last value of the scenarios is taken as constant until 2150.
+\item "none": No extension.
+}}
 
 \item{FiveYearSteps}{\ifelse{html}{\href{https://lifecycle.r-lib.org/articles/stages.html#deprecated}{\figure{lifecycle-deprecated.svg}{options: alt='[Deprecated]'}}}{\strong{[Deprecated]}} \code{FiveYearSteps = TRUE} is no
 longer supported; use the calcOutput argument \code{years}  instead, to retrieve
 specific years.}
 
-\item{naming}{naming scheme}
+\item{naming}{A string giving the naming scheme of the data dimension. Can be either:
+\itemize{
+\item "indicator_scenario" (default): Returns names of the type "gdp_SSP2", or "pop_SSP2".
+\item "indicator.scenario": Returns names of the type "gdp.SSP2", or "pop.SSP2".
+\item "scenario": Returns names of the type "SSP2".
+}
+Set naming to "scenario" when you want to operate on SSP2 gdp and population data for instance, and not have to
+worry about the conflicting names.}
 }
 \value{
 A magpie object with sets "iso3c", "year" and "variable".
 }
 \description{
-Merges time series of urban shares for the past and present.  See
-\code{\link{calcUrbanPast}} for past datasets, and
-\code{\link{calcUrbanFuture}} for future datasets.  The time series are
-merged via the growth rates. The first year of the future scenarios
-determines the merging point.  All data is calibrated either to the "past"
-or the "future" dataset.  Currently, the SSP (future) and WDI (past) data
-have some inconsistencies, which leads to unrealistic figures if the one is
-scaled on the other.
+Get urbanization scenarios. By default the following scenarios are returned:
+\itemize{
+\item the SSPs, i.e. SSP1-5 and SSP2EU
+\item the SDPs, i.e. SDP, SDP_EI, SDP_RC, and SDP_MC
 }
+
+The scenarios are created by harmonizing future projections onto historical data.
+}
+\section{Return supplementary information}{
+Set the \code{supplementary} argument of \code{\link[madrat:calcOutput]{madrat::calcOutput()}} to \code{TRUE} to return a list with the scenarios and
+additional information on the unit, the data sources and the harmonization function.
+}
+
+\section{Vectorization of arguments}{
+Vectors are accepted for -Calib, -Past and -Future arguments.
+If given a vector, different combinations are created and returned all at once. If more than one
+argument is vectorised, the arguments have to have the same length. Which time series are created can be
+illustrated with the following example. Let's say the harmonization function and past data source are vectors of
+length 3. Then there will be in total 3 time series that are produced: the first time series is the result of
+combining the first harmonization function with the first past data source, the second time series the result of
+combining the second harmonization function with the second past data source, and the third time series the result
+of  using the respective third entry. The future data source used in each case is the same, since in this example
+only one future data source is provided.
+}
+
 \examples{
 \dontrun{
 library(mrdrivers)
@@ -56,11 +86,11 @@ Other Urban functions:
 \code{\link{calcUrbanPast}()},
 \code{\link{calcUrbanPop}()}
 
-Other Combined scenario functions: 
+Other mrdrivers functions: 
 \code{\link{calcGDPpc}()},
 \code{\link{calcGDP}()},
 \code{\link{calcPopulation}()},
 \code{\link{calcUrbanPop}()}
 }
-\concept{Combined scenario functions}
 \concept{Urban functions}
+\concept{mrdrivers functions}

@@ -38,4 +38,15 @@ downloadWDI <- function() {
   endYear <- as.numeric(strsplit(as.character(Sys.Date()), "-")[[1]][1]) - 1
   wdi <- WDI::WDI(indicator = indicator, start = 1960, end = endYear)
   readr::write_rds(wdi, "WDI.Rds")
+
+  # Compose meta data
+  list(url           = "-",
+       doi           = "-",
+       title         = "Select indicators from the WDI",
+       description   = "Select indicators from the World Development Indicators database from the World Bank",
+       unit          = "-",
+       author        = "World Bank",
+       release_date  = "-",
+       license       = "-",
+       comment       = "-")
 }

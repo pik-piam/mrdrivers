@@ -12,8 +12,7 @@ toolFillWith <- function(data, fill) {
 
   if (!all(missing %in% getItems(fill, 1))) {
      leftOver <- setdiff(missing, getItems(fill, 1)) # nolint
-     message(glue("NOTE: The following countries have not been filled: \\
-                  {paste0(leftOver, collapse = ', ')}."))
+     message(glue("NOTE: The following countries have not been filled: {paste0(leftOver, collapse = ', ')}."))
      missing <- intersect(missing, getItems(fill, 1))
   }
 

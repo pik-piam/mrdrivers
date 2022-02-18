@@ -1,13 +1,4 @@
-#' calcPopulationFuture
-#'
-#' Calculate a time series of future population data.
-#'
-#' @inheritParams calcPopulation
-#' @inherit calcPopulation return
-#'
-#' @seealso [madrat::calcOutput()]
-#' @family Population functions
-#'
+#' @describeIn calcPopulation Get future population projections
 #' @examples \dontrun{
 #' library(mrdrivers)
 #' calcOutput("PopulationFuture")

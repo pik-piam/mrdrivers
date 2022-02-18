@@ -1,20 +1,38 @@
-#' calcPopulation
+#' calcPopulation, calcPopulationPast, calcPopulationFuture
 #'
-#' Create population time series by harmonizing future projections onto historical data.
+#' @description
+#' Get complete population scenarios with calcPopulation, or the past/future scenario building blocks with
+#' calcPopulationPast and calcPopulationFuture.
+#'
+#' Complete scenarios are created by harmonizing future projections (returned by calcPopulationFuture) onto historical
+#' data (returned by calcPopulationPast) and cover the years between 1960 and 2100.
+#'
+#' If population data for a scenario is required, even if just for a single year, always use calcPopulation, as what is
+#' returned by calcPopulationPast or calcPopulationFuture may not end up as is in the scenario, depending on the
+#' harmonization function used (see the Populationcalib argument for more information). Use calcPopulationPast and
+#' calcPopulationFuture only when trying to access specific population data, or when constructing new
+#' complete scenarios.
+#'
+#' By default, calcPopulation returns the following scenarios:
+#'  \itemize{
+#'    \item the SSPs, i.e. SSP1-5 and SSP2EU
+#'    \item the SDPs, i.e. SDP, SDP_EI, SDP_RC, and SDP_MC
+#'  }
 #'
 #' @param PopulationCalib A string designating the harmonization function.
 #'   Available harmonization functions are:
 #'   \itemize{
-#'     \item "calibSSPs":
+#'     \item "calibSSPs": use past data from PopulationPast, then the growth rates from the Wolrld Bank's PEAP until
+#'                        the final year of the IMF WEO data, and then the growth rates from PopulationFuture.
 #'     \item "calibSSP2EU":
-#'     \item "calibSDPs":
-#'     \item "calibUN_PopDiv":
+#'     \item "calibSDPs": same as calibSSPs
 #'     \item "past": deprecated
 #'     \item "future": deprecated
 #'     \item "transition": deprecated
 #'     \item "past_transition":
 #'     \item "past_grFuture":
 #'   }
+#'
 #' @param PopulationPast A string designating the source for the historical population data.
 #'   Available sources are:
 #'   \itemize{
@@ -23,24 +41,31 @@
 #'     \item "MI": Missing island dataset
 #'     \item "Eurostat": Eurostat
 #'   }
+#'   See the "Combining data sources with '-'" section below for how to combine data sources.
+#'
 #' @param PopulationFuture A string designating the source for the future population data.
 #'   Available sources are:
 #'   \itemize{
-#'     \item "SSPs":
-#'     \item "SSP2EU":
+#'     \item "SSPs": From the Wittgenstein Center [here](http://pure.iiasa.ac.at/id/eprint/17550/) and
+#'                   [here](http://pure.iiasa.ac.at/id/eprint/16710/)
+#'     \item "SSP2EU": Combined SSP2 and Eurostat (for the EU countries) source
 #'     \item "SDPs":
-#'     \item "UN_PopDiv":
-#'     \item "MI":
-#'     \item "SSPs_old":
+#'     \item "UN_PopDiv": United Nations
+#'     \item "MI": Missing island dataset
+#'     \item "SSPs_old": Old SSPs from the IIASA database
 #'     \item "SRES": deprecated
 #'     \item "IIASApop": deprecated
 #'   }
+#'   See the "Combining data sources with '-'" section below for how to combine data sources.
+#'
 #' @inheritParams calcGDP
-#' @inherit calcGDP details return
+#' @inherit calcGDP return
+#' @inheritSection calcGDP Combining data sources with "-"
+#' @inheritSection calcGDP Vectorization of arguments
+#' @inheritSection calcGDP Return supplementary information
 #'
 #' @seealso [madrat::calcOutput()]
-#' @family Population functions
-#' @family Combined scenario functions
+#' @family mrdrivers functions
 #'
 #' @examples \dontrun{
 #' library(mrdrivers)
@@ -93,7 +118,6 @@ calcInternalPopulation <- function(PopulationCalib,  # nolint
     "calibSSPs"       = toolHarmonizeSSPsSDPs(past, future),
     "calibSDPs"       = toolHarmonizeSSPsSDPs(past, future),
     "calibSSP2EU"     = toolHarmonizeSSP2EU(past, future),
-    "calibUN_PopDiv"  = toolHarmonizeUN_PopDiv(past, future),
     # Deprecated?
     "past"            = toolPopHarmonizePast(past, future),
     "future"          = toolHarmonizeFuture(past, future),
@@ -175,16 +199,6 @@ toolHarmonizeSSP2EU <- function(past, future) {
   combined[euCountries, futYears, ] <- future[euCountries, futYears, ]
 
   combined
-}
-
-toolHarmonizeUN_PopDiv <- function(past, future) { # nolint
-  # Glue future to past
-  # year <- max(intersect(getYears(past, as.integer = TRUE),
-  #                       getYears(future, as.integer = TRUE)))
-  year <- 2017
-  futYears <- getYears(future)[getYears(future, as.integer = TRUE) > year]
-  getNames(past) <- getNames(future)
-  mbind(past, future[, futYears, ])
 }
 
 # Legacy?

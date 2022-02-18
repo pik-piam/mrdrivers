@@ -13,12 +13,11 @@ toolHarmonizePastGrFuture <- function(past, future) {
   }
 
   # Create past data for all future scenarios
-  yearsPast <- getYears(past)[which(getYears(past, as.integer = TRUE) <= lastPastYear)]
-  tmpPast <- past[, yearsPast, rep(1, ndata(future))]
+  tmpPast <- past[, , rep(1, ndata(future))]
   tmpPast <- setNames(tmpPast, getNames(future))
   tmpPast[is.nan(tmpPast)] <- 0
 
-  # Create transition magpie object for all future scenarios
+  # Create magpie object for all future scenarios
   yearsFuture <- getYears(future)[which(getYears(future, as.integer = TRUE) > lastPastYear)]
   tmpFuture <- new.magpie(getItems(future, 1), yearsFuture, getNames(future), fill = 0)
 
