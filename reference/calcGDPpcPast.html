@@ -17,7 +17,7 @@
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">mrdrivers</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="">0.5.1</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="">0.5.2</span>
       </span>
     </div>
 
@@ -58,9 +58,13 @@
     <dl><dt>GDPpcPast</dt>
 <dd><p>String or vector of strings</p></dd>
 <dt>unit</dt>
-<dd><p>A string. Either 'constant 2005 Int$PPP', 'constant 2005 US$MER',
-'constant 2017 Int$PPP' or 'constant 2017 US$MER'. In either case, the scenario
-construction is done in Int$PPP, with the conversion to US$MER coming afterward.</p></dd>
+<dd><p>A string specifying the unit of GDP. Can be either:</p><ul><li><p>"constant 2005 Int$PPP" (default): Default unit in which the scenarios are constructed.</p></li>
+<li><p>"constant 2005 US$MER": Scenarios are constructed in constant 2005 Int$PPP and converted before being
+returned with <a href="https://johanneskoch94.github.io/GDPuc/reference/convertGDP.html" class="external-link">GDPuc::convertGDP</a>.</p></li>
+<li><p>"constant 2017 Int$PPP": Scenarios are constructed in constant 2017 Int$PPP (See paper).</p></li>
+<li><p>"constant 2017 US$MER": Scenarios are constructed in constant 2017 Int$PPP and converted before being
+returned with <a href="https://johanneskoch94.github.io/GDPuc/reference/convertGDP.html" class="external-link">GDPuc::convertGDP</a>.</p></li>
+</ul><p>In all cases, GDP is returned in millions.</p></dd>
 </dl></div>
     <div id="value">
     <h2>Value</h2>

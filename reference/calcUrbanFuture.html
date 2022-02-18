@@ -19,7 +19,7 @@ with WDI in 2010"><!-- mathjax --><script src="https://cdnjs.cloudflare.com/ajax
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">mrdrivers</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="">0.5.1</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="">0.5.2</span>
       </span>
     </div>
 
@@ -62,7 +62,12 @@ with WDI in 2010</p>
     <dl><dt>UrbanFuture</dt>
 <dd><p>Urban future data source</p></dd>
 <dt>extension2150</dt>
-<dd><p>string, either "bezier", "constant" or "none"</p></dd>
+<dd><p>A string specifying if/how the scenarios should be extended until 2150. Can be either:</p><ul><li><p>"bezier" (default): A bezier curve extension that leads to a smooth flattening of the scenario: the
+slope in the last year of the scenario is halved by 2150. Currently only works for scenarios with 2100 as
+their last year.</p></li>
+<li><p>"constant": The last value of the scenarios is taken as constant until 2150.</p></li>
+<li><p>"none": No extension.</p></li>
+</ul></dd>
 </dl></div>
     <div id="value">
     <h2>Value</h2>

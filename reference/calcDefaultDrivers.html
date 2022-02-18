@@ -17,7 +17,7 @@
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">mrdrivers</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="">0.5.1</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="">0.5.2</span>
       </span>
     </div>
 
@@ -61,6 +61,23 @@
     <div id="value">
     <h2>Value</h2>
     <p>A magpie object with sets "iso3c", "year" and "variable".</p>
+    </div>
+    <div id="return-supplementary-information">
+    <h2>Return supplementary information</h2>
+    <p>Set the <code>supplementary</code> argument of <code><a href="https://rdrr.io/pkg/madrat/man/calcOutput.html" class="external-link">madrat::calcOutput()</a></code> to <code>TRUE</code> to return a list with the scenarios and
+additional information on the unit, the data sources and the harmonization function.</p>
+    </div>
+    <div id="vectorization-of-arguments">
+    <h2>Vectorization of arguments</h2>
+    <p>Vectors are accepted for -Calib, -Past and -Future arguments.
+If given a vector, different combinations are created and returned all at once. If more than one
+argument is vectorised, the arguments have to have the same length. Which time series are created can be
+illustrated with the following example. Let's say the harmonization function and past data source are vectors of
+length 3. Then there will be in total 3 time series that are produced: the first time series is the result of
+combining the first harmonization function with the first past data source, the second time series the result of
+combining the second harmonization function with the second past data source, and the third time series the result
+of  using the respective third entry. The future data source used in each case is the same, since in this example
+only one future data source is provided.</p>
     </div>
     <div id="see-also">
     <h2>See also</h2>

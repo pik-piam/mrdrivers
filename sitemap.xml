@@ -19,12 +19,6 @@
     <loc>https://pik-piam.github.io/mrdrivers/reference/calcGDP.html</loc>
   </url>
   <url>
-    <loc>https://pik-piam.github.io/mrdrivers/reference/calcGDPFuture.html</loc>
-  </url>
-  <url>
-    <loc>https://pik-piam.github.io/mrdrivers/reference/calcGDPPast.html</loc>
-  </url>
-  <url>
     <loc>https://pik-piam.github.io/mrdrivers/reference/calcGDPpc.html</loc>
   </url>
   <url>
@@ -38,12 +32,6 @@
   </url>
   <url>
     <loc>https://pik-piam.github.io/mrdrivers/reference/calcPopulation.html</loc>
-  </url>
-  <url>
-    <loc>https://pik-piam.github.io/mrdrivers/reference/calcPopulationFuture.html</loc>
-  </url>
-  <url>
-    <loc>https://pik-piam.github.io/mrdrivers/reference/calcPopulationPast.html</loc>
   </url>
   <url>
     <loc>https://pik-piam.github.io/mrdrivers/reference/calcRatioPPP2MER.html</loc>
@@ -107,6 +95,9 @@
   </url>
   <url>
     <loc>https://pik-piam.github.io/mrdrivers/reference/downloadMissingIslands.html</loc>
+  </url>
+  <url>
+    <loc>https://pik-piam.github.io/mrdrivers/reference/downloadUN_PopDiv.html</loc>
   </url>
   <url>
     <loc>https://pik-piam.github.io/mrdrivers/reference/downloadWDI.html</loc>
