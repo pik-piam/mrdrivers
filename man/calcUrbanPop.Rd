@@ -29,9 +29,8 @@ their last year.
 \item "none": No extension.
 }}
 
-\item{FiveYearSteps}{\ifelse{html}{\href{https://lifecycle.r-lib.org/articles/stages.html#deprecated}{\figure{lifecycle-deprecated.svg}{options: alt='[Deprecated]'}}}{\strong{[Deprecated]}} \code{FiveYearSteps = TRUE} is no
-longer supported; use the calcOutput argument \code{years}  instead, to retrieve
-specific years.}
+\item{FiveYearSteps}{\ifelse{html}{\href{https://lifecycle.r-lib.org/articles/stages.html#deprecated}{\figure{lifecycle-deprecated.svg}{options: alt='[Deprecated]'}}}{\strong{[Deprecated]}} \code{FiveYearSteps = TRUE} will be deprecated soon. Until then,
+please set \code{FiveYearSteps = FALSE} and use the calcOutput argument \code{years} instead, to retrieve specific years.}
 
 \item{naming}{A string giving the naming scheme of the data dimension. Can be either:
 \itemize{
