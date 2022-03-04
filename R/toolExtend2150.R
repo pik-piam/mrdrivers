@@ -41,7 +41,9 @@ bezierExtension <- function(data, timeExtend) {
     y2 <- yEnd - slopeEnd * 10
 
     for (i in 1:nr) {
+      # If Bezier extension would lead to negative GDP, keep last value constant instead
       if (yStart[i] == 0 || yEnd[i] < 0) {
+        extension[i, , scen] <- data[i, 2100, scen]
         next
       }
 
@@ -56,7 +58,7 @@ bezierExtension <- function(data, timeExtend) {
                                     method = "max_dist",
                                     max.dist = max(abs(yEnd[i] - yStart[i]), 50) / 100,
                                     print.progress = FALSE) %>%
-       suppressWarnings()
+        suppressWarnings()
       # The above Warnings which are suppressed are
       # : "essentially perfect fit: summary may be unreliable"
 
@@ -65,8 +67,8 @@ bezierExtension <- function(data, timeExtend) {
         tibble::as_tibble(.name_repair = ~ paste0("V", seq_along(.x))) %>%
         # Complicatd / elegant use of function factories to get closest points to timeExtend coordinates
         dplyr::mutate(dplyr::across(.data$V1, purrr::map(timeExtend, ~ function(y) {
-abs(y - .x)
-}))) %>%
+          abs(y - .x)
+        }))) %>%
         dplyr::filter(dplyr::if_any(tidyselect::contains("_"), ~ .x == min(.x))) %>%
         dplyr::pull(.data$V2)
 

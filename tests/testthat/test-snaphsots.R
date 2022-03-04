@@ -10,6 +10,7 @@ withr::local_file("tmp_messages.txt")
 withr::local_message_sink(new = file("tmp_messages.txt", "w"), append = TRUE)
 
 
+
 test_that("Default calcOutput Population calls", {
   expect_snapshot_value(calcOutput("PopulationFuture"), style = "json2")
   expect_snapshot_value(calcOutput("PopulationPast"), style = "json2")
