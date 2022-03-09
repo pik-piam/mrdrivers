@@ -1,11 +1,11 @@
 #' calcGDP, calcGDPPast, calcGDPFuture
 #'
-#' @description 
+#' @description
 #' Get complete GDP scenarios with calcGDP, or the past/future scenario building blocks with calcGDPPast and
-#' calcGDPFuture. 
-#' 
-#' Complete scenarios are created by harmonizing future projections (returned by calcGDPFuture) onto historical 
-#' data (returned by calcGDPPast) and cover the years between 1960 and 2100. 
+#' calcGDPFuture.
+#'
+#' Complete scenarios are created by harmonizing future projections (returned by calcGDPFuture) onto historical
+#' data (returned by calcGDPPast) and cover the years between 1960 and 2100.
 #'
 #' If GDP data for a scenario is required, even if just for a single year, always use calcGDP, as what is returned by
 #' calcGDPPast or calcGDPFuture may not end up as is in the scenario, depending on the harmonization function used
@@ -19,7 +19,7 @@
 #'  }
 #'
 #' @details # Combining data sources with "-"
-#'  Past and Future data sources can be combined with "-" and given as arguments to the function, i.e. "WDI-MI". This 
+#'  Past and Future data sources can be combined with "-" and given as arguments to the function, i.e. "WDI-MI". This
 #'  signifies that WDI data will be taken first, but missing data will be then be filled in with data from MI.
 #'
 #' @details # Vectorization of arguments
@@ -31,7 +31,7 @@
 #'  combining the first harmonization function with the first past data source, the second time series the result of
 #'  combining the second harmonization function with the second past data source, and the third time series the result
 #'  of  using the respective third entry. The future data source used in each case is the same, since in this example
-#'  only one future data source is provided. 
+#'  only one future data source is provided.
 #'
 #' @details # Return supplementary information
 #'  Set the `supplementary` argument of [madrat::calcOutput()] to `TRUE` to return a list with the scenarios and
@@ -60,13 +60,13 @@
 #'     \item "MI": Missing island dataset
 #'     \item "Eurostat": Eurostat
 #'     \item "PWT": Penn World Tables
-#'     \item The IHME/James data set. This data set is tertiary source that uses available secondary sources (e.g. WDI 
-#'           and PWT) to create completed GDP per capita time series 
-#'           (See [paper](https://pophealthmetrics.biomedcentral.com/articles/10.1186/1478-7954-10-12)). 
-#'           To access, pass one of the subtypes 
-#'           "IHME_USD05_PPP_pc", "IHME_USD05_MER_pc", "IMF_USD05_PPP_pc", "PENN_USD05_PPP_pc", "WB_USD05_PPP_pc", 
-#'           "MADDISON_USD05_PPP_pc", "WB_USD05_MER_pc", "IMF_USD05_MER_pc", "UN_USD05_MER_pc". In all cases, the per 
-#'           capita GDP will be multiplied by WDI population data to get absoulte GDP data.  
+#'     \item The IHME/James data set. This data set is tertiary source that uses available secondary sources (e.g. WDI
+#'           and PWT) to create completed GDP per capita time series
+#'           (See [paper](https://pophealthmetrics.biomedcentral.com/articles/10.1186/1478-7954-10-12)).
+#'           To access, pass one of the subtypes
+#'           "IHME_USD05_PPP_pc", "IHME_USD05_MER_pc", "IMF_USD05_PPP_pc", "PENN_USD05_PPP_pc", "WB_USD05_PPP_pc",
+#'           "MADDISON_USD05_PPP_pc", "WB_USD05_MER_pc", "IMF_USD05_MER_pc", "UN_USD05_MER_pc". In all cases, the per
+#'           capita GDP will be multiplied by WDI population data to get absoulte GDP data.
 #'   }
 #'   See the "Combining data sources with '-'" section below for how to combine data sources.
 #'
@@ -85,11 +85,11 @@
 #' @param unit A string specifying the unit of GDP. Can be either:
 #'   \itemize{
 #'     \item "constant 2005 Int$PPP" (default): Default unit in which the scenarios are constructed.
-#'     \item "constant 2005 US$MER": Scenarios are constructed in constant 2005 Int$PPP and converted before being 
-#'                                   returned with [GDPuc::convertGDP]. 
+#'     \item "constant 2005 US$MER": Scenarios are constructed in constant 2005 Int$PPP and converted before being
+#'                                   returned with [GDPuc::convertGDP].
 #'     \item "constant 2017 Int$PPP": Scenarios are constructed in constant 2017 Int$PPP (See paper).
-#'     \item "constant 2017 US$MER": Scenarios are constructed in constant 2017 Int$PPP and converted before being 
-#'                                   returned with [GDPuc::convertGDP]. 
+#'     \item "constant 2017 US$MER": Scenarios are constructed in constant 2017 Int$PPP and converted before being
+#'                                   returned with [GDPuc::convertGDP].
 #'   }
 #'   In all cases, GDP is returned in millions.
 #'
@@ -97,14 +97,13 @@
 #'   \itemize{
 #'     \item "bezier" (default): A bezier curve extension that leads to a smooth flattening of the scenario: the
 #'           slope in the last year of the scenario is halved by 2150. Currently only works for scenarios with 2100 as
-#'           their last year. 
+#'           their last year.
 #'     \item "constant": The last value of the scenarios is taken as constant until 2150.
 #'     \item "none": No extension.
 #'   }
 #'
-#' @param FiveYearSteps `r lifecycle::badge("deprecated")` `FiveYearSteps = TRUE` is no
-#'   longer supported; use the calcOutput argument `years`  instead, to retrieve
-#'   specific years.
+#' @param FiveYearSteps `r lifecycle::badge("deprecated")` `FiveYearSteps = TRUE` will be deprecated soon. Until then,
+#'   please set `FiveYearSteps = FALSE` and use the calcOutput argument `years` instead, to retrieve specific years.
 #'
 #' @param average2020 TRUE (default) or FALSE. If TRUE, then the 2020 value is replaced by the 2018-2022 average.
 #'
@@ -133,7 +132,7 @@
 #'            extension2150 = "none",
 #'            average2020 = FALSE,
 #'            aggregate = FALSE,
-#'            FiveYearSteps = FALSE)    
+#'            FiveYearSteps = FALSE)
 #' }
 #'
 calcGDP <- function(GDPCalib  = c("calibSSPs", "calibSDPs", "calibSSP2EU"),

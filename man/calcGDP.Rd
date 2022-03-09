@@ -91,9 +91,8 @@ their last year.
 \item "none": No extension.
 }}
 
-\item{FiveYearSteps}{\ifelse{html}{\href{https://lifecycle.r-lib.org/articles/stages.html#deprecated}{\figure{lifecycle-deprecated.svg}{options: alt='[Deprecated]'}}}{\strong{[Deprecated]}} \code{FiveYearSteps = TRUE} is no
-longer supported; use the calcOutput argument \code{years}  instead, to retrieve
-specific years.}
+\item{FiveYearSteps}{\ifelse{html}{\href{https://lifecycle.r-lib.org/articles/stages.html#deprecated}{\figure{lifecycle-deprecated.svg}{options: alt='[Deprecated]'}}}{\strong{[Deprecated]}} \code{FiveYearSteps = TRUE} will be deprecated soon. Until then,
+please set \code{FiveYearSteps = FALSE} and use the calcOutput argument \code{years} instead, to retrieve specific years.}
 
 \item{average2020}{TRUE (default) or FALSE. If TRUE, then the 2020 value is replaced by the 2018-2022 average.}
 
@@ -168,7 +167,7 @@ calcOutput("GDP",
            extension2150 = "none",
            average2020 = FALSE,
            aggregate = FALSE,
-           FiveYearSteps = FALSE)    
+           FiveYearSteps = FALSE)
 }
 
 \dontrun{
