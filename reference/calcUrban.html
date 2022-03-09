@@ -22,7 +22,7 @@ The scenarios are created by harmonizing future projections onto historical data
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">mrdrivers</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="">0.5.2</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="">0.5.3</span>
       </span>
     </div>
 
@@ -83,9 +83,8 @@ their last year.</p></li>
 <li><p>"none": No extension.</p></li>
 </ul></dd>
 <dt>FiveYearSteps</dt>
-<dd><p><a href="https://lifecycle.r-lib.org/articles/stages.html#deprecated" class="external-link"><img src="figures/lifecycle-deprecated.svg" alt="[Deprecated]"></a> <code>FiveYearSteps = TRUE</code> is no
-longer supported; use the calcOutput argument <code>years</code>  instead, to retrieve
-specific years.</p></dd>
+<dd><p><a href="https://lifecycle.r-lib.org/articles/stages.html#deprecated" class="external-link"><img src="figures/lifecycle-deprecated.svg" alt="[Deprecated]"></a> <code>FiveYearSteps = TRUE</code> will be deprecated soon. Until then,
+please set <code>FiveYearSteps = FALSE</code> and use the calcOutput argument <code>years</code> instead, to retrieve specific years.</p></dd>
 <dt>naming</dt>
 <dd><p>A string giving the naming scheme of the data dimension. Can be either:</p><ul><li><p>"indicator_scenario" (default): Returns names of the type "gdp_SSP2", or "pop_SSP2".</p></li>
 <li><p>"indicator.scenario": Returns names of the type "gdp.SSP2", or "pop.SSP2".</p></li>

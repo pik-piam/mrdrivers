@@ -29,7 +29,7 @@ the SDPs, i.e. SDP, SDP_EI, SDP_RC, and SDP_MC
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">mrdrivers</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="">0.5.2</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="">0.5.3</span>
       </span>
     </div>
 
@@ -146,9 +146,8 @@ their last year.</p></li>
 <li><p>"none": No extension.</p></li>
 </ul></dd>
 <dt>FiveYearSteps</dt>
-<dd><p><a href="https://lifecycle.r-lib.org/articles/stages.html#deprecated" class="external-link"><img src="figures/lifecycle-deprecated.svg" alt="[Deprecated]"></a> <code>FiveYearSteps = TRUE</code> is no
-longer supported; use the calcOutput argument <code>years</code>  instead, to retrieve
-specific years.</p></dd>
+<dd><p><a href="https://lifecycle.r-lib.org/articles/stages.html#deprecated" class="external-link"><img src="figures/lifecycle-deprecated.svg" alt="[Deprecated]"></a> <code>FiveYearSteps = TRUE</code> will be deprecated soon. Until then,
+please set <code>FiveYearSteps = FALSE</code> and use the calcOutput argument <code>years</code> instead, to retrieve specific years.</p></dd>
 <dt>average2020</dt>
 <dd><p>TRUE (default) or FALSE. If TRUE, then the 2020 value is replaced by the 2018-2022 average.</p></dd>
 <dt>naming</dt>
@@ -213,7 +212,7 @@ additional information on the unit, the data sources and the harmonization funct
 <span class="r-in">           extension2150 <span class="op">=</span> <span class="st">"none"</span>,</span>
 <span class="r-in">           average2020 <span class="op">=</span> <span class="cn">FALSE</span>,</span>
 <span class="r-in">           aggregate <span class="op">=</span> <span class="cn">FALSE</span>,</span>
-<span class="r-in">           FiveYearSteps <span class="op">=</span> <span class="cn">FALSE</span><span class="op">)</span>    </span>
+<span class="r-in">           FiveYearSteps <span class="op">=</span> <span class="cn">FALSE</span><span class="op">)</span></span>
 <span class="r-in"><span class="op">}</span></span>
 <span class="r-in"></span>
 <span class="r-in"><span class="kw">if</span> <span class="op">(</span><span class="cn">FALSE</span><span class="op">)</span> <span class="op">{</span></span>
