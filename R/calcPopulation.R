@@ -26,6 +26,8 @@
 #'                        the final year of the IMF WEO data, and then the growth rates from PopulationFuture.
 #'     \item "calibSSP2EU":
 #'     \item "calibSDPs": same as calibSSPs
+#'     \item "calibISIMIP": use past data from PopulationPast - should be UN_PopDiv with data, currently, until 2020.
+#'                          Add the 2021 projections from UN_PopDiv. Then follow the same method as past_transition.
 #'     \item "past": deprecated
 #'     \item "future": deprecated
 #'     \item "transition": deprecated
@@ -69,7 +71,17 @@
 #'
 #' @examples \dontrun{
 #' library(mrdrivers)
-#' calcOutput("GDPpc")
+#' # For the default scenarios
+#' calcOutput("Population")
+#'
+#' # For the ISIMIP SSP scenarios
+#' calcOutput("Population",
+#'            PopulationCalib  = "calibISIMIP",
+#'            PopulationPast   = "UN_PopDiv-MI",
+#'            PopulationFuture = "SSPs-UN_PopDiv-MI",
+#'            extension2150 = "none",
+#'            FiveYearSteps = FALSE,
+#'            aggregate = FALSE)
 #' }
 #'
 calcPopulation <- function(PopulationCalib  = c("calibSSPs",                  # nolint
@@ -118,6 +130,7 @@ calcInternalPopulation <- function(PopulationCalib,  # nolint
     "calibSSPs"       = toolHarmonizeSSPsSDPs(past, future),
     "calibSDPs"       = toolHarmonizeSSPsSDPs(past, future),
     "calibSSP2EU"     = toolHarmonizeSSP2EU(past, future),
+    "calibISIMIP"     = toolHarmonizeISIMIP(past, future, yEnd = 2030),
     # Deprecated?
     "past"            = toolPopHarmonizePast(past, future),
     "future"          = toolHarmonizeFuture(past, future),
@@ -143,6 +156,9 @@ calcInternalPopulation <- function(PopulationCalib,  # nolint
                              {max(getYears(readSource('IMF'), as.integer = TRUE))}, \\
                              and then the growth rates from {PopulationFuture}. \\
                              For European countries, just glue past with future."),
+    "calibISIMIP"     = glue("use past data from {PopulationPast} - should be UN_PopDiv with data, \\
+                             currently, until 2020. Add the 2021 projections from UN_PopDiv. Then \\
+                             converge towards {PopulationFuture} by 2030."),
     "calibUN_PopDiv"  = glue("use past data from {PopulationPast} and then future data from \\
                               {PopulationFuture}."),
     "past"            = PopulationPast,
@@ -200,6 +216,20 @@ toolHarmonizeSSP2EU <- function(past, future) {
 
   combined
 }
+
+toolHarmonizeISIMIP <- function(past, future, yEnd) {
+  # Extend past by the 2021 UN_PopDiv year
+  data2021 <- calcOutput("PopulationFuture",
+                         PopulationFuture = "UN_PopDiv-MI",
+                         extension2150 = "none",
+                         aggregate = FALSE)[, 2021, ]
+  getNames(data2021) <- getNames(past)
+  past <- mbind(past, data2021)
+
+  # Then use toolHarmonizePastTransition
+  toolHarmonizePastTransition(past, future, yEnd)
+}
+
 
 # Legacy?
 toolPopHarmonizePast <- function(past, future) {
