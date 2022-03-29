@@ -1,4 +1,4 @@
-#' Collect Default Model Drivers
+#' Get default model drivers
 #'
 #' @param drivers Vector of strings.
 #' @inherit calcGDP return

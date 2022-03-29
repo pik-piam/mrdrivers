@@ -8,8 +8,7 @@
 #' @param subtype String indicating version and sheet
 #' @return \code{magclass} object; population in thousands.
 #' @seealso [madrat::readSource()]
-#' @family "Past" population functions
-#' @family UN_PopDiv functions
+#' @seealso [downloadUN_PopDiv()]
 readUN_PopDiv <- function(subtype = "WPP2019_estimates") { # nolint
   # Check function input
   if (!subtype %in% c("WPP2019_estimates", "WPP2019_medium", "WPP2015_estimates")) {

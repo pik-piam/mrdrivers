@@ -15,10 +15,7 @@ downloadSource("IMF")
 }
 }
 \seealso{
-\code{\link[=downloadSource]{downloadSource()}}
+\code{\link[madrat:downloadSource]{madrat::downloadSource()}}
 
-Other IMF functions: 
-\code{\link{convertIMF}()},
-\code{\link{readIMF}()}
+\code{\link[=readIMF]{readIMF()}}
 }
-\concept{IMF functions}

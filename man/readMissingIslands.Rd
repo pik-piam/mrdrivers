@@ -2,12 +2,17 @@
 % Please edit documentation in R/readMissingIslands.R
 \name{readMissingIslands}
 \alias{readMissingIslands}
-\title{readMissingIslands}
+\alias{convertMissingIslands}
+\title{Read in the "Missing Islands" dataset}
 \usage{
 readMissingIslands(subtype)
+
+convertMissingIslands(x)
 }
 \arguments{
 \item{subtype}{pop for population or gdp for gdp}
+
+\item{x}{MAgPIE object returned by readMissingIslands}
 }
 \value{
 Magpie object
@@ -24,19 +29,5 @@ readSource("MissingIslands", subtype = "pop", convert = FALSE)
 \seealso{
 \code{\link[madrat:readSource]{madrat::readSource()}}
 
-Other "Past" population functions: 
-\code{\link{readEurostatPopGDP}()},
-\code{\link{readUN_PopDiv}()},
-\code{\link{readWDI}()}
-
-Other "Past" GDP functions: 
-\code{\link{readEurostatPopGDP}()},
-\code{\link{readWDI}()}
-
-Other MissingIslands functions: 
-\code{\link{convertMissingIslands}()},
-\code{\link{downloadMissingIslands}()}
+\code{\link[=downloadMissingIslands]{downloadMissingIslands()}}
 }
-\concept{"Past" GDP functions}
-\concept{"Past" population functions}
-\concept{MissingIslands functions}

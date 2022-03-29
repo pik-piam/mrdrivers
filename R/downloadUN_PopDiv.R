@@ -3,8 +3,8 @@
 #' @description  Download World Population Prospects data from the United Nations Deparment on Economic and Social
 #'   Affairs
 #'
-#' @seealso  [downloadSource()]
-#' @family UN_PopDiv functions
+#' @seealso [madrat::downloadSource()]
+#' @seealso [readUN_PopDiv()]
 #' @examples \dontrun{
 #' downloadSource("UN_PopDiv")
 #' }

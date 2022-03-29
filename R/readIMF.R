@@ -1,14 +1,12 @@
 #' Read IMF
 #'
-#' Read-in iMF data
+#' Read-in IMF data
 #'
 #' @param subtype Either "current_account" or "GDPpc"
 #' @return magpie object of the data
 #'
 #' @seealso [madrat::readSource()]
-#' @family "Past" GDPpc functions
-#' @family "Future" GDPpc functions
-#' @family IMF functions
+#' @seealso [downloadIMF()]
 #'
 #' @examples
 #' \dontrun{
@@ -52,4 +50,28 @@ readIMF <- function(subtype = "current_account") {
   }
 
   return(out)
+}
+
+#' @describeIn readIMF Convert IMF data
+#' @param x MAgPIE object returned by readIMF
+convertIMF <- function(x, subtype = "current_account") {
+  if (subtype == "current_account") {
+    # delete "World"
+    x <- x["World", , , invert = TRUE]
+    # delete Kosovo
+    x <- x["KOS", , , invert = TRUE]
+
+    ### allocate global current account to the countries
+    # calculate global sum which is not 0
+    xSum <- -dimSums(x, dim = 1, na.rm = TRUE)
+    # calculate global absolute share of current account
+    xAbs     <-  abs(x)
+    xAbsSum <- dimSums(xAbs, dim = 1, na.rm = TRUE)
+    # calculate additional value for each country
+    xRest <- xAbs / xAbsSum * xSum
+    # add global rest to the countries
+    x <- x + xRest
+  }
+
+  toolGeneralConvert(x, no_remove_warning = c("UVK", "WBG"), warn = FALSE, note = FALSE)
 }

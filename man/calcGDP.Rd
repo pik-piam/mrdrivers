@@ -4,7 +4,7 @@
 \alias{calcGDP}
 \alias{calcGDPFuture}
 \alias{calcGDPPast}
-\title{calcGDP, calcGDPPast, calcGDPFuture}
+\title{Get GDP scenarios and building blocks}
 \usage{
 calcGDP(
   GDPCalib = c("calibSSPs", "calibSDPs", "calibSSP2EU"),
@@ -184,10 +184,9 @@ calcOutput("GDPPast")
 \seealso{
 \code{\link[madrat:calcOutput]{madrat::calcOutput()}}
 
-Other mrdrivers functions: 
+Other mrdrivers calc-functions: 
 \code{\link{calcGDPpc}()},
 \code{\link{calcPopulation}()},
-\code{\link{calcUrbanPop}()},
 \code{\link{calcUrban}()}
 }
-\concept{mrdrivers functions}
+\concept{mrdrivers calc-functions}

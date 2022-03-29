@@ -23,7 +23,7 @@ knitr::opts_chunk$set(
 <!-- [![Codecov test coverage](https://codecov.io/gh/pik-piam/mrdrivers/branch/main/graph/badge.svg)](https://app.codecov.io/gh/pik-piam/mrdrivers?branch=main) -->
 <!-- badges: end -->
 
-<!-- The goal of **mrdrivers** is to handle the construction of GDP, GDP per capita, Population and Urbanization scenarios: all of which are important drivers to the REMIND and MAgPIE models. -->
+<!-- The goal of **mrdrivers** is to handle the construction of GDP, GDP per capita, Population and Urban Population share scenarios: all of which are important drivers to the REMIND and MAgPIE models. -->
 
 <!-- ## Installation -->
 

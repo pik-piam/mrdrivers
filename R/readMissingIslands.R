@@ -1,12 +1,11 @@
-#' @title readMissingIslands
+#' Read in the "Missing Islands" dataset
+#'
 #' @description Read in core data for minor islands which are not included in big inventories but have a countrycode
 #'
 #' @param subtype pop for population or gdp for gdp
 #'
 #' @seealso [madrat::readSource()]
-#' @family "Past" population functions
-#' @family "Past" GDP functions
-#' @family MissingIslands functions
+#' @seealso [downloadMissingIslands()]
 #'
 #' @return Magpie object
 #' @examples \dontrun{
@@ -21,4 +20,10 @@ readMissingIslands <- function(subtype) {
   x <- utils::read.csv(file, header = TRUE)
   names(x) <- substring(names(x), 1, 5)
   as.magpie(x)
+}
+
+#' @rdname readMissingIslands
+#' @param x MAgPIE object returned by readMissingIslands
+convertMissingIslands <- function(x) {
+  toolGeneralConvert(x, note = FALSE)
 }

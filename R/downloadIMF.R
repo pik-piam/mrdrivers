@@ -2,8 +2,8 @@
 #'
 #' @description  Download Wolrd Economic Outlook from the International Monetary Fund
 #'
-#' @seealso  [downloadSource()]
-#' @family IMF functions
+#' @seealso  [madrat::downloadSource()]
+#' @seealso  [readIMF()]
 #' @examples \dontrun{
 #' downloadSource("IMF")
 #' }

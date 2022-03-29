@@ -5,7 +5,7 @@
 \alias{calcPopulation}
 \alias{calcPopulationFuture}
 \alias{calcPopulationPast}
-\title{calcPopulation, calcPopulationPast, calcPopulationFuture}
+\title{Get population scenarios and building blocks}
 \usage{
 calcPopulation(
   PopulationCalib = c("calibSSPs", "calibSDPs", "calibSSP2EU"),
@@ -168,10 +168,9 @@ calcOutput("PopulationPast")
 \seealso{
 \code{\link[madrat:calcOutput]{madrat::calcOutput()}}
 
-Other mrdrivers functions: 
+Other mrdrivers calc-functions: 
 \code{\link{calcGDPpc}()},
 \code{\link{calcGDP}()},
-\code{\link{calcUrbanPop}()},
 \code{\link{calcUrban}()}
 }
-\concept{mrdrivers functions}
+\concept{mrdrivers calc-functions}

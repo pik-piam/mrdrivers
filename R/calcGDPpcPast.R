@@ -1,11 +1,4 @@
-#' calcGDPpcPast
-#'
-#' @inheritParams calcGDPpc
-#' @inherit calcGDPpc return
-#'
-#' @seealso [madrat::calcOutput()]
-#' @family GDPpc functions
-#'
+#' @describeIn calcGDPpc Get historic GDPpc data
 #' @examples \dontrun{
 #' library(mrdrivers)
 #' calcOutput("GDPpcPast")

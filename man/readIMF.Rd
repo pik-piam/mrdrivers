@@ -2,19 +2,29 @@
 % Please edit documentation in R/readIMF.R
 \name{readIMF}
 \alias{readIMF}
+\alias{convertIMF}
 \title{Read IMF}
 \usage{
 readIMF(subtype = "current_account")
+
+convertIMF(x, subtype = "current_account")
 }
 \arguments{
 \item{subtype}{Either "current_account" or "GDPpc"}
+
+\item{x}{MAgPIE object returned by readIMF}
 }
 \value{
 magpie object of the data
 }
 \description{
-Read-in iMF data
+Read-in IMF data
 }
+\section{Functions}{
+\itemize{
+\item \code{convertIMF}: Convert IMF data
+}}
+
 \examples{
 \dontrun{
 a <- readSource(type = "IMF")
@@ -23,15 +33,5 @@ a <- readSource(type = "IMF")
 \seealso{
 \code{\link[madrat:readSource]{madrat::readSource()}}
 
-Other "Past" GDPpc functions: 
-\code{\link{readJames2019}()},
-\code{\link{readPWT}()},
-\code{\link{readWDI}()}
-
-Other IMF functions: 
-\code{\link{convertIMF}()},
-\code{\link{downloadIMF}()}
+\code{\link[=downloadIMF]{downloadIMF()}}
 }
-\concept{"Future" GDPpc functions}
-\concept{"Past" GDPpc functions}
-\concept{IMF functions}

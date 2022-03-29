@@ -1,15 +1,7 @@
-#' Converts Eurostat historical emissions
-#'
-#' @param x MAgPIE object to be converted
-#' @param subtype emissions for original eurostat emissions split, MACCemi for MACC historical emissions, or
-#' sectorEmi for sector specific emissions
-#' @return A MAgPIE object containing the Eurostat historical emissions (MtCO2)
-#' @family Eurostat functions
-#' @examples \dontrun{
-#' convertEurostat(x, subtype = "population")
-#' }
+#' @rdname readEurostatPopGDP
+#' @order 2
+#' @param x MAgPIE object returned by readEurostatPopGDP
 convertEurostatPopGDP <- function(x, subtype) {
-
   switch(
     subtype,
     "population"             = convEurostatPopulation(x),
@@ -19,9 +11,6 @@ convertEurostatPopGDP <- function(x, subtype) {
   )
 }
 
-######################################################################################
-# Functions
-######################################################################################
 convEurostatPopulation <- function(x) {
   # Fix names of sets, and of variable
   x <- collapseDim(x, dim = 3)

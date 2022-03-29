@@ -1,4 +1,4 @@
-#' calcPopulation, calcPopulationPast, calcPopulationFuture
+#' Get population scenarios and building blocks
 #'
 #' @description
 #' Get complete population scenarios with calcPopulation, or the past/future scenario building blocks with
@@ -67,7 +67,7 @@
 #' @inheritSection calcGDP Return supplementary information
 #'
 #' @seealso [madrat::calcOutput()]
-#' @family mrdrivers functions
+#' @family mrdrivers calc-functions
 #'
 #' @examples \dontrun{
 #' library(mrdrivers)

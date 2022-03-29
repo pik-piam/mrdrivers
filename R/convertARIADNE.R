@@ -1,11 +1,6 @@
-#' Convert ARIADNE Reference Scenario
-#'
-#' Read ARIADNE Reference Scenario data from various .xls files as magpie object
-#'
+#' @rdname readARIADNE
+#' @order 2
 #' @param x MAgPIE object returned by readARIADNE
-#' @inheritParams readARIADNE
-#' @inherit readARIADNE return
-#' @family ARIADNE functions
 convertARIADNE <- function(x, subtype) {
 
   # Convert region codons from Eurostat to iso3c

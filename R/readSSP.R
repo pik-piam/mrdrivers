@@ -9,7 +9,7 @@
 #' @examples \dontrun{
 #' readSource("SSP", subtype = "gdp")
 #' }
-#'
+#' @order 1
 readSSP <- function(subtype) {
   if (!subtype %in% c("all", "gdp", "pop", "urb", "pop2018Update", "lab2018Update")) {
      stop("Bad input for readSSP. Invalid 'subtype' argument.")

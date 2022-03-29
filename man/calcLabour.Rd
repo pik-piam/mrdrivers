@@ -2,7 +2,7 @@
 % Please edit documentation in R/calcLabour.R
 \name{calcLabour}
 \alias{calcLabour}
-\title{calcLabour}
+\title{Get labour scenarios}
 \usage{
 calcLabour(
   LabourFuture = c("SSPs", "SDPs", "SSP2EU"),

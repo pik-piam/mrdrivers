@@ -2,7 +2,7 @@
 % Please edit documentation in R/downloadMissingIslands.R
 \name{downloadMissingIslands}
 \alias{downloadMissingIslands}
-\title{downloadMissingIslands}
+\title{Download the "Missing Islands" dataset}
 \usage{
 downloadMissingIslands()
 }
@@ -16,10 +16,7 @@ downloadSource("MissingIslands")
 }
 }
 \seealso{
-\code{\link[=downloadSource]{downloadSource()}}
+\code{\link[madrat:downloadSource]{madrat::downloadSource()}}
 
-Other MissingIslands functions: 
-\code{\link{convertMissingIslands}()},
-\code{\link{readMissingIslands}()}
+\code{\link[=readMissingIslands]{readMissingIslands()}}
 }
-\concept{MissingIslands functions}

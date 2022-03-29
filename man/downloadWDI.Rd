@@ -19,10 +19,9 @@ downloadSource("WDI")
 
 }
 \seealso{
-\url{https://databank.worldbank.org/source/world-development-indicators}, \code{\link[madrat:downloadSource]{madrat::downloadSource()}}
+\url{https://databank.worldbank.org/source/world-development-indicators}
 
-Other WDI functions: 
-\code{\link{convertWDI}()},
-\code{\link{readWDI}()}
+\code{\link[madrat:downloadSource]{madrat::downloadSource()}}
+
+\code{\link[=readWDI]{readWDI()}}
 }
-\concept{WDI functions}

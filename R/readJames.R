@@ -20,3 +20,10 @@ readJames <- function(subtype) {
     `[`(, c("ISO3", "Year", subtype)) %>%
     as.magpie(spatial = 1, temporal = 2)    
 }  
+
+#' @describeIn readJames convert function
+#' @param x MAgPIE object returned by readJames
+convertJames <- function(x, subtype) {
+  x <- x[c("ANT", "SUN"), , , invert = TRUE]
+  toolGeneralConvert(x[, , subtype], useDefaultSetNames = FALSE)
+}

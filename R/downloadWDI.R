@@ -4,8 +4,9 @@
 #' Data is downloaded from 1960 until "current year - 1".
 #' The WDI data is updated with the function "WDISearch(cache = WDIcache())"
 #'
-#' @seealso <https://databank.worldbank.org/source/world-development-indicators>, [madrat::downloadSource()]
-#' @family WDI functions
+#' @seealso <https://databank.worldbank.org/source/world-development-indicators>
+#' @seealso [madrat::downloadSource()]
+#' @seealso [readWDI()]
 #'
 #' @examples \dontrun{
 #' library(mrdrivers)

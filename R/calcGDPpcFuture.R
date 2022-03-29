@@ -1,11 +1,4 @@
-#' calcGDPpcFuture
-#'
-#' @inheritParams calcGDPpc
-#' @inherit calcGDPpc return
-#'
-#' @seealso [madrat::calcOutput()]
-#' @family GDPpc functions
-#'
+#' @describeIn calcGDPpc Get future GDPpc projections
 #' @examples \dontrun{
 #' library(mrdrivers)
 #' calcOutput("GDPpcFuture")

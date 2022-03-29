@@ -2,9 +2,15 @@
 % Please edit documentation in R/readPEAP.R
 \name{readPEAP}
 \alias{readPEAP}
+\alias{convertPEAP}
 \title{Read Population Estimates And Projections from the World Bank}
 \usage{
 readPEAP()
+
+convertPEAP(x)
+}
+\arguments{
+\item{x}{MAgPIE object returned by readPEAP}
 }
 \value{
 magpie object
@@ -12,15 +18,15 @@ magpie object
 \description{
 Read-in xlsx file from the World Bank's Population Estimates And Projections
 }
+\section{Functions}{
+\itemize{
+\item \code{convertPEAP}: Convert data from the World Bank's Population Estimates And Projections dataset
+}}
+
 \seealso{
 \code{\link[madrat:readSource]{madrat::readSource()}}
 
 Other "Future" population functions: 
-\code{\link{readEurostatPopGDP}()},
 \code{\link{readPopulationTWN}()}
-
-Other PEAP functions: 
-\code{\link{convertPEAP}()}
 }
 \concept{"Future" population functions}
-\concept{PEAP functions}

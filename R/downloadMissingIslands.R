@@ -1,10 +1,10 @@
-#' @title downloadMissingIslands
+#' Download the "Missing Islands" dataset
 #'
 #' @description  Download MissingIslands data (on population or GDP) for filling in data gaps from the
 #' full datasets.
 #'
-#' @seealso  [downloadSource()]
-#' @family MissingIslands functions
+#' @seealso  [madrat::downloadSource()]
+#' @seealso  [readMissingIslands()]
 #' @examples \dontrun{
 #' downloadSource("MissingIslands")
 #' }

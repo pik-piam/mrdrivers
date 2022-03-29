@@ -12,6 +12,7 @@
 #' @inheritParams toolHarmonizePastGrFuture
 #' @inherit toolHarmonizePastGrFuture return
 #' @inheritSection toolHarmonizePastGrFuture Dimensions of 'past' and 'future'
+#' @keywords internal
 toolHarmonizePastTransition <- function(past, future, yEnd) {
 
   lastPastYear <- max(getYears(past, as.integer = TRUE))

@@ -1,4 +1,4 @@
-#' calcLabour
+#' Get labour scenarios
 #'
 #' @description
 #' Get labour scenarios. By default the following scenarios are returned:

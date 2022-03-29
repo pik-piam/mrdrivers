@@ -1,1 +1,20 @@
 url: https://pik-piam.github.io/mrdrivers
+template:
+  bootstrap: 5
+  bslib:
+    base_font: {google: "Source Sans Pro"}
+
+reference:
+  - title: Calc functions
+    contents:
+    - starts_with("calc")
+  - title: Read functions
+    contents:
+    - starts_with("read")
+  - title: Download functions
+    contents:
+    - starts_with("download")
+  - title: Development tools
+    desc: Tool functions aimed at use within mrdrivers.
+    contents:
+    - starts_with("tool", internal = TRUE)

@@ -2,13 +2,18 @@
 % Please edit documentation in R/readSRES.R
 \name{readSRES}
 \alias{readSRES}
+\alias{convertSRES}
 \title{Read SRES}
 \usage{
 readSRES(subtype)
+
+convertSRES(x, subtype)
 }
 \arguments{
 \item{subtype}{data subtype. "pop_a1","pop_a2","pop_b1","pop_b2" or
 "gdp_a1","gdp_a2","gdp_b1","gdp_b2"}
+
+\item{x}{magpie object returned by readSRES}
 }
 \value{
 magpie object of the SRES data. Units are million people or USD1990
@@ -20,9 +25,15 @@ market exchange rate.
 Read-in an SRES data csv file as magclass object. Works for both population
 and GDP
 }
+\section{Functions}{
+\itemize{
+\item \code{convertSRES}: convert function
+}}
+
 \examples{
 \dontrun{
-readSource("SRES", subtype = "pop_a1")} 
+readSource("SRES", subtype = "pop_a1")
+}
 }
 \seealso{
 \code{\link[madrat:readSource]{madrat::readSource()}}

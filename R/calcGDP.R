@@ -1,4 +1,4 @@
-#' calcGDP, calcGDPPast, calcGDPFuture
+#' Get GDP scenarios and building blocks
 #'
 #' @description
 #' Get complete GDP scenarios with calcGDP, or the past/future scenario building blocks with calcGDPPast and
@@ -119,7 +119,7 @@
 #' @return A magpie object with sets "iso3c", "year" and "variable".
 #'
 #' @seealso [madrat::calcOutput()]
-#' @family mrdrivers functions
+#' @family mrdrivers calc-functions
 #'
 #' @examples \dontrun{
 #' library(mrdrivers)
