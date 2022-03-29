@@ -2,9 +2,12 @@
 % Please edit documentation in R/readWDI.R
 \name{readWDI}
 \alias{readWDI}
+\alias{convertWDI}
 \title{Read WDI}
 \usage{
 readWDI(subtype)
+
+convertWDI(x, subtype)
 }
 \arguments{
 \item{subtype}{A string. Type of WDI data that should be read. Use the
@@ -28,6 +31,8 @@ worldbank indicator abbreviation. Available subtypes are:
 \item \code{"NY.GDP.PCAP.PP.CD"}: GDP PPP, per capita (current int$)
 \item \code{"PA.NUS.PPPC.RF"}: Price level ratio of PPP conversion factor (GDP) to market exchange rate
 }}
+
+\item{x}{MAgPIE object returned by readWDI}
 }
 \value{
 A magpie object of the WDI data
@@ -36,6 +41,11 @@ A magpie object of the WDI data
 Read-in WDI (World development indicators) data .Rds file as magpie
 object.
 }
+\section{Functions}{
+\itemize{
+\item \code{convertWDI}: Convert WDI data
+}}
+
 \examples{
 \dontrun{
 library(mrdrivers)
@@ -46,25 +56,10 @@ readSource("WDI", subtype = "SP.POP.TOTL")
 \seealso{
 \code{\link[madrat:readSource]{madrat::readSource()}}
 
-Other "Past" population functions: 
-\code{\link{readEurostatPopGDP}()},
-\code{\link{readMissingIslands}()},
-\code{\link{readUN_PopDiv}()}
-
-Other "Past" GDP functions: 
-\code{\link{readEurostatPopGDP}()},
-\code{\link{readMissingIslands}()}
-
 Other "Past" GDPpc functions: 
-\code{\link{readIMF}()},
 \code{\link{readJames2019}()},
 \code{\link{readPWT}()}
-
-Other WDI functions: 
-\code{\link{convertWDI}()},
-\code{\link{downloadWDI}()}
 }
 \concept{"Past" GDP functions}
 \concept{"Past" GDPpc functions}
 \concept{"Past" population functions}
-\concept{WDI functions}

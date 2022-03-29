@@ -5,11 +5,9 @@
 #' @param subtype data subtype. Either "population", "gdp", or "gdp_corona"
 #'
 #' @seealso [madrat::readSource()]
-#' @family "Future" GDP functions
-#' @family "Future" Population functions
-#' @family ARIADNE functions
 #'
 #' @return magpie object of ARIADNE reference scenario data by country
+#' @order 1
 readARIADNE <- function(subtype) {
 
   switch(subtype,
@@ -70,16 +68,7 @@ rARIADNEGDP <- function(corona) {
   as.magpie(gdp, spatial = "eurostat", temporal = "year", tidy = TRUE)
 }
 
-#' Read ARIADNE Reference Scenario
-#'
-#' Alias to [readARIADNE]. May be deprecated in the future.
-#'
-#' @param subtype data subtype. Either "population", "gdp", or "gdp_corona"
-#'
-#' @seealso [madrat::readSource()]
-#' @family ARIADNE functions
-#'
-#' @return magpie object of ARIADNE reference scenario data by country
+#' @describeIn readARIADNE Alias to [readARIADNE()]. May be deprecated in the future.
 readARIADNE_ReferenceScenario <- function(subtype) { # nolint
   readSource("ARIADNE", subtype = subtype)
 }

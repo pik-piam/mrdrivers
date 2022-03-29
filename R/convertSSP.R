@@ -1,11 +1,6 @@
-#' Convert SSP data
-#'
-#' Convert SSP data on ISO country level.
-#'
+#' @rdname readSSP
+#' @order 2
 #' @param x MAgPIE object returned from readSSP
-#' @inheritParams readSSP
-#' @inherit readSSP return examples
-#' @family SSP functions
 convertSSP <- function(x, subtype) {
   if (subtype %in% c("all", "pop", "gdp", "urb")) {
     if (subtype == "all") x <- x %>% addTWNpop() %>% addTWNlab()

@@ -20,8 +20,7 @@ Authors@R: c(person(given = "Johannes",
              person("Bjoern", "Soergel", role = "aut"),
              person("Jan Philipp", "Dietrich", role = "aut"))
 Description: Create GDP and population scenarios
-    This package takes care of GDP and population scenario construction, which are important drivers
-    to both the REMIND and MAgPIE models.
+    This package constructs the GDP and population scenarios used drivers in both the REMIND and MAgPIE models.
 License: LGPL (>= 3)
 URL: https://pik-piam.github.io/mrdrivers, https://github.com/pik-piam/mrdrivers
 BugReports: https://github.com/pik-piam/mrdrivers/issues

@@ -4,7 +4,6 @@
 #'
 #' @seealso [madrat::readSource()]
 #' @family "Future" population functions
-#' @family PEAP functions
 #' @return magpie object
 readPEAP <- function() {
   file <- "Data_Extract_From_Population_estimates_and_projections.xlsx"
@@ -19,4 +18,10 @@ readPEAP <- function() {
                   # are thus returned as NA.
     dplyr::relocate(.data$value, .after = tidyselect::last_col()) %>%
     as.magpie(tidy = TRUE)
+}
+
+#' @describeIn readPEAP Convert data from the World Bank's Population Estimates And Projections dataset
+#' @param x MAgPIE object returned by readPEAP
+convertPEAP <- function(x) {
+  toolGeneralConvert(x, warn = FALSE, note = FALSE)
 }

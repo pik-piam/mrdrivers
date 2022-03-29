@@ -1,6 +1,6 @@
-#' Read OECD GDP / ratio PPP2MER
+#' Read OECD GDP or PPP2MER ratio
 #'
-#' Read-in GDP or ratio PPP2MER data xlsx file from OECD as magclass object
+#' Read-in GDP or PPP2MER ratio data xlsx file from OECD as magclass object
 #'
 #' @param subtype data subtype. Either "gdp" or "ratioPM"
 #' @return magpie object of the GDP data
@@ -9,7 +9,7 @@
 #' readSource("OECD", "gdp")
 #' readSource("OECD", "ratioPM")
 #' }
-#'
+#' @order 1
 readOECD <- function(subtype) {
   files <- c(gdp       = "OECD_v9_25-3-13-3.xlsx",
              ratioPM   = "OECD-WB_PPP-MER2005_conversion_rates.xlsx",

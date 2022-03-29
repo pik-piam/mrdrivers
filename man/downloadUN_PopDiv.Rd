@@ -16,10 +16,7 @@ downloadSource("UN_PopDiv")
 }
 }
 \seealso{
-\code{\link[=downloadSource]{downloadSource()}}
+\code{\link[madrat:downloadSource]{madrat::downloadSource()}}
 
-Other UN_PopDiv functions: 
-\code{\link{convertUN_PopDiv}()},
-\code{\link{readUN_PopDiv}()}
+\code{\link[=readUN_PopDiv]{readUN_PopDiv()}}
 }
-\concept{UN_PopDiv functions}

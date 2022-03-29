@@ -6,13 +6,10 @@
 #' sectorEmi for sector specific emissions
 #' @return magpie object of Eurostat historical emissions (MtCO2)
 #' @seealso [madrat::readSource()]
-#' @family "Past" population functions
-#' @family "Future" population functions
-#' @family "Past" GDP functions
-#' @family Eurostat functions
 #' @examples \dontrun{
 #' readSource("EurostatPopGDP", subtype = "population")
 #' }
+#' @order 1
 readEurostatPopGDP <- function(subtype) {
 
   switch(subtype,

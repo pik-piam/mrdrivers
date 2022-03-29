@@ -1,25 +1,35 @@
-#' calcGDPpc
+#' Get GDP per capita scenarios and building blocks
 #'
 #' @description
-#' Get GDP per capita scenarios. By default the following scenarios are returned:
+#' Get complete GDP per capita scenarios with calcGDPpc, or the past/future scenario building blocks with calcGDPpcPast
+#' and calcGDPpcFuture.
+#'
+#' Complete scenarios are created by harmonizing future projections (returned by calcGDPpcFuture) onto historical
+#' data (returned by calcGDPpcPast) and cover the years between 1960 and 2100.
+#'
+#' If GDP per capita data for a scenario is required, even if just for a single year, always use calcGDPpc, as what is
+#' returned by calcGDPpcPast or calcGDPpcFuture may not end up as is in the scenario, depending on the harmonization
+#' function used (see the GDPpcCalib argument for more information). Use calcGDPpcPast and calcGDPpcFuture only when
+#' trying to access specific GDP per capita data, or when constructing new complete scenarios.
+#'
+#' By default, calcGDPpc returns the following scenarios:
 #' \itemize{
 #'   \item the SSPs, i.e. SSP1-5 and SSP2EU
 #'   \item the SDPs, i.e. SDP, SDP_EI, SDP_RC, and SDP_MC
 #' }
 #'
-#' The scenarios are created by harmonizing future projections onto historical data.
-#'
 #' @param GDPpcCalib String or vector of strings
 #' @param GDPpcPast String or vector of strings
 #' @param GDPpcFuture String or vector of strings
+#'
 #' @inheritParams calcGDP
 #' @inherit calcGDP return
-#' @inheritSection calcGDP Return supplementary information
+#' @inheritSection calcGDP Combining data sources with "-"
 #' @inheritSection calcGDP Vectorization of arguments
+#' @inheritSection calcGDP Return supplementary information
 #'
 #' @seealso [madrat::calcOutput()]
-#' @family GDPpc functions
-#' @family mrdrivers functions
+#' @family mrdrivers calc-functions
 #'
 #' @examples \dontrun{
 #' library(mrdrivers)

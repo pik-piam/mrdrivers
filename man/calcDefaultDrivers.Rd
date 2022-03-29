@@ -2,7 +2,7 @@
 % Please edit documentation in R/calcDefaultDrivers.R
 \name{calcDefaultDrivers}
 \alias{calcDefaultDrivers}
-\title{Collect Default Model Drivers}
+\title{Get default model drivers}
 \usage{
 calcDefaultDrivers(drivers = c("Population", "GDP", "UrbanPop"))
 }
@@ -13,7 +13,7 @@ calcDefaultDrivers(drivers = c("Population", "GDP", "UrbanPop"))
 A magpie object with sets "iso3c", "year" and "variable".
 }
 \description{
-Collect Default Model Drivers
+Get default model drivers
 }
 \section{Return supplementary information}{
 Set the \code{supplementary} argument of \code{\link[madrat:calcOutput]{madrat::calcOutput()}} to \code{TRUE} to return a list with the scenarios and

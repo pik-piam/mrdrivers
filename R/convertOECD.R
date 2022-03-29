@@ -1,12 +1,6 @@
-#' Convert OECD GDP / ratioPM
-#'
-#' Convert GDP / ratioPM data from OECD to data on ISO country level.
-#'
-#'
+#' @rdname readOECD
+#' @order 2
 #' @param x MAgPIE object returned from readOECD
-#' @inheritParams readOECD
-#' @inherit readOECD return examples
-#' @family OECD functions
 convertOECD <- function(x, subtype) {
 
   if (subtype == "gdp") {

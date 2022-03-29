@@ -26,7 +26,6 @@ readSource("PopulationTWN", subtype = "medium")}
 \code{\link[madrat:readSource]{madrat::readSource()}}
 
 Other "Future" population functions: 
-\code{\link{readEurostatPopGDP}()},
 \code{\link{readPEAP}()}
 }
 \concept{"Future" population functions}

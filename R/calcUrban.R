@@ -1,15 +1,30 @@
-#' calcUrban
+#' Get scenarios and building blocks of urban population shares
 #'
 #' @description
-#' Get urbanization scenarios. By default the following scenarios are returned:
-#' \itemize{
-#'   \item the SSPs, i.e. SSP1-5 and SSP2EU
-#'   \item the SDPs, i.e. SDP, SDP_EI, SDP_RC, and SDP_MC
-#' }
+#' Get complete scenarios of urban population share with calcUrban, or the past/future scenario building blocks with
+#' calcUrbanPast and calcUrbanFuture. Get the urban popualation levels with calcUrbanPop.
 #'
-#' The scenarios are created by harmonizing future projections onto historical data.
+#' Complete scenarios are created by harmonizing future projections (returned by calcUrbanFuture) onto historical
+#' data (returned by calcUrbanPast) and cover the years between 1960 and 2100.
 #'
-#' @param UrbanCalib To what should be calibrated? past or future?
+#' If urban population share data for a scenario is required, even if just for a single year, always use calcUrban, as
+#' what is returned by calcUrbanPast or calcUrbanFuture may not end up as is in the scenario, depending on the
+#' harmonization function used (see the Urbancalib argument for more information). Use calcUrbanPast and
+#' calcUrbanFuture only when trying to access specific urban population share data, or when constructing new
+#' complete scenarios.
+#'
+#' By default, calcUrban returns the following scenarios:
+#'  \itemize{
+#'    \item the SSPs, i.e. SSP1-5 and SSP2EU
+#'    \item the SDPs, i.e. SDP, SDP_EI, SDP_RC, and SDP_MC
+#'  }
+#'
+#' @param UrbanCalib A string designating the harmonization function.
+#'   Available harmonization functions are:
+#'   \itemize{
+#'     \item "past": deprecated
+#'     \item "future": deprecated
+#'   }
 #' @param UrbanPast Urban past data source
 #' @param UrbanFuture Urban future data source
 #'
@@ -19,8 +34,7 @@
 #' @inheritSection calcGDP Vectorization of arguments
 #'
 #' @seealso [madrat::calcOutput()]
-#' @family Urban functions
-#' @family mrdrivers functions
+#' @family mrdrivers calc-functions
 #'
 #' @examples \dontrun{
 #' library(mrdrivers)

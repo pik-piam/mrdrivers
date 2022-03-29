@@ -1,14 +1,4 @@
-#' calcUrbanPop
-#'
-#' @inheritParams calcUrban
-#' @inherit calcUrban return
-#' @inheritSection calcGDP Return supplementary information
-#' @inheritSection calcGDP Vectorization of arguments
-#'
-#' @seealso [madrat::calcOutput()]
-#' @family Urban functions
-#' @family mrdrivers functions
-#'
+#' @describeIn calcUrban Get urban population scenarios
 #' @examples \dontrun{
 #' library(mrdrivers)
 #' calcOutput("UrbanPop")
@@ -38,7 +28,7 @@ calcInternalUrbanPop <- function(UrbanCalib,    # nolint
                                  FiveYearSteps, # nolint
                                  extension2150,
                                  naming) {
-  # Get urban shares
+  # Get urban population shares
   us <- calcOutput("Urban",
                    UrbanCalib = UrbanCalib,
                    UrbanPast = UrbanPast,
@@ -49,7 +39,7 @@ calcInternalUrbanPop <- function(UrbanCalib,    # nolint
                    aggregate = FALSE,
                    supplementary = TRUE)
 
-  # Multiply
+  # Multiply with population
   getNames(us$x) <- getNames(us$weight) <- gsub("pop", "urbanpop", getNames(us$weight))
   x <- us$x * us$weight
 
