@@ -32,6 +32,8 @@ Available harmonization functions are:
 the final year of the IMF WEO data, and then the growth rates from PopulationFuture.
 \item "calibSSP2EU":
 \item "calibSDPs": same as calibSSPs
+\item "calibISIMIP": use past data from PopulationPast - should be UN_PopDiv with data, currently, until 2020.
+Add the 2021 projections from UN_PopDiv. Then follow the same method as past_transition.
 \item "past": deprecated
 \item "future": deprecated
 \item "transition": deprecated
@@ -139,7 +141,17 @@ additional information on the unit, the data sources and the harmonization funct
 \examples{
 \dontrun{
 library(mrdrivers)
-calcOutput("GDPpc")
+# For the default scenarios
+calcOutput("Population")
+
+# For the ISIMIP SSP scenarios
+calcOutput("Population",
+           PopulationCalib  = "calibISIMIP",
+           PopulationPast   = "UN_PopDiv-MI",
+           PopulationFuture = "SSPs-UN_PopDiv-MI",
+           extension2150 = "none",
+           FiveYearSteps = FALSE,
+           aggregate = FALSE)
 }
 
 \dontrun{

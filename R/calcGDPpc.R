@@ -163,7 +163,7 @@ toolGDPpcHarmonizeSSP <- function(pastGDPpc, futureGDPpc, unit, yEnd) {
   # it's not there. That is the year from which convergence begins.
   yStart <- max(getYears(imfGDPpc, as.integer = TRUE))
   futureGDPpc <- futureGDPpc %>%
-    toolAddInterpolatedYear(yStart) %>%
+    magclass::time_interpolate(yStart, integrate_interpolated_years = TRUE) %>%
     as.data.frame(rev = 2) %>%
     tibble::as_tibble() %>%
     dplyr::select("iso3c", "year", "variable", "value" = ".value")
