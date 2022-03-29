@@ -30,7 +30,7 @@ the SDPs, i.e. SDP, SDP_EI, SDP_RC, and SDP_MC
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">mrdrivers</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="">0.5.3</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="">0.6.0</span>
       </span>
     </div>
 
@@ -99,6 +99,8 @@ Available harmonization functions are:</p><ul><li><p>"calibSSPs": use past data 
 the final year of the IMF WEO data, and then the growth rates from PopulationFuture.</p></li>
 <li><p>"calibSSP2EU":</p></li>
 <li><p>"calibSDPs": same as calibSSPs</p></li>
+<li><p>"calibISIMIP": use past data from PopulationPast - should be UN_PopDiv with data, currently, until 2020.
+Add the 2021 projections from UN_PopDiv. Then follow the same method as past_transition.</p></li>
 <li><p>"past": deprecated</p></li>
 <li><p>"future": deprecated</p></li>
 <li><p>"transition": deprecated</p></li>
@@ -187,7 +189,17 @@ additional information on the unit, the data sources and the harmonization funct
     <h2>Examples</h2>
     <div class="sourceCode"><pre class="sourceCode r"><code><span class="r-in"><span class="kw">if</span> <span class="op">(</span><span class="cn">FALSE</span><span class="op">)</span> <span class="op">{</span></span>
 <span class="r-in"><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://pik-piam.github.io/mrdrivers">mrdrivers</a></span><span class="op">)</span></span>
-<span class="r-in"><span class="fu"><a href="https://rdrr.io/pkg/madrat/man/calcOutput.html" class="external-link">calcOutput</a></span><span class="op">(</span><span class="st">"GDPpc"</span><span class="op">)</span></span>
+<span class="r-in"><span class="co"># For the default scenarios</span></span>
+<span class="r-in"><span class="fu"><a href="https://rdrr.io/pkg/madrat/man/calcOutput.html" class="external-link">calcOutput</a></span><span class="op">(</span><span class="st">"Population"</span><span class="op">)</span></span>
+<span class="r-in"></span>
+<span class="r-in"><span class="co"># For the ISIMIP SSP scenarios</span></span>
+<span class="r-in"><span class="fu"><a href="https://rdrr.io/pkg/madrat/man/calcOutput.html" class="external-link">calcOutput</a></span><span class="op">(</span><span class="st">"Population"</span>,</span>
+<span class="r-in">           PopulationCalib  <span class="op">=</span> <span class="st">"calibISIMIP"</span>,</span>
+<span class="r-in">           PopulationPast   <span class="op">=</span> <span class="st">"UN_PopDiv-MI"</span>,</span>
+<span class="r-in">           PopulationFuture <span class="op">=</span> <span class="st">"SSPs-UN_PopDiv-MI"</span>,</span>
+<span class="r-in">           extension2150 <span class="op">=</span> <span class="st">"none"</span>,</span>
+<span class="r-in">           FiveYearSteps <span class="op">=</span> <span class="cn">FALSE</span>,</span>
+<span class="r-in">           aggregate <span class="op">=</span> <span class="cn">FALSE</span><span class="op">)</span></span>
 <span class="r-in"><span class="op">}</span></span>
 <span class="r-in"></span>
 <span class="r-in"><span class="kw">if</span> <span class="op">(</span><span class="cn">FALSE</span><span class="op">)</span> <span class="op">{</span></span>
