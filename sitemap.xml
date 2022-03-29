@@ -22,12 +22,6 @@
     <loc>https://pik-piam.github.io/mrdrivers/reference/calcGDPpc.html</loc>
   </url>
   <url>
-    <loc>https://pik-piam.github.io/mrdrivers/reference/calcGDPpcFuture.html</loc>
-  </url>
-  <url>
-    <loc>https://pik-piam.github.io/mrdrivers/reference/calcGDPpcPast.html</loc>
-  </url>
-  <url>
     <loc>https://pik-piam.github.io/mrdrivers/reference/calcLabour.html</loc>
   </url>
   <url>
@@ -38,57 +32,6 @@
   </url>
   <url>
     <loc>https://pik-piam.github.io/mrdrivers/reference/calcUrban.html</loc>
-  </url>
-  <url>
-    <loc>https://pik-piam.github.io/mrdrivers/reference/calcUrbanFuture.html</loc>
-  </url>
-  <url>
-    <loc>https://pik-piam.github.io/mrdrivers/reference/calcUrbanPast.html</loc>
-  </url>
-  <url>
-    <loc>https://pik-piam.github.io/mrdrivers/reference/calcUrbanPop.html</loc>
-  </url>
-  <url>
-    <loc>https://pik-piam.github.io/mrdrivers/reference/convertARIADNE.html</loc>
-  </url>
-  <url>
-    <loc>https://pik-piam.github.io/mrdrivers/reference/convertEurostatPopGDP.html</loc>
-  </url>
-  <url>
-    <loc>https://pik-piam.github.io/mrdrivers/reference/convertIIASApop.html</loc>
-  </url>
-  <url>
-    <loc>https://pik-piam.github.io/mrdrivers/reference/convertIMF.html</loc>
-  </url>
-  <url>
-    <loc>https://pik-piam.github.io/mrdrivers/reference/convertJames.html</loc>
-  </url>
-  <url>
-    <loc>https://pik-piam.github.io/mrdrivers/reference/convertJames2019.html</loc>
-  </url>
-  <url>
-    <loc>https://pik-piam.github.io/mrdrivers/reference/convertMissingIslands.html</loc>
-  </url>
-  <url>
-    <loc>https://pik-piam.github.io/mrdrivers/reference/convertOECD.html</loc>
-  </url>
-  <url>
-    <loc>https://pik-piam.github.io/mrdrivers/reference/convertPEAP.html</loc>
-  </url>
-  <url>
-    <loc>https://pik-piam.github.io/mrdrivers/reference/convertPWT.html</loc>
-  </url>
-  <url>
-    <loc>https://pik-piam.github.io/mrdrivers/reference/convertSRES.html</loc>
-  </url>
-  <url>
-    <loc>https://pik-piam.github.io/mrdrivers/reference/convertSSP.html</loc>
-  </url>
-  <url>
-    <loc>https://pik-piam.github.io/mrdrivers/reference/convertUN_PopDiv.html</loc>
-  </url>
-  <url>
-    <loc>https://pik-piam.github.io/mrdrivers/reference/convertWDI.html</loc>
   </url>
   <url>
     <loc>https://pik-piam.github.io/mrdrivers/reference/downloadIMF.html</loc>
@@ -110,9 +53,6 @@
   </url>
   <url>
     <loc>https://pik-piam.github.io/mrdrivers/reference/readARIADNE.html</loc>
-  </url>
-  <url>
-    <loc>https://pik-piam.github.io/mrdrivers/reference/readARIADNE_ReferenceScenario.html</loc>
   </url>
   <url>
     <loc>https://pik-piam.github.io/mrdrivers/reference/readEurostatPopGDP.html</loc>
