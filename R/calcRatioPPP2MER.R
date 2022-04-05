@@ -32,7 +32,8 @@ calcRatioPPP2MER <- function(from = "WDI", when = 2005) {
 
   list(x = data,
        weight = weight,
-       unit = "-",
-       description = glue::glue("Ratio of GDP in constant 2005 Int$PPP over GDP \\
-                                 in constant 2005 US$MER (source: {from})."))
+       unit = "constant 2005 US$MER / constant 2005 Int$PPP",
+       description = glue::glue("Ratio of GDP in constant 2005 US$MER over GDP in constant 2005 Int$PPP (source: \\
+                                {from}). Can be used to convert between GDP at constant 2005 Int$PPP and GDP at \\
+                                constant 2005 US$MER."))
 }
