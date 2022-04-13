@@ -8,7 +8,7 @@ toolHarmonizeFutureGrPast <- function(past, future) {
 
   # Create future data for all past scenarios
   yearsFuture <- getYears(future)[which(getYears(future, as.integer = TRUE) >= firstFutureYear)]
-  tmpFuture <- future[, yearsFuture, rep(1, ndata(past))]
+  tmpFuture <- future[, yearsFuture, 1:ndata(past)]
   tmpFuture <- setNames(tmpFuture, getNames(past))
   tmpFuture[is.nan(tmpFuture)] <- 0
 
