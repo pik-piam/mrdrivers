@@ -8,10 +8,10 @@
 \title{Get population scenarios and building blocks}
 \usage{
 calcPopulation(
-  PopulationCalib = c("calibSSPs", "calibSDPs", "calibSSP2EU"),
-  PopulationPast = c("WDI-UN_PopDiv-MI", "WDI-UN_PopDiv-MI",
-    "Eurostat-WDI-UN_PopDiv-MI"),
-  PopulationFuture = c("SSPs-UN_PopDiv-MI", "SDPs-UN_PopDiv-MI", "SSP2EU-UN_PopDiv-MI"),
+  scenario = c("SSPs", "SDPs", "SSP2EU"),
+  PopulationCalib = NULL,
+  PopulationPast = NULL,
+  PopulationFuture = NULL,
   extension2150 = "bezier",
   FiveYearSteps = TRUE,
   naming = "indicator_scenario"
@@ -25,6 +25,10 @@ calcPopulationFuture(
 calcPopulationPast(PopulationPast = "WDI-UN_PopDiv-MI")
 }
 \arguments{
+\item{scenario}{A character vector designating the scenario(s) to be returned. See \code{\link[=toolGetScenarioDefinition]{toolGetScenarioDefinition()}} to
+learn what scenarios are available. This argument is the recommend - and quickest - way to choose
+a scenario. If more fine-tunning is necessary, use the xCalib, xPast and xFuture arguments directly.}
+
 \item{PopulationCalib}{A string designating the harmonization function.
 Available harmonization functions are:
 \itemize{
@@ -105,8 +109,9 @@ complete scenarios.
 
 By default, calcPopulation returns the following scenarios:
 \itemize{
-\item the SSPs, i.e. SSP1-5 and SSP2EU
+\item the SSPs, i.e. SSP1-5
 \item the SDPs, i.e. SDP, SDP_EI, SDP_RC, and SDP_MC
+\item SSP2EU
 }
 }
 \section{Functions}{
@@ -119,6 +124,15 @@ By default, calcPopulation returns the following scenarios:
 \section{Combining data sources with "-"}{
 Past and Future data sources can be combined with "-" and given as arguments to the function, i.e. "WDI-MI". This
 signifies that WDI data will be taken first, but missing data will be then be filled in with data from MI.
+\subsection{Another title}{
+
+test what happnes
+}
+
+\subsection{And another}{
+
+anything?
+}
 }
 
 \section{Vectorization of arguments}{
@@ -144,11 +158,12 @@ library(mrdrivers)
 # For the default scenarios
 calcOutput("Population")
 
+# For just the SSP2EU scenario
+calcOutput("Population", scenario = "SSP2EU")
+
 # For the ISIMIP SSP scenarios
 calcOutput("Population",
-           PopulationCalib  = "calibISIMIP",
-           PopulationPast   = "UN_PopDiv-MI",
-           PopulationFuture = "SSPs-UN_PopDiv-MI",
+           scenario = "ISIMIP",
            extension2150 = "none",
            FiveYearSteps = FALSE,
            aggregate = FALSE)

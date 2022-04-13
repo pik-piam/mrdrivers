@@ -7,9 +7,10 @@
 \title{Get GDP scenarios and building blocks}
 \usage{
 calcGDP(
-  GDPCalib = c("calibSSPs", "calibSDPs", "calibSSP2EU"),
-  GDPPast = c("WDI-MI", "WDI-MI", "Eurostat-WDI-MI"),
-  GDPFuture = c("SSPs-MI", "SDPs-MI", "SSP2EU-MI"),
+  scenario = c("SSPs", "SDPs", "SSP2EU"),
+  GDPCalib = NULL,
+  GDPPast = NULL,
+  GDPFuture = NULL,
   unit = "constant 2005 Int$PPP",
   extension2150 = "bezier",
   FiveYearSteps = TRUE,
@@ -26,7 +27,11 @@ calcGDPFuture(
 calcGDPPast(GDPPast = "WDI-MI", unit = "constant 2005 Int$PPP")
 }
 \arguments{
-\item{GDPCalib}{A string designating the harmonization function.
+\item{scenario}{A character vector designating the scenario(s) to be returned. See \code{\link[=toolGetScenarioDefinition]{toolGetScenarioDefinition()}} to
+learn what scenarios are available. This argument is the recommend - and quickest - way to choose
+a scenario. If more fine-tunning is necessary, use the xCalib, xPast and xFuture arguments directly.}
+
+\item{GDPCalib}{NULL (default), or a string designating the harmonization function.
 Available harmonization functions are:
 \itemize{
 \item "calibSSPs": use past data, short term growth rates from IMF and afterwards transition between GDPPast
@@ -42,7 +47,7 @@ with future and after 2070 converge to 2150 SSP2 values.
 transition period until 2050
 }}
 
-\item{GDPPast}{A string designating the source for the historical GDP data.
+\item{GDPPast}{NULL (default), or a string designating the source for the historical GDP data.
 Available sources are:
 \itemize{
 \item "WDI": World development indicators from the World Bank
@@ -59,7 +64,7 @@ capita GDP will be multiplied by WDI population data to get absoulte GDP data.
 }
 See the "Combining data sources with '-'" section below for how to combine data sources.}
 
-\item{GDPFuture}{A string designating the source for the future GDP data.
+\item{GDPFuture}{NULL (default), or a string designating the source for the future GDP data.
 Available sources are:
 \itemize{
 \item "SSPs": IIASA \href{https://tntcat.iiasa.ac.at/SspDb/dsd?Action=htmlpage&page=welcome}{SSP database}
@@ -122,8 +127,9 @@ specific GDP data, or when constructing new complete scenarios.
 
 By default, calcGDP returns the following scenarios:
 \itemize{
-\item the SSPs, i.e. SSP1-5 and SSP2EU
+\item the SSPs, i.e. SSP1-5
 \item the SDPs, i.e. SDP, SDP_EI, SDP_RC, and SDP_MC
+\item SSP2EU
 }
 }
 \section{Functions}{
@@ -136,6 +142,15 @@ By default, calcGDP returns the following scenarios:
 \section{Combining data sources with "-"}{
 Past and Future data sources can be combined with "-" and given as arguments to the function, i.e. "WDI-MI". This
 signifies that WDI data will be taken first, but missing data will be then be filled in with data from MI.
+\subsection{Another title}{
+
+test what happnes
+}
+
+\subsection{And another}{
+
+anything?
+}
 }
 
 \section{Vectorization of arguments}{

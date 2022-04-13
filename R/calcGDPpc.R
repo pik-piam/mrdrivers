@@ -14,8 +14,9 @@
 #'
 #' By default, calcGDPpc returns the following scenarios:
 #' \itemize{
-#'   \item the SSPs, i.e. SSP1-5 and SSP2EU
+#'   \item the SSPs, i.e. SSP1-5
 #'   \item the SDPs, i.e. SDP, SDP_EI, SDP_RC, and SDP_MC
+#'   \item SSP2EU
 #' }
 #'
 #' @param GDPpcCalib String or vector of strings
@@ -36,19 +37,31 @@
 #' calcOutput("GDPpc")
 #' }
 #'
-calcGDPpc <- function(GDPpcCalib  = c("calibSSPs", "calibSDPs", "calibSSP2EU"),     # nolint
-                      GDPpcPast   = c("WDI-MI",    "WDI-MI",    "Eurostat-WDI-MI"), # nolint
-                      GDPpcFuture = c("SSPs-MI",   "SDPs-MI",   "SSP2EU-MI"),       # nolint
+calcGDPpc <- function(scenario = c("SSPs", "SDPs", "SSP2EU"),
+                      GDPpcCalib  = NULL,                      # nolint
+                      GDPpcPast   = NULL,                      # nolint
+                      GDPpcFuture = NULL,                      # nolint
                       unit = "constant 2005 Int$PPP",
                       extension2150 = "bezier",
-                      FiveYearSteps = TRUE,                                         # nolint
+                      FiveYearSteps = TRUE,                    # nolint
                       average2020 = TRUE,
                       naming = "indicator_scenario") {
   # Check user input
   toolCheckUserInput("GDPpc", as.list(environment()))
-  # Call calcInternalGDPpc function the appropriate number of times (map) and combine (reduce)
+
+  # If the xPast, xFuture and xCalib arguments are null, then query them using "scenario" and load them into the
+  # function environment.
+  if (is.null(c(GDPpcCalib, GDPpcPast, GDPpcFuture))) {
+    invisible(list2env(toolGetScenarioDefinition("GDPpc", scenario, unlist = TRUE), environment()))
+  }
+
+  # Create a list of all the arguments, dropping the scenario argument, which isn't required for the internal
+  # calculation.
+  h <- as.list(environment())
+  l <- purrr::keep(h, names(h) != "scenario")
+  # Call calcInternalGDP function the appropriate number of times (map) and combine (reduce)
   # !! Keep formula syntax for madrat caching to work
-  purrr::pmap(as.list(environment()), ~calcOutput("InternalGDPpc", aggregate = FALSE, supplementary = TRUE, ...)) %>%
+  purrr::pmap(l, ~calcOutput("InternalGDPpc", aggregate = FALSE, supplementary = TRUE, ...)) %>%
     toolReduce()
 }
 

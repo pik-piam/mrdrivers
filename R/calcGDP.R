@@ -14,13 +14,18 @@
 #'
 #' By default, calcGDP returns the following scenarios:
 #'  \itemize{
-#'    \item the SSPs, i.e. SSP1-5 and SSP2EU
+#'    \item the SSPs, i.e. SSP1-5
 #'    \item the SDPs, i.e. SDP, SDP_EI, SDP_RC, and SDP_MC
+#'    \item SSP2EU
 #'  }
 #'
 #' @details # Combining data sources with "-"
 #'  Past and Future data sources can be combined with "-" and given as arguments to the function, i.e. "WDI-MI". This
 #'  signifies that WDI data will be taken first, but missing data will be then be filled in with data from MI.
+#'  ## Another title
+#'  test what happnes
+#'  ## And another
+#'  anything?
 #'
 #' @details # Vectorization of arguments
 #'  Vectors are accepted for -Calib, -Past and -Future arguments.
@@ -37,7 +42,11 @@
 #'  Set the `supplementary` argument of [madrat::calcOutput()] to `TRUE` to return a list with the scenarios and
 #'  additional information on the unit, the data sources and the harmonization function.
 #'
-#' @param GDPCalib A string designating the harmonization function.
+#' @param scenario A character vector designating the scenario(s) to be returned. See [toolGetScenarioDefinition()] to
+#'  learn what scenarios are available. This argument is the recommend - and quickest - way to choose
+#'  a scenario. If more fine-tunning is necessary, use the xCalib, xPast and xFuture arguments directly.
+#'
+#' @param GDPCalib NULL (default), or a string designating the harmonization function.
 #'   Available harmonization functions are:
 #'   \itemize{
 #'     \item "calibSSPs": use past data, short term growth rates from IMF and afterwards transition between GDPPast
@@ -53,7 +62,7 @@
 #'                              transition period until 2050
 #'   }
 #'
-#' @param GDPPast A string designating the source for the historical GDP data.
+#' @param GDPPast NULL (default), or a string designating the source for the historical GDP data.
 #'   Available sources are:
 #'   \itemize{
 #'     \item "WDI": World development indicators from the World Bank
@@ -70,7 +79,7 @@
 #'   }
 #'   See the "Combining data sources with '-'" section below for how to combine data sources.
 #'
-#' @param GDPFuture A string designating the source for the future GDP data.
+#' @param GDPFuture NULL (default), or a string designating the source for the future GDP data.
 #'   Available sources are:
 #'   \itemize{
 #'     \item "SSPs": IIASA [SSP database](https://tntcat.iiasa.ac.at/SspDb/dsd?Action=htmlpage&page=welcome)
@@ -135,9 +144,10 @@
 #'            FiveYearSteps = FALSE)
 #' }
 #'
-calcGDP <- function(GDPCalib  = c("calibSSPs", "calibSDPs", "calibSSP2EU"),
-                    GDPPast   = c("WDI-MI",    "WDI-MI",    "Eurostat-WDI-MI"),
-                    GDPFuture = c("SSPs-MI",   "SDPs-MI",   "SSP2EU-MI"),
+calcGDP <- function(scenario  = c("SSPs", "SDPs", "SSP2EU"),
+                    GDPCalib  = NULL,                          # nolint
+                    GDPPast   = NULL,                          # nolint
+                    GDPFuture = NULL,                          # nolint
                     unit = "constant 2005 Int$PPP",
                     extension2150 = "bezier",
                     FiveYearSteps = TRUE,
@@ -145,9 +155,20 @@ calcGDP <- function(GDPCalib  = c("calibSSPs", "calibSDPs", "calibSSP2EU"),
                     naming = "indicator_scenario") {
   # Check user input
   toolCheckUserInput("GDP", as.list(environment()))
+
+  # If the xPast, xFuture and xCalib arguments are null, then query them using "scenario" and load them into the
+  # function environment.
+  if (is.null(c(GDPCalib, GDPPast, GDPFuture))) {
+    invisible(list2env(toolGetScenarioDefinition("GDP", scenario, unlist = TRUE), environment()))
+  }
+
+  # Create a list of all the arguments, dropping the scenario argument, which isn't required for the internal
+  # calculation.
+  h <- as.list(environment())
+  l <- purrr::keep(h, names(h) != "scenario")
   # Call calcInternalGDP function the appropriate number of times (map) and combine (reduce)
   # !! Keep formula syntax for madrat caching to work
-  purrr::pmap(as.list(environment()), ~calcOutput("InternalGDP", aggregate = FALSE, supplementary = TRUE, ...)) %>%
+  purrr::pmap(l, ~calcOutput("InternalGDP", aggregate = FALSE, supplementary = TRUE, ...)) %>%
     toolReduce()
 }
 
@@ -276,15 +297,13 @@ toolGDPHarmonizeSSP2EU <- function(past, future, unit) {
   # We explicitly use the bezier Extension for SSP2 here, but only for harmonization purposes.
   # We return only up until 2100.
   ssp2_data <- calcOutput("GDP",
-                          GDPCalib = "calibSSPs",
-                          GDPPast = "WDI-MI",
-                          GDPFuture = "SSPs-MI",
+                          scenario = "SSPs",
                           unit = unit,
                           extension2150 = "bezier",
                           FiveYearSteps = FALSE,
                           average2020 = FALSE,
                           aggregate = FALSE) %>%
-  `[`(,, "gdp_SSP2")
+    `[`(, , "gdp_SSP2")
 
   # For SSP2EU: simply glue past (until 2019) with future (starting 2020)
   # Get EUR countries.

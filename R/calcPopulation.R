@@ -15,8 +15,9 @@
 #'
 #' By default, calcPopulation returns the following scenarios:
 #'  \itemize{
-#'    \item the SSPs, i.e. SSP1-5 and SSP2EU
+#'    \item the SSPs, i.e. SSP1-5
 #'    \item the SDPs, i.e. SDP, SDP_EI, SDP_RC, and SDP_MC
+#'    \item SSP2EU
 #'  }
 #'
 #' @param PopulationCalib A string designating the harmonization function.
@@ -74,34 +75,40 @@
 #' # For the default scenarios
 #' calcOutput("Population")
 #'
+#' # For just the SSP2EU scenario
+#' calcOutput("Population", scenario = "SSP2EU")
+#'
 #' # For the ISIMIP SSP scenarios
 #' calcOutput("Population",
-#'            PopulationCalib  = "calibISIMIP",
-#'            PopulationPast   = "UN_PopDiv-MI",
-#'            PopulationFuture = "SSPs-UN_PopDiv-MI",
+#'            scenario = "ISIMIP",
 #'            extension2150 = "none",
 #'            FiveYearSteps = FALSE,
 #'            aggregate = FALSE)
 #' }
 #'
-calcPopulation <- function(PopulationCalib  = c("calibSSPs",                  # nolint
-                                                "calibSDPs",
-                                                "calibSSP2EU"),
-                           PopulationPast   = c("WDI-UN_PopDiv-MI",           # nolint
-                                                "WDI-UN_PopDiv-MI",
-                                                "Eurostat-WDI-UN_PopDiv-MI"),
-                           PopulationFuture = c("SSPs-UN_PopDiv-MI",          # nolint
-                                                "SDPs-UN_PopDiv-MI",
-                                                "SSP2EU-UN_PopDiv-MI"),
+calcPopulation <- function(scenario = c("SSPs", "SDPs", "SSP2EU"),
+                           PopulationCalib  = NULL,                   # nolint
+                           PopulationPast   = NULL,                   # nolint
+                           PopulationFuture = NULL,                   # nolint
                            extension2150 = "bezier",
-                           FiveYearSteps = TRUE,                              # nolint
+                           FiveYearSteps = TRUE,                      # nolint
                            naming = "indicator_scenario") {
   # Check user input
   toolCheckUserInput("Population", as.list(environment()))
+
+  # If the xPast, xFuture and xCalib arguments are null, then query them using "scenario" and load them into the
+  # function environment.
+  if (is.null(c(PopulationCalib, PopulationPast, PopulationFuture))) {
+    invisible(list2env(toolGetScenarioDefinition("Population", scenario, unlist = TRUE), environment()))
+  }
+
+  # Create a list of all the arguments, dropping the scenario argument, which isn't required for the internal
+  # calculation.
+  h <- as.list(environment())
+  l <- purrr::keep(h, names(h) != "scenario")
   # Call calcInternalPopulation function the appropriate number of times (map) and combine (reduce)
   # !! Keep formula syntax for madrat caching to work
-  purrr::pmap(as.list(environment()),
-              ~calcOutput("InternalPopulation", aggregate = FALSE, supplementary = TRUE, ...)) %>%
+  purrr::pmap(l, ~calcOutput("InternalPopulation", aggregate = FALSE, supplementary = TRUE, ...)) %>%
     toolReduce()
 }
 
