@@ -28,8 +28,8 @@ calcGDPPast(GDPPast = "WDI-MI", unit = "constant 2005 Int$PPP")
 }
 \arguments{
 \item{scenario}{A character vector designating the scenario(s) to be returned. See \code{\link[=toolGetScenarioDefinition]{toolGetScenarioDefinition()}} to
-learn what scenarios are available. This argument is the recommend - and quickest - way to choose
-a scenario. If more fine-tunning is necessary, use the xCalib, xPast and xFuture arguments directly.}
+learn what scenarios are available. This argument is the recommended - and quickest - way to choose
+a scenario. If more fine-tuning is necessary, use the xCalib, xPast and xFuture arguments directly.}
 
 \item{GDPCalib}{NULL (default), or a string designating the harmonization function.
 Available harmonization functions are:
@@ -134,13 +134,13 @@ By default, calcGDP returns the following scenarios:
 }
 \section{Functions}{
 \itemize{
-\item \code{calcGDPFuture}: Get future GDP projections
+\item \code{calcGDPFuture()}: Get future GDP projections
 
-\item \code{calcGDPPast}: Get historic GDP data
+\item \code{calcGDPPast()}: Get historic GDP data
+
 }}
-
 \section{Combining data sources with "-"}{
-Past and Future data sources can be combined with "-" and given as arguments to the function, i.e. "WDI-MI". This
+Data sources can be combined with "-" and passed to both the -Past and -Future arguments, i.e. "WDI-MI". This
 signifies that WDI data will be taken first, but missing data will be then be filled in with data from MI.
 \subsection{Another title}{
 
@@ -175,14 +175,7 @@ additional information on the unit, the data sources and the harmonization funct
 library(mrdrivers)
 calcOutput("GDP")
 # or, for the now-outdated GDP scenarios used before summer 2021,
-calcOutput("GDP",
-           GDPCalib = "past_transition",
-           GDPPast = "IHME_USD05_PPP_pc-MI",
-           GDPFuture = "SSPs-MI",
-           extension2150 = "none",
-           average2020 = FALSE,
-           aggregate = FALSE,
-           FiveYearSteps = FALSE)
+calcOutput("GDP", scenario = "SSPsOld", extension2150 = "constant", average2020 = FALSE)
 }
 
 \dontrun{

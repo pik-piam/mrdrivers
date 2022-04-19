@@ -20,9 +20,9 @@ Read-in xlsx file from the World Bank's Population Estimates And Projections
 }
 \section{Functions}{
 \itemize{
-\item \code{convertPEAP}: Convert data from the World Bank's Population Estimates And Projections dataset
-}}
+\item \code{convertPEAP()}: Convert data from the World Bank's Population Estimates And Projections dataset
 
+}}
 \seealso{
 \code{\link[madrat:readSource]{madrat::readSource()}}
 

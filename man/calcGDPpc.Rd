@@ -29,8 +29,8 @@ calcGDPpcPast(GDPpcPast = "WDI-MI", unit = "constant 2005 Int$PPP")
 }
 \arguments{
 \item{scenario}{A character vector designating the scenario(s) to be returned. See \code{\link[=toolGetScenarioDefinition]{toolGetScenarioDefinition()}} to
-learn what scenarios are available. This argument is the recommend - and quickest - way to choose
-a scenario. If more fine-tunning is necessary, use the xCalib, xPast and xFuture arguments directly.}
+learn what scenarios are available. This argument is the recommended - and quickest - way to choose
+a scenario. If more fine-tuning is necessary, use the xCalib, xPast and xFuture arguments directly.}
 
 \item{GDPpcCalib}{String or vector of strings}
 
@@ -96,13 +96,13 @@ By default, calcGDPpc returns the following scenarios:
 }
 \section{Functions}{
 \itemize{
-\item \code{calcGDPpcFuture}: Get future GDPpc projections
+\item \code{calcGDPpcFuture()}: Get future GDPpc projections
 
-\item \code{calcGDPpcPast}: Get historic GDPpc data
+\item \code{calcGDPpcPast()}: Get historic GDPpc data
+
 }}
-
 \section{Combining data sources with "-"}{
-Past and Future data sources can be combined with "-" and given as arguments to the function, i.e. "WDI-MI". This
+Data sources can be combined with "-" and passed to both the -Past and -Future arguments, i.e. "WDI-MI". This
 signifies that WDI data will be taken first, but missing data will be then be filled in with data from MI.
 \subsection{Another title}{
 

@@ -138,6 +138,10 @@ calcInternalPopulation <- function(PopulationCalib,  # nolint
     "calibSDPs"       = toolHarmonizeSSPsSDPs(past, future),
     "calibSSP2EU"     = toolHarmonizeSSP2EU(past, future),
     "calibISIMIP"     = toolHarmonizeISIMIP(past, future, yEnd = 2030),
+    # Required for weights of GDPpc noCovid, longCovid and shortCovid scenarios
+    "calibNoCovid"    = toolHarmonizeSSPsSDPs(past, future),
+    "calibLongCovid"  = toolHarmonizeSSPsSDPs(past, future),
+    "calibShortCovid" = toolHarmonizeSSPsSDPs(past, future),
     # Deprecated?
     "past"            = toolPopHarmonizePast(past, future),
     "future"          = toolHarmonizeFuture(past, future),
@@ -148,35 +152,32 @@ calcInternalPopulation <- function(PopulationCalib,  # nolint
   )
 
   # Get description of harmonization function.
-  datasettype <- switch(
+  description <- switch(
     PopulationCalib,
-    "calibSSPs"       = glue("use past data from {PopulationPast}, then the growth rates \\
-                             from the Wolrld Bank's PEAP until \\
-                             {max(getYears(readSource('IMF'), as.integer = TRUE))}, \\
-                             and then the growth rates from {PopulationFuture}."),
-    "calibSDPs"       = glue("use past data from {PopulationPast}, then the growth rates \\
-                             from the Wolrld Bank's PEAP until \\
-                             {max(getYears(readSource('IMF'), as.integer = TRUE))}, \\
-                             and then the growth rates from {PopulationFuture}."),
-    "calibSSP2EU"     = glue("use past data from {PopulationPast}, then the growth rates \\
-                             from the Wolrld Bank's PEAP until \\
-                             {max(getYears(readSource('IMF'), as.integer = TRUE))}, \\
-                             and then the growth rates from {PopulationFuture}. \\
-                             For European countries, just glue past with future."),
-    "calibISIMIP"     = glue("use past data from {PopulationPast} - should be UN_PopDiv with data, \\
-                             currently, until 2020. Add the 2021 projections from UN_PopDiv. Then \\
-                             converge towards {PopulationFuture} by 2030."),
-    "calibUN_PopDiv"  = glue("use past data from {PopulationPast} and then future data from \\
-                              {PopulationFuture}."),
+    "calibSSPs"       = glue("use past data from {PopulationPast}, then the growth rates from the Wolrld Bank's PEAP \\
+                             until {max(getYears(readSource('IMF'), as.integer = TRUE))}, and then the growth rates \\
+                             from {PopulationFuture}."),
+    "calibSDPs"       = glue("use past data from {PopulationPast}, then the growth rates from the Wolrld Bank's PEAP \\
+                             until {max(getYears(readSource('IMF'), as.integer = TRUE))}, and then the growth rates \\
+                             from {PopulationFuture}."),
+    "calibSSP2EU"     = glue("use past data from {PopulationPast}, then the growth rates from the Wolrld Bank's PEAP \\
+                             until {max(getYears(readSource('IMF'), as.integer = TRUE))}, and then the growth rates \\
+                             from {PopulationFuture}. For European countries, just glue past with future."),
+    "calibISIMIP"     = glue("use past data from {PopulationPast} - should be UN_PopDiv with data, currently, until \\
+                             2020. Add the 2021 projections from UN_PopDiv. Then converge towards {PopulationFuture} \\
+                             by 2030."),
+    "calibUN_PopDiv"  = glue("use past data from {PopulationPast} and then future data from {PopulationFuture}."),
     "past"            = PopulationPast,
     "future"          = PopulationFuture,
-    "transition"      = glue("transition between {PopulationPast} and {PopulationFuture} \\
-                             with a transition period until 2020"),
-    "past_transition" = glue("use past data and afterwards transition between \\
-                             {PopulationPast} and {PopulationFuture} with a transition \\
-                             period until 2050"),
-    "past_grFuture"   = glue("use past data from {PopulationPast} and then the growth rates \\
+    "transition"      = glue("transition between {PopulationPast} and {PopulationFuture} with a transition period \\
+                             until 2020"),
+    "past_transition" = glue("use past data and afterwards transition between {PopulationPast} and \\
+                             {PopulationFuture} with a transition period until 2050"),
+    "past_grFuture"   = glue("use past data from {PopulationPast} and then the growth rates from {PopulationFuture}."),
+    "calibNoCovid"    = glue("use past data from {PopulationPast}, then the growth rates from the Wolrld Bank's PEAP \\
+                             until {max(getYears(readSource('IMF'), as.integer = TRUE))}, and then the growth rates \\
                              from {PopulationFuture}."),
+    "No description available.."
   )
 
   # Apply finishing touches to combined time-series
@@ -185,9 +186,8 @@ calcInternalPopulation <- function(PopulationCalib,  # nolint
   list(x = combined,
        weight = NULL,
        unit = "million",
-       description = glue("Population data. Datasource for the Past: {PopulationPast}. \\
-                          Datasource for the Future: {PopulationFuture}. Calibrated \\
-                          to {datasettype}"))
+       description = glue("Population data. Datasource for the Past: {PopulationPast}. Datasource for the Future: \\
+                          {PopulationFuture}. Calibrated to {description}"))
 
 }
 
@@ -199,16 +199,12 @@ toolHarmonizeSSPsSDPs <- function(past, future) {
   # "short-term", defined as being later than the last year of the IMF WEO data.
   shortTerm <- readSource("PEAP")
   fill <- readSource("MissingIslands", subtype = "pop", convert = FALSE)
-  shortTerm <- shortTerm %>%
-    toolFillWith(fill) %>%
-    toolInterpolateAndExtrapolate()
+  shortTerm <- shortTerm %>% toolFillWith(fill) %>% toolInterpolateAndExtrapolate()
   lastYearIMF <- max(getYears(readSource("IMF"), as.integer = TRUE))
   shortTerm <- shortTerm[, getYears(shortTerm, as.integer = TRUE) <= lastYearIMF, ]
 
   # Use PEAP growth rates until last year of IMF WEO data, and future growth rates after that
-  past %>%
-    toolHarmonizePastGrFuture(shortTerm) %>%
-    toolHarmonizePastGrFuture(future)
+  past %>% toolHarmonizePastGrFuture(shortTerm) %>% toolHarmonizePastGrFuture(future)
 }
 
 toolHarmonizeSSP2EU <- function(past, future) {

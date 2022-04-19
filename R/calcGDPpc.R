@@ -87,7 +87,7 @@ calcInternalGDPpc <- function(GDPpcCalib,    # nolint
   # Depending on the chosen GDPpcCalib, the harmonization function either requires 'past' and
   # 'future' GDPpc scenarios, OR NOT, which is the case for "calibSDPs" for example, where
   # the computations are done based off of the combined SSP1 GDPpc scenario.
-  if (GDPpcCalib == "calibSSPs") {
+  if (GDPpcCalib %in% c("calibSSPs", "calibNoCovid")) {
     # Compute "past" and "future" time series.
     past <- calcOutput("GDPpcPast",
                        GDPpcPast = GDPpcPast,
@@ -106,9 +106,12 @@ calcInternalGDPpc <- function(GDPpcCalib,    # nolint
   # Combine "past" and "future" time series.
   combined <- switch(
     GDPpcCalib,
-    "calibSSPs"   = toolGDPpcHarmonizeSSP(past, future, constructUnit, yEnd = 2100),
-    "calibSDPs"   = toolGDPpcHarmonizeSDP(args),
-    "calibSSP2EU" = toolGDPpcHarmonizeSSP2EU(args),
+    "calibSSPs"       = toolGDPpcHarmonizeSSP(past, future, constructUnit, yEnd = 2100),
+    "calibSDPs"       = toolGDPpcHarmonizeSDP(args),
+    "calibSSP2EU"     = toolGDPpcHarmonizeSSP2EU(args),
+    "calibNoCovid"    = toolGDPpcHarmonizeSSP(past, future, constructUnit, yEnd = 2100, noCovid = TRUE),
+    "calibLongCovid"  = toolGDPpcHarmonizeLongCovid(args),
+    "calibShortCovid" = toolGDPpcHarmonizeShortCovid(args),
     stop("Bad input for calcGDPpc. Invalid 'GDPpcCalib' argument.")
   )
 
@@ -119,6 +122,12 @@ calcInternalGDPpc <- function(GDPpcCalib,    # nolint
                           between {GDPpcPast} and {GDPpcFuture} with a transition period until 2100. For \\
                           European countries, just glue past with future and after 2070 converge \\
                           to 2150 SSP2 values."),
+    "calibNoCovid" = glue("use past data until 2019, short term growth rates from IMF (WEO from Oct2019 - pre Covid) \\
+                           and afterwards transition to {GDPpcFuture} by 2100."),
+    "covidShortCovid" = glue("use past data, short term growth rates from IMF and afterwards transition to \\
+                             noCovid until 2030."),
+    "covidLongCovid" = glue("use past data, short term growth rates from IMF and afterwards growth rates from the \\
+                             noCovid scenario until 2100."),
     glue("use past data, short term growth rates from IMF and \\
           afterwards transition between {GDPpcPast} and {GDPpcFuture} \\
           with a transition period until 2100")
@@ -148,12 +157,14 @@ calcInternalGDPpc <- function(GDPpcCalib,    # nolint
                        aggregate = FALSE)
   # Give weight same names as data, so that aggregate doesn't mess up data dim
   getNames(weight) <- gsub("pop", "gdppc", getNames(weight))
+  # Make sure weight has the same yearly resolution as combined (this relates specifically to the noCovid scenario)
+  weight <- weight[, getYears(combined), ]
 
   list(x = combined,
        weight = weight,
        unit = unit,
-       description = glue("Datasource for the Past: {GDPpcPast}. Datasource for the Future: \\
-                           {GDPpcFuture}. Calibrated to {description}."))
+       description = glue("Datasource for the Past: {GDPpcPast}. Datasource for the Future: {GDPpcFuture}. Calibrated \\
+                          to {description}."))
 }
 
 
@@ -161,9 +172,19 @@ calcInternalGDPpc <- function(GDPpcCalib,    # nolint
 ######################################################################################
 # GDPpc Harmonization Functions
 ######################################################################################
-toolGDPpcHarmonizeSSP <- function(pastGDPpc, futureGDPpc, unit, yEnd) {
-  # Get IMF short-term income projcetions and fill missing with SSP2
-  imfGDPpc <- readSource("IMF", "GDPpc")
+toolGDPpcHarmonizeSSP <- function(pastGDPpc, futureGDPpc, unit, yEnd, noCovid = FALSE) {
+
+  if (!noCovid) {
+    # Get IMF short-term income projections and fill missing with SSP2
+    imfGDPpc <- readSource("IMF", "GDPpc")
+  } else{
+    # noCovid = TRUE leads to a counterfactual scenario where no Covid shock is experienced
+    ## Use past data only until 2019
+    pastGDPpc <- pastGDPpc[, getYears(pastGDPpc, as.integer = T)[getYears(pastGDPpc, as.integer = T) <= 2019], ]
+    ## Get pre-covid IMF short-term income projections and fill missing with SSP2
+    imfGDPpc <- readSource("IMF", "GDPpc", "WEOallOct2019.xls")
+  }
+
   fill <- calcOutput("GDPpcFuture",
                      GDPpcFuture = "SSPs-MI",
                      unit = unit,
@@ -212,7 +233,6 @@ toolGDPpcHarmonizeSSP <- function(pastGDPpc, futureGDPpc, unit, yEnd) {
   combinedGDPpc
 }
 
-
 toolGDPpcHarmonizeSDP <- function(args) {
 
   gdppcapSSP1 <- calcOutput("GDPpc",
@@ -239,7 +259,6 @@ toolGDPpcHarmonizeSDP <- function(args) {
   combined[is.nan(combined) | combined == Inf] <- 0
   combined
 }
-
 
 toolGDPpcHarmonizeSSP2EU <- function(args) {
   gdp <- calcOutput("GDP",
@@ -273,6 +292,64 @@ toolGDPpcHarmonizeSSP2EU <- function(args) {
   getNames(gdp) <- getNames(pop) <- gsub("pop", "gdppc", getNames(pop))
   gdp / pop
 }
+
+toolGDPpcHarmonizeShortCovid <- function(args) {
+
+  gdppcSSPs <- calcOutput("GDPpc",
+                          GDPpcCalib  = "calibSSPs",
+                          GDPpcPast   = args$GDPpcPast,
+                          GDPpcFuture = args$GDPpcFuture,
+                          unit = args$unit,
+                          extension2150 = "none",
+                          FiveYearSteps = FALSE,
+                          average2020 = FALSE,
+                          aggregate = FALSE)
+
+  gdppcNoCovid <- calcOutput("GDPpc",
+                             GDPpcCalib  = "calibNoCovid",
+                             GDPpcPast   = args$GDPpcPast,
+                             GDPpcFuture = args$GDPpcFuture,
+                             unit = args$unit,
+                             extension2150 = "none",
+                             FiveYearSteps = FALSE,
+                             average2020 = FALSE,
+                             aggregate = FALSE)
+
+  # Use SSPs until the last year of the IMF predictions, afterwards converge to NoCovid by 2030
+  yIMF <- max(getYears(readSource("IMF", "GDPpc"), as.integer = TRUE))
+  gdppcSSPs <- gdppcSSPs[, getYears(gdppcSSPs, as.integer = T)[getYears(gdppcSSPs, as.integer = T) <= yIMF], ]
+  mbind(purrr::map(1:5, ~toolHarmonizePastTransition(gdppcSSPs[, , .x], gdppcNoCovid[, , .x], yEnd = 2030)))
+}
+
+toolGDPpcHarmonizeLongCovid <- function(args) {
+
+  gdppcSSPs <- calcOutput("GDPpc",
+                          GDPpcCalib  = "calibSSPs",
+                          GDPpcPast   = args$GDPpcPast,
+                          GDPpcFuture = args$GDPpcFuture,
+                          unit = args$unit,
+                          extension2150 = "none",
+                          FiveYearSteps = FALSE,
+                          average2020 = FALSE,
+                          aggregate = FALSE)
+
+  gdppcNoCovid <- calcOutput("GDPpc",
+                             GDPpcCalib  = "calibNoCovid",
+                             GDPpcPast   = args$GDPpcPast,
+                             GDPpcFuture = args$GDPpcFuture,
+                             unit = args$unit,
+                             extension2150 = "none",
+                             FiveYearSteps = FALSE,
+                             average2020 = FALSE,
+                             aggregate = FALSE)
+
+  # Use SSPs until the last year of the IMF predictions, afterwards use NoCovid growth rates
+  yIMF <- max(getYears(readSource("IMF", "GDPpc"), as.integer = TRUE))
+  gdppcSSPs <- gdppcSSPs[, getYears(gdppcSSPs, as.integer = T)[getYears(gdppcSSPs, as.integer = T) <= yIMF], ]
+  mbind(purrr::map(1:5, ~toolHarmonizePastGrFuture(gdppcSSPs[, , .x], gdppcNoCovid[, , .x])))
+}
+
+
 
 
 #########################

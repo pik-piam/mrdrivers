@@ -78,7 +78,7 @@ calcInternalUrban <- function(UrbanCalib,    # nolint
   )
 
   # Get description of harmonization function.
-  datasettype <- switch(
+  description <- switch(
     UrbanCalib,
     "past"   = UrbanPast,
     "future" = UrbanFuture,
@@ -106,5 +106,5 @@ calcInternalUrban <- function(UrbanCalib,    # nolint
        unit = "share of population",
        description = glue("Urbanisation data. Datasource for the Past: {UrbanPast}. \\
                            Datasource for the Future: {UrbanFuture}. Calibrated \\
-                           to {datasettype}"))
+                           to {description}"))
 }

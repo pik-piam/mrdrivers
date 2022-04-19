@@ -28,9 +28,9 @@ from a .csv file to a magclass object
 }
 \section{Functions}{
 \itemize{
-\item \code{convertJames}: convert function
-}}
+\item \code{convertJames()}: convert function
 
+}}
 \examples{
 \dontrun{ 
 readSource("James", subtype = "IHME_USD05_PPP_pc")}

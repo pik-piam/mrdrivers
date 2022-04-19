@@ -27,9 +27,9 @@ and GDP
 }
 \section{Functions}{
 \itemize{
-\item \code{convertSRES}: convert function
-}}
+\item \code{convertSRES()}: convert function
 
+}}
 \examples{
 \dontrun{
 readSource("SRES", subtype = "pop_a1")

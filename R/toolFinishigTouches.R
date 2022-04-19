@@ -1,4 +1,4 @@
-# Apply finishig touches to the combined object, as found in calcGDP, calcGDPpc and calcPopulation
+# Apply finishing touches to the combined object, as found in calcGDP, calcGDPpc and calcPopulation
 # !!! toolFinishingTouches2 is only for calcGDPpc !!!
 # Why are there 2 functions? In order not to screw up madrat::getDependencies completely. Since the
 # average2020 option calls calcGDP and calcPopulation, thereby making every function that uses
@@ -78,12 +78,12 @@ toolFinishingTouches2 <- function(x,
     x <- GDPuc::convertGDP(x, constructUnit, unit, replace_NAs = c("linear", "no_conversion"))
   }
 
-  # For REMIND, the concensus is to avergae the 2020 value so as to dampen the effect of the COVID shock. (The
+  # For REMIND, the consensus is to average the 2020 value so as to dampen the effect of the COVID shock. (The
   # reasoning being that REMIND uses 5-year time steps, and that the year-in-itself should represent the 2,5 years
   # before and after.)
-  # The dampening is supposed to take place on GDP. So for GDP per capita in 2020 to be consitstent with the dampened
+  # The dampening is supposed to take place on GDP. So for GDP per capita in 2020 to be consistent with the dampened
   # GDP, it has to calculated from GDP and population. (In other words we can't just use the same formula as for GDP,
-  # sind it would lead to inconsistency at the end.) This is very hacky... A prettier solution should be developed in
+  # since it would lead to inconsistency at the end.) This is very hacky... A prettier solution should be developed in
   # the future. For now we assume GDP is filled with -MI!
   if (average2020) {
     helper <- calcOutput("GDP", unit = unit, naming = "scenario", aggregate = FALSE)[, 2020, ] /

@@ -28,23 +28,36 @@
 toolGetScenarioDefinition <- function(driver = NULL, scen = NULL, unlist = FALSE) {
 
   # Start of scenario-design section: Developers can modify this section!
-  gdpScenarios <- tibble::tribble(
-    ~scenario,   ~GDPPast,            ~GDPFuture,    ~GDPCalib,
-    "SSPs",      "WDI-MI",            "SSPs-MI",     "calibSSPs",
-    "SDPs",      "WDI-MI",            "SDPs-MI",     "calibSDPs",
-    "SSP2EU",    "Eurostat-WDI-MI",   "SSP2EU-MI",   "calibSSP2EU"
+
+  ## GDPpc scenarios
+  gdppcScenarios <- tibble::tribble(
+    ~scenario,    ~GDPpcPast,             ~GDPpcFuture,  ~GDPpcCalib,
+    "SSPs",       "WDI-MI",               "SSPs-MI",     "calibSSPs",
+    "SDPs",       "WDI-MI",               "SDPs-MI",     "calibSDPs",
+    "SSP2EU",     "Eurostat-WDI-MI",      "SSP2EU-MI",   "calibSSP2EU",
+    "noCovid",    "WDI-MI",               "SSPs-MI",     "calibNoCovid",
+    "longCovid",  "WDI-MI",               "SSPs-MI",     "calibLongCovid",
+    "shortCovid", "WDI-MI",               "SSPs-MI",     "calibShortCovid"
   )
 
-  gdppcScenarios <- gdpScenarios
-  colnames(gdppcScenarios) <- gsub("GDP", "GDPpc", colnames(gdppcScenarios))
-
+  ## Population scenarios
   popScenarios <- tibble::tribble(
     ~scenario,   ~PopulationPast,               ~PopulationFuture,      ~PopulationCalib,
     "SSPs",      "WDI-UN_PopDiv-MI",            "SSPs-UN_PopDiv-MI",    "calibSSPs",
     "SDPs",      "WDI-UN_PopDiv-MI",            "SDPs-UN_PopDiv-MI",    "calibSDPs",
     "SSP2EU",    "Eurostat-WDI-UN_PopDiv-MI",   "SSP2EU-UN_PopDiv-MI",  "calibSSP2EU",
-    "ISIMIP",    "UN_PopDiv-MI",                "SSPs-UN_PopDiv-MI",    "calibISIMIP"
+    "ISIMIP",    "UN_PopDiv-MI",                "SSPs-UN_PopDiv-MI",    "calibISIMIP",
+    "SSPsOld",   "WDI-MI",                      "SSPs_old-MI",          "past_transition"
   )
+
+  ## GDP scenarios
+  gdpScenarios <- tibble::tribble(
+    ~scenario,    ~GDPPast,                 ~GDPFuture,    ~GDPCalib,
+    "SSPsOld",    "IHME_USD05_PPP_pc-MI",   "SSPs-MI",     "past_transition",
+  )
+  # GDP scenarios created by multiplying GDPpc and Population
+  gdpScenarios <- dplyr::bind_rows(gdpScenarios, dplyr::rename_with(gdppcScenarios, ~gsub("GDPpc", "GDP", .x)))
+
 
   s <- list("GDP" = gdpScenarios,
             "Population" = popScenarios,

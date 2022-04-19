@@ -20,9 +20,9 @@ Read-in an PWT data .xlsx file as magclass object
 }
 \section{Functions}{
 \itemize{
-\item \code{convertPWT}: Convert PWT data
-}}
+\item \code{convertPWT()}: Convert PWT data
 
+}}
 \seealso{
 Other "Past" GDPpc functions: 
 \code{\link{readJames2019}()},

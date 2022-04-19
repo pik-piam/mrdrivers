@@ -43,9 +43,9 @@ object.
 }
 \section{Functions}{
 \itemize{
-\item \code{convertWDI}: Convert WDI data
-}}
+\item \code{convertWDI()}: Convert WDI data
 
+}}
 \examples{
 \dontrun{
 library(mrdrivers)

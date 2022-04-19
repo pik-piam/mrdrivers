@@ -5,12 +5,14 @@
 \alias{convertIMF}
 \title{Read IMF}
 \usage{
-readIMF(subtype = "current_account")
+readIMF(subtype = "current_account", subset = "WEOall.xls")
 
 convertIMF(x, subtype = "current_account")
 }
 \arguments{
 \item{subtype}{Either "current_account" or "GDPpc"}
+
+\item{subset}{Either "WEOall.xls" or "WEOallOct2019.xls"}
 
 \item{x}{MAgPIE object returned by readIMF}
 }
@@ -22,9 +24,9 @@ Read-in IMF data
 }
 \section{Functions}{
 \itemize{
-\item \code{convertIMF}: Convert IMF data
-}}
+\item \code{convertIMF()}: Convert IMF data
 
+}}
 \examples{
 \dontrun{
 a <- readSource(type = "IMF")
