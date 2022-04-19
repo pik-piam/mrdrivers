@@ -1,8 +1,8 @@
 skip_on_ci()
 skip_on_covr()
 skip_on_cran()
-skip_if_not(dir.exists(getOption("madrat_cfg")$mainfolder),
-            glue("Skipped, because the madrat mainfolder {getOption('madrat_cfg')$mainfolder} \\
+skip_if_not(dir.exists(madrat_mainfolder),
+            glue("Skipped, because the madrat mainfolder {madrat_mainfolder} \\
                   defined in 'tests/setup_madrat_config.R' could not be found.
                   If you wish to run this test please configure the file appropriately."))
 

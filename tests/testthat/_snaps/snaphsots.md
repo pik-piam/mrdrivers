@@ -793,3 +793,4 @@
         "package": "magclass"
       }
     }
+
