@@ -8,7 +8,7 @@ toolFillWith <- function(data, fill) {
   # Fill out the "fill" object
   fill <- time_interpolate(fill, interpolated_year = getYears(data), extrapolation_type = "constant")
   # Get countries with missing data (only zeros)
-  missing <- where(setYears(dimSums(data, dim = 2), "y0000") == 0)$true$region
+  missing <- where(setYears(dimSums(data, dim = 2), "y0000") == 0)$true$regions
 
   if (!all(missing %in% getItems(fill, 1))) {
      leftOver <- setdiff(missing, getItems(fill, 1)) # nolint
