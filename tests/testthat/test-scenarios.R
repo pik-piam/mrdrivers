@@ -27,5 +27,3 @@ test_that("All scenarios work", {
   purrr::map(gdp1, ~expectCorrectOutput(calcOutput("GDP", scenario = .x)))
   expectCorrectOutput(calcOutput("GDP", scenario = "SSPsOld", average2020 = FALSE))
 })
-
-

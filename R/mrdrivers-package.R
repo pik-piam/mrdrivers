@@ -15,3 +15,7 @@
 #' @exportPattern "^(calc|read|convert|download)[^Internal]"
 #' @keywords internal
 NULL
+
+# Suppress R CMD check note
+#' @importFrom lifecycle deprecate_soft
+NULL

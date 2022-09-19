@@ -275,7 +275,7 @@ toolGDPHarmonizeWithGDPpc <- function(args) {
                       average2020 = FALSE,
                       aggregate = FALSE,
                       supplementary = TRUE)
-  # GDP = GDPpc * population
+  # GDP is equal to GDPpc * population
   gdp <- gdppc$x * gdppc$weight
   getNames(gdp) <- gsub("gdppc", "gdp", getNames(gdp))
   gdp
@@ -299,17 +299,17 @@ toolGDPHarmonizeSSP2EU <- function(past, future, unit) {
   fut_years <- getYears(future)[getYears(future, as.integer = TRUE) >= max(getYears(past, as.integer = TRUE))]
 
   SSP2EU_data <- ssp2_data
-  SSP2EU_data[euCountries, getYears(past),] <- past[euCountries,,]
-  SSP2EU_data[euCountries, fut_years,] <- future[euCountries, fut_years,]
+  SSP2EU_data[euCountries, getYears(past), ] <- past[euCountries, , ]
+  SSP2EU_data[euCountries, fut_years, ] <- future[euCountries, fut_years, ]
 
   # After 2070, transition to SSP2 values by 2150
   past_years <- getYears(future)[getYears(future, as.integer = TRUE) <= 2070]
-  combined_SSP2EU <- toolHarmonizePastTransition(SSP2EU_data[euCountries, past_years,],
-                                                 ssp2_data[euCountries,,],
+  combined_SSP2EU <- toolHarmonizePastTransition(SSP2EU_data[euCountries, past_years, ],
+                                                 ssp2_data[euCountries, , ],
                                                  2150)
 
   combined <- ssp2_data
-  combined[euCountries, getYears(combined_SSP2EU),]  <- combined_SSP2EU[euCountries,,]
+  combined[euCountries, getYears(combined_SSP2EU), ]  <- combined_SSP2EU[euCountries, , ]
   getNames(combined) <- "gdp_SSP2EU"
 
   combined[, getYears(combined)[getYears(combined, as.integer = TRUE) <= 2100], ]

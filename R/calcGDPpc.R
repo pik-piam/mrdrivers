@@ -177,10 +177,10 @@ toolGDPpcHarmonizeSSP <- function(pastGDPpc, futureGDPpc, unit, yEnd, noCovid = 
   if (!noCovid) {
     # Get IMF short-term income projections and fill missing with SSP2
     imfGDPpc <- readSource("IMF", "GDPpc")
-  } else{
+  } else {
     # noCovid = TRUE leads to a counterfactual scenario where no Covid shock is experienced
     ## Use past data only until 2019
-    pastGDPpc <- pastGDPpc[, getYears(pastGDPpc, as.integer = T)[getYears(pastGDPpc, as.integer = T) <= 2019], ]
+    pastGDPpc <- pastGDPpc[, getYears(pastGDPpc, as.integer = T)[getYears(pastGDPpc, as.integer = TRUE) <= 2019], ]
     ## Get pre-covid IMF short-term income projections and fill missing with SSP2
     imfGDPpc <- readSource("IMF", "GDPpc", "WEOallOct2019.xls")
   }
@@ -317,7 +317,7 @@ toolGDPpcHarmonizeShortCovid <- function(args) {
 
   # Use SSPs until the last year of the IMF predictions, afterwards converge to NoCovid by 2030
   yIMF <- max(getYears(readSource("IMF", "GDPpc"), as.integer = TRUE))
-  gdppcSSPs <- gdppcSSPs[, getYears(gdppcSSPs, as.integer = T)[getYears(gdppcSSPs, as.integer = T) <= yIMF], ]
+  gdppcSSPs <- gdppcSSPs[, getYears(gdppcSSPs, as.integer = TRUE)[getYears(gdppcSSPs, as.integer = TRUE) <= yIMF], ]
   mbind(purrr::map(1:5, ~toolHarmonizePastTransition(gdppcSSPs[, , .x], gdppcNoCovid[, , .x], yEnd = 2030)))
 }
 
@@ -345,7 +345,7 @@ toolGDPpcHarmonizeLongCovid <- function(args) {
 
   # Use SSPs until the last year of the IMF predictions, afterwards use NoCovid growth rates
   yIMF <- max(getYears(readSource("IMF", "GDPpc"), as.integer = TRUE))
-  gdppcSSPs <- gdppcSSPs[, getYears(gdppcSSPs, as.integer = T)[getYears(gdppcSSPs, as.integer = T) <= yIMF], ]
+  gdppcSSPs <- gdppcSSPs[, getYears(gdppcSSPs, as.integer = TRUE)[getYears(gdppcSSPs, as.integer = TRUE) <= yIMF], ]
   mbind(purrr::map(1:5, ~toolHarmonizePastGrFuture(gdppcSSPs[, , .x], gdppcNoCovid[, , .x])))
 }
 
