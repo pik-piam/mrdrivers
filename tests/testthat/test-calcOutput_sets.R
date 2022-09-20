@@ -130,6 +130,18 @@ test_that("GDPpc is equal to GDP divided by pop", {
   expect_equal(x, y)
 })
 
+
+test_that("GDPpc factored by its weight is equal to GDP", {
+  l <- calcOutput("GDPpc", extension2150 = "none", naming = "scenario", aggregate = FALSE, supplementary = TRUE)
+  x <- l$x * l$weight
+
+  y <- calcOutput("GDP", extension2150 = "none", naming = "scenario", aggregate = FALSE)
+
+  # Remove comments before comparing
+  comment(x) <- NULL
+  expect_equal(x, y)
+})
+
 test_that("average2020 works", {
   x <-  calcOutput("GDP", extension2150 = "none", FiveYearSteps = FALSE)
   y <-  calcOutput("GDP", extension2150 = "none", average2020 = FALSE, FiveYearSteps = FALSE)

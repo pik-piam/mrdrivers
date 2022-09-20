@@ -25,9 +25,9 @@ Read ARIADNE Reference Scenario data from various .xls files as magpie object
 }
 \section{Functions}{
 \itemize{
-\item \code{readARIADNE_ReferenceScenario}: Alias to \code{\link[=readARIADNE]{readARIADNE()}}. May be deprecated in the future.
-}}
+\item \code{readARIADNE_ReferenceScenario()}: Alias to \code{\link[=readARIADNE]{readARIADNE()}}. May be deprecated in the future.
 
+}}
 \seealso{
 \code{\link[madrat:readSource]{madrat::readSource()}}
 }

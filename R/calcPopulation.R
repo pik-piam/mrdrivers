@@ -15,8 +15,9 @@
 #'
 #' By default, calcPopulation returns the following scenarios:
 #'  \itemize{
-#'    \item the SSPs, i.e. SSP1-5 and SSP2EU
+#'    \item the SSPs, i.e. SSP1-5
 #'    \item the SDPs, i.e. SDP, SDP_EI, SDP_RC, and SDP_MC
+#'    \item SSP2EU
 #'  }
 #'
 #' @param PopulationCalib A string designating the harmonization function.
@@ -74,34 +75,40 @@
 #' # For the default scenarios
 #' calcOutput("Population")
 #'
+#' # For just the SSP2EU scenario
+#' calcOutput("Population", scenario = "SSP2EU")
+#'
 #' # For the ISIMIP SSP scenarios
 #' calcOutput("Population",
-#'            PopulationCalib  = "calibISIMIP",
-#'            PopulationPast   = "UN_PopDiv-MI",
-#'            PopulationFuture = "SSPs-UN_PopDiv-MI",
+#'            scenario = "ISIMIP",
 #'            extension2150 = "none",
 #'            FiveYearSteps = FALSE,
 #'            aggregate = FALSE)
 #' }
 #'
-calcPopulation <- function(PopulationCalib  = c("calibSSPs",                  # nolint
-                                                "calibSDPs",
-                                                "calibSSP2EU"),
-                           PopulationPast   = c("WDI-UN_PopDiv-MI",           # nolint
-                                                "WDI-UN_PopDiv-MI",
-                                                "Eurostat-WDI-UN_PopDiv-MI"),
-                           PopulationFuture = c("SSPs-UN_PopDiv-MI",          # nolint
-                                                "SDPs-UN_PopDiv-MI",
-                                                "SSP2EU-UN_PopDiv-MI"),
+calcPopulation <- function(scenario = c("SSPs", "SDPs", "SSP2EU"),
+                           PopulationCalib  = NULL,                   # nolint
+                           PopulationPast   = NULL,                   # nolint
+                           PopulationFuture = NULL,                   # nolint
                            extension2150 = "bezier",
-                           FiveYearSteps = TRUE,                              # nolint
+                           FiveYearSteps = TRUE,                      # nolint
                            naming = "indicator_scenario") {
   # Check user input
   toolCheckUserInput("Population", as.list(environment()))
+
+  # If the xPast, xFuture and xCalib arguments are null, then query them using "scenario" and load them into the
+  # function environment.
+  if (is.null(c(PopulationCalib, PopulationPast, PopulationFuture))) {
+    invisible(list2env(toolGetScenarioDefinition("Population", scenario, unlist = TRUE), environment()))
+  }
+
+  # Create a list of all the arguments, dropping the scenario argument, which isn't required for the internal
+  # calculation.
+  h <- as.list(environment())
+  l <- purrr::keep(h, names(h) != "scenario")
   # Call calcInternalPopulation function the appropriate number of times (map) and combine (reduce)
   # !! Keep formula syntax for madrat caching to work
-  purrr::pmap(as.list(environment()),
-              ~calcOutput("InternalPopulation", aggregate = FALSE, supplementary = TRUE, ...)) %>%
+  purrr::pmap(l, ~calcOutput("InternalPopulation", aggregate = FALSE, supplementary = TRUE, ...)) %>%
     toolReduce()
 }
 
@@ -131,6 +138,10 @@ calcInternalPopulation <- function(PopulationCalib,  # nolint
     "calibSDPs"       = toolHarmonizeSSPsSDPs(past, future),
     "calibSSP2EU"     = toolHarmonizeSSP2EU(past, future),
     "calibISIMIP"     = toolHarmonizeISIMIP(past, future, yEnd = 2030),
+    # Required for weights of GDPpc noCovid, longCovid and shortCovid scenarios
+    "calibNoCovid"    = toolHarmonizeSSPsSDPs(past, future),
+    "calibLongCovid"  = toolHarmonizeSSPsSDPs(past, future),
+    "calibShortCovid" = toolHarmonizeSSPsSDPs(past, future),
     # Deprecated?
     "past"            = toolPopHarmonizePast(past, future),
     "future"          = toolHarmonizeFuture(past, future),
@@ -141,35 +152,32 @@ calcInternalPopulation <- function(PopulationCalib,  # nolint
   )
 
   # Get description of harmonization function.
-  datasettype <- switch(
+  description <- switch(
     PopulationCalib,
-    "calibSSPs"       = glue("use past data from {PopulationPast}, then the growth rates \\
-                             from the Wolrld Bank's PEAP until \\
-                             {max(getYears(readSource('IMF'), as.integer = TRUE))}, \\
-                             and then the growth rates from {PopulationFuture}."),
-    "calibSDPs"       = glue("use past data from {PopulationPast}, then the growth rates \\
-                             from the Wolrld Bank's PEAP until \\
-                             {max(getYears(readSource('IMF'), as.integer = TRUE))}, \\
-                             and then the growth rates from {PopulationFuture}."),
-    "calibSSP2EU"     = glue("use past data from {PopulationPast}, then the growth rates \\
-                             from the Wolrld Bank's PEAP until \\
-                             {max(getYears(readSource('IMF'), as.integer = TRUE))}, \\
-                             and then the growth rates from {PopulationFuture}. \\
-                             For European countries, just glue past with future."),
-    "calibISIMIP"     = glue("use past data from {PopulationPast} - should be UN_PopDiv with data, \\
-                             currently, until 2020. Add the 2021 projections from UN_PopDiv. Then \\
-                             converge towards {PopulationFuture} by 2030."),
-    "calibUN_PopDiv"  = glue("use past data from {PopulationPast} and then future data from \\
-                              {PopulationFuture}."),
+    "calibSSPs"       = glue("use past data from {PopulationPast}, then the growth rates from the Wolrld Bank's PEAP \\
+                             until {max(getYears(readSource('IMF'), as.integer = TRUE))}, and then the growth rates \\
+                             from {PopulationFuture}."),
+    "calibSDPs"       = glue("use past data from {PopulationPast}, then the growth rates from the Wolrld Bank's PEAP \\
+                             until {max(getYears(readSource('IMF'), as.integer = TRUE))}, and then the growth rates \\
+                             from {PopulationFuture}."),
+    "calibSSP2EU"     = glue("use past data from {PopulationPast}, then the growth rates from the Wolrld Bank's PEAP \\
+                             until {max(getYears(readSource('IMF'), as.integer = TRUE))}, and then the growth rates \\
+                             from {PopulationFuture}. For European countries, just glue past with future."),
+    "calibISIMIP"     = glue("use past data from {PopulationPast} - should be UN_PopDiv with data, currently, until \\
+                             2020. Add the 2021 projections from UN_PopDiv. Then converge towards {PopulationFuture} \\
+                             by 2030."),
+    "calibUN_PopDiv"  = glue("use past data from {PopulationPast} and then future data from {PopulationFuture}."),
     "past"            = PopulationPast,
     "future"          = PopulationFuture,
-    "transition"      = glue("transition between {PopulationPast} and {PopulationFuture} \\
-                             with a transition period until 2020"),
-    "past_transition" = glue("use past data and afterwards transition between \\
-                             {PopulationPast} and {PopulationFuture} with a transition \\
-                             period until 2050"),
-    "past_grFuture"   = glue("use past data from {PopulationPast} and then the growth rates \\
+    "transition"      = glue("transition between {PopulationPast} and {PopulationFuture} with a transition period \\
+                             until 2020"),
+    "past_transition" = glue("use past data and afterwards transition between {PopulationPast} and \\
+                             {PopulationFuture} with a transition period until 2050"),
+    "past_grFuture"   = glue("use past data from {PopulationPast} and then the growth rates from {PopulationFuture}."),
+    "calibNoCovid"    = glue("use past data from {PopulationPast}, then the growth rates from the Wolrld Bank's PEAP \\
+                             until {max(getYears(readSource('IMF'), as.integer = TRUE))}, and then the growth rates \\
                              from {PopulationFuture}."),
+    "No description available.."
   )
 
   # Apply finishing touches to combined time-series
@@ -178,9 +186,8 @@ calcInternalPopulation <- function(PopulationCalib,  # nolint
   list(x = combined,
        weight = NULL,
        unit = "million",
-       description = glue("Population data. Datasource for the Past: {PopulationPast}. \\
-                          Datasource for the Future: {PopulationFuture}. Calibrated \\
-                          to {datasettype}"))
+       description = glue("Population data. Datasource for the Past: {PopulationPast}. Datasource for the Future: \\
+                          {PopulationFuture}. Calibrated to {description}"))
 
 }
 
@@ -192,16 +199,12 @@ toolHarmonizeSSPsSDPs <- function(past, future) {
   # "short-term", defined as being later than the last year of the IMF WEO data.
   shortTerm <- readSource("PEAP")
   fill <- readSource("MissingIslands", subtype = "pop", convert = FALSE)
-  shortTerm <- shortTerm %>%
-    toolFillWith(fill) %>%
-    toolInterpolateAndExtrapolate()
+  shortTerm <- shortTerm %>% toolFillWith(fill) %>% toolInterpolateAndExtrapolate()
   lastYearIMF <- max(getYears(readSource("IMF"), as.integer = TRUE))
   shortTerm <- shortTerm[, getYears(shortTerm, as.integer = TRUE) <= lastYearIMF, ]
 
   # Use PEAP growth rates until last year of IMF WEO data, and future growth rates after that
-  past %>%
-    toolHarmonizePastGrFuture(shortTerm) %>%
-    toolHarmonizePastGrFuture(future)
+  past %>% toolHarmonizePastGrFuture(shortTerm) %>% toolHarmonizePastGrFuture(future)
 }
 
 toolHarmonizeSSP2EU <- function(past, future) {

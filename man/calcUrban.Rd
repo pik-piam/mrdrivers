@@ -87,13 +87,13 @@ By default, calcUrban returns the following scenarios:
 }
 \section{Functions}{
 \itemize{
-\item \code{calcUrbanFuture}: Get future urban population share projections
+\item \code{calcUrbanFuture()}: Get future urban population share projections
 
-\item \code{calcUrbanPast}: Get historic urban population share data
+\item \code{calcUrbanPast()}: Get historic urban population share data
 
-\item \code{calcUrbanPop}: Get urban population scenarios
+\item \code{calcUrbanPop()}: Get urban population scenarios
+
 }}
-
 \section{Return supplementary information}{
 Set the \code{supplementary} argument of \code{\link[madrat:calcOutput]{madrat::calcOutput()}} to \code{TRUE} to return a list with the scenarios and
 additional information on the unit, the data sources and the harmonization function.

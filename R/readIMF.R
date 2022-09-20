@@ -3,6 +3,7 @@
 #' Read-in IMF data
 #'
 #' @param subtype Either "current_account" or "GDPpc"
+#' @param subset Either "WEOall.xls" or "WEOallOct2019.xls"
 #' @return magpie object of the data
 #'
 #' @seealso [madrat::readSource()]
@@ -12,17 +13,17 @@
 #' \dontrun{
 #' a <- readSource(type = "IMF")
 #' }
-readIMF <- function(subtype = "current_account") {
+readIMF <- function(subtype = "current_account", subset = "WEOall.xls") {
   # Check function input
   if (!subtype %in% c("current_account", "GDPpc")) {
     stop("Bad input for readiMD. Invalid 'subtype' argument.")
   }
 
   # Define source file
-  sourceFile <- "WEOall.xls"
+  sourceFile <- subset
 
   # Define what data, i.e.which "WEO subject codes", to keep
-  myWEOCodes <- if (subtype == "GDPpc") c("NGDPRPPPPC") else "BCA"
+  myWEOCodes <- if (subtype == "GDPpc") "NGDPRPPPPC" else "BCA"
 
   weoData <- readr::read_tsv(sourceFile, col_types = c(.default = "c")) %>%
     dplyr::filter(.data$`WEO Subject Code` %in% myWEOCodes) %>%

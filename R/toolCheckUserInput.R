@@ -28,7 +28,8 @@ toolCheckUserInput <- function(driver, args) {
   }
 
   # Check parallel map-reduce compatibility
-  if (any(purrr::map_lgl(args, ~ length(.x) != 1 &&
+  if (any(purrr::map_lgl(args, ~ !is.null(.x) &&
+                                 length(.x) != 1 &&
                                  length(.x) != max(purrr::map_dbl(args, length))))) {
     stop(glue("Arguments to calc{driver} need to be either length 1 or equal to the length of the longest argument."))
   }

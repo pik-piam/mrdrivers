@@ -9,6 +9,7 @@
 #' @return \code{magclass} object; population in thousands.
 #' @seealso [madrat::readSource()]
 #' @seealso [downloadUN_PopDiv()]
+#' @order 1
 readUN_PopDiv <- function(subtype = "WPP2019_estimates") { # nolint
   # Check function input
   if (!subtype %in% c("WPP2019_estimates", "WPP2019_medium", "WPP2015_estimates")) {

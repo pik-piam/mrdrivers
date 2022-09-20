@@ -8,9 +8,10 @@
 \title{Get GDP per capita scenarios and building blocks}
 \usage{
 calcGDPpc(
-  GDPpcCalib = c("calibSSPs", "calibSDPs", "calibSSP2EU"),
-  GDPpcPast = c("WDI-MI", "WDI-MI", "Eurostat-WDI-MI"),
-  GDPpcFuture = c("SSPs-MI", "SDPs-MI", "SSP2EU-MI"),
+  scenario = c("SSPs", "SDPs", "SSP2EU"),
+  GDPpcCalib = NULL,
+  GDPpcPast = NULL,
+  GDPpcFuture = NULL,
   unit = "constant 2005 Int$PPP",
   extension2150 = "bezier",
   FiveYearSteps = TRUE,
@@ -27,6 +28,10 @@ calcGDPpcFuture(
 calcGDPpcPast(GDPpcPast = "WDI-MI", unit = "constant 2005 Int$PPP")
 }
 \arguments{
+\item{scenario}{A character vector designating the scenario(s) to be returned. See \code{\link[=toolGetScenarioDefinition]{toolGetScenarioDefinition()}} to
+learn what scenarios are available. This argument is the recommended - and quickest - way to choose
+a scenario. If more fine-tuning is necessary, use the xCalib, xPast and xFuture arguments directly.}
+
 \item{GDPpcCalib}{String or vector of strings}
 
 \item{GDPpcPast}{String or vector of strings}
@@ -84,20 +89,30 @@ trying to access specific GDP per capita data, or when constructing new complete
 
 By default, calcGDPpc returns the following scenarios:
 \itemize{
-\item the SSPs, i.e. SSP1-5 and SSP2EU
+\item the SSPs, i.e. SSP1-5
 \item the SDPs, i.e. SDP, SDP_EI, SDP_RC, and SDP_MC
+\item SSP2EU
 }
 }
 \section{Functions}{
 \itemize{
-\item \code{calcGDPpcFuture}: Get future GDPpc projections
+\item \code{calcGDPpcFuture()}: Get future GDPpc projections
 
-\item \code{calcGDPpcPast}: Get historic GDPpc data
+\item \code{calcGDPpcPast()}: Get historic GDPpc data
+
 }}
-
 \section{Combining data sources with "-"}{
-Past and Future data sources can be combined with "-" and given as arguments to the function, i.e. "WDI-MI". This
+Data sources can be combined with "-" and passed to both the -Past and -Future arguments, i.e. "WDI-MI". This
 signifies that WDI data will be taken first, but missing data will be then be filled in with data from MI.
+\subsection{Another title}{
+
+test what happnes
+}
+
+\subsection{And another}{
+
+anything?
+}
 }
 
 \section{Vectorization of arguments}{
