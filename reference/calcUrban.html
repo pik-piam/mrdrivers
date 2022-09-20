@@ -12,7 +12,7 @@ By default, calcUrban returns the following scenarios:
 the SSPs, i.e. SSP1-5 and SSP2EU
 the SDPs, i.e. SDP, SDP_EI, SDP_RC, and SDP_MC
 
-"><title>Get scenarios and building blocks of urban population shares — calcUrban • mrdrivers</title><script src="../deps/jquery-3.6.0/jquery-3.6.0.min.js"></script><meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no"><link href="../deps/bootstrap-5.1.0/bootstrap.min.css" rel="stylesheet"><script src="../deps/bootstrap-5.1.0/bootstrap.bundle.min.js"></script><link href="../deps/_Source%20Sans%20Pro-0.4.1/font.css" rel="stylesheet"><!-- Font Awesome icons --><link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.12.1/css/all.min.css" integrity="sha256-mmgLkCYLUQbXn0B1SRqzHar6dCnv9oZFPEC1g1cwlkk=" crossorigin="anonymous"><link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.12.1/css/v4-shims.min.css" integrity="sha256-wZjR52fzng1pJHwx4aV2AO3yyTOXrcDW7jBpJtTwVxw=" crossorigin="anonymous"><!-- bootstrap-toc --><script src="https://cdn.rawgit.com/afeld/bootstrap-toc/v1.0.1/dist/bootstrap-toc.min.js"></script><!-- headroom.js --><script src="https://cdnjs.cloudflare.com/ajax/libs/headroom/0.11.0/headroom.min.js" integrity="sha256-AsUX4SJE1+yuDu5+mAVzJbuYNPHj/WroHuZ8Ir/CkE0=" crossorigin="anonymous"></script><script src="https://cdnjs.cloudflare.com/ajax/libs/headroom/0.11.0/jQuery.headroom.min.js" integrity="sha256-ZX/yNShbjqsohH1k95liqY9Gd8uOiE1S4vZc+9KQ1K4=" crossorigin="anonymous"></script><!-- clipboard.js --><script src="https://cdnjs.cloudflare.com/ajax/libs/clipboard.js/2.0.6/clipboard.min.js" integrity="sha256-inc5kl9MA1hkeYUt+EC3BhlIgyp/2jDIyBLS6k3UxPI=" crossorigin="anonymous"></script><!-- search --><script src="https://cdnjs.cloudflare.com/ajax/libs/fuse.js/6.4.6/fuse.js" integrity="sha512-zv6Ywkjyktsohkbp9bb45V6tEMoWhzFzXis+LrMehmJZZSys19Yxf1dopHx7WzIKxr5tK2dVcYmaCk2uqdjF4A==" crossorigin="anonymous"></script><script src="https://cdnjs.cloudflare.com/ajax/libs/autocomplete.js/0.38.0/autocomplete.jquery.min.js" integrity="sha512-GU9ayf+66Xx2TmpxqJpliWbT5PiGYxpaG8rfnBEk1LL8l1KGkRShhngwdXK1UgqhAzWpZHSiYPc09/NwDQIGyg==" crossorigin="anonymous"></script><script src="https://cdnjs.cloudflare.com/ajax/libs/mark.js/8.11.1/mark.min.js" integrity="sha512-5CYOlHXGh6QpOFA/TeTylKLWfB3ftPsde7AnmhuitiTX4K5SqCLBeKro6sPS8ilsz1Q4NRx3v8Ko2IBiszzdww==" crossorigin="anonymous"></script><!-- pkgdown --><script src="../pkgdown.js"></script><meta property="og:title" content="Get scenarios and building blocks of urban population shares — calcUrban"><meta property="og:description" content="Get complete scenarios of urban population share with calcUrban, or the past/future scenario building blocks with
+"><title>Get scenarios and building blocks of urban population shares — calcUrban • mrdrivers</title><script src="../deps/jquery-3.6.0/jquery-3.6.0.min.js"></script><meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no"><link href="../deps/bootstrap-5.1.3/bootstrap.min.css" rel="stylesheet"><script src="../deps/bootstrap-5.1.3/bootstrap.bundle.min.js"></script><link href="../deps/Source_Sans_Pro-0.4.2/font.css" rel="stylesheet"><!-- Font Awesome icons --><link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.12.1/css/all.min.css" integrity="sha256-mmgLkCYLUQbXn0B1SRqzHar6dCnv9oZFPEC1g1cwlkk=" crossorigin="anonymous"><link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.12.1/css/v4-shims.min.css" integrity="sha256-wZjR52fzng1pJHwx4aV2AO3yyTOXrcDW7jBpJtTwVxw=" crossorigin="anonymous"><!-- bootstrap-toc --><script src="https://cdn.rawgit.com/afeld/bootstrap-toc/v1.0.1/dist/bootstrap-toc.min.js"></script><!-- headroom.js --><script src="https://cdnjs.cloudflare.com/ajax/libs/headroom/0.11.0/headroom.min.js" integrity="sha256-AsUX4SJE1+yuDu5+mAVzJbuYNPHj/WroHuZ8Ir/CkE0=" crossorigin="anonymous"></script><script src="https://cdnjs.cloudflare.com/ajax/libs/headroom/0.11.0/jQuery.headroom.min.js" integrity="sha256-ZX/yNShbjqsohH1k95liqY9Gd8uOiE1S4vZc+9KQ1K4=" crossorigin="anonymous"></script><!-- clipboard.js --><script src="https://cdnjs.cloudflare.com/ajax/libs/clipboard.js/2.0.6/clipboard.min.js" integrity="sha256-inc5kl9MA1hkeYUt+EC3BhlIgyp/2jDIyBLS6k3UxPI=" crossorigin="anonymous"></script><!-- search --><script src="https://cdnjs.cloudflare.com/ajax/libs/fuse.js/6.4.6/fuse.js" integrity="sha512-zv6Ywkjyktsohkbp9bb45V6tEMoWhzFzXis+LrMehmJZZSys19Yxf1dopHx7WzIKxr5tK2dVcYmaCk2uqdjF4A==" crossorigin="anonymous"></script><script src="https://cdnjs.cloudflare.com/ajax/libs/autocomplete.js/0.38.0/autocomplete.jquery.min.js" integrity="sha512-GU9ayf+66Xx2TmpxqJpliWbT5PiGYxpaG8rfnBEk1LL8l1KGkRShhngwdXK1UgqhAzWpZHSiYPc09/NwDQIGyg==" crossorigin="anonymous"></script><script src="https://cdnjs.cloudflare.com/ajax/libs/mark.js/8.11.1/mark.min.js" integrity="sha512-5CYOlHXGh6QpOFA/TeTylKLWfB3ftPsde7AnmhuitiTX4K5SqCLBeKro6sPS8ilsz1Q4NRx3v8Ko2IBiszzdww==" crossorigin="anonymous"></script><!-- pkgdown --><script src="../pkgdown.js"></script><meta property="og:title" content="Get scenarios and building blocks of urban population shares — calcUrban"><meta property="og:description" content="Get complete scenarios of urban population share with calcUrban, or the past/future scenario building blocks with
 calcUrbanPast and calcUrbanFuture. Get the urban popualation levels with calcUrbanPop.
 Complete scenarios are created by harmonizing future projections (returned by calcUrbanFuture) onto historical
 data (returned by calcUrbanPast) and cover the years between 1960 and 2100.
@@ -36,7 +36,7 @@ the SDPs, i.e. SDP, SDP_EI, SDP_RC, and SDP_MC
     
     <a class="navbar-brand me-2" href="../index.html">mrdrivers</a>
 
-    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">0.6.6</small>
+    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">0.7.0</small>
 
     
     <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbar" aria-controls="navbar" aria-expanded="false" aria-label="Toggle navigation">
@@ -84,27 +84,27 @@ complete scenarios.</p>
 
     <div class="section level2">
     <h2 id="ref-usage">Usage<a class="anchor" aria-label="anchor" href="#ref-usage"></a></h2>
-    <div class="sourceCode"><pre class="sourceCode r"><code><span class="fu">calcUrban</span><span class="op">(</span>
-  UrbanCalib <span class="op">=</span> <span class="st">"past"</span>,
-  UrbanPast <span class="op">=</span> <span class="st">"WDI"</span>,
-  UrbanFuture <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"SSPs"</span>, <span class="st">"SDPs"</span>, <span class="st">"SSP2EU"</span><span class="op">)</span>,
-  extension2150 <span class="op">=</span> <span class="st">"constant"</span>,
-  FiveYearSteps <span class="op">=</span> <span class="cn">TRUE</span>,
-  naming <span class="op">=</span> <span class="st">"indicator_scenario"</span>
-<span class="op">)</span>
-
-<span class="fu">calcUrbanFuture</span><span class="op">(</span>UrbanFuture <span class="op">=</span> <span class="st">"SSPs"</span>, extension2150 <span class="op">=</span> <span class="st">"none"</span><span class="op">)</span>
-
-<span class="fu">calcUrbanPast</span><span class="op">(</span>UrbanPast <span class="op">=</span> <span class="st">"WDI"</span><span class="op">)</span>
-
-<span class="fu">calcUrbanPop</span><span class="op">(</span>
-  UrbanCalib <span class="op">=</span> <span class="st">"past"</span>,
-  UrbanPast <span class="op">=</span> <span class="st">"WDI"</span>,
-  UrbanFuture <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"SSPs"</span>, <span class="st">"SDPs"</span>, <span class="st">"SSP2EU"</span><span class="op">)</span>,
-  extension2150 <span class="op">=</span> <span class="st">"constant"</span>,
-  FiveYearSteps <span class="op">=</span> <span class="cn">TRUE</span>,
-  naming <span class="op">=</span> <span class="st">"indicator_scenario"</span>
-<span class="op">)</span></code></pre></div>
+    <div class="sourceCode"><pre class="sourceCode r"><code><span><span class="fu">calcUrban</span><span class="op">(</span></span>
+<span>  UrbanCalib <span class="op">=</span> <span class="st">"past"</span>,</span>
+<span>  UrbanPast <span class="op">=</span> <span class="st">"WDI"</span>,</span>
+<span>  UrbanFuture <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"SSPs"</span>, <span class="st">"SDPs"</span>, <span class="st">"SSP2EU"</span><span class="op">)</span>,</span>
+<span>  extension2150 <span class="op">=</span> <span class="st">"constant"</span>,</span>
+<span>  FiveYearSteps <span class="op">=</span> <span class="cn">TRUE</span>,</span>
+<span>  naming <span class="op">=</span> <span class="st">"indicator_scenario"</span></span>
+<span><span class="op">)</span></span>
+<span></span>
+<span><span class="fu">calcUrbanFuture</span><span class="op">(</span>UrbanFuture <span class="op">=</span> <span class="st">"SSPs"</span>, extension2150 <span class="op">=</span> <span class="st">"none"</span><span class="op">)</span></span>
+<span></span>
+<span><span class="fu">calcUrbanPast</span><span class="op">(</span>UrbanPast <span class="op">=</span> <span class="st">"WDI"</span><span class="op">)</span></span>
+<span></span>
+<span><span class="fu">calcUrbanPop</span><span class="op">(</span></span>
+<span>  UrbanCalib <span class="op">=</span> <span class="st">"past"</span>,</span>
+<span>  UrbanPast <span class="op">=</span> <span class="st">"WDI"</span>,</span>
+<span>  UrbanFuture <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"SSPs"</span>, <span class="st">"SDPs"</span>, <span class="st">"SSP2EU"</span><span class="op">)</span>,</span>
+<span>  extension2150 <span class="op">=</span> <span class="st">"constant"</span>,</span>
+<span>  FiveYearSteps <span class="op">=</span> <span class="cn">TRUE</span>,</span>
+<span>  naming <span class="op">=</span> <span class="st">"indicator_scenario"</span></span>
+<span><span class="op">)</span></span></code></pre></div>
     </div>
 
     <div class="section level2">
@@ -114,10 +114,16 @@ complete scenarios.</p>
 Available harmonization functions are:</p><ul><li><p>"past": deprecated</p></li>
 <li><p>"future": deprecated</p></li>
 </ul></dd>
+
+
 <dt>UrbanPast</dt>
 <dd><p>Urban past data source</p></dd>
+
+
 <dt>UrbanFuture</dt>
 <dd><p>Urban future data source</p></dd>
+
+
 <dt>extension2150</dt>
 <dd><p>A string specifying if/how the scenarios should be extended until 2150. Can be either:</p><ul><li><p>"bezier" (default): A bezier curve extension that leads to a smooth flattening of the scenario: the
 slope in the last year of the scenario is halved by 2150. Currently only works for scenarios with 2100 as
@@ -125,26 +131,33 @@ their last year.</p></li>
 <li><p>"constant": The last value of the scenarios is taken as constant until 2150.</p></li>
 <li><p>"none": No extension.</p></li>
 </ul></dd>
+
+
 <dt>FiveYearSteps</dt>
 <dd><p><a href="https://lifecycle.r-lib.org/articles/stages.html#deprecated" class="external-link"><img src="figures/lifecycle-deprecated.svg" alt="[Deprecated]"></a> <code>FiveYearSteps = TRUE</code> will be deprecated soon. Until then,
 please set <code>FiveYearSteps = FALSE</code> and use the calcOutput argument <code>years</code> instead, to retrieve specific years.</p></dd>
+
+
 <dt>naming</dt>
 <dd><p>A string giving the naming scheme of the data dimension. Can be either:</p><ul><li><p>"indicator_scenario" (default): Returns names of the type "gdp_SSP2", or "pop_SSP2".</p></li>
 <li><p>"indicator.scenario": Returns names of the type "gdp.SSP2", or "pop.SSP2".</p></li>
 <li><p>"scenario": Returns names of the type "SSP2".</p></li>
 </ul><p>Set naming to "scenario" when you want to operate on SSP2 gdp and population data for instance, and not have to
 worry about the conflicting names.</p></dd>
+
 </dl></div>
     <div class="section level2">
     <h2 id="value">Value<a class="anchor" aria-label="anchor" href="#value"></a></h2>
-    <p>A magpie object with sets "iso3c", "year" and "variable".</p>
+    
+
+<p>A magpie object with sets "iso3c", "year" and "variable".</p>
     </div>
     <div class="section level2">
     <h2 id="functions">Functions<a class="anchor" aria-label="anchor" href="#functions"></a></h2>
     
-<ul><li><p><code>calcUrbanFuture</code>: Get future urban population share projections</p></li>
-<li><p><code>calcUrbanPast</code>: Get historic urban population share data</p></li>
-<li><p><code>calcUrbanPop</code>: Get urban population scenarios</p></li>
+<ul><li><p><code>calcUrbanFuture()</code>: Get future urban population share projections</p></li>
+<li><p><code>calcUrbanPast()</code>: Get historic urban population share data</p></li>
+<li><p><code>calcUrbanPop()</code>: Get urban population scenarios</p></li>
 </ul></div>
     <div class="section level2">
     <h2 id="return-supplementary-information">Return supplementary information<a class="anchor" aria-label="anchor" href="#return-supplementary-information"></a></h2>
@@ -174,26 +187,26 @@ only one future data source is provided.</p>
 
     <div class="section level2">
     <h2 id="ref-examples">Examples<a class="anchor" aria-label="anchor" href="#ref-examples"></a></h2>
-    <div class="sourceCode"><pre class="sourceCode r"><code><span class="r-in"><span class="kw">if</span> <span class="op">(</span><span class="cn">FALSE</span><span class="op">)</span> <span class="op">{</span></span>
-<span class="r-in"><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://pik-piam.github.io/mrdrivers">mrdrivers</a></span><span class="op">)</span></span>
-<span class="r-in"><span class="fu"><a href="https://rdrr.io/pkg/madrat/man/calcOutput.html" class="external-link">calcOutput</a></span><span class="op">(</span><span class="st">"Urban"</span><span class="op">)</span></span>
-<span class="r-in"><span class="op">}</span></span>
-<span class="r-in"></span>
-<span class="r-in"><span class="kw">if</span> <span class="op">(</span><span class="cn">FALSE</span><span class="op">)</span> <span class="op">{</span></span>
-<span class="r-in"><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://pik-piam.github.io/mrdrivers">mrdrivers</a></span><span class="op">)</span></span>
-<span class="r-in"><span class="fu"><a href="https://rdrr.io/pkg/madrat/man/calcOutput.html" class="external-link">calcOutput</a></span><span class="op">(</span><span class="st">"UrbanFuture"</span><span class="op">)</span></span>
-<span class="r-in"><span class="op">}</span></span>
-<span class="r-in"></span>
-<span class="r-in"><span class="kw">if</span> <span class="op">(</span><span class="cn">FALSE</span><span class="op">)</span> <span class="op">{</span></span>
-<span class="r-in"><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://pik-piam.github.io/mrdrivers">mrdrivers</a></span><span class="op">)</span></span>
-<span class="r-in"><span class="fu"><a href="https://rdrr.io/pkg/madrat/man/calcOutput.html" class="external-link">calcOutput</a></span><span class="op">(</span><span class="st">"UrbanPast"</span><span class="op">)</span></span>
-<span class="r-in"><span class="op">}</span></span>
-<span class="r-in"></span>
-<span class="r-in"><span class="kw">if</span> <span class="op">(</span><span class="cn">FALSE</span><span class="op">)</span> <span class="op">{</span></span>
-<span class="r-in"><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://pik-piam.github.io/mrdrivers">mrdrivers</a></span><span class="op">)</span></span>
-<span class="r-in"><span class="fu"><a href="https://rdrr.io/pkg/madrat/man/calcOutput.html" class="external-link">calcOutput</a></span><span class="op">(</span><span class="st">"UrbanPop"</span><span class="op">)</span></span>
-<span class="r-in"><span class="op">}</span></span>
-<span class="r-in"></span>
+    <div class="sourceCode"><pre class="sourceCode r"><code><span class="r-in"><span><span class="kw">if</span> <span class="op">(</span><span class="cn">FALSE</span><span class="op">)</span> <span class="op">{</span></span></span>
+<span class="r-in"><span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://pik-piam.github.io/mrdrivers">mrdrivers</a></span><span class="op">)</span></span></span>
+<span class="r-in"><span><span class="fu"><a href="https://rdrr.io/pkg/madrat/man/calcOutput.html" class="external-link">calcOutput</a></span><span class="op">(</span><span class="st">"Urban"</span><span class="op">)</span></span></span>
+<span class="r-in"><span><span class="op">}</span></span></span>
+<span class="r-in"><span></span></span>
+<span class="r-in"><span><span class="kw">if</span> <span class="op">(</span><span class="cn">FALSE</span><span class="op">)</span> <span class="op">{</span></span></span>
+<span class="r-in"><span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://pik-piam.github.io/mrdrivers">mrdrivers</a></span><span class="op">)</span></span></span>
+<span class="r-in"><span><span class="fu"><a href="https://rdrr.io/pkg/madrat/man/calcOutput.html" class="external-link">calcOutput</a></span><span class="op">(</span><span class="st">"UrbanFuture"</span><span class="op">)</span></span></span>
+<span class="r-in"><span><span class="op">}</span></span></span>
+<span class="r-in"><span></span></span>
+<span class="r-in"><span><span class="kw">if</span> <span class="op">(</span><span class="cn">FALSE</span><span class="op">)</span> <span class="op">{</span></span></span>
+<span class="r-in"><span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://pik-piam.github.io/mrdrivers">mrdrivers</a></span><span class="op">)</span></span></span>
+<span class="r-in"><span><span class="fu"><a href="https://rdrr.io/pkg/madrat/man/calcOutput.html" class="external-link">calcOutput</a></span><span class="op">(</span><span class="st">"UrbanPast"</span><span class="op">)</span></span></span>
+<span class="r-in"><span><span class="op">}</span></span></span>
+<span class="r-in"><span></span></span>
+<span class="r-in"><span><span class="kw">if</span> <span class="op">(</span><span class="cn">FALSE</span><span class="op">)</span> <span class="op">{</span></span></span>
+<span class="r-in"><span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://pik-piam.github.io/mrdrivers">mrdrivers</a></span><span class="op">)</span></span></span>
+<span class="r-in"><span><span class="fu"><a href="https://rdrr.io/pkg/madrat/man/calcOutput.html" class="external-link">calcOutput</a></span><span class="op">(</span><span class="st">"UrbanPop"</span><span class="op">)</span></span></span>
+<span class="r-in"><span><span class="op">}</span></span></span>
+<span class="r-in"><span></span></span>
 </code></pre></div>
     </div>
   </main><aside class="col-md-3"><nav id="toc"><h2>On this page</h2>
@@ -205,7 +218,7 @@ only one future data source is provided.</p>
 </div>
 
 <div class="pkgdown-footer-right">
-  <p></p><p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> 2.0.3.</p>
+  <p></p><p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> 2.0.6.</p>
 </div>
 
     </footer></div>
