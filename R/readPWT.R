@@ -15,5 +15,5 @@ readPWT <- function() {
 #' @describeIn readPWT Convert PWT data
 #' @param x MAgPIE object returned by readPWT
 convertPWT <- function(x) {
-  toolGeneralConvert(x, useDefaultSetNames = FALSE, substituteNAsWith = NA)
+  toolGeneralConvert(x, note = FALSE)
 }
