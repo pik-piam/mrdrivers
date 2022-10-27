@@ -51,7 +51,6 @@ object.
 library(mrdrivers)
 readSource("WDI", subtype = "SP.POP.TOTL")
 }
-
 }
 \seealso{
 \code{\link[madrat:readSource]{madrat::readSource()}}

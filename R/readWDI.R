@@ -36,6 +36,7 @@
 #' library(mrdrivers)
 #' readSource("WDI", subtype = "SP.POP.TOTL")
 #' }
+#' @importFrom madrat vcat
 #'
 readWDI <- function(subtype) {
   x <- readr::read_rds("WDI.Rds")

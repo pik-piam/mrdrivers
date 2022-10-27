@@ -154,7 +154,7 @@ calcInternalGDPMI <- function(unit) {
 # Legacy
 ######################################################################################
 calcInternalGDPFutureSRES <- function() {
-  vcat(1, "growth rates of SRES projections were multiplied on 1990 GDP of James et al")
+  message("growth rates of SRES projections were multiplied on 1990 GDP of James et al")
   data <- NULL
   for (i in c("sres_a1_gdp", "sres_a2_gdp", "sres_b1_gdp", "sres_b2_gdp")) {
     data <- mbind(data, readSource(type = "SRES", subtype = i))
