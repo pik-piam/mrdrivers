@@ -27,20 +27,20 @@ readIMF <- function(subtype = "current_account", subset = "WEOall.xls") {
 
   weoData <- readr::read_tsv(sourceFile, col_types = c(.default = "c")) %>%
     dplyr::filter(.data$`WEO Subject Code` %in% myWEOCodes) %>%
-    tidyr::unite("tmp", .data$Scale, .data$Units, sep = " ") %>%
+    tidyr::unite("tmp", c("Scale", "Units"), sep = " ") %>%
     dplyr::mutate(tmp = sub("NA ", "", .data$tmp),
                   tmp = paste0("[", .data$tmp, "]")) %>%
-    tidyr::unite("Subject Descriptor", .data$`Subject Descriptor`, .data$tmp, sep = " ") %>%
-    dplyr::select("iso3c" = .data$ISO, .data$`Subject Descriptor`, tidyselect::starts_with(c("1", "2"))) %>%
+    tidyr::unite("Subject Descriptor", c("Subject Descriptor", "tmp"), sep = " ") %>%
+    dplyr::select("iso3c" = "ISO", "Subject Descriptor", tidyselect::starts_with(c("1", "2"))) %>%
     tidyr::pivot_longer(tidyselect::starts_with(c("1", "2")), names_to = "year") %>%
     dplyr::mutate(value = gsub(",", "", .data$value),
-                  dplyr::across(.cols = c(.data$year, .data$value),
+                  dplyr::across(.cols = c("year", "value"),
                                 ~ suppressWarnings(as.double(.x))),
                                 # The warnings that are being suppressed above, come from
                                 # character strings that can't be converted to numeric, and
                                 # are thus returned as NA.
                   value = tidyr::replace_na(.data$value, 0)) %>%
-    tidyr::pivot_wider(names_from = .data$`Subject Descriptor`)
+    tidyr::pivot_wider(names_from = "Subject Descriptor")
 
   # Transform to magpie
   out <- as.magpie(weoData)

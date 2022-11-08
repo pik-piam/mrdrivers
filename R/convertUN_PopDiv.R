@@ -27,7 +27,7 @@ convertUN_PopDiv <- function(x, subtype = "WPP2019_estimates") { # nolint
 
      xHave <- x %>%
        as.data.frame() %>%
-       dplyr::select(.data$Year, .data$Value, .data$Region) %>%
+       dplyr::select("Year", "Value", "Region") %>%
        # convert years to integers and
        # add iso3c country codes . Use "other, non-specified areas" as proxy for "Taiwan, Province of China"
        dplyr::mutate(year = as.integer(as.character(.data$Year)),
@@ -56,7 +56,7 @@ convertUN_PopDiv <- function(x, subtype = "WPP2019_estimates") { # nolint
        dplyr::mutate(Value = .data$Value / 1000) %>%
        # reorder columns because as.magpie() does not give a shit about its
        # parameters and assignes dimensions based on column position
-       dplyr::select(.data$iso3c, .data$year, .data$Value) %>%
+       dplyr::select("iso3c", "year", "Value") %>%
        as.magpie()
   }
 }

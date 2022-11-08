@@ -20,8 +20,8 @@ readSSP <- function(subtype) {
     x <- readr::read_csv("SspDb_country_data_2013-06-12.csv.zip",
                          col_types = list(.default = readr::col_character()),
                          progress = FALSE) %>%
-      tidyr::unite("mod.variable", .data$MODEL, .data$SCENARIO, .data$VARIABLE, .data$UNIT, sep = ".") %>%
-      dplyr::rename("iso3c" = .data$REGION) %>%
+      tidyr::unite("mod.variable", c("MODEL", "SCENARIO", "VARIABLE", "UNIT"), sep = ".") %>%
+      dplyr::rename("iso3c" = "REGION") %>%
       # Drop columns with only NAs
       dplyr::select(tidyselect::vars_select_helpers$where(~ !all(is.na(.x)))) %>%
       tidyr::pivot_longer(cols = tidyselect::starts_with("2"), names_to = "year") %>%
