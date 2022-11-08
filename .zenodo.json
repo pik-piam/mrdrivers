@@ -1,6 +1,6 @@
 {
   "title": "mrdrivers: Create GDP and Population Scenarios",
-  "version": "0.7.1",
+  "version": "0.7.2",
   "description": "<p>Create GDP and population scenarios\n    This package constructs the GDP and population scenarios used as drivers in both the REMIND and MAgPIE models.<\/p>",
   "creators": [
     {
