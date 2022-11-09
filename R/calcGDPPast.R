@@ -29,8 +29,8 @@ calcInternalGDPPast <- function(GDPPast, unit) { # nolint
 
   # Call appropriate calcInternalGDPPast function.
   data <- switch(GDPPast,
-                 "PWT"      = calcOutput("InternalGDPPastPWT", aggregate = FALSE),
                  "WDI"      = calcOutput("InternalGDPPastWDI", unit = unit, aggregate = FALSE),
+                 "PWT"      = calcOutput("InternalGDPPastPWT", unit = unit, aggregate = FALSE),
                  "Eurostat" = calcOutput("InternalGDPPastEurostat", unit = unit, aggregate = FALSE),
                  "MI"       = calcOutput("InternalGDPMI", unit = unit, aggregate = FALSE),
                  calcOutput("InternalGDPPastJames", subtype = GDPPast, aggregate = FALSE))
@@ -70,6 +70,13 @@ calcInternalGDPPastEurostat <- function(unit) {
 
   getNames(data) <- glue("gdp in {unit}")
   list(x = data, weight = NULL, unit = unit, description = "GDP from Eurostat")
+}
+
+calcInternalGDPPastPWT <- function(unit) {
+  data <- readSource("PWT")[, , "rgdpna"]
+  data <- GDPuc::convertGDP(data, "constant 2017 Int$PPP", unit, replace_NAs = c("linear", "no_conversion"))
+  getNames(data) <- glue("gdp in {unit}")
+  list(x = data, weight = NULL, unit = "constant 2005 Int$PPP", description = "GDP from PWT")
 }
 
 calcInternalGDPPastJames <- function(subtype) {
@@ -117,15 +124,4 @@ fillWithWBFromJames2019 <- function(data, unit) {
     }
   }
   x
-}
-
-
-
-######################################################################################
-# Legacy
-######################################################################################
-calcInternalGDPPastPWT <- function() {
-  data <- readSource("PWT")[, , "rgdpna"]
-  getNames(data) <- "GDP_PWT"
-  list(x = data, weight = NULL, unit = "constant 2005 Int$PPP", description = "GDP from PWT")
 }

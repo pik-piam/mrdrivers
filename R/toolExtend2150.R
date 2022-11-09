@@ -66,7 +66,7 @@ bezierExtension <- function(data, timeExtend) {
       myBezierOutflow <- pob$points %>%
         tibble::as_tibble(.name_repair = ~ paste0("V", seq_along(.x))) %>%
         # Complicatd / elegant use of function factories to get closest points to timeExtend coordinates
-        dplyr::mutate(dplyr::across(.data$V1, purrr::map(timeExtend, ~ function(y) {
+        dplyr::mutate(dplyr::across("V1", purrr::map(timeExtend, ~ function(y) {
           abs(y - .x)
         }))) %>%
         dplyr::filter(dplyr::if_any(tidyselect::contains("_"), ~ .x == min(.x))) %>%

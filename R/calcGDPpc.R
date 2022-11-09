@@ -199,26 +199,29 @@ toolGDPpcHarmonizeSSP <- function(pastGDPpc, futureGDPpc, unit, yEnd, noCovid = 
 
   # Transform into tibble, combine past and future tibbles
   tmpGDPpc <- tmpGDPpc %>%
-    as.data.frame(rev = 2) %>%
     tibble::as_tibble() %>%
-    dplyr::select("iso3c", "year", "value" = ".value")
+    dplyr::select(-"variable") %>%
+    dplyr::group_by(.data$iso3c) %>%
+    dplyr::filter(!all(.data$value == 0)) %>%
+    dplyr::ungroup()
 
-  # Make sure to add the last IMF year to the future SSP data, just in case
-  # it's not there. That is the year from which convergence begins.
+  # Make sure to add the last IMF year to the future SSP data, just in case it's not there. That is the year from which
+  # convergence begins.
   yStart <- max(getYears(imfGDPpc, as.integer = TRUE))
   futureGDPpc <- futureGDPpc %>%
     magclass::time_interpolate(yStart, integrate_interpolated_years = TRUE) %>%
-    as.data.frame(rev = 2) %>%
-    tibble::as_tibble() %>%
-    dplyr::select("iso3c", "year", "variable", "value" = ".value")
+    dplyr::as_tibble() %>%
+    dplyr::group_by(.data$iso3c) %>%
+    dplyr::filter(!all(.data$value == 0)) %>%
+    dplyr::ungroup()
 
   combinedGDPpc <- tidyr::expand_grid(iso3c = unique(tmpGDPpc$iso3c),
                                       year = unique(c(tmpGDPpc$year, futureGDPpc$year)),
                                       variable = unique(futureGDPpc$variable)) %>%
     dplyr::left_join(tmpGDPpc, by = c("iso3c", "year")) %>%
-    dplyr::left_join(dplyr::select(futureGDPpc, .data$iso3c, .data$year, .data$variable, "iiasa_gdppc" = .data$value),
+    dplyr::left_join(dplyr::select(futureGDPpc, "iso3c", "year", "variable", "iiasa_gdppc" = "value"),
                      by = c("iso3c", "year", "variable")) %>%
-    dplyr::rename("SSP" = .data$variable) %>%
+    dplyr::rename("SSP" = "variable") %>%
     dplyr::mutate(SSP = sub("^......", "", .data$SSP))
 
   # Pass to special convergence function
@@ -227,8 +230,10 @@ toolGDPpcHarmonizeSSP <- function(pastGDPpc, futureGDPpc, unit, yEnd, noCovid = 
   # Retransform into magpie
   combinedGDPpc <- combinedGDPpc %>%
     dplyr::mutate(SSP = paste0("gdppc_", .data$SSP)) %>%
-    dplyr::select(.data$iso3c, .data$year, "variable" = .data$SSP, .data$value) %>%
-    as.magpie()
+    dplyr::select("iso3c", "year", "variable" = "SSP", "value") %>%
+    tidyr::replace_na(list("value" = 0)) %>%
+    as.magpie() %>%
+    toolCountryFill(fill = 0)
 
   combinedGDPpc
 }
@@ -361,7 +366,7 @@ convergeSpecial <- function(x, yearStart, yearEnd) {
   dif <- x %>%
     dplyr::filter(.data$year == yearStart) %>%
     dplyr::mutate(d = .data$iiasa_gdppc - .data$value) %>%
-    dplyr::select(.data$iso3c, .data$SSP, .data$d)
+    dplyr::select("iso3c", "SSP", "d")
 
   # Define the years marking the start of medium, and slow convergence
   # (yearStart being the start for fast convergence)
@@ -418,7 +423,7 @@ convergeSpecial <- function(x, yearStart, yearEnd) {
       # years y1 and y2 pushes the GDPpc into the negative.
       value = pmax(.data$value, 0.01)
     ) %>%
-    dplyr::select(-.data$d)
+    dplyr::select(-"d")
   x
 }
 

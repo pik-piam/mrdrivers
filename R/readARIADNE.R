@@ -40,12 +40,12 @@ rARIADNEGDP <- function(corona) {
     dplyr::select(tidyselect::vars_select_helpers$where(~ !all(is.na(.x)))) %>%
     # Pivot columns
     tidyr::pivot_longer(cols = tidyselect::starts_with("2"), names_to = "year") %>%
-    dplyr::rename("eurostat" = .data$Regions)
+    dplyr::rename("eurostat" = "Regions")
 
   # Split off years that apply to both the base and corona scenarios, and duplicate
   gdp1 <- gdpSheet %>%
     dplyr::filter(nchar(.data$year) == 4) %>%
-    dplyr::rename("base" = .data$value) %>%
+    dplyr::rename("base" = "value") %>%
     dplyr::mutate("corona" = .data$base, year = as.integer(.data$year))
 
   # Identify base and corona scenarios
@@ -54,16 +54,16 @@ rARIADNEGDP <- function(corona) {
     tidyr::separate(.data$year, c("year", "scen")) %>%
     dplyr::mutate(year = as.integer(.data$year),
                   scen = ifelse(dplyr::row_number() %% 2 == 0, "corona", "base")) %>%
-    tidyr::pivot_wider(names_from = .data$scen)
+    tidyr::pivot_wider(names_from = "scen")
 
   # Combine and add variable description column
   gdp <- dplyr::bind_rows(gdp1, gdp2) %>%
     dplyr::arrange(.data$eurostat, .data$year) %>%
     dplyr::mutate(variable = "GDP|MER (million euro 2005/yr)") %>%
-    dplyr::relocate(.data$variable, .after = "year")
+    dplyr::relocate("variable", .after = "year")
 
   # Choose which scenario
-  gdp <- if (corona) dplyr::select(gdp, -.data$base) else dplyr::select(gdp, -.data$corona)
+  gdp <- if (corona) dplyr::select(gdp, -"base") else dplyr::select(gdp, -"corona")
 
   as.magpie(gdp, spatial = "eurostat", temporal = "year", tidy = TRUE)
 }
