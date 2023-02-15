@@ -1,28 +1,34 @@
-#' @describeIn calcGDPpc Get future GDPpc projections
+#' @describeIn calcGDPPast Get future GDPpc projections
+#'
+#' @param GDPpcFuture A string designating the source for the future GDP data. Available sources are:
+#'   \itemize{
+#'     \item "SSPs":
+#'     \item "SDPs": All SDP future projections are set equal to those of SSP1.
+#'     \item "MI": Missing island dataset
+#'   }
+#'   See the "Combining data sources with '-'" section below for how to combine data sources.
+#'
 #' @examples \dontrun{
 #' library(mrdrivers)
 #' calcOutput("GDPpcFuture")
 #' }
 #'
-calcGDPpcFuture <- function(GDPpcFuture = "SSPs-MI", # nolint
-                            unit = "constant 2005 Int$PPP",
-                            extension2150 = "none") {
+calcGDPpcFuture <- function(GDPpcFuture = "SSPsOld-MI", # nolint
+                            unit = "constant 2005 Int$PPP") {
 
   data <- switch(
     GDPpcFuture,
-    "SSPs"    = toolGDPpcFutureSSPs(unit),
-    "SDPs"    = toolGDPpcFutureSDPs(unit),
-    "SDPs-MI" = toolGDPpcFutureSDPs(unit, mi = TRUE),
-    "SSPs-MI" = toolGDPpcFutureSSPs(unit, mi = TRUE),
-    "MI"      = toolGDPpcMI(unit),
+    "SSPsOld"    = toolGDPpcFutureSSPsOld(unit),
+    "SDPs"       = toolGDPpcFutureSDPs(unit),
+    "SDPs-MI"    = toolGDPpcFutureSDPs(unit, mi = TRUE),
+    "SSPsOld-MI" = toolGDPpcFutureSSPsOld(unit, mi = TRUE),
+    "MI"         = toolGDPpcMI(unit),
     stop("Bad input for calcGDPFuture. Invalid 'GDPFuture' argument.")
   )
 
-  data <- toolFinishingTouches(data, extension2150)
+  data <- toolFinishingTouches(data)
 
-  weight <- calcOutput("PopulationFuture",
-                       PopulationFuture = GDPpcFuture,
-                       aggregate = FALSE)
+  weight <- calcOutput("PopulationFuture", PopulationFuture = GDPpcFuture, aggregate = FALSE)
   # Give weight same names as data, so that aggregate doesn't mess up data dim
   getNames(weight) <- gsub("pop", "gdppc", getNames(weight))
 
@@ -35,21 +41,14 @@ calcGDPpcFuture <- function(GDPpcFuture = "SSPs-MI", # nolint
 ######################################################################################
 # Functions
 ######################################################################################
-toolGDPpcFutureSSPs <- function(unit, mi = FALSE) {
+toolGDPpcFutureSSPsOld <- function(unit, mi = FALSE) {
   h1 <- if (mi) "SSPs-MI" else "SSPs"
-  h2 <- if (mi) "SSPs_old-MI" else "SSPs_old"
+  h2 <- if (mi) "SSPsOld-MI" else "SSPsOld"
 
-  gdp <- calcOutput("GDPFuture",
-                    GDPFuture = h1,
-                    unit = unit,
-                    extension2150 = "none",
-                    aggregate = FALSE)
+  gdp <- calcOutput("GDPFuture", GDPFuture = h1, unit = unit, aggregate = FALSE)
   gdp <- setNames(gdp, c("gdppc_SSP1", "gdppc_SSP2", "gdppc_SSP3", "gdppc_SSP4", "gdppc_SSP5"))
 
-  pop <- calcOutput("PopulationFuture",
-                    PopulationFuture = h2,
-                    extension2150 = "none",
-                    aggregate = FALSE)
+  pop <- calcOutput("PopulationFuture", PopulationFuture = h2, aggregate = FALSE)
   pop <- setNames(pop, c("gdppc_SSP1", "gdppc_SSP2", "gdppc_SSP3", "gdppc_SSP4", "gdppc_SSP5"))
 
   years <- intersect(getYears(gdp), getYears(pop))
@@ -59,10 +58,10 @@ toolGDPpcFutureSSPs <- function(unit, mi = FALSE) {
 }
 
 toolGDPpcFutureSDPs <- function(unit, mi = FALSE) {
-  data_SSP1 <- toolGDPpcFutureSSPs(unit, mi)[, , "gdppc_SSP1"] # nolint
+  dataSSP1 <- toolGDPpcFutureSSPsOld(unit, mi)[, , "gdppc_SSP1"]
 
   purrr::map(c("SDP", "SDP_EI", "SDP_RC", "SDP_MC"),
-             ~ setNames(data_SSP1, gsub("SSP1", .x, getNames(data_SSP1)))) %>%
+             ~ setNames(dataSSP1, gsub("SSP1", .x, getNames(dataSSP1)))) %>%
     mbind()
 }
 

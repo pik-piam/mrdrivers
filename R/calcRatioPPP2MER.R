@@ -1,11 +1,10 @@
 #' Get PPP to MER ratio
 #'
 #' @param from A string indicating the source
-#' @param when An integer with the year for which the PPP2MER ratio is to
-#'   be returned.
+#' @param when An integer with the year for which the PPP2MER ratio is to be returned.
 #'
 #' @seealso [madrat::calcOutput()]
-#'
+#' @inherit madrat::calcOutput return
 #' @examples \dontrun{
 #' library(mrdrivers)
 #' calcOutput("calcfrom")
@@ -20,7 +19,7 @@ calcRatioPPP2MER <- function(from = "WDI", when = 2005) {
   } else if (from == "OECD") {
     data <- readSource("OECD", subtype = "ratioPM")
   } else {
-    stop("Bad input for calcfrom. Invalid 'from' argument.")
+    stop("Bad input for calcRatioPPP2MER. Invalid 'from' argument.")
   }
 
   weight <- calcOutput("GDPPast", aggregate = FALSE)[, when, ]
@@ -32,8 +31,8 @@ calcRatioPPP2MER <- function(from = "WDI", when = 2005) {
 
   list(x = data,
        weight = weight,
-       unit = "constant 2005 US$MER / constant 2005 Int$PPP",
-       description = glue::glue("Ratio of GDP in constant 2005 US$MER over GDP in constant 2005 Int$PPP (source: \\
-                                {from}). Can be used to convert between GDP at constant 2005 Int$PPP and GDP at \\
-                                constant 2005 US$MER."))
+       unit = glue::glue("constant {when} US$MER / constant {when} Int$PPP"),
+       description = glue::glue("Ratio of GDP in constant {when} US$MER over GDP in constant {when} Int$PPP (source: \\
+                                {from}). Can be used to convert between GDP at constant {when} Int$PPP and GDP at \\
+                                constant {when} US$MER."))
 }

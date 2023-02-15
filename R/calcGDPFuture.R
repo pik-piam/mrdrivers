@@ -1,15 +1,25 @@
-#' @describeIn calcGDP Get future GDP projections
+#' @describeIn calcGDPPast Get future GDP projections
+#'
+#' @param GDPFuture A string designating the source for the future GDP data. Available sources are:
+#'   \itemize{
+#'     \item "SSPs": IIASA [SSP database](https://tntcat.iiasa.ac.at/SspDb/dsd?Action=htmlpage&page=welcome)
+#'     \item "SSP2EU": Combined SSP2 and Eurostat (for the EU countries) source
+#'     \item "SDPs":
+#'     \item "MI": Missing island dataset
+#'     \item "OECD": OECD
+#'   }
+#'   See the "Combining data sources with '-'" section below for how to combine data sources.
+#'
 #' @examples \dontrun{
 #' library(mrdrivers)
 #' calcOutput("GDPFuture")
 #' }
-#'
-calcGDPFuture <- function(GDPFuture = "SSPs-MI", unit = "constant 2005 Int$PPP", extension2150 = "none") { # nolint
+calcGDPFuture <- function(GDPFuture = "SSPs-MI", unit = "constant 2005 Int$PPP") { # nolint
   # Check user input
   toolCheckUserInput("GDPFuture", as.list(environment()))
   # Call calcInternalGDPFuture function the appropriate number of times (map) and combine (reduce)
   # !! Keep formula syntax for madrat caching to work
-  purrr::pmap(list("GDPFuture" = unlist(strsplit(GDPFuture, "-")), "unit" = unit, "extension2150" = extension2150),
+  purrr::pmap(list("GDPFuture" = unlist(strsplit(GDPFuture, "-")), "unit" = unit),
               ~calcOutput("InternalGDPFuture", aggregate = FALSE, supplementary = TRUE, ...)) %>%
     toolReduce(mbindOrFillWith = "fillWith")
 }
@@ -18,7 +28,7 @@ calcGDPFuture <- function(GDPFuture = "SSPs-MI", unit = "constant 2005 Int$PPP",
 ######################################################################################
 # Internal Function
 ######################################################################################
-calcInternalGDPFuture <- function(GDPFuture, unit, extension2150) { # nolint
+calcInternalGDPFuture <- function(GDPFuture, unit) { # nolint
   data <- switch(
     GDPFuture,
     "SSPs"   = calcOutput("InternalGDPFutureSSPs", unit = unit, aggregate = FALSE),
@@ -27,11 +37,10 @@ calcInternalGDPFuture <- function(GDPFuture, unit, extension2150) { # nolint
     "MI"     = calcOutput("InternalGDPMI", unit = unit, aggregate = FALSE),
     # Deprecated options ?
     "OECD"   = readSource("OECD", subtype = "gdp") * 1000,
-    "SRES"   = calcOutput("InternalGDPFutureSRES", aggregate = FALSE),
     stop("Bad input for calcGDPFuture. Invalid 'GDPFuture' argument.")
   )
 
-  data <- toolFinishingTouches(data, extension2150)
+  data <- toolFinishingTouches(data)
 
   list(x = data, weight = NULL, unit = glue("mil. {unit}"), description = glue("GDP data from {GDPFuture}"))
 }
@@ -131,7 +140,7 @@ calcInternalGDPFutureSSP2EU <- function(unit) {
   dataSSP <- calcOutput("InternalGDPFutureSSPs", unit = unit, aggregate = FALSE)
 
   # Get EU-27 countries
-  euCountries <- toolGetEUcountries(onlyWithARIADNEgdpData = TRUE) # nolint
+  euCountries <- toolGetEUcountries(onlyWithARIADNEgdpData = TRUE)
 
   # Get common years
   cy <- intersect(getYears(dataSSP),  getYears(dataSSP2EU))
@@ -148,36 +157,4 @@ calcInternalGDPMI <- function(unit) {
   data <- readSource("MissingIslands", "gdp") %>%
     GDPuc::convertGDP("constant 2005 Int$PPP", unit, replace_NAs = c("linear", "no_conversion"))
   list(x = data, weight = NULL, unit = unit, description = "GDP data from MI")
-}
-
-######################################################################################
-# Legacy
-######################################################################################
-calcInternalGDPFutureSRES <- function() {
-  message("growth rates of SRES projections were multiplied on 1990 GDP of James et al")
-  data <- NULL
-  for (i in c("sres_a1_gdp", "sres_a2_gdp", "sres_b1_gdp", "sres_b2_gdp")) {
-    data <- mbind(data, readSource(type = "SRES", subtype = i))
-  }
-  getNames(data) <- paste0("gdp_", substr(getNames(data), 6, 7))
-  gdpPPPpc <- readSource(type = "James", subtype = "IHME_USD05_PPPpc")
-  pop <- readSource("WDI", subtype = "SP.POP.TOTL")
-  years <- intersect(getYears(gdpPPPpc), getYears(pop))
-  calib <- gdpPPPpc[, years, ] * pop[, years, ]
-  getNames(calib) <- "IHME_USD05_PPP"
-  data <- data * setYears(setNames(calib[, "y1990", ], NULL) / data[, "y1990", ], NULL)
-
-  data[is.na(data)] <- 0
-
-
-  fill <- calcOutput("GDPFuture",
-                     GDPFuture = "SSPs",
-                     extension2150 = "none",
-                     aggregate = FALSE)[, , "gdp_SSP2"]
-
-  data <- data %>%
-    toolFillWith(fill) %>%
-    toolInterpolateAndExtrapolate()
-
-  list(x = data, weight = NULL, unit = "-", description = "GDP data from SRES")
 }

@@ -1,9 +1,13 @@
 #' Read PWT
 #'
-#' Read-in an PWT data .xlsx file as magclass object
-#
-#' @family "Past" GDPpc functions
-#' @return Magpie object of the PWT data
+#' Read-in PWT data as magclass object
+#'
+#' @inherit madrat::readSource return
+#' @seealso [madrat::readSource()]
+#' @order 1
+#' @examples \dontrun{
+#' readSource("PWT")
+#' }
 readPWT <- function() {
   pwt <- readxl::read_excel("pwt80.xlsx", sheet = "Data")
   # Remove "country", "currency_unit" and indicator ("i_") columns
@@ -12,7 +16,8 @@ readPWT <- function() {
   as.magpie(pwt)
 }
 
-#' @describeIn readPWT Convert PWT data
+#' @rdname readPWT
+#' @order 2
 #' @param x MAgPIE object returned by readPWT
 convertPWT <- function(x) {
   toolGeneralConvert(x, note = FALSE)

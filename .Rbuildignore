@@ -13,3 +13,5 @@
 ^workflow$
 ^.lintr$
 ^tests/.lintr$
+^Makefile$
+^vignettes/.lintr$

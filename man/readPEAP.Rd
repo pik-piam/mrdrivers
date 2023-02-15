@@ -3,11 +3,14 @@
 \name{readPEAP}
 \alias{readPEAP}
 \alias{convertPEAP}
+\alias{downloadPEAP}
 \title{Read Population Estimates And Projections from the World Bank}
 \usage{
 readPEAP()
 
 convertPEAP(x)
+
+downloadPEAP()
 }
 \arguments{
 \item{x}{MAgPIE object returned by readPEAP}
@@ -21,6 +24,10 @@ Read-in xlsx file from the World Bank's Population Estimates And Projections
 \section{Functions}{
 \itemize{
 \item \code{convertPEAP()}: Convert data from the World Bank's Population Estimates And Projections dataset
+
+\item \code{downloadPEAP()}: Download data from the World Bank's Population Estimates And Projections dataset
+The PEAP data can't seemed to be accessed by the WDI::WDI package nor the World Bank's API directly.
+Manual download required from https://databank.worldbank.org/source/population-estimates-and-projections#
 
 }}
 \seealso{

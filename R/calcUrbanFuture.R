@@ -1,10 +1,20 @@
-#' @describeIn calcUrban Get future urban population share projections
+#' @describeIn calcPopulationPast Get future urban population share projections
+#'
+#' @param UrbanFuture A string designating the source for the future urban population-share data.
+#'   Available sources are:
+#'   \itemize{
+#'     \item "SSPs":
+#'     \item "SDPs":
+#'     \item "SSP2EU":
+#'   }
+#'   See the "Combining data sources with '-'" section below for how to combine data sources.
+#'
 #' @examples \dontrun{
 #' library(mrdrivers)
 #' calcOutput("UrbanFuture")
 #' }
 #'
-calcUrbanFuture <- function(UrbanFuture = "SSPs", extension2150 = "none") { # nolint
+calcUrbanFuture <- function(UrbanFuture = "SSPs") { # nolint
 
   data <- switch(
     UrbanFuture,
@@ -14,12 +24,9 @@ calcUrbanFuture <- function(UrbanFuture = "SSPs", extension2150 = "none") { # no
     stop("Bad input for UrbanFuture. Invalid 'UrbanFuture' argument.")
   )
 
-  data <- toolFinishingTouches(data, extension2150)
+  data <- toolFinishingTouches(data)
 
-  wp <- calcOutput("PopulationFuture",
-                   PopulationFuture = UrbanFuture,
-                   extension2150 = extension2150,
-                   aggregate = FALSE)
+  wp <- calcOutput("PopulationFuture", PopulationFuture = UrbanFuture, aggregate = FALSE)
   # Give weight same names as data, so that aggregate doesn't mess up data dim
   getNames(wp) <- gsub("pop", "urb", getNames(wp))
 

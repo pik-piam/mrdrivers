@@ -13,19 +13,19 @@ convertPWT(x)
 \item{x}{MAgPIE object returned by readPWT}
 }
 \value{
-Magpie object of the PWT data
+The read-in data, usually a magpie object. If supplementary is TRUE a list including
+the data and metadata is returned instead. The temporal and data dimensionality
+should match the source data. The spatial dimension should either match the source data or,
+if the convert argument is set to TRUE, should be on ISO code country level.
 }
 \description{
-Read-in an PWT data .xlsx file as magclass object
+Read-in PWT data as magclass object
 }
-\section{Functions}{
-\itemize{
-\item \code{convertPWT()}: Convert PWT data
-
-}}
+\examples{
+\dontrun{
+readSource("PWT")
+}
+}
 \seealso{
-Other "Past" GDPpc functions: 
-\code{\link{readJames2019}()},
-\code{\link{readWDI}()}
+\code{\link[madrat:readSource]{madrat::readSource()}}
 }
-\concept{"Past" GDPpc functions}

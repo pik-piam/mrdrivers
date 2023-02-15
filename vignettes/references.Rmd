@@ -1,0 +1,44 @@
+---
+title: "Source Information"
+output: rmarkdown::html_vignette
+vignette: >
+  %\VignetteIndexEntry{Source Information}
+  %\VignetteEncoding{UTF-8}
+  %\VignetteEngine{knitr::rmarkdown}
+editor_options: 
+  chunk_output_type: console
+---
+
+
+```{r, include = FALSE}
+knitr::opts_chunk$set(
+  collapse = TRUE,
+  comment = "#>"
+)
+```
+
+```{r setup, echo=FALSE, message=FALSE}
+library(mrdrivers)
+library(magrittr)
+```
+
+
+```{r echo=FALSE, message=FALSE, results="asis"}
+sourceDirs <- list.dirs(madrat::getConfig()$sourcefolder)
+for (i in sourceDirs) {
+  dwnldFile <- file.path(i, "DOWNLOAD.yml")
+  if (!file.exists(dwnldFile)) {
+    next()
+  }
+  pander::pandoc.header(sub(paste0(madrat::getConfig()$sourcefolder, "/"), "", i), level = 2)
+  yaml::read_yaml(dwnldFile) %>%
+    purrr::discard_at("accessibility") %>% 
+    purrr::discard(~length(.x) > 1) %>%
+    tibble::enframe() %>%
+    tidyr::unnest(value) %>%
+    dplyr::mutate(value = ifelse(value == "-", "", value)) %>% 
+    kableExtra::kable() %>% 
+    print()
+}
+```
+

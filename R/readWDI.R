@@ -1,45 +1,28 @@
-#' Read WDI
+#' Read WDI data
 #'
-#' Read-in WDI (World development indicators) data .Rds file as magpie
-#' object.
+#' Download, read and convert WDI (World development indicators) data.
 #'
 #' @param subtype A string. Type of WDI data that should be read. Use the
-#' worldbank indicator abbreviation. Available subtypes are:
+#' World Bank indicator abbreviation. Available subtypes are:
 #' \itemize{
 #' \item \code{"SP.POP.TOTL"}: Population, total
+#' \item \code{"SP.POP.1564.TO"}: Working age population (15-64 years old)
+#' \item \code{"SP.URB.TOTL.IN.ZS"}: Urban Population (% of total)
 #' \item \code{"NY.GDP.MKTP.PP.KD"}: GDP,PPP (constant 2017 international Dollar)
-#' \item \code{"NY.GDP.MKTP.PP.CD"}: GDP, PPP (current international Dollar)
-#' \item \code{"NY.GDP.MKTP.CD"}: GDP MER (current US Dollar)
-#' \item \code{"NY.GDP.MKTP.KD"}: GDP MER (constant 2010 USDollar)
-#' \item \code{"NY.GDP.MKTP.KN"}: GDP LCU (constant LCU)
-#' \item \code{"NY.GDP.MKTP.CN"}: GDP LCU (current LCU)
-#' \item \code{"NY.GDP.DEFL.KD.ZG"}: Country GDP deflator (annual %)
-#' \item \code{"SP.URB.TOTL.IN.ZS"}: Urban population (percentage of total)
-#' \item \code{"NY.GDP.PCAP.CN"}:GDP, LCU, per capita (current LCU)
-#' \item \code{"NY.GDP.PCAP.PP.KD"}: GDP PPP, per capita (2017 international $)
-#' \item \code{"NY.GDP.PCAP.KD"}: GDP, MER, per capita (2010 US$)
 #' \item \code{"NV.AGR.TOTL.KD"}: Ag GDP, MER, (2010 US$)
-#' \item \code{"NV.AGR.TOTL.CD"}: Ag GDP, MER, (current US$)
-#' \item \code{"NY.GDP.PCAP.CD"}: GDP MER, per capita(current US$)
-#' \item \code{"NY.GDP.PCAP.PP.CD"}: GDP PPP, per capita (current int$)
 #' \item \code{"PA.NUS.PPPC.RF"}: Price level ratio of PPP conversion factor (GDP) to market exchange rate
+#' \item \code{"AG.SRF.TOTL.K2"}: Surface area (in square kms)
 #' }
 #'
-#' @return A magpie object of the WDI data
-#'
-#' @seealso [madrat::readSource()]
-#' @family "Past" population functions
-#' @family "Past" GDP functions
-#' @family "Past" GDPpc functions
+#' @inherit madrat::readSource return
+#' @seealso [madrat::readSource()] and [madrat::downloadSource()]
 #'
 #' @examples \dontrun{
-#' library(mrdrivers)
 #' readSource("WDI", subtype = "SP.POP.TOTL")
 #' }
-#' @importFrom madrat vcat
-#'
+#' @order 2
 readWDI <- function(subtype) {
-  x <- readr::read_rds("WDI.Rds")
+  x <- readr::read_rds("WDI_20_02_2023.Rds")
   possibleSubtypes <- colnames(x)[!colnames(x) %in% c("iso3c", "country", "year")]
 
   if (!subtype %in% possibleSubtypes) {
@@ -53,19 +36,12 @@ readWDI <- function(subtype) {
 }
 
 
-#' @describeIn readWDI Convert WDI data
+#' @rdname readWDI
 #' @param x MAgPIE object returned by readWDI
+#' @order 3
 convertWDI <- function(x, subtype) {
 
-  if (subtype %in% c("SP.POP.TOTL",
-                     "NY.GDP.MKTP.PP.KD",
-                     "NY.GDP.MKTP.PP.CD",
-                     "NY.GDP.MKTP.CD",
-                     "NY.GDP.MKTP.CN",
-                     "NY.GDP.MKTP.KD",
-                     "NY.GDP.MKTP.KN",
-                     "NV.AGR.TOTL.KD",
-                     "NV.AGR.TOTL.CD")) {
+  if (subtype %in% c("SP.POP.TOTL", "SP.POP.1564.TO", "NY.GDP.MKTP.PP.KD", "NV.AGR.TOTL.KD")) {
     # Change scale of indicators
     x <- x / 1e+6
     # Add Kosovo to Serbia
@@ -85,4 +61,37 @@ convertWDI <- function(x, subtype) {
   # Remove years which only contain 0s as entries
   x <- x[, !apply(x, 2, function(y) all(y == 0)), ]
   x
+}
+
+
+#' @rdname readWDI
+#' @order 1
+downloadWDI <- function() {
+  rlang::check_installed("WDI")
+  # The WDI data is updated with the function "WDISearch(cache = WDIcache())"
+  WDI::WDIsearch(cache = WDI::WDIcache())
+  indicator <- c("SP.POP.TOTL",       # Total population
+                 "SP.POP.1564.TO",    # Working age population (15-64 years old)
+                 "SP.URB.TOTL.IN.ZS", # Urban Population (% of total)
+                 "PA.NUS.PPPC.RF",    # Price Level Ration (PPP/MER)
+                 "NY.GDP.MKTP.PP.KD", # GDP [constant 2017 Int$PPP]
+                 #  "NY.GDP.MKTP.KD",    # For mrvalidation: GDP constant 2010 US$ -> replace with GDPuc
+                 #  "NY.GDP.MKTP.CD",    # For mrvalidation: GDP current US$ -> replace with GDPuc
+                 "NV.AGR.TOTL.KD",    # For mrvalidation: AgFF value added [constant 2015 US$MER]
+                 "AG.SRF.TOTL.K2"     # For mredgebuildings: surface area [square kms]
+                 )
+  endYear <- as.numeric(strsplit(as.character(Sys.Date()), "-")[[1]][1]) - 1
+  wdi <- WDI::WDI(indicator = indicator, start = 1960, end = endYear)
+  readr::write_rds(wdi, "WDI.Rds")
+
+  # Compose meta data
+  list(url           = "-",
+       doi           = "-",
+       title         = "Select indicators from the WDI",
+       description   = "Select indicators from the World Development Indicators database from the World Bank",
+       unit          = "-",
+       author        = "World Bank",
+       release_date  = "-",
+       license       = "-",
+       comment       = "see also <https://databank.worldbank.org/source/world-development-indicators>")
 }
