@@ -3,14 +3,17 @@
 \name{readMissingIslands}
 \alias{readMissingIslands}
 \alias{convertMissingIslands}
+\alias{downloadMissingIslands}
 \title{Read in the "Missing Islands" dataset}
 \usage{
 readMissingIslands(subtype)
 
 convertMissingIslands(x)
+
+downloadMissingIslands()
 }
 \arguments{
-\item{subtype}{pop for population or gdp for gdp}
+\item{subtype}{pop for population, or gdp for gdp}
 
 \item{x}{MAgPIE object returned by readMissingIslands}
 }
@@ -18,7 +21,8 @@ convertMissingIslands(x)
 Magpie object
 }
 \description{
-Read in core data for minor islands which are not included in big inventories but have a countrycode
+Read in gdp or population data for minor islands (not included in big inventories) from a custom made
+data set that gets data from a variety of sources (e.g. CIA World Factbook, Insee, BEA, PRISM, and Woldometers).
 }
 \examples{
 \dontrun{
@@ -28,6 +32,4 @@ readSource("MissingIslands", subtype = "pop", convert = FALSE)
 }
 \seealso{
 \code{\link[madrat:readSource]{madrat::readSource()}}
-
-\code{\link[=downloadMissingIslands]{downloadMissingIslands()}}
 }

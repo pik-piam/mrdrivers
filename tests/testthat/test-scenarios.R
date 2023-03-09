@@ -18,12 +18,12 @@ expectCorrectOutput <- function(x) {
 }
 
 test_that("All scenarios work", {
-  sd <- toolGetScenarioDefinition()
-  purrr::map(sd$GDPpc$scenario, ~expectCorrectOutput(calcOutput("GDPpc", scenario = .x)))
-  purrr::map(sd$Population$scenario,
+  purrr::map(toolGetScenarioDefinition("GDPpc")$scenario,
+             ~expectCorrectOutput(calcOutput("GDPpc", scenario = .x)))
+  purrr::map(toolGetScenarioDefinition("Population")$scenario,
              ~expectCorrectOutput(calcOutput("Population", scenario = .x)))
   # SSPsOld is not compatible with average2020 (throws warning)
-  gdp1 <- sd$GDP$scenario[sd$GDP$scenario != "SSPsOld"]
-  purrr::map(gdp1, ~expectCorrectOutput(calcOutput("GDP", scenario = .x)))
+  purrr::map(toolGetScenarioDefinition("GDP")$scenario[toolGetScenarioDefinition("GDP")$scenario != "SSPsOld"],
+             ~expectCorrectOutput(calcOutput("GDP", scenario = .x)))
   expectCorrectOutput(calcOutput("GDP", scenario = "SSPsOld", average2020 = FALSE))
 })

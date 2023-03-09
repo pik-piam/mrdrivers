@@ -32,7 +32,7 @@ from a .csv file to a magclass object
 
 }}
 \examples{
-\dontrun{ 
+\dontrun{
 readSource("James", subtype = "IHME_USD05_PPP_pc")}
 }
 \seealso{

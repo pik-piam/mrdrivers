@@ -22,14 +22,12 @@ test_that("set names", {
   expectCorrectSetNames(calcOutput("UrbanPast"))
   expectCorrectSetNames(calcOutput("UrbanFuture"))
   expectCorrectSetNames(calcOutput("Urban"))
-  expectCorrectSetNames(calcOutput("UrbanPop"))
   expectCorrectSetNames(calcOutput("GDPPast"))
   expectCorrectSetNames(calcOutput("GDPFuture"))
   expectCorrectSetNames(calcOutput("GDPpcPast"))
   expectCorrectSetNames(calcOutput("GDPpcFuture"))
   expectCorrectSetNames(calcOutput("GDPpc"))
   expectCorrectSetNames(calcOutput("GDP"))
-  expectCorrectSetNames(calcOutput("DefaultDrivers"))
   expectCorrectSetNames(calcOutput("Labour"))
   # I want to keep; expectCorrectSetNames(calcOutput("RatioPPP2MER"))
 })
@@ -42,14 +40,12 @@ calcs <- list("PopulationPast" = calcOutput("PopulationPast"),
               "UrbanPast" = calcOutput("UrbanPast"),
               "UrbanFuture" = calcOutput("UrbanFuture"),
               "Urban" = calcOutput("Urban"),
-              "UrbanPop" = calcOutput("UrbanPop"),
               "GDPpcPast" = calcOutput("GDPpcPast"),
               "GDPpcFuture" = calcOutput("GDPpcFuture"),
               "GDPpc" = calcOutput("GDPpc"),
               "GDPPast" = calcOutput("GDPPast"),
               "GDPFuture" = calcOutput("GDPFuture"),
               "GDP" = calcOutput("GDP"),
-              "DefaultDrivers" = calcOutput("DefaultDrivers"),
               "Labour" = calcOutput("Labour"))
 
 calcs2 <- list("PopulationPast" = calcOutput("PopulationPast", aggregate = FALSE),
@@ -58,14 +54,12 @@ calcs2 <- list("PopulationPast" = calcOutput("PopulationPast", aggregate = FALSE
                "UrbanPast" = calcOutput("UrbanPast", aggregate = FALSE),
                "UrbanFuture" = calcOutput("UrbanFuture", aggregate = FALSE),
                "Urban" = calcOutput("Urban", aggregate = FALSE),
-               "UrbanPop" = calcOutput("UrbanPop", aggregate = FALSE),
                "GDPpcPast" = calcOutput("GDPpcPast", aggregate = FALSE),
                "GDPpcFuture" = calcOutput("GDPpcFuture", aggregate = FALSE),
                "GDPpc" = calcOutput("GDPpc", aggregate = FALSE),
                "GDPPast" = calcOutput("GDPPast", aggregate = FALSE),
                "GDPFuture" = calcOutput("GDPFuture", aggregate = FALSE),
                "GDP" = calcOutput("GDP", aggregate = FALSE),
-               "DefaultDrivers" = calcOutput("DefaultDrivers", aggregate = FALSE),
                "Labour" = calcOutput("Labour", aggregate = FALSE))
 
 calcs3 <- list("PopulationPast" = calcOutput("PopulationPast", supplementary = TRUE),
@@ -74,14 +68,12 @@ calcs3 <- list("PopulationPast" = calcOutput("PopulationPast", supplementary = T
                "UrbanPast" = calcOutput("UrbanPast", supplementary = TRUE),
                "UrbanFuture" = calcOutput("UrbanFuture", supplementary = TRUE),
                "Urban" = calcOutput("Urban", supplementary = TRUE),
-               "UrbanPop" = calcOutput("UrbanPop", supplementary = TRUE),
                "GDPpcPast" = calcOutput("GDPpcPast", supplementary = TRUE),
                "GDPpcFuture" = calcOutput("GDPpcFuture", supplementary = TRUE),
                "GDPpc" = calcOutput("GDPpc", supplementary = TRUE),
                "GDPPast" = calcOutput("GDPPast", supplementary = TRUE),
                "GDPFuture" = calcOutput("GDPFuture", supplementary = TRUE),
                "GDP" = calcOutput("GDP", supplementary = TRUE),
-               "DefaultDrivers" = calcOutput("DefaultDrivers", supplementary = TRUE),
                "Labour" = calcOutput("Labour", supplementary = TRUE))
 
 
@@ -95,8 +87,8 @@ test_that("variable names", {
     expect_equal(getNames(calcs2[[x]]), correctNames)
   }
 
-  purrr::map2(c("Population", "Urban", "UrbanPop", "GDPpc", "GDP", "Labour"),
-              c("pop",        "urb",   "urb",      "gdppc", "gdp", "pop"),
+  purrr::map2(c("Population", "Urban", "GDPpc", "GDP", "Labour"),
+              c("pop", "urb", "gdppc", "gdp", "pop"),
               expectCorrectVariableNames)
 })
 
@@ -123,7 +115,7 @@ test_that("GDPpc is equal to GDP divided by pop", {
   x <- calcOutput("GDPpc", extension2150 = "none", naming = "scenario", aggregate = FALSE)
   y <- {
     calcOutput("GDP", extension2150 = "none", naming = "scenario", aggregate = FALSE) /
-    calcOutput("Population", extension2150 = "none", naming = "scenario", aggregate = FALSE)
+    calcOutput("Population", extension2150 = "none", naming = "scenario", aggregate = FALSE, years = getYears(x))
     }
   # Remove comments before comparing
   comment(x) <- NULL
@@ -143,23 +135,47 @@ test_that("GDPpc factored by its weight is equal to GDP", {
 })
 
 test_that("average2020 works", {
-  x <-  calcOutput("GDP", extension2150 = "none", FiveYearSteps = FALSE)
-  y <-  calcOutput("GDP", extension2150 = "none", average2020 = FALSE, FiveYearSteps = FALSE)
+  x <-  calcOutput("GDP", extension2150 = "none")
+  y <-  calcOutput("GDP", extension2150 = "none", average2020 = FALSE)
   yNew2020 <- (y[, 2018, ] + y[, 2019, ] + y[, 2020, ] + y[, 2021, ] + y[, 2022, ]) / 5
   getYears(yNew2020) <- 2020
   getSets(yNew2020) <- getSets(y)
   y[, 2020, ] <- yNew2020
 
-  expect_equal(x, y)
+  expect_equal(x, y[, getYears(x), ])
 })
 
 test_that("average2020 is consistent", {
   x <- calcOutput("GDPpc", extension2150 = "none", naming = "scenario", aggregate = FALSE)
   y <- {
     calcOutput("GDP", extension2150 = "none", naming = "scenario", aggregate = FALSE) /
-      calcOutput("Population", extension2150 = "none", naming = "scenario", aggregate = FALSE)
+      calcOutput("Population",
+                 extension2150 = "none",
+                 naming = "scenario",
+                 aggregate = FALSE,
+                 years = seq(1965, 2100, 5))
   }
   # Remove comments before comparing
   comment(x) <- NULL
+  expect_equal(x, y)
+})
+
+test_that("GDPpc factored by its weight is equal to GDP, in MER", {
+  l <- calcOutput("GDPpc",
+                  extension2150 = "none",
+                  naming = "scenario",
+                  unit = "constant 2005 US$MER",
+                  aggregate = FALSE,
+                  supplementary = TRUE)
+  x <- l$x * l$weight
+
+  y <- calcOutput("GDP",
+                  extension2150 = "none",
+                  naming = "scenario",
+                  unit = "constant 2005 US$MER",
+                  aggregate = FALSE)
+
+  # Remove comments before comparing
+  comment(y) <- NULL
   expect_equal(x, y)
 })

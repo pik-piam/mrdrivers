@@ -1,0 +1,218 @@
+#' Vectorised scenario construction
+#'
+#' @details # Vectorization of arguments
+#'  Vectors are accepted for -Calib, -Past and -Future arguments.
+#'  If given a vector, different combinations are created and returned all at once. If more than one
+#'  argument is vectorised, the arguments have to have the same length. Which time series are created can be
+#'  illustrated with the following example. Let's say the harmonization function and past data source are vectors of
+#'  length 3. Then there will be in total 3 time series that are produced: the first time series is the result of
+#'  combining the first harmonization function with the first past data source, the second time series the result of
+#'  combining the second harmonization function with the second past data source, and the third time series the result
+#'  of  using the respective third entry. The future data source used in each case is the same, since in this example
+#'  only one future data source is provided.
+#'
+#' @param driver A string designating the driver.
+#' @param scenario A string designating the scenario.
+#' @param extension2150 A string specifying if/how the scenarios should be extended until 2150. Can be either:
+#'   \itemize{
+#'     \item "bezier" (default): A bezier curve extension that leads to a smooth flattening of the scenario: the
+#'           slope in the last year of the scenario is halved by 2150. Currently only works for scenarios with 2100 as
+#'           their last year.
+#'     \item "constant": The last value of the scenarios is taken as constant until 2150.
+#'     \item "none": No extension.
+#'   }
+#' @param naming A string giving the naming scheme of the data dimension. Can be either:
+#'   \itemize{
+#'     \item "indicator_scenario" (default): Returns names of the type "gdp_SSP2", or "pop_SSP2".
+#'     \item "indicator.scenario": Returns names of the type "gdp.SSP2", or "pop.SSP2".
+#'     \item "scenario": Returns names of the type "SSP2".
+#'   }
+#'  Set naming to "scenario" when you want to operate on SSP2 gdp and population data for instance, and not have to
+#'  worry about the conflicting names.
+#' @param popAsWeight If TRUE, then population data of the same scenario is used as weight.
+#'
+#' @inheritDotParams calcScenarioConstructor
+#'
+#' @inherit madrat::calcOutput return
+#' @keywords internal
+calcDriver <- function(driver,
+                       scenario,
+                       popAsWeight = FALSE,
+                       naming = "indicator_scenario",
+                       extension2150 = "bezier",
+                       ...) {
+  # Load ... arguments into function environment
+  list2env(list(...), environment())
+
+  # Temporary warning left as information. Remove in next release.
+  if ("FiveYearSteps" %in% ls()) {
+    warning("FiveYearSteps is deprecated and will throw an error in the next release.")
+    rm("FiveYearSteps")
+  }
+
+  # If the pastData, futureData and harmonization arguments are not in ..., then query them using "scenario" and
+  # load them into the function environment.
+  if (!any(c("pastData", "futureData", "harmonization") %in% ls())) {
+    list2env(toolGetScenarioDefinition(driver, scenario, aslist = TRUE), environment())
+  } else {
+    scenario <- "-"
+  }
+
+  # Create a list of all the arguments
+  l <- as.list(environment())
+
+  # Call ScenarioConstructor function the appropriate number of times (map) and combine (reduce)
+  # !! Keep formula syntax for madrat caching to work
+  purrr::pmap(l, ~calcOutput("ScenarioConstructor", aggregate = FALSE, supplementary = TRUE, ...)) %>%
+    toolReduce()
+}
+
+#' ScenarioConstructor
+#'
+#' @param harmonization A string designating the harmonization function.
+#' @param pastData A string passed to the calc'Driver'Past function, e.g. [calcGDPPast()] or [calcPopulationPast()].
+#' @param futureData A string passed to the calc'Driver'Future function, e.g. [calcGDPFuture()] or
+#'   [calcPopulationFuture()].
+#' @inheritParams calcDriver
+#' @param ... Arguments passed on to the 'driver'Past, 'driver'Future and driver'Harmonization' functions.
+#'
+#' @inherit madrat::calcOutput return
+#' @keywords internal
+calcScenarioConstructor <- function(driver,
+                                    scenario,
+                                    pastData,
+                                    futureData,
+                                    harmonization,
+                                    extension2150,
+                                    naming,
+                                    popAsWeight,
+                                    ...) {
+
+  harmonizedData <- calcOutput("HarmonizedData",
+                               driver = driver,
+                               scenario = scenario,
+                               pastData = pastData,
+                               futureData = futureData,
+                               harmonization = harmonization,
+                               aggregate = FALSE,
+                               supplementary = TRUE,
+                               ...)
+
+  harmonizedData$x <- toolFinishingTouches(x = harmonizedData$x, extension2150 = extension2150, naming = naming)
+
+  weight <- NULL
+  if (popAsWeight) {
+    weight <- calcOutput("Population", scenario = scenario, extension2150 = extension2150, aggregate = FALSE)
+    # Give weight same names as data, so that aggregate doesn't mess up data dim
+    getNames(weight) <- getNames(harmonizedData$x)
+    # Make sure weight has the same yearly resolution as harmonizedData
+    # (this relates specifically to the noCovid scenario)
+    weight <- weight[, getYears(harmonizedData$x), ]
+  }
+
+  list(x = harmonizedData$x,
+       weight = weight,
+       unit = harmonizedData$unit,
+       description = glue("{driver} data. Datasource for the Past: {pastData}. Datasource for the Future: \\
+                          {futureData}. Calibrated to {harmonizedData$description}"))
+}
+
+
+#' Get Harmonized Data
+#'
+#' @param ... Arguments passed on to harmonization functions
+#' @inheritParams calcScenarioConstructor
+#' @inherit madrat::calcOutput return
+#' @keywords internal
+calcHarmonizedData <- function(driver, scenario, pastData, futureData, harmonization, ...) {
+  # Depending on the setup, the scenario construction either requires 'past' and 'future' scenarios, or not!
+  # For example, many GDP scenarios are actually constructed as GDPpc scenarios, and then simply multiplied with
+  # population scenarios.
+  if (pastData != "-") {
+    past <- calcOutput("PastData", driver = driver, pastData = pastData, aggregate = FALSE, supplementary = TRUE, ...)
+  }
+  if (futureData != "-") {
+    future <- calcOutput("FutureData",
+                         driver = driver,
+                         futureData = futureData,
+                         aggregate = FALSE,
+                         supplementary = TRUE,
+                         ...)
+  }
+
+  args <- c(list(...), as.list(environment()))
+  switch(
+    driver,
+    "Population" = calcOutput("PopulationHarmonized", args = args, aggregate = FALSE, supplementary = TRUE),
+    "GDP"        = calcOutput("GDPHarmonized",        args = args, aggregate = FALSE, supplementary = TRUE),
+    "GDPpc"      = calcOutput("GDPpcHarmonized",      args = args, aggregate = FALSE, supplementary = TRUE),
+    "Labour"     = calcOutput("LabourHarmonized",     args = args, aggregate = FALSE, supplementary = TRUE),
+    "Urban"      = calcOutput("UrbanHarmonized",      args = args, aggregate = FALSE, supplementary = TRUE)
+  )
+}
+
+#' Get Past Data Building Block
+#'
+#' @inheritParams calcScenarioConstructor
+#' @inherit madrat::calcOutput return
+#' @keywords internal
+calcPastData <- function(driver, pastData, unit) {
+  switch(
+    driver,
+    "GDP"        = calcOutput("GDPPast",
+                              GDPPast = pastData,
+                              unit = unit,
+                              aggregate = FALSE,
+                              supplementary = TRUE),
+    "GDPpc"      = calcOutput("GDPpcPast",
+                              GDPpcPast = pastData,
+                              unit = unit,
+                              aggregate = FALSE,
+                              supplementary = TRUE),
+    "Population" = calcOutput("PopulationPast",
+                              PopulationPast = pastData,
+                              aggregate = FALSE,
+                              supplementary = TRUE),
+    "Urban"      = calcOutput("UrbanPast",
+                              UrbanPast = pastData,
+                              aggregate = FALSE,
+                              supplementary = TRUE),
+    "Labour"     = calcOutput("LabourPast",
+                              LabourPast = pastData,
+                              aggregate = FALSE,
+                              supplementary = TRUE)
+  )
+}
+
+#' Get Future Data Building Block
+#'
+#' @inheritParams calcScenarioConstructor
+#' @inherit madrat::calcOutput return
+#' @keywords internal
+calcFutureData <- function(driver, futureData, unit) {
+  switch(
+    driver,
+    "Population" = calcOutput("PopulationFuture",
+                              PopulationFuture = futureData,
+                              aggregate = FALSE,
+                              supplementary = TRUE),
+    "GDP"        = calcOutput("GDPFuture",
+                              GDPFuture = futureData,
+                              unit = unit,
+                              aggregate = FALSE,
+                              supplementary = TRUE),
+    "GDPpc"      = calcOutput("GDPpcFuture",
+                              GDPpcFuture = futureData,
+                              unit = unit,
+                              aggregate = FALSE,
+                              supplementary = TRUE),
+    "Labour"     = calcOutput("LabourFuture",
+                              LabourFuture = futureData,
+                              aggregate = FALSE,
+                              supplementary = TRUE),
+    "Urban"      = calcOutput("UrbanFuture",
+                              UrbanFuture = futureData,
+                              aggregate = FALSE,
+                              supplementary = TRUE)
+  )
+}

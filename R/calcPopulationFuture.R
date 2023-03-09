@@ -1,16 +1,29 @@
-#' @describeIn calcPopulation Get future population projections
+#' @describeIn calcPopulationPast Get future population projections
+#'
+#' @param PopulationFuture A string designating the source for the future population data.
+#'   Available sources are:
+#'   \itemize{
+#'     \item "SSPs": From the Wittgenstein Center [here](http://pure.iiasa.ac.at/id/eprint/17550/) and
+#'                   [here](http://pure.iiasa.ac.at/id/eprint/16710/)
+#'     \item "SSP2EU": Combined SSP2 and Eurostat (for the EU countries) source
+#'     \item "SDPs":
+#'     \item "UN_PopDiv": United Nations
+#'     \item "MI": Missing island dataset
+#'     \item "SSPsOld": Old SSPs from the IIASA database
+#'   }
+#'   See the "Combining data sources with '-'" section below for how to combine data sources.
+#'
 #' @examples \dontrun{
 #' library(mrdrivers)
 #' calcOutput("PopulationFuture")
 #' }
 #'
-calcPopulationFuture <- function(PopulationFuture = "SSPs-UN_PopDiv-MI", # nolint
-                                 extension2150 = "none") {
+calcPopulationFuture <- function(PopulationFuture = "SSPs-UN_PopDiv-MI") { # nolint
   # Check user input
   toolCheckUserInput("PopulationFuture", as.list(environment()))
   # Call calcInternalPopulationFuture function the appropriate number of times (map) and combine (reduce)
   # !! Keep formula syntax for madrat caching to work
-  purrr::pmap(list("PopulationFuture" = unlist(strsplit(PopulationFuture, "-")), "extension2150" = extension2150),
+  purrr::pmap(list("PopulationFuture" = unlist(strsplit(PopulationFuture, "-"))),
               ~calcOutput("InternalPopulationFuture", aggregate = FALSE, supplementary = TRUE, ...)) %>%
     toolReduce(mbindOrFillWith = "fillWith")
 }
@@ -18,20 +31,17 @@ calcPopulationFuture <- function(PopulationFuture = "SSPs-UN_PopDiv-MI", # nolin
 ######################################################################################
 # Internal Function
 ######################################################################################
-calcInternalPopulationFuture <- function(PopulationFuture, extension2150) { # nolint
+calcInternalPopulationFuture <- function(PopulationFuture) { # nolint
   data <- switch(PopulationFuture,
                  "SSPs"      = calcOutput("InternalPopulationFutureSSPs", aggregate = FALSE),
                  "SSP2EU"    = calcOutput("InternalPopulationFutureSSP2EU", aggregate = FALSE),
                  "SDPs"      = calcOutput("InternalPopulationFutureSDPs", aggregate = FALSE),
                  "UN_PopDiv" = calcOutput("InternalPopulationFutureUN_PopDiv", aggregate = FALSE),
                  "MI"        = readSource("MissingIslands", "pop"),
-                 "SSPs_old"  = calcOutput("InternalPopulationFutureSSPsOld", aggregate = FALSE),
-                 # Deprecated options ?
-                 "SRES"     = calcOutput("InternalPopulationFutureSRES", aggregate = FALSE),
-                 "IIASApop" = readSource("IIASApop") * 1e-6,
+                 "SSPsOld"   = calcOutput("InternalPopulationFutureSSPsOld", aggregate = FALSE),
                  stop("Bad input for PopulationFuture. Invalid 'PopulationFuture' argument."))
 
-  data <- toolFinishingTouches(data, extension2150)
+  data <- toolFinishingTouches(data)
 
   list(x = data,
        weight = NULL,
@@ -90,28 +100,7 @@ calcInternalPopulationFutureSSPsOld <- function() { # nolint
 }
 
 calcInternalPopulationFutureUN_PopDiv <- function() { # nolint
-  data <- readSource("UN_PopDiv", "WPP2019_medium") * 1e-3
+  data <- readSource("UN_PopDiv", "medium") * 1e-3
   getNames(data) <- "pop_medium_variant"
   list(x = data, weight = NULL, unit = "million", description = "Population data from UN_PopDiv")
-}
-
-######################################################################################
-# Legacy
-######################################################################################
-calcInternalPopulationFutureSRES <- function() { # nolint
-  data <- NULL
-  for (i in c("sres_a1_pop", "sres_a2_pop", "sres_b1_pop", "sres_b2_pop")) {
-    data <- mbind(data, readSource("SRES", i))
-  }
-  getNames(data) <- paste0("pop_", substr(getNames(data), 6, 7))
-
-  fill <- calcOutput("PopulationFuture",
-                     PopulationFuture = "SSPs",
-                     extension2150 = "none",
-                     aggregate = FALSE)[, , "pop_SSP2"]
-  data <- data %>%
-    toolFillWith(fill) %>%
-    toolInterpolateAndExtrapolate()
-
-  list(x = data, weight = NULL, unit = "million", description = "Population data from SRES")
 }

@@ -11,7 +11,6 @@ withr::local_file("tmp_messages.txt")
 withr::local_message_sink(new = file("tmp_messages.txt", "w"), append = TRUE)
 
 
-
 test_that("Default calcOutput Population calls", {
   expect_snapshot_value(calcOutput("PopulationFuture"), style = "json2")
   expect_snapshot_value(calcOutput("PopulationPast"), style = "json2")
@@ -34,11 +33,14 @@ test_that("Default calcOutput Urban calls", {
   expect_snapshot_value(calcOutput("UrbanPast"), style = "json2")
   expect_snapshot_value(calcOutput("UrbanFuture"), style = "json2")
   expect_snapshot_value(calcOutput("Urban"), style = "json2")
-  expect_snapshot_value(calcOutput("UrbanPop"), style = "json2")
 })
 
-test_that("Other default calcOutput calls", {
-  expect_snapshot_value(calcOutput("DefaultDrivers"), style = "json2")
+test_that("Default calcOutput Labour calls", {
+  expect_snapshot_value(calcOutput("LabourPast"), style = "json2")
+  expect_snapshot_value(calcOutput("LabourFuture"), style = "json2")
   expect_snapshot_value(calcOutput("Labour"), style = "json2")
+})
+
+test_that("Default calcOutput RatioPPP2MER call", {
   expect_snapshot_value(calcOutput("RatioPPP2MER"), style = "json2")
 })

@@ -1,92 +1,95 @@
 #' Get information on available scenarios
 #'
 #' toolGetScenarioDefinition can be used to figure out which scenarios are made available by mrdrivers, and how they
-#' are constructed, i.e. what xPast, xFuture and xCalib strings are used.
+#' are constructed, i.e. what past data, future data and harmonization methods are used.
 #'
 #' @param driver NULL or a character vector designating the driver for which information is to be returned. If NULL,
-#'  information for all drivers is returned. Available drivers are "GDP", "Population" and "GDPpc".
-#'
-#' @param scen NULL or a character vector designating the scenario for which information is to be returned. If NULL,
-#'  information for all scenarios is returned. Available scenarios are:
+#'  information for all drivers is returned. Available drivers are:
 #'  \itemize{
-#'   \item GDP-scenarios: "SSPs", "SDPs", and "SSP2EU"
-#'   \item Populations-scenarios: "SSPs", "SDPs", "SSP2EU" and "ISIMIP"
-#'   \item GDPpc-scenarios: "SSPs", "SDPs", and "SSP2EU"
+#'   \item GDP
+#'   \item Population
+#'   \item GDPpc
+#'   \item Labour
+#'   \item Urban
 #'  }
 #'
-#' @param unlist TRUE or FALSE (default). If TRUE the xCalib, xPast and xFuture entries are returned directly.
+#' @param scen NULL or a character vector designating the scenario for which information is to be returned. If NULL,
+#'  information for all scenarios is returned.
 #'
-#' @return A list with the scenarios and their xPast, xFuture and xCalib strings.
+#' @param aslist TRUE or FALSE (default). If TRUE then the pastData, futureData and harmonization strings are returned
+#'  as a list.
+#'
+#' @return A tibble with the driver and scenario information.
 #' @export
 #'
 #' @examples
 #' toolGetScenarioDefinition()
 #' toolGetScenarioDefinition(driver = "GDP")
 #' toolGetScenarioDefinition(scen = "SSP2EU")
-#' toolGetScenarioDefinition(driver = "Population", scen = "SSPs", unlist = TRUE)
+#' toolGetScenarioDefinition(driver = "Population", scen = "SSPs", aslist = TRUE)
 #'
-toolGetScenarioDefinition <- function(driver = NULL, scen = NULL, unlist = FALSE) {
+toolGetScenarioDefinition <- function(driver = NULL, scen = NULL, aslist = FALSE) {
 
   # Start of scenario-design section: Developers can modify this section!
-
-  ## GDPpc scenarios
-  gdppcScenarios <- tibble::tribble(
-    ~scenario,    ~GDPpcPast,             ~GDPpcFuture,  ~GDPpcCalib,
-    "SSPs",       "WDI-MI",               "SSPs-MI",     "calibSSPs",
-    "SDPs",       "WDI-MI",               "SDPs-MI",     "calibSDPs",
-    "SSP2EU",     "Eurostat-WDI-MI",      "SSP2EU-MI",   "calibSSP2EU",
-    "noCovid",    "WDI-MI",               "SSPs-MI",     "calibNoCovid",
-    "longCovid",  "WDI-MI",               "SSPs-MI",     "calibLongCovid",
-    "shortCovid", "WDI-MI",               "SSPs-MI",     "calibShortCovid"
+  scenarios <- tibble::tribble(
+    ~driver,      ~scenario,    ~pastData,                    ~futureData,            ~harmonization,
+    # GDPpc scenarios
+    "GDPpc",      "SSPs",       "WDI-MI",                     "SSPsOld-MI",           "calibSSPs",
+    "GDPpc",      "SDPs",       "-",                          "-",                    "calibSDPs",
+    "GDPpc",      "SSP2EU",     "-",                          "-",                    "calibSSP2EU",
+    "GDPpc",      "noCovid",    "WDI-MI",                     "SSPsOld-MI",           "calibNoCovid",
+    "GDPpc",      "longCovid",  "-",                          "-",                    "calibLongCovid",
+    "GDPpc",      "shortCovid", "-",                          "-",                    "calibShortCovid",
+    # GDP scenarios
+    "GDP",        "SSPs",       "-",                          "-",                    "calibSSPs",
+    "GDP",        "SDPs",       "-",                          "-",                    "calibSDPs",
+    "GDP",        "SSP2EU",     "Eurostat-WDI-MI",            "SSP2EU-MI",            "calibSSP2EU2",
+    "GDP",        "noCovid",    "-",                          "-",                    "calibNoCovid",
+    "GDP",        "longCovid",  "-",                          "-",                    "calibLongCovid",
+    "GDP",        "shortCovid", "-",                          "-",                    "calibShortCovid",
+    "GDP",        "SSPsOld",    "IHME_USD05_PPP_pc-MI",       "SSPs-MI",              "past_transition",
+    # Population Scenarios
+    "Population", "SSPs",       "WDI-UN_PopDiv-MI",           "SSPs-UN_PopDiv-MI",    "calibSSPs",
+    "Population", "SDPs",       "WDI-UN_PopDiv-MI",           "SDPs-UN_PopDiv-MI",    "calibSDPs",
+    "Population", "SSP2EU",     "Eurostat-WDI-UN_PopDiv-MI",  "SSP2EU-UN_PopDiv-MI",  "calibSSP2EU",
+    "Population", "ISIMIP",     "UN_PopDiv-MI",               "SSPs-UN_PopDiv-MI",    "calibISIMIP",
+    "Population", "SSPsOld",    "WDI-MI",                     "SSPsOld-MI",           "past_transition",
+    "Population", "noCovid",    "WDI-UN_PopDiv-MI",           "SSPs-UN_PopDiv-MI",    "calibSSPs",
+    "Population", "longCovid",  "WDI-UN_PopDiv-MI",           "SSPs-UN_PopDiv-MI",    "calibSSPs",
+    "Population", "shortCovid", "WDI-UN_PopDiv-MI",           "SSPs-UN_PopDiv-MI",    "calibSSPs",
+    # Labour Scenarios
+    "Labour",     "SSPs",       "-",                          "SSPs",                 "-",
+    "Labour",     "SDPs",       "-",                          "SDPs",                 "-",
+    "Labour",     "SSP2EU",     "-",                          "SSP2EU",               "-",
+    "Labour",     "SSPsOld",    "-",                          "SSPsOld",              "-",
+    # Urban population scenarios
+    "Urban",      "SSPs",       "WDI",                        "SSPs",                 "past",
+    "Urban",      "SDPs",       "WDI",                        "SDPs",                 "past",
+    "Urban",      "SSP2EU",     "WDI",                        "SSP2EU",               "past"
   )
-
-  ## Population scenarios
-  popScenarios <- tibble::tribble(
-    ~scenario,   ~PopulationPast,               ~PopulationFuture,      ~PopulationCalib,
-    "SSPs",      "WDI-UN_PopDiv-MI",            "SSPs-UN_PopDiv-MI",    "calibSSPs",
-    "SDPs",      "WDI-UN_PopDiv-MI",            "SDPs-UN_PopDiv-MI",    "calibSDPs",
-    "SSP2EU",    "Eurostat-WDI-UN_PopDiv-MI",   "SSP2EU-UN_PopDiv-MI",  "calibSSP2EU",
-    "ISIMIP",    "UN_PopDiv-MI",                "SSPs-UN_PopDiv-MI",    "calibISIMIP",
-    "SSPsOld",   "WDI-MI",                      "SSPs_old-MI",          "past_transition"
-  )
-
-  ## GDP scenarios
-  gdpScenarios <- tibble::tribble(
-    ~scenario,    ~GDPPast,                 ~GDPFuture,    ~GDPCalib,
-    "SSPsOld",    "IHME_USD05_PPP_pc-MI",   "SSPs-MI",     "past_transition",
-  )
-  # GDP scenarios created by multiplying GDPpc and Population
-  gdpScenarios <- dplyr::bind_rows(gdpScenarios, dplyr::rename_with(gdppcScenarios, ~gsub("GDPpc", "GDP", .x)))
-
-
-  s <- list("GDP" = gdpScenarios,
-            "Population" = popScenarios,
-            "GDPpc" = gdppcScenarios)
   # End of scenario-design section
 
+  s <- scenarios
 
-  availableDrivers <- names(s)
   if (!is.null(driver)) {
+    availableDrivers <- dplyr::pull(scenarios, driver) %>% unique()
     if (!all(driver %in% availableDrivers)) {
       stop(glue::glue("Unknown driver. Available drivers are: {paste(availableDrivers, collapse = ', ')}"))
     }
-    s <- s[driver]
+    s <- dplyr::filter(scenarios, driver %in% !!driver)
   }
 
   if (!is.null(scen)) {
-    availableScen <- purrr::map(s, dplyr::pull, "scenario") %>% purrr::reduce(c) %>% unique()
+    availableScen <- dplyr::pull(s, .data$scenario) %>% unique()
     if (!all(scen %in% availableScen)) {
       stop(glue::glue("Unknown scenario. Available scenarios are: {paste(availableScen, collapse = ', ')}"))
     }
-    s <- purrr::map(s, ~.x %>%
-                      dplyr::filter(.x$scenario %in% scen) %>%
-                      dplyr::arrange(order(match(.$scenario, scen)))) %>%
-      purrr::discard(~dim(.x)[1] == 0)
+    s <- dplyr::filter(s, .data$scenario %in% scen)
+    s <- dplyr::arrange(s, order(match(s$scenario, scen)))
   }
 
-  if (unlist) {
-    s <- purrr::map(s, ~dplyr::select(.x, -"scenario")) %>% unlist(recursive = FALSE)
-    names(s) <- gsub(paste0("(", paste0(availableDrivers, collapse = "|"), ")\\."), "", names(s))
+  if (aslist) {
+    s <- as.list(s)
   }
 
   s

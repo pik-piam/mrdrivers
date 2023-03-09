@@ -4,33 +4,36 @@
 \alias{toolGetScenarioDefinition}
 \title{Get information on available scenarios}
 \usage{
-toolGetScenarioDefinition(driver = NULL, scen = NULL, unlist = FALSE)
+toolGetScenarioDefinition(driver = NULL, scen = NULL, aslist = FALSE)
 }
 \arguments{
 \item{driver}{NULL or a character vector designating the driver for which information is to be returned. If NULL,
-information for all drivers is returned. Available drivers are "GDP", "Population" and "GDPpc".}
-
-\item{scen}{NULL or a character vector designating the scenario for which information is to be returned. If NULL,
-information for all scenarios is returned. Available scenarios are:
+information for all drivers is returned. Available drivers are:
 \itemize{
-\item GDP-scenarios: "SSPs", "SDPs", and "SSP2EU"
-\item Populations-scenarios: "SSPs", "SDPs", "SSP2EU" and "ISIMIP"
-\item GDPpc-scenarios: "SSPs", "SDPs", and "SSP2EU"
+\item GDP
+\item Population
+\item GDPpc
+\item Labour
+\item Urban
 }}
 
-\item{unlist}{TRUE or FALSE (default). If TRUE the xCalib, xPast and xFuture entries are returned directly.}
+\item{scen}{NULL or a character vector designating the scenario for which information is to be returned. If NULL,
+information for all scenarios is returned.}
+
+\item{aslist}{TRUE or FALSE (default). If TRUE then the pastData, futureData and harmonization strings are returned
+as a list.}
 }
 \value{
-A list with the scenarios and their xPast, xFuture and xCalib strings.
+A tibble with the driver and scenario information.
 }
 \description{
 toolGetScenarioDefinition can be used to figure out which scenarios are made available by mrdrivers, and how they
-are constructed, i.e. what xPast, xFuture and xCalib strings are used.
+are constructed, i.e. what past data, future data and harmonization methods are used.
 }
 \examples{
 toolGetScenarioDefinition()
 toolGetScenarioDefinition(driver = "GDP")
 toolGetScenarioDefinition(scen = "SSP2EU")
-toolGetScenarioDefinition(driver = "Population", scen = "SSPs", unlist = TRUE)
+toolGetScenarioDefinition(driver = "Population", scen = "SSPs", aslist = TRUE)
 
 }

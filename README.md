@@ -1,8 +1,8 @@
 # Create GDP and Population Scenarios
 
-R package **mrdrivers**, version **0.7.2**
+R package **mrdrivers**, version **1.0.0**
 
-[![CRAN status](https://www.r-pkg.org/badges/version/mrdrivers)](https://cran.r-project.org/package=mrdrivers)  [![R build status](https://pik-piam.github.io/mrdrivers/workflows/check/badge.svg)](https://pik-piam.github.io/mrdrivers/actions) [![codecov](https://codecov.io/gh/mrdrivers/branch/master/graph/badge.svg)](https://app.codecov.io/gh/mrdrivers) [![r-universe](https://pik-piam.r-universe.dev/badges/mrdrivers)](https://pik-piam.r-universe.dev/ui#builds)
+[![CRAN status](https://www.r-pkg.org/badges/version/mrdrivers)](https://cran.r-project.org/package=mrdrivers)  [![R build status](https://pik-piam.github.io/mrdrivers/workflows/check/badge.svg)](https://pik-piam.github.io/mrdrivers/actions) [![codecov](https://codecov.io/gh/mrdrivers/branch/master/graph/badge.svg)](https://app.codecov.io/gh/mrdrivers) [![r-universe](https://pik-piam.r-universe.dev/badges/mrdrivers)](https://pik-piam.r-universe.dev/builds)
 
 ## Purpose and Functionality
 
@@ -16,7 +16,7 @@ Create GDP and population scenarios
 <!-- [![Lifecycle: stable](https://img.shields.io/badge/lifecycle-stable-bright_green.svg)](https://lifecycle.r-lib.org/articles/stages.html#stable) -->
 <!-- [![Codecov test coverage](https://codecov.io/gh/pik-piam/mrdrivers/branch/main/graph/badge.svg)](https://app.codecov.io/gh/pik-piam/mrdrivers?branch=main) -->
 <!-- badges: end -->
-<!-- The goal of **mrdrivers** is to handle the construction of GDP, GDP per capita, Population and Urbanization scenarios: all of which are important drivers to the REMIND and MAgPIE models. -->
+<!-- The goal of **mrdrivers** is to handle the construction of GDP, GDP per capita, Population and Urban Population share scenarios: all of which are important drivers to the REMIND and MAgPIE models. -->
 <!-- ## Installation -->
 <!-- ```{r, eval=FALSE} -->
 <!-- # From the PIK rse-server -->
@@ -36,29 +36,31 @@ information on madrat or magclass, please visit the respective github
 repositories ([madrat](https://github.com/pik-piam/madrat#readme),
 [magclass](https://github.com/pik-piam/magclass#readme)).
 
-The readSource and calcOutput functions provided by this package are
+## ‘calcOutput’ and ‘readSource’ functions
+
+The key readSource and calcOutput functions provided by this package are
 listed below.
 
-readSource:
+### readSource
 
-    #>  [1] "ARIADNE"                   "ARIADNE_ReferenceScenario"
-    #>  [3] "EurostatPopGDP"            "IMF"                      
-    #>  [5] "James"                     "James2019"                
-    #>  [7] "MissingIslands"            "OECD"                     
-    #>  [9] "PEAP"                      "PopulationTWN"            
-    #> [11] "PWT"                       "SSP"                      
-    #> [13] "UN_PopDiv"                 "WDI"
+    #> [1] "readWDI"            "readIMF"            "readEurostatPopGDP"
+    #> [4] "readUN_PopDiv"      "readPEAP"           "readSSP"           
+    #> [7] "readMissingIslands" "readJames2019"
 
-readSource (deprecated?!):
+### calcOutput
 
-    #> [1] "IIASApop" "SRES"
+    #> [1] "calcGDP"        "calcGDPpc"      "calcPopulation" "calcLabour"    
+    #> [5] "calcUrban"
 
-calcOutput:
+## Default scenarios
 
-    #>  [1] "DefaultDrivers"   "GDP"              "GDPFuture"        "GDPPast"         
-    #>  [5] "GDPpc"            "GDPpcFuture"      "GDPpcPast"        "Labour"          
-    #>  [9] "Population"       "PopulationFuture" "PopulationPast"   "RatioPPP2MER"    
-    #> [13] "Urban"            "UrbanFuture"      "UrbanPast"        "UrbanPop"
+The current default scenarios returned for all drivers are currently:
+
+- the SSPs, i.e. SSP1-5
+
+- the SDPs, i.e. SDP, SDP_EI, SDP_RC, and SDP_MC
+
+- SSP2EU
 
 ## Installation
 
@@ -81,6 +83,14 @@ Package updates can be installed using `update.packages` (make sure that the add
 update.packages()
 ```
 
+## Tutorial
+
+The package comes with a vignette describing the basic functionality of the package and how to use it. You can load it with the following command (the package needs to be installed):
+
+```r
+vignette("references") # Source Information
+```
+
 ## Questions / Problems
 
 In case of questions / problems please contact Johannes Koch <jokoch@pik-potsdam.de>.
@@ -89,7 +99,7 @@ In case of questions / problems please contact Johannes Koch <jokoch@pik-potsdam
 
 To cite package **mrdrivers** in publications use:
 
-Koch J, Bodirsky B, Baumstark L, Wang X, Chen D, Leip D, Benke F, Eweron A, Rodrigues R, Giannousakis A, Levesque A, Pehl M, Soergel B, Dietrich J (2022). _mrdrivers: Create GDP and Population Scenarios_. R package version 0.7.2, <URL: https://pik-piam.github.io/mrdrivershttps://github.com/pik-piam/mrdrivers>.
+Koch J, Bodirsky B, Baumstark L, Wang X, Chen D, Leip D, Benke F, Eweron A, Rodrigues R, Giannousakis A, Levesque A, Pehl M, Soergel B, Dietrich J (2023). _mrdrivers: Create GDP and Population Scenarios_. R package version 1.0.0, <URL: https://pik-piam.github.io/mrdrivershttps://github.com/pik-piam/mrdrivers>.
 
 A BibTeX entry for LaTeX users is
 
@@ -97,8 +107,8 @@ A BibTeX entry for LaTeX users is
 @Manual{,
   title = {mrdrivers: Create GDP and Population Scenarios},
   author = {Johannes Koch and Benjamin Leon Bodirsky and Lavinia Baumstark and Xiaoxi Wang and David Chen and Deborra Leip and Falk Benke and Araujo Eweron and Renato Rodrigues and Anastasis Giannousakis and Antoine Levesque and Michaja Pehl and Bjoern Soergel and Jan Philipp Dietrich},
-  year = {2022},
-  note = {R package version 0.7.2},
+  year = {2023},
+  note = {R package version 1.0.0},
   url = {https://pik-piam.github.io/mrdrivers},
   url = {https://github.com/pik-piam/mrdrivers},
 }

@@ -1,12 +1,39 @@
-#' @describeIn calcGDP Get historic GDP data
+#' Get GDP and GDPpc scenario building blocks
+#'
+#' Get the past and future GDP scenario building blocks with calcGDPPast and calcGDPFuture, respectively.
+#' If GDP data for a scenario is required, even if just for a single year, always use [calcGDP()], as what is returned
+#' by calcGDPPast or calcGDPFuture may not end up as is in the scenario, depending on the harmonization function.
+#' Use calcGDPPast and calcGDPFuture only when trying to access specific GDP data.
+#'
+#' @details # Combining data sources with "-"
+#'  Data sources can be combined with "-" and passed to both the -Past and -Future arguments, i.e. "WDI-MI". This
+#'  signifies that WDI data will be taken first, but missing data will be then be filled in with data from MI.
+#'
+#' @param GDPPast A string designating the source for the historical GDP data. Available sources are:
+#'   \itemize{
+#'     \item "WDI": World development indicators from the World Bank
+#'     \item "MI": Missing island dataset
+#'     \item "Eurostat": Eurostat
+#'     \item The IHME/James data set. This data set is tertiary source that uses available secondary sources (e.g. WDI
+#'           and PWT) to create completed GDP per capita time series
+#'           (See [paper](https://pophealthmetrics.biomedcentral.com/articles/10.1186/1478-7954-10-12)).
+#'           To access, pass one of the subtypes
+#'           "IHME_USD05_PPP_pc", "IHME_USD05_MER_pc", "IMF_USD05_PPP_pc", "PENN_USD05_PPP_pc", "WB_USD05_PPP_pc",
+#'           "MADDISON_USD05_PPP_pc", "WB_USD05_MER_pc", "IMF_USD05_MER_pc", "UN_USD05_MER_pc". In all cases, the per
+#'           capita GDP will be multiplied by WDI population data to get absolute GDP data.
+#'   }
+#'   See the "Combining data sources with '-'" section below for how to combine data sources.
+#'
+#' @inheritParams calcGDP
+#'
 #' @examples \dontrun{
 #' library(mrdrivers)
 #' calcOutput("GDPPast")
 #' }
-#'
+#' @keywords internal
 calcGDPPast <- function(GDPPast = "WDI-MI", unit = "constant 2005 Int$PPP") { # nolint
   # Check user input
-  toolCheckUserInput("GDPpast", as.list(environment()))
+  toolCheckUserInput("GDPPast", as.list(environment()))
   # Call calcInternalGDPPast function the appropriate number of times (map) and combine (reduce)
   # !! Keep formula syntax for madrat caching to work
   purrr::pmap(list("GDPPast" = unlist(strsplit(GDPPast, "-")), "unit" = unit),
@@ -30,9 +57,9 @@ calcInternalGDPPast <- function(GDPPast, unit) { # nolint
   # Call appropriate calcInternalGDPPast function.
   data <- switch(GDPPast,
                  "WDI"      = calcOutput("InternalGDPPastWDI", unit = unit, aggregate = FALSE),
-                 "PWT"      = calcOutput("InternalGDPPastPWT", unit = unit, aggregate = FALSE),
                  "Eurostat" = calcOutput("InternalGDPPastEurostat", unit = unit, aggregate = FALSE),
                  "MI"       = calcOutput("InternalGDPMI", unit = unit, aggregate = FALSE),
+                 "PWT"      = calcOutput("InternalGDPPastPWT", unit = unit, aggregate = FALSE),
                  calcOutput("InternalGDPPastJames", subtype = GDPPast, aggregate = FALSE))
 
   data <- toolFinishingTouches(data)
@@ -70,13 +97,6 @@ calcInternalGDPPastEurostat <- function(unit) {
 
   getNames(data) <- glue("gdp in {unit}")
   list(x = data, weight = NULL, unit = unit, description = "GDP from Eurostat")
-}
-
-calcInternalGDPPastPWT <- function(unit) {
-  data <- readSource("PWT")[, , "rgdpna"]
-  data <- GDPuc::convertGDP(data, "constant 2017 Int$PPP", unit, replace_NAs = c("linear", "no_conversion"))
-  getNames(data) <- glue("gdp in {unit}")
-  list(x = data, weight = NULL, unit = "constant 2005 Int$PPP", description = "GDP from PWT")
 }
 
 calcInternalGDPPastJames <- function(subtype) {
@@ -124,4 +144,11 @@ fillWithWBFromJames2019 <- function(data, unit) {
     }
   }
   x
+}
+
+calcInternalGDPPastPWT <- function(unit) {
+  data <- readSource("PWT")[, , "rgdpna"]
+  data <- GDPuc::convertGDP(data, "constant 2017 Int$PPP", unit, replace_NAs = c("linear", "no_conversion"))
+  getNames(data) <- glue("gdp in {unit}")
+  list(x = data, weight = NULL, unit = "constant 2005 Int$PPP", description = "GDP from PWT")
 }

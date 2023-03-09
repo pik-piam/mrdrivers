@@ -3,16 +3,19 @@
 \name{readIMF}
 \alias{readIMF}
 \alias{convertIMF}
+\alias{downloadIMF}
 \title{Read IMF}
 \usage{
-readIMF(subtype = "current_account", subset = "WEOall.xls")
+readIMF(subtype = "current_account", subset = "WEOOct2022all.xls")
 
 convertIMF(x, subtype = "current_account")
+
+downloadIMF()
 }
 \arguments{
 \item{subtype}{Either "current_account" or "GDPpc"}
 
-\item{subset}{Either "WEOall.xls" or "WEOallOct2019.xls"}
+\item{subset}{Either "WEOOct2022all.xls" or "WEOallOct2019.xls"}
 
 \item{x}{MAgPIE object returned by readIMF}
 }
@@ -25,6 +28,8 @@ Read-in IMF data
 \section{Functions}{
 \itemize{
 \item \code{convertIMF()}: Convert IMF data
+
+\item \code{downloadIMF()}: Download WEO from the IMF website
 
 }}
 \examples{

@@ -1,7 +1,7 @@
 Package: mrdrivers
 Type: Package
 Title: Create GDP and Population Scenarios
-Version: 0.7.2
+Version: 1.0.0
 Authors@R: c(person(given = "Johannes", 
                     family = "Koch", 
                     email = "jokoch@pik-potsdam.de", 
@@ -42,16 +42,22 @@ Imports:
     tibble,
     tidyr,
     tidyselect,
-    WDI,
     zoo
 Suggests: 
     covr,
     crayon,
+    eurostat,
+    kableExtra,
+    knitr,
+    pander,
+    rmarkdown,
     testthat (>= 3.0.0),
-    withr (>= 2.4.2)
+    WDI,
+    withr (>= 2.4.2),
+    yaml
 Encoding: UTF-8
-LazyData: true
 Roxygen: list(markdown = TRUE)
-RoxygenNote: 7.2.1
-Date: 2022-11-08
+RoxygenNote: 7.2.3
+Date: 2023-03-09
 Config/testthat/edition: 3
+VignetteBuilder: knitr

@@ -1,36 +1,42 @@
 toolCheckUserInput <- function(driver, args) {
+  # Check existence of pastData, futureData and harmonization
+  if (!all(c("pastData", "futureData", "harmonization") %in% names(args)) &&
+       any(c("pastData", "futureData", "harmonization") %in% names(args))) {
+     stop("If you intend to overide the scenario argument, you must set pastData, futureData and hamrmonization.")
+  }
+  overrideScen <- if (all(c("pastData", "futureData", "harmonization") %in% names(args))) TRUE else FALSE
+
+  # Check population scenario availability for any GDPpc scenario
+  if (!overrideScen && driver == "GDPpc" && ! args$scenario %in% toolGetScenarioDefinition("Population")$scenario) {
+    stop("GDPpc scenarios require equivalent population scenarios to use as weight.")
+  }
+
+  # Check 'extension2150' argument
+  if ("extension2150" %in% names(args) && !args$extension2150 %in% c("none", "bezier", "constant")) {
+     stop(glue("Bad argument to calc{driver}. 'extension2150' has to be either 'none', 'bezier' or 'constant'."))
+  }
+
+  # Check 'naming' argument
+  if ("naming" %in% names(args) && !args$naming %in% c("indicator_scenario", "indicator.scenario", "scenario")) {
+     stop(glue("Bad argument to calc{driver}. 'naming' has to be either 'indicator_scenario', 'indicator.scenario' \\
+                or 'scenario'."))
+  }
+
   # Check 'unit' argument
   if ("unit" %in% names(args) && !grepl("^constant (2005|2017) ", args$unit)) {
      stop(glue("Bad argument to calc{driver}. Currently, only constant 2005 or 2017 dollars are accepted."))
   }
 
-  # Check 'extension2150' argument
-  if ("extension2150" %in% names(args) && !args$extension2150 %in% c("none", "bezier", "constant")) {
-     stop(glue("Bad argument to calc{driver}. 'extension2150' argument unknown."))
-  }
-
-  # Check 'FiveYearSteps' argument
-  if ("FiveYearSteps" %in% names(args) && !is.logical(args$FiveYearSteps)) {
-     if (args$FiveYearSteps) {
-        warning("FiveYearSteps will be deprecated in the next release. Use the `years` argument of calcOutput instead.")
-     }
-     stop(glue("Bad argument to calc{driver}. 'FiveYearSteps' must be TRUE or FALSE."))
-  }
-
   # Check 'average2020' argument
   if ("average2020" %in% names(args) && !is.logical(args$average2020)) {
-     stop(glue("Bad argument to calc{driver}. 'average2020' must be TRUE or FALSE."))
-  }
-
-  # Check 'naming' argument
-  if ("naming" %in% names(args) && !args$naming %in% c("indicator_scenario", "indicator.scenario", "scenario")) {
-     stop(glue("Bad argument to calc{driver}. 'naming' argument unknown."))
+     stop(glue("Bad argument to calc{driver}. 'average2020' has to be TRUE of FALSE."))
   }
 
   # Check parallel map-reduce compatibility
   if (any(purrr::map_lgl(args, ~ !is.null(.x) &&
                                  length(.x) != 1 &&
                                  length(.x) != max(purrr::map_dbl(args, length))))) {
-    stop(glue("Arguments to calc{driver} need to be either length 1 or equal to the length of the longest argument."))
+    stop(glue("Arguments to calc{driver} need to be either length 1 \\
+               or equal to the length of the longest argument."))
   }
 }

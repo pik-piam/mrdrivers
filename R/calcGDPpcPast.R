@@ -1,4 +1,12 @@
-#' @describeIn calcGDPpc Get historic GDPpc data
+#' @describeIn calcGDPPast Get historic GDPpc data
+#'
+#' @param GDPpcPast A string designating the source for the historical GDPpc data. Available sources are:
+#'   \itemize{
+#'     \item "WDI": World development indicators from the World Bank
+#'     \item "MI": Missing island dataset
+#'   }
+#'   See the "Combining data sources with '-'" section below for how to combine data sources.
+#'
 #' @examples \dontrun{
 #' library(mrdrivers)
 #' calcOutput("GDPpcPast")
