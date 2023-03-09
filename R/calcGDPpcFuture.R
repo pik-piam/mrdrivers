@@ -7,12 +7,6 @@
 #'     \item "MI": Missing island dataset
 #'   }
 #'   See the "Combining data sources with '-'" section below for how to combine data sources.
-#'
-#' @examples \dontrun{
-#' library(mrdrivers)
-#' calcOutput("GDPpcFuture")
-#' }
-#'
 calcGDPpcFuture <- function(GDPpcFuture = "SSPsOld-MI", # nolint
                             unit = "constant 2005 Int$PPP") {
 
@@ -37,10 +31,6 @@ calcGDPpcFuture <- function(GDPpcFuture = "SSPsOld-MI", # nolint
   list(x = data, weight = weight, unit = unit, description = glue("GDPpc data from {GDPpcFuture}"))
 }
 
-
-######################################################################################
-# Functions
-######################################################################################
 toolGDPpcFutureSSPsOld <- function(unit, mi = FALSE) {
   h1 <- if (mi) "SSPs-MI" else "SSPs"
   h2 <- if (mi) "SSPsOld-MI" else "SSPsOld"

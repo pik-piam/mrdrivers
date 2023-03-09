@@ -14,7 +14,6 @@
 #' @param future A magpie object.
 #'
 #' @return A magpie object with the same dimensions as 'future'.
-#' @keywords internal
 toolHarmonizePastGrFuture <- function(past, future) {
   # Check dimensions of past
   if (dim(past)[3] != 1) {

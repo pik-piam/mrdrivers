@@ -1,23 +1,14 @@
 Package: mrdrivers
 Type: Package
 Title: Create GDP and Population Scenarios
-Version: 1.0.1
+Version: 1.0.1.9002
 Authors@R: c(person(given = "Johannes", 
                     family = "Koch", 
                     email = "jokoch@pik-potsdam.de", 
                     role = c("aut", "cre")),
-             person("Benjamin Leon", "Bodirsky", role = "aut"),
-             person("Lavinia", "Baumstark", role = "aut"),
-             person("Xiaoxi", "Wang", role = "aut"),
-             person("David", "Chen", role = "aut"),
+             person("Bjoern", "Soergel", role = "aut"),
              person("Deborra", "Leip", role = "aut"),
              person("Falk", "Benke", role = "aut"),
-             person("Araujo", "Eweron", role = "aut"),
-             person("Renato", "Rodrigues", role = "aut"),
-             person("Anastasis", "Giannousakis", role = "aut"),
-             person("Antoine", "Levesque", role = "aut"),
-             person("Michaja", "Pehl", role = "aut"),
-             person("Bjoern", "Soergel", role = "aut"),
              person("Jan Philipp", "Dietrich", role = "aut"))
 Description: Create GDP and population scenarios
     This package constructs the GDP and population scenarios used as drivers in both the REMIND and MAgPIE models.
@@ -58,6 +49,6 @@ Suggests:
 Encoding: UTF-8
 Roxygen: list(markdown = TRUE)
 RoxygenNote: 7.2.3
-Date: 2023-03-10
+Date: 2023-03-14
 Config/testthat/edition: 3
 VignetteBuilder: knitr

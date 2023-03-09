@@ -1,5 +1,7 @@
 #' Get Population and Labour scenario building blocks
 #'
+#' See the "Combining data sources with '-'" section below for how to combine data sources.
+#'
 #' @param PopulationPast A string designating the source for the historical population data.
 #'   Available sources are:
 #'   \itemize{
@@ -8,12 +10,7 @@
 #'     \item "MI": Missing island dataset
 #'     \item "Eurostat": Eurostat
 #'   }
-#'   See the "Combining data sources with '-'" section below for how to combine data sources.
-#'
-#' @examples \dontrun{
-#' library(mrdrivers)
-#' calcOutput("PopulationPast")
-#' }
+#' @inheritSection calcScenarioConstructor Combining data sources with "-"
 #' @keywords internal
 calcPopulationPast <- function(PopulationPast = "WDI-UN_PopDiv-MI") { # nolint
   # Check user input
@@ -42,10 +39,7 @@ calcInternalPopulationPast <- function(PopulationPast) { # nolint
   getNames(data) <- "population"
   data <- toolFinishingTouches(data)
 
-  list(x = data,
-       weight = NULL,
-       unit = "million",
-       description = paste0("Population data from ", PopulationPast))
+  list(x = data, weight = NULL, unit = "million", description = glue("Population {PopulationPast} data"))
 }
 
 

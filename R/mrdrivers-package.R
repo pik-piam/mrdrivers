@@ -12,7 +12,7 @@
 #' @importFrom magrittr %>%
 #' @importFrom rlang .data
 #' @importFrom glue glue
-#' @exportPattern "^(calc|read|convert|download)[^Internal]"
+#' @exportPattern "^((calc(GDP|GDPpc|Population|Labour|Urban)(Past|Future|$))|read|download)"
 #' @keywords internal
 NULL
 

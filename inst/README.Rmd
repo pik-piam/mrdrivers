@@ -42,30 +42,30 @@ knitr::opts_chunk$set(
 
 <!-- ``` -->
 
-## Framework: madrat and magclass
+## Framework
 
 This package depends upon the [madrat](https://github.com/pik-piam/madrat#readme) and [magclass](https://github.com/pik-piam/magclass#readme) packages. It integrates into the madrat framework and is structured accordingly. It mainly uses magpie objects (from the magclass package). For more information on madrat or magclass, please visit the respective github repositories ([madrat](https://github.com/pik-piam/madrat#readme), [magclass](https://github.com/pik-piam/magclass#readme)).
 
-## 'calcOutput' and 'readSource' functions
+## Functions
 
-The key readSource and calcOutput functions provided by this package are listed below.
+The key `madrat::readSource()` and `madrat::calcOutput()` functions provided by this package are listed below.
 
-### readSource
+readSource:
 
 ```{r, echo=FALSE}
 c("readWDI", "readIMF", "readEurostatPopGDP", "readUN_PopDiv", "readPEAP", "readSSP", "readMissingIslands", 
   "readJames2019")
 ```
 
-### calcOutput
+calcOutput:
 
 ```{r, echo=FALSE}
 c("calcGDP", "calcGDPpc", "calcPopulation", "calcLabour", "calcUrban")
 ```
 
-## Default scenarios
+## Scenarios
 
-The current default scenarios returned for all drivers are currently:
+The current default scenarios returned for all drivers (i.e. GDP, GDP per capita, Population, Labour,  and Urban Population Share) are:
 
 -   the SSPs, i.e. SSP1-5
 
@@ -73,3 +73,4 @@ The current default scenarios returned for all drivers are currently:
 
 -   SSP2EU
 
+see `vignette("scenarios")` for more information on available scenarios and references of the default scenarios.

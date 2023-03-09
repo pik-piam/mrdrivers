@@ -2,17 +2,19 @@
 #'
 #' @description
 #' Like all scenarios in mrdrivers, the GDP and GDP per capita scenarios are the result of a harmonization exercise
-#' between a past data and future projections. Together with the corresponding population scenarios
-#' (see [calcPopulation()]) they comprise a consisten set of scenarios. See [toolGetScenarioDefinition()] for scenario
-#' options and definitions. By default the following scenarios are returned:
+#' between past data and future projections. Together with the corresponding population scenarios
+#' (see [calcPopulation()]) they comprise a consistent set of scenarios.
+#'
+#' By default the following scenarios are returned:
 #'  \itemize{
 #'    \item the SSPs, i.e. SSP1-5
 #'    \item the SDPs, i.e. SDP, SDP_EI, SDP_RC, and SDP_MC
 #'    \item SSP2EU
 #'  }
 #'
-#' @param scenario A character vector designating the scenario(s) to be returned. Use [toolGetScenarioDefinition()] to
-#' learn what scenarios are available.
+#' See the vignette: \code{vignette("scenarios")} for scenario options, definitions and references.
+#'
+#' @inheritParams calcDriver
 #'
 #' @param unit A string specifying the unit of GDP. Can be either:
 #' \itemize{
@@ -28,14 +30,15 @@
 #' @param average2020 If TRUE (default), then the 2020 value is replaced by the 2018-2022 average. To be consistent,
 #' the yearly resolution is decreased to 5 year intervals.
 #'
+#' @param ... Arguments passed on to [calcDriver()], of which "extension2150" and "naming" are most often of interest.
+#' Other [calcDriver()] arguments are used for scenario fine-tuning and by package developers.
+#'
 #' @inherit madrat::calcOutput return
-#' @inheritDotParams calcDriver -driver -scenario
-#' @inheritDotParams calcScenarioConstructor -driver -scenario
 #' @seealso  \itemize{
-#'   \item [madrat::calcOutput()] for how to return supplementary information and other control options,
-#'   \item [calcDriver()] and [calcScenarioConstructor()] for how to create new scenarios
-#'   \item [calcGDPPast], [calcGDPFuture], [calcGDPpcPast] and [calcGDPpcFuture] for the builiding blocks of the
-#'     scenarios.
+#'   \item [toolGetScenarioDefinition()] for scenario options and definitions.
+#'   \item [madrat::calcOutput()] for how to return supplementary information and other control options.
+#'   \item [calcDriver()], [calcScenarioConstructor()] and [calcHarmonizedData()] for how to create new scenarios
+#'     (for developers).
 #' }
 #'
 #' @examples \dontrun{
@@ -85,7 +88,7 @@ calcGDP <- function(scenario = c("SSPs", "SDPs", "SSP2EU"),
     getYears(xNew2020) <- 2020
     getSets(xNew2020) <- getSets(gdp$x)
     gdp$x[, 2020, ] <- xNew2020
-    gdp$description <- paste(gdp$description, "2020 value averaged over 2018-2022 time period.")
+    gdp$description <- paste(gdp$description, "|| 2020 value averaged over 2018-2022 time period.")
     # Return only 5 year time steps, since the yearly data around 2020 is not connected to the 2020 value anymore.
     years5ts <- getYears(gdp$x, as.integer = TRUE)[getYears(gdp$x, as.integer = TRUE) %% 5 == 0 &
                                                    getYears(gdp$x, as.integer = TRUE) != 1960]

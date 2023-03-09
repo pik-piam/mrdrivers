@@ -11,10 +11,7 @@
 #' @param subtype String indicating the data series
 #' @return GDP per capita in USD05 in PPP or MER as magpie object
 #'
-#' @seealso [madrat::readSource()]
-#' @family "Past" GDPpc functions
-#' @family James2019 functions
-#'
+#' @seealso [madrat::readSource()] and [madrat::downloadSource()]
 #' @examples \dontrun{
 #' readSource("James2019", subtype = "IHME_USD05_PPP_pc")
 #' }

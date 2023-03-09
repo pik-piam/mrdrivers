@@ -1,17 +1,9 @@
-#' @describeIn calcPopulationPast Get historic working-age population data
-#'
+#' @rdname calcPopulationPast
 #' @param LabourPast A string designating the source for the historical working-age population data.
-#'   Available sources are:
-#'   \itemize{
-#'     \item "WDI": World development indicators from the World Bank
-#'   }
-#'   See the "Combining data sources with '-'" section below for how to combine data sources.
-#'
-#' @examples \dontrun{
-#' library(mrdrivers)
-#' calcOutput("LabourPast")
+#' Available sources are:
+#' \itemize{
+#'   \item "WDI": World development indicators from the World Bank
 #' }
-#'
 calcLabourPast <- function(LabourPast = "WDI") { # nolint
   # Check user input
   toolCheckUserInput("LabourPast", as.list(environment()))
@@ -35,8 +27,5 @@ calcInternalLabourPast <- function(LabourPast) { # nolint
   # Hopefully temporary: rename lab scnearios pop. Necessary for REMIND to work.
   getNames(x) <- sub("lab_", "pop_", getNames(x))
 
-  list(x = x,
-       weight = NULL,
-       unit = "million",
-       description = glue("Working age population data."))
+  list(x = x, weight = NULL, unit = "million", description = glue("Working age population data."))
 }

@@ -50,8 +50,7 @@ To access, pass one of the subtypes
 "IHME_USD05_PPP_pc", "IHME_USD05_MER_pc", "IMF_USD05_PPP_pc", "PENN_USD05_PPP_pc", "WB_USD05_PPP_pc",
 "MADDISON_USD05_PPP_pc", "WB_USD05_MER_pc", "IMF_USD05_MER_pc", "UN_USD05_MER_pc". In all cases, the per
 capita GDP will be multiplied by WDI population data to get absolute GDP data.
-}
-See the "Combining data sources with '-'" section below for how to combine data sources.}
+}}
 
 \item{GDPpcFuture}{A string designating the source for the future GDP data. Available sources are:
 \itemize{
@@ -73,6 +72,8 @@ Get the past and future GDP scenario building blocks with calcGDPPast and calcGD
 If GDP data for a scenario is required, even if just for a single year, always use \code{\link[=calcGDP]{calcGDP()}}, as what is returned
 by calcGDPPast or calcGDPFuture may not end up as is in the scenario, depending on the harmonization function.
 Use calcGDPPast and calcGDPFuture only when trying to access specific GDP data.
+
+See the "Combining data sources with '-'" section below for how to combine data sources.
 }
 \section{Functions}{
 \itemize{
@@ -84,28 +85,8 @@ Use calcGDPPast and calcGDPFuture only when trying to access specific GDP data.
 
 }}
 \section{Combining data sources with "-"}{
-Data sources can be combined with "-" and passed to both the -Past and -Future arguments, i.e. "WDI-MI". This
+Data sources can be combined with "-" and passed to both the pastData and futureData arguments, i.e. "WDI-MI". This
 signifies that WDI data will be taken first, but missing data will be then be filled in with data from MI.
 }
 
-\examples{
-\dontrun{
-library(mrdrivers)
-calcOutput("GDPFuture")
-}
-\dontrun{
-library(mrdrivers)
-calcOutput("GDPPast")
-}
-\dontrun{
-library(mrdrivers)
-calcOutput("GDPpcFuture")
-}
-
-\dontrun{
-library(mrdrivers)
-calcOutput("GDPpcPast")
-}
-
-}
 \keyword{internal}

@@ -39,7 +39,5 @@ readSource("James2019", subtype = "IHME_USD05_PPP_pc")
 
 }
 \seealso{
-\code{\link[madrat:readSource]{madrat::readSource()}}
+\code{\link[madrat:readSource]{madrat::readSource()}} and \code{\link[madrat:downloadSource]{madrat::downloadSource()}}
 }
-\concept{"Past" GDPpc functions}
-\concept{James2019 functions}

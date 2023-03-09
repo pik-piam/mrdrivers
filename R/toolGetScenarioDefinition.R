@@ -14,10 +14,10 @@
 #'  }
 #'
 #' @param scen NULL or a character vector designating the scenario for which information is to be returned. If NULL,
-#'  information for all scenarios is returned.
+#' information for all scenarios is returned.
 #'
 #' @param aslist TRUE or FALSE (default). If TRUE then the pastData, futureData and harmonization strings are returned
-#'  as a list.
+#' as a list.
 #'
 #' @return A tibble with the driver and scenario information.
 #' @export
@@ -36,27 +36,28 @@ toolGetScenarioDefinition <- function(driver = NULL, scen = NULL, aslist = FALSE
     # GDPpc scenarios
     "GDPpc",      "SSPs",       "WDI-MI",                     "SSPsOld-MI",           "calibSSPs",
     "GDPpc",      "SDPs",       "-",                          "-",                    "calibSDPs",
-    "GDPpc",      "SSP2EU",     "-",                          "-",                    "calibSSP2EU",
+    "GDPpc",      "SSP2EU",     "-",                          "-",                    "GDPoverPop",
     "GDPpc",      "noCovid",    "WDI-MI",                     "SSPsOld-MI",           "calibNoCovid",
     "GDPpc",      "longCovid",  "-",                          "-",                    "calibLongCovid",
     "GDPpc",      "shortCovid", "-",                          "-",                    "calibShortCovid",
+    "GDPpc",      "SSPsOld",    "-",                          "-",                    "GDPoverPop",
     # GDP scenarios
-    "GDP",        "SSPs",       "-",                          "-",                    "calibSSPs",
-    "GDP",        "SDPs",       "-",                          "-",                    "calibSDPs",
-    "GDP",        "SSP2EU",     "Eurostat-WDI-MI",            "SSP2EU-MI",            "calibSSP2EU2",
-    "GDP",        "noCovid",    "-",                          "-",                    "calibNoCovid",
-    "GDP",        "longCovid",  "-",                          "-",                    "calibLongCovid",
-    "GDP",        "shortCovid", "-",                          "-",                    "calibShortCovid",
+    "GDP",        "SSPs",       "-",                          "-",                    "GDPpcWithPop",
+    "GDP",        "SDPs",       "-",                          "-",                    "GDPpcWithPop",
+    "GDP",        "SSP2EU",     "Eurostat-WDI-MI",            "SSP2EU-MI",            "calibSSP2EU",
+    "GDP",        "noCovid",    "-",                          "-",                    "GDPpcWithPop",
+    "GDP",        "longCovid",  "-",                          "-",                    "GDPpcWithPop",
+    "GDP",        "shortCovid", "-",                          "-",                    "GDPpcWithPop",
     "GDP",        "SSPsOld",    "IHME_USD05_PPP_pc-MI",       "SSPs-MI",              "past_transition",
     # Population Scenarios
-    "Population", "SSPs",       "WDI-UN_PopDiv-MI",           "SSPs-UN_PopDiv-MI",    "calibSSPs",
-    "Population", "SDPs",       "WDI-UN_PopDiv-MI",           "SDPs-UN_PopDiv-MI",    "calibSDPs",
+    "Population", "SSPs",       "WDI-UN_PopDiv-MI",           "SSPs-UN_PopDiv-MI",    "withPEAPandFuture",
+    "Population", "SDPs",       "WDI-UN_PopDiv-MI",           "SDPs-UN_PopDiv-MI",    "withPEAPandFuture",
     "Population", "SSP2EU",     "Eurostat-WDI-UN_PopDiv-MI",  "SSP2EU-UN_PopDiv-MI",  "calibSSP2EU",
     "Population", "ISIMIP",     "UN_PopDiv-MI",               "SSPs-UN_PopDiv-MI",    "calibISIMIP",
     "Population", "SSPsOld",    "WDI-MI",                     "SSPsOld-MI",           "past_transition",
-    "Population", "noCovid",    "WDI-UN_PopDiv-MI",           "SSPs-UN_PopDiv-MI",    "calibSSPs",
-    "Population", "longCovid",  "WDI-UN_PopDiv-MI",           "SSPs-UN_PopDiv-MI",    "calibSSPs",
-    "Population", "shortCovid", "WDI-UN_PopDiv-MI",           "SSPs-UN_PopDiv-MI",    "calibSSPs",
+    "Population", "noCovid",    "WDI-UN_PopDiv-MI",           "SSPs-UN_PopDiv-MI",    "withPEAPandFuture",
+    "Population", "longCovid",  "WDI-UN_PopDiv-MI",           "SSPs-UN_PopDiv-MI",    "withPEAPandFuture",
+    "Population", "shortCovid", "WDI-UN_PopDiv-MI",           "SSPs-UN_PopDiv-MI",    "withPEAPandFuture",
     # Labour Scenarios
     "Labour",     "SSPs",       "-",                          "SSPs",                 "-",
     "Labour",     "SDPs",       "-",                          "SDPs",                 "-",

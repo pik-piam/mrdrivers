@@ -4,7 +4,7 @@
 \alias{toolHarmonizePastTransition}
 \title{Harmonization tool PastTransition}
 \usage{
-toolHarmonizePastTransition(past, future, yEnd)
+toolHarmonizePastTransition(past, future, yEnd, aslist = FALSE)
 }
 \arguments{
 \item{past}{A magpie object with only one scenario/datatype, i.e. the length of the third dimension should be 1.}
@@ -12,6 +12,9 @@ toolHarmonizePastTransition(past, future, yEnd)
 \item{future}{A magpie object.}
 
 \item{yEnd}{An integer designating the last year of the transition period.}
+
+\item{aslist}{If TRUE (default is FALSE) then a list with the data object and a description field is returned,
+insead of only the data object.}
 }
 \value{
 A magpie object with the same dimensions as 'future'.
@@ -30,4 +33,3 @@ then the a harmonized time-series is created for every scenario/datatype in futu
 in every case - hence the requirement that 'past' only have one scenario/datatype.
 }
 
-\keyword{internal}

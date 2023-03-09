@@ -1,15 +1,11 @@
 #' Read UN Population Division Data
 #'
-#' Read past UN population data. Covers 1950 to 2015 yearly and per M.49 area.
-#' See \emph{United Nations, Department of Economic and Social Affairs,
-#' Population Division} "World Population Prospects: The 2015 Revision"
-#' (\href{https://esa.un.org/unpd/wpp/}{website}).
+#' Read past UN population data.
 #'
 #' @param subtype String indicating version and sheet
-#' @return \code{magclass} object; population in thousands.
-#' @seealso [madrat::readSource()]
-#' @seealso [downloadUN_PopDiv()]
-#' @order 1
+#' @inherit madrat::readSource return
+#' @seealso [madrat::readSource()] and [madrat::downloadSource()]
+#' @order 2
 readUN_PopDiv <- function(subtype = "estimates") { # nolint
   # Check function input
   if (!subtype %in% c("estimates", "medium")) {
@@ -31,14 +27,14 @@ readUN_PopDiv <- function(subtype = "estimates") { # nolint
 
 
 #' @rdname readUN_PopDiv
-#' @order 2
+#' @order 3
 #' @param x MAgPIE object returned from readUN_PopDiv
 convertUN_PopDiv <- function(x) {
   toolGeneralConvert(x, no_remove_warning = "XKX")
 }
 
 #' @rdname readUN_PopDiv
-#' @order 3
+#' @order 1
 downloadUN_PopDiv <- function() { # nolint
   url <- "https://population.un.org/wpp/Download/Files/1_Indicators%20(Standard)/EXCEL_FILES/2_Population/WPP2022_POP_F01_1_POPULATION_SINGLE_AGE_BOTH_SEXES.xlsx"
   utils::download.file(url, basename(url), quiet = TRUE)

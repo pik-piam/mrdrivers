@@ -15,7 +15,7 @@
 <!-- remotes::install_github("pik-piam/mrdrivers") -->
 <!-- ``` -->
 
-## Framework: madrat and magclass
+## Framework
 
 This package depends upon the
 [madrat](https://github.com/pik-piam/madrat#readme) and
@@ -26,28 +26,32 @@ information on madrat or magclass, please visit the respective github
 repositories ([madrat](https://github.com/pik-piam/madrat#readme),
 [magclass](https://github.com/pik-piam/magclass#readme)).
 
-## ‘calcOutput’ and ‘readSource’ functions
+## Functions
 
-The key readSource and calcOutput functions provided by this package are
-listed below.
+The key `madrat::readSource()` and `madrat::calcOutput()` functions
+provided by this package are listed below.
 
-### readSource
+readSource:
 
     #> [1] "readWDI"            "readIMF"            "readEurostatPopGDP"
     #> [4] "readUN_PopDiv"      "readPEAP"           "readSSP"           
     #> [7] "readMissingIslands" "readJames2019"
 
-### calcOutput
+calcOutput:
 
     #> [1] "calcGDP"        "calcGDPpc"      "calcPopulation" "calcLabour"    
     #> [5] "calcUrban"
 
-## Default scenarios
+## Scenarios
 
-The current default scenarios returned for all drivers are currently:
+The current default scenarios returned for all drivers (i.e. GDP, GDP
+per capita, Population, Labour, and Urban Population Share) are:
 
 - the SSPs, i.e. SSP1-5
 
 - the SDPs, i.e. SDP, SDP_EI, SDP_RC, and SDP_MC
 
 - SSP2EU
+
+see `vignette("scenarios")` for more information on available scenarios
+and references of the default scenarios.

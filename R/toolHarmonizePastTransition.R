@@ -8,12 +8,13 @@
 #' and decreases linearly to 0 by yEnd.
 #'
 #' @param yEnd An integer designating the last year of the transition period.
+#' @param aslist If TRUE (default is FALSE) then a list with the data object and a description field is returned,
+#' insead of only the data object.
 #'
 #' @inheritParams toolHarmonizePastGrFuture
 #' @inherit toolHarmonizePastGrFuture return
 #' @inheritSection toolHarmonizePastGrFuture Dimensions of 'past' and 'future'
-#' @keywords internal
-toolHarmonizePastTransition <- function(past, future, yEnd) {
+toolHarmonizePastTransition <- function(past, future, yEnd, aslist = FALSE) {
 
   lastPastYear <- max(getYears(past, as.integer = TRUE))
   firstFutureYear <- min(getYears(future, as.integer = TRUE))
@@ -52,5 +53,9 @@ toolHarmonizePastTransition <- function(past, future, yEnd) {
   # Above warning sometimes appears: You are trying to mbind an empty magclass object. Is that really intended?
   # Answer is yes!
 
-  combined
+  if (aslist) {
+    return(list(x = combined, description = glue("use past data and transition to future data until {yEnd}")))
+  } else {
+    return(combined)
+  }
 }

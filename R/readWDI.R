@@ -23,10 +23,10 @@
 #' @order 2
 readWDI <- function(subtype) {
   x <- readr::read_rds("WDI_20_02_2023.Rds")
-  possibleSubtypes <- colnames(x)[!colnames(x) %in% c("iso3c", "country", "year")]
+  possibleSubtypes <- colnames(x)[!colnames(x) %in% c("iso3c", "iso2c", "country", "year")]
 
   if (!subtype %in% possibleSubtypes) {
-     stop(glue("Bad subtype. Possible subtypes are: \n {paste0(possibleSubtypes, collapse = '\n')}."))
+     stop(glue("Bad subtype. Possible subtypes are: \n{paste0(possibleSubtypes, collapse = '\n')}."))
   }
 
   x[, c("iso2c", "year", subtype)] %>%
@@ -75,8 +75,6 @@ downloadWDI <- function() {
                  "SP.URB.TOTL.IN.ZS", # Urban Population (% of total)
                  "PA.NUS.PPPC.RF",    # Price Level Ration (PPP/MER)
                  "NY.GDP.MKTP.PP.KD", # GDP [constant 2017 Int$PPP]
-                 #  "NY.GDP.MKTP.KD",    # For mrvalidation: GDP constant 2010 US$ -> replace with GDPuc
-                 #  "NY.GDP.MKTP.CD",    # For mrvalidation: GDP current US$ -> replace with GDPuc
                  "NV.AGR.TOTL.KD",    # For mrvalidation: AgFF value added [constant 2015 US$MER]
                  "AG.SRF.TOTL.K2"     # For mredgebuildings: surface area [square kms]
                  )

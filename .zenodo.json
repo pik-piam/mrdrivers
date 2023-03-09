@@ -1,46 +1,19 @@
 {
   "title": "mrdrivers: Create GDP and Population Scenarios",
-  "version": "1.0.1",
+  "version": "1.0.1.9002",
   "description": "<p>Create GDP and population scenarios\n    This package constructs the GDP and population scenarios used as drivers in both the REMIND and MAgPIE models.<\/p>",
   "creators": [
     {
       "name": "Koch, Johannes"
     },
     {
-      "name": "Bodirsky, Benjamin Leon"
-    },
-    {
-      "name": "Baumstark, Lavinia"
-    },
-    {
-      "name": "Wang, Xiaoxi"
-    },
-    {
-      "name": "Chen, David"
+      "name": "Soergel, Bjoern"
     },
     {
       "name": "Leip, Deborra"
     },
     {
       "name": "Benke, Falk"
-    },
-    {
-      "name": "Eweron, Araujo"
-    },
-    {
-      "name": "Rodrigues, Renato"
-    },
-    {
-      "name": "Giannousakis, Anastasis"
-    },
-    {
-      "name": "Levesque, Antoine"
-    },
-    {
-      "name": "Pehl, Michaja"
-    },
-    {
-      "name": "Soergel, Bjoern"
     },
     {
       "name": "Dietrich, Jan Philipp"

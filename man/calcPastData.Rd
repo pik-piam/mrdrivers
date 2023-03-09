@@ -7,7 +7,14 @@
 calcPastData(driver, pastData, unit)
 }
 \arguments{
-\item{driver}{A string designating the driver.}
+\item{driver}{A string designating the driver. Available drivers are:
+\itemize{
+\item GDP
+\item Population
+\item GDPpc
+\item Labour
+\item Urban
+}}
 
 \item{pastData}{A string passed to the calc'Driver'Past function, e.g. \code{\link[=calcGDPPast]{calcGDPPast()}} or \code{\link[=calcPopulationPast]{calcPopulationPast()}}.}
 }
@@ -18,5 +25,13 @@ if supplementary is set to TRUE.
 }
 \description{
 Get Past Data Building Block
+}
+\seealso{
+\itemize{
+\item \code{\link[=calcGDPPast]{calcGDPPast()}}, \code{\link[=calcGDPFuture]{calcGDPFuture()}}, \code{\link[=calcGDPpcPast]{calcGDPpcPast()}} and \code{\link[=calcGDPpcFuture]{calcGDPpcFuture()}} for the builiding blocks of
+the GDP and GDPpc scenarios.
+\item \code{\link[=calcPopulationPast]{calcPopulationPast()}}, \code{\link[=calcPopulationFuture]{calcPopulationFuture()}}, \code{\link[=calcLabourPast]{calcLabourPast()}}, \code{\link[=calcLabourFuture]{calcLabourFuture()}}, \code{\link[=calcUrbanPast]{calcUrbanPast()}}
+and \code{\link[=calcUrbanFuture]{calcUrbanFuture()}} for the builiding blocks of the Population, Labor and Urban scenarios.
+}
 }
 \keyword{internal}

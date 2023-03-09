@@ -1,6 +1,6 @@
-#' Tool used to consolidate the most common conversion operations
+#' Tool used to consolidate the most common "convert" operations
 #'
-#' The most important and common conversion operations are:
+#' The most important and common "convert" operations are:
 #' \itemize{
 #'   \item removing undefined countries,
 #'   \item using default set names "iso3c", "year", and "variable",

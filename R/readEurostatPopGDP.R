@@ -10,7 +10,7 @@
 #' \item "GDPgr_projections": Projected GDP growth rates, 2023 forecast.
 #' }
 #' @inherit madrat::readSource return
-#' @inherit readWDI seealso
+#' @seealso [madrat::readSource()] and [madrat::downloadSource()]
 #' @examples \dontrun{
 #' readSource("EurostatPopGDP", subtype = "population")
 #' }
@@ -115,7 +115,7 @@ downloadEurostatPopGDP <- function(subtype) {
       author        = "Eurostat",
       release_date  = "Updated frequently",
       license       = "",
-      comment       = ""
+      comment       = "see https://ec.europa.eu/eurostat"
      ),
     "population_projections" = list(
       url           = "",
@@ -126,7 +126,7 @@ downloadEurostatPopGDP <- function(subtype) {
       author        = "Eurostat",
       release_date  = "Updated frequently",
       license       = "",
-      comment       = ""
+      comment       = "see https://ec.europa.eu/eurostat"
     ),
     "GDP" = list(
       url           = "",
@@ -137,7 +137,7 @@ downloadEurostatPopGDP <- function(subtype) {
       author        = "Eurostat",
       release_date  = "Updated frequently",
       license       = "",
-      comment       = ""
+      comment       = "see https://ec.europa.eu/eurostat"
     ),
   )
 }

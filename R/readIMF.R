@@ -4,15 +4,13 @@
 #'
 #' @param subtype Either "current_account" or "GDPpc"
 #' @param subset Either "WEOOct2022all.xls" or "WEOallOct2019.xls"
-#' @return magpie object of the data
-#'
-#' @seealso [madrat::readSource()]
-#' @seealso [downloadIMF()]
-#'
+#' @inherit madrat::readSource return
+#' @seealso [madrat::readSource()] and [madrat::downloadSource()]
 #' @examples
 #' \dontrun{
-#' a <- readSource(type = "IMF")
+#' readSource("IMF")
 #' }
+#' @order 2
 readIMF <- function(subtype = "current_account", subset = "WEOOct2022all.xls") {
   # Check function input
   if (!subtype %in% c("current_account", "GDPpc")) {
@@ -53,8 +51,9 @@ readIMF <- function(subtype = "current_account", subset = "WEOOct2022all.xls") {
   return(out)
 }
 
-#' @describeIn readIMF Convert IMF data
+#' @rdname readIMF
 #' @param x MAgPIE object returned by readIMF
+#' @order 3
 convertIMF <- function(x, subtype = "current_account") {
   if (subtype == "current_account") {
     # delete "World"
@@ -78,7 +77,8 @@ convertIMF <- function(x, subtype = "current_account") {
 }
 
 
-#' @describeIn readIMF Download WEO from the IMF website
+#' @rdname readIMF
+#' @order 1
 downloadIMF <- function() {
   url <- "https://www.imf.org/-/media/Files/Publications/WEO/WEO-Database/2022/WEOOct2022all.ashx"
   utils::download.file(url, sub("\\.ashx$", ".xls", basename(url)), quiet = TRUE)
@@ -90,7 +90,7 @@ downloadIMF <- function() {
        description   = "World Economic Outlook database of the International Monetary Fund",
        unit          = "-",
        author        = "International Monetary Fund",
-       release_date  = "October 2021",
+       release_date  = "October 2022",
        license       = "-",
        comment       = "-")
 }

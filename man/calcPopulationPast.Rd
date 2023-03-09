@@ -28,15 +28,13 @@ calcUrbanPast(UrbanPast = "WDI")
 Available sources are:
 \itemize{
 \item "SSPs":
-}
-See the "Combining data sources with '-'" section below for how to combine data sources.}
+}}
 
 \item{LabourPast}{A string designating the source for the historical working-age population data.
 Available sources are:
 \itemize{
 \item "WDI": World development indicators from the World Bank
-}
-See the "Combining data sources with '-'" section below for how to combine data sources.}
+}}
 
 \item{PopulationFuture}{A string designating the source for the future population data.
 Available sources are:
@@ -48,8 +46,7 @@ Available sources are:
 \item "UN_PopDiv": United Nations
 \item "MI": Missing island dataset
 \item "SSPsOld": Old SSPs from the IIASA database
-}
-See the "Combining data sources with '-'" section below for how to combine data sources.}
+}}
 
 \item{PopulationPast}{A string designating the source for the historical population data.
 Available sources are:
@@ -58,8 +55,7 @@ Available sources are:
 \item "UN_PopDiv": United Nations
 \item "MI": Missing island dataset
 \item "Eurostat": Eurostat
-}
-See the "Combining data sources with '-'" section below for how to combine data sources.}
+}}
 
 \item{UrbanFuture}{A string designating the source for the future urban population-share data.
 Available sources are:
@@ -67,61 +63,20 @@ Available sources are:
 \item "SSPs":
 \item "SDPs":
 \item "SSP2EU":
-}
-See the "Combining data sources with '-'" section below for how to combine data sources.}
+}}
 
 \item{UrbanPast}{A string designating the source for the historical urban population-share data.
 Available sources are:
 \itemize{
 \item "WDI": World development indicators from the World Bank
-}
-See the "Combining data sources with '-'" section below for how to combine data sources.}
+}}
 }
 \description{
-Get Population and Labour scenario building blocks
+See the "Combining data sources with '-'" section below for how to combine data sources.
 }
-\section{Functions}{
-\itemize{
-\item \code{calcLabourFuture()}: Get future working-age population data
-
-\item \code{calcLabourPast()}: Get historic working-age population data
-
-\item \code{calcPopulationFuture()}: Get future population projections
-
-\item \code{calcUrbanFuture()}: Get future urban population share projections
-
-\item \code{calcUrbanPast()}: Get historic urban population share data
-
-}}
-\examples{
-\dontrun{
-library(mrdrivers)
-calcOutput("LabourFuture")
+\section{Combining data sources with "-"}{
+Data sources can be combined with "-" and passed to both the pastData and futureData arguments, i.e. "WDI-MI". This
+signifies that WDI data will be taken first, but missing data will be then be filled in with data from MI.
 }
 
-\dontrun{
-library(mrdrivers)
-calcOutput("LabourPast")
-}
-
-\dontrun{
-library(mrdrivers)
-calcOutput("PopulationFuture")
-}
-
-\dontrun{
-library(mrdrivers)
-calcOutput("PopulationPast")
-}
-\dontrun{
-library(mrdrivers)
-calcOutput("UrbanFuture")
-}
-
-\dontrun{
-library(mrdrivers)
-calcOutput("UrbanPast")
-}
-
-}
 \keyword{internal}

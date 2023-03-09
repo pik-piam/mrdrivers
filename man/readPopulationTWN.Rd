@@ -24,10 +24,5 @@ readSource("PopulationTWN", subtype = "medium")}
 }
 \seealso{
 \code{\link[madrat:readSource]{madrat::readSource()}}
-
-Other "Future" population functions: 
-\code{\link{readPEAP}()}
 }
-\concept{"Future" population functions}
-\concept{PopulationTWN functions}
 \keyword{internal}

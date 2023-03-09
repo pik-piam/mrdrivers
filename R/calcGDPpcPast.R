@@ -6,12 +6,6 @@
 #'     \item "MI": Missing island dataset
 #'   }
 #'   See the "Combining data sources with '-'" section below for how to combine data sources.
-#'
-#' @examples \dontrun{
-#' library(mrdrivers)
-#' calcOutput("GDPpcPast")
-#' }
-#'
 calcGDPpcPast <- function(GDPpcPast = "WDI-MI", unit = "constant 2005 Int$PPP") { # nolint
   # Call appropriate calcGDPPast function.
   data <- switch(GDPpcPast,
@@ -27,10 +21,6 @@ calcGDPpcPast <- function(GDPpcPast = "WDI-MI", unit = "constant 2005 Int$PPP") 
   list(x = data, weight = weight, unit = unit, description = glue("GDPpc data from {GDPpcPast}."))
 }
 
-
-######################################################################################
-# Functions
-######################################################################################
 cGDPpcFromGDPAndPop <- function(GDPpcPast, unit) { # nolint
   gdp <- calcOutput("GDPPast", GDPPast = GDPpcPast, unit = unit, aggregate = FALSE)
   pop <- calcOutput("PopulationPast", PopulationPast = GDPpcPast, aggregate = FALSE)
