@@ -7,43 +7,61 @@
     <loc>https://pik-piam.github.io/mrdrivers/LICENSE.html</loc>
   </url>
   <url>
+    <loc>https://pik-piam.github.io/mrdrivers/articles/index.html</loc>
+  </url>
+  <url>
+    <loc>https://pik-piam.github.io/mrdrivers/articles/scenarios.html</loc>
+  </url>
+  <url>
     <loc>https://pik-piam.github.io/mrdrivers/authors.html</loc>
   </url>
   <url>
     <loc>https://pik-piam.github.io/mrdrivers/index.html</loc>
   </url>
   <url>
-    <loc>https://pik-piam.github.io/mrdrivers/reference/calcDefaultDrivers.html</loc>
+    <loc>https://pik-piam.github.io/mrdrivers/reference/calcDriver.html</loc>
+  </url>
+  <url>
+    <loc>https://pik-piam.github.io/mrdrivers/reference/calcFutureData.html</loc>
   </url>
   <url>
     <loc>https://pik-piam.github.io/mrdrivers/reference/calcGDP.html</loc>
   </url>
   <url>
-    <loc>https://pik-piam.github.io/mrdrivers/reference/calcGDPpc.html</loc>
+    <loc>https://pik-piam.github.io/mrdrivers/reference/calcGDPHarmonized.html</loc>
   </url>
   <url>
-    <loc>https://pik-piam.github.io/mrdrivers/reference/calcLabour.html</loc>
+    <loc>https://pik-piam.github.io/mrdrivers/reference/calcGDPPast.html</loc>
+  </url>
+  <url>
+    <loc>https://pik-piam.github.io/mrdrivers/reference/calcGDPpcHarmonized.html</loc>
+  </url>
+  <url>
+    <loc>https://pik-piam.github.io/mrdrivers/reference/calcHarmonizedData.html</loc>
+  </url>
+  <url>
+    <loc>https://pik-piam.github.io/mrdrivers/reference/calcLabourHarmonized.html</loc>
+  </url>
+  <url>
+    <loc>https://pik-piam.github.io/mrdrivers/reference/calcPastData.html</loc>
   </url>
   <url>
     <loc>https://pik-piam.github.io/mrdrivers/reference/calcPopulation.html</loc>
   </url>
   <url>
+    <loc>https://pik-piam.github.io/mrdrivers/reference/calcPopulationHarmonized.html</loc>
+  </url>
+  <url>
+    <loc>https://pik-piam.github.io/mrdrivers/reference/calcPopulationPast.html</loc>
+  </url>
+  <url>
     <loc>https://pik-piam.github.io/mrdrivers/reference/calcRatioPPP2MER.html</loc>
   </url>
   <url>
-    <loc>https://pik-piam.github.io/mrdrivers/reference/calcUrban.html</loc>
+    <loc>https://pik-piam.github.io/mrdrivers/reference/calcScenarioConstructor.html</loc>
   </url>
   <url>
-    <loc>https://pik-piam.github.io/mrdrivers/reference/downloadIMF.html</loc>
-  </url>
-  <url>
-    <loc>https://pik-piam.github.io/mrdrivers/reference/downloadMissingIslands.html</loc>
-  </url>
-  <url>
-    <loc>https://pik-piam.github.io/mrdrivers/reference/downloadUN_PopDiv.html</loc>
-  </url>
-  <url>
-    <loc>https://pik-piam.github.io/mrdrivers/reference/downloadWDI.html</loc>
+    <loc>https://pik-piam.github.io/mrdrivers/reference/calcUrbanHarmonized.html</loc>
   </url>
   <url>
     <loc>https://pik-piam.github.io/mrdrivers/reference/index.html</loc>
@@ -56,9 +74,6 @@
   </url>
   <url>
     <loc>https://pik-piam.github.io/mrdrivers/reference/readEurostatPopGDP.html</loc>
-  </url>
-  <url>
-    <loc>https://pik-piam.github.io/mrdrivers/reference/readIIASApop.html</loc>
   </url>
   <url>
     <loc>https://pik-piam.github.io/mrdrivers/reference/readIMF.html</loc>
@@ -85,9 +100,6 @@
     <loc>https://pik-piam.github.io/mrdrivers/reference/readPopulationTWN.html</loc>
   </url>
   <url>
-    <loc>https://pik-piam.github.io/mrdrivers/reference/readSRES.html</loc>
-  </url>
-  <url>
     <loc>https://pik-piam.github.io/mrdrivers/reference/readSSP.html</loc>
   </url>
   <url>
@@ -95,6 +107,9 @@
   </url>
   <url>
     <loc>https://pik-piam.github.io/mrdrivers/reference/readWDI.html</loc>
+  </url>
+  <url>
+    <loc>https://pik-piam.github.io/mrdrivers/reference/toolGeneralConvert.html</loc>
   </url>
   <url>
     <loc>https://pik-piam.github.io/mrdrivers/reference/toolGetScenarioDefinition.html</loc>
