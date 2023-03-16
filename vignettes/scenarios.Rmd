@@ -1,0 +1,74 @@
+---
+title: "Scenarios"
+output: rmarkdown::html_vignette
+vignette: >
+  %\VignetteIndexEntry{Scenarios}
+  %\VignetteEncoding{UTF-8}
+  %\VignetteEngine{knitr::rmarkdown}
+editor_options: 
+  chunk_output_type: console
+---
+
+# Available Scenarios
+
+The tool function `toolGetScenarioDefinition()` can be used to see what driver/scenario options are available.
+
+```{r, include = FALSE}
+knitr::opts_chunk$set(
+  collapse = TRUE,
+  comment = "#>"
+)
+```
+
+```{r setup, echo=FALSE, message=FALSE}
+library(mrdrivers)
+library(magrittr)
+```
+
+```{r}
+toolGetScenarioDefinition() %>% print(n = 200)
+```
+
+So for example, there are currently 6 GDPpc scenarios available: the SSPs, the SDPs, SSP2EU, noCovid, longCovid and shortCovid scenarios.
+
+# Default Scenarios
+
+By default, the following scenarios are returned for all drivers:
+
+-   the SSPs, i.e. SSP1-5
+-   the SDPs, i.e. SDP, SDP_EI, SDP_RC, and SDP_MC
+-   SSP2EU
+
+# References
+
+## GDP and GDPpc scenarios
+
+### SSPs
+
+Suggested overall reference: Koch and Leimbach 2023 ([link](https://doi.org/10.1016/j.ecolecon.2023.107751)).
+
+Detailed references: the SSP GDP per capita scenarios are constructed using past WDI data ([link](https://databank.worldbank.org/source/world-development-indicators)) (filled in with MI data ([link](https://zenodo.org/record/4421504/files/MissingIslands.zip)), and growth rates from James2019-WB data (DOI of previous version of data: doi:10.1186/1478-7954-10-12)) and SSP GDP projections (filled in with MI projections ([link](https://zenodo.org/record/4421504/files/MissingIslands.zip))). The harmonization makes use of short term growth rates from IMF ([link](https://www.imf.org/-/media/Files/Publications/WEO/WEO-Database/2022/WEOOct2022all.ashx)). For more details on the harmonization, see Koch and Leimbach 2023 ([link](https://doi.org/10.1016/j.ecolecon.2023.107751)).
+
+### SDPs
+
+The SDPs are all based off of SSP1, with different harmonization functions for the different SDPs. No citable reference available.
+
+### SSP2EU
+
+SSP2EU is based off of SSP2, but for EUR-Region countries, Eurostat data and short-term projections ([link](https://ec.europa.eu/eurostat)) are used instead of WDI and IMF data.
+
+## Population scenarios
+
+### SSPs
+
+Suggested overall references: K. C., S, 2020 ([link](https://pure.iiasa.ac.at/16710)) and Lutz et al., 2018 ([link](https://pure.iiasa.ac.at/id/eprint/15226/1/lutz_et_al_2018_demographic_and_human_capital.pdf)).
+
+Detailed references: the SSP population scenarios are constructed using past WDI data ([link](https://databank.worldbank.org/source/world-development-indicators)) (filled in with UN_PopDiv data ([link](https://population.un.org/wpp/Download/Files/1_Indicators%20(Standard)/EXCEL_FILES/2_Population/WPP2022_POP_F01_1_POPULATION_SINGLE_AGE_BOTH_SEXES.xlsx)) and MI data ([link](https://zenodo.org/record/4421504/files/MissingIslands.zip)), and SSP population projections (filled in with UN_PopDiv data ([link](https://population.un.org/wpp/Download/Files/1_Indicators%20(Standard)/EXCEL_FILES/2_Population/WPP2022_POP_F01_1_POPULATION_SINGLE_AGE_BOTH_SEXES.xlsx)) and MI data ([link](https://zenodo.org/record/4421504/files/MissingIslands.zip)). The harmonization makes use of short term growth rates from UN_PopDiv ([link](https://population.un.org/wpp/Download/Files/1_Indicators%20(Standard)/EXCEL_FILES/2_Population/WPP2022_POP_F01_1_POPULATION_SINGLE_AGE_BOTH_SEXES.xlsx)). For more details on the harmonization, see Koch and Leimbach 2023 ([link](https://doi.org/10.1016/j.ecolecon.2023.107751)).
+
+### SDPs
+
+The SDPs are all based off of SSP1, with different harmonization functions for the different SDPs. No citable reference available.
+
+### SSP2EU
+
+SSP2EU is based off of SSP2, but for EUR-Region countries, Eurostat data and short-term projections ([link](https://ec.europa.eu/eurostat)) are used instead of WDI and UN_PopDiv data.

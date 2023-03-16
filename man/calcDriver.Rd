@@ -14,9 +14,17 @@ calcDriver(
 )
 }
 \arguments{
-\item{driver}{A string designating the driver.}
+\item{driver}{A string designating the driver. Available drivers are:
+\itemize{
+\item GDP
+\item Population
+\item GDPpc
+\item Labour
+\item Urban
+}}
 
-\item{scenario}{A string designating the scenario.}
+\item{scenario}{A string (or vector of strings) designating the scenario(s) to be returned. Use
+\code{\link[=toolGetScenarioDefinition]{toolGetScenarioDefinition()}} to learn what scenarios are available.}
 
 \item{popAsWeight}{If TRUE, then population data of the same scenario is used as weight.}
 
@@ -53,18 +61,27 @@ regional level depending on the choice of argument "aggregate" or a list of info
 if supplementary is set to TRUE.
 }
 \description{
-Vectorised scenario construction
+Internal function called by the main mrdrivers calc functions, that maps over any vectorised arguments. Should only
+be of interest to package developers.
 }
 \section{Vectorization of arguments}{
-Vectors are accepted for -Calib, -Past and -Future arguments.
+Vectors are accepted for most arguments.
 If given a vector, different combinations are created and returned all at once. If more than one
 argument is vectorised, the arguments have to have the same length. Which time series are created can be
-illustrated with the following example. Let's say the harmonization function and past data source are vectors of
+illustrated with the following example. Let's say the "harmonization" and "pastdata" arguments are vectors of
 length 3. Then there will be in total 3 time series that are produced: the first time series is the result of
-combining the first harmonization function with the first past data source, the second time series the result of
-combining the second harmonization function with the second past data source, and the third time series the result
-of  using the respective third entry. The future data source used in each case is the same, since in this example
-only one future data source is provided.
+combining the first harmonization element with the first pastdata element, the second time series the result of
+combining the second harmonization element with the second pastdata element, and the third time series the result
+of using the respective third entry. The futuredata element used in each case is the same, since in this example
+only one futuredata element is provided.
 }
 
+\seealso{
+\itemize{
+\item \code{\link[=calcGDPPast]{calcGDPPast()}}, \code{\link[=calcGDPFuture]{calcGDPFuture()}}, \code{\link[=calcGDPpcPast]{calcGDPpcPast()}} and \code{\link[=calcGDPpcFuture]{calcGDPpcFuture()}} for the builiding blocks of
+the GDP and GDPpc scenarios.
+\item \code{\link[=calcPopulationPast]{calcPopulationPast()}}, \code{\link[=calcPopulationFuture]{calcPopulationFuture()}}, \code{\link[=calcLabourPast]{calcLabourPast()}}, \code{\link[=calcLabourFuture]{calcLabourFuture()}}, \code{\link[=calcUrbanPast]{calcUrbanPast()}}
+and \code{\link[=calcUrbanFuture]{calcUrbanFuture()}} for the builiding blocks of the Population, Labor and Urban scenarios.
+}
+}
 \keyword{internal}

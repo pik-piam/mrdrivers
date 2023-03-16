@@ -1,18 +1,9 @@
-
-#' @describeIn calcPopulationPast Get future working-age population data
-#'
+#' @rdname calcPopulationPast
 #' @param LabourFuture A string designating the source for the future working-age population data.
 #'   Available sources are:
 #'   \itemize{
 #'     \item "SSPs":
 #'   }
-#'   See the "Combining data sources with '-'" section below for how to combine data sources.
-#'
-#' @examples \dontrun{
-#' library(mrdrivers)
-#' calcOutput("LabourFuture")
-#' }
-#'
 calcLabourFuture <- function(LabourFuture = "SSPs") { # nolint
   # Check user input
   toolCheckUserInput("LabourFuture", as.list(environment()))
@@ -76,7 +67,7 @@ calcInternalLabourFutureSDPs <- function() {
 calcInternalLabourFutureSSP2EU <- function() {
   labSSP2 <- calcOutput("InternalLabourFutureSSPs", aggregate = FALSE)[, , "lab_SSP2"]
   popSSP2 <- calcOutput("Population",
-                        harmonization = "calibSSPs",
+                        harmonization = "withPEAPandFuture",
                         pastData = "WDI",
                         futureData = "SSPs",
                         extension2150 = "none",

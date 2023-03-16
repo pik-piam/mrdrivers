@@ -1,17 +1,9 @@
-#' @describeIn calcPopulationPast Get historic urban population share data
-#'
+#' @rdname calcPopulationPast
 #' @param UrbanPast A string designating the source for the historical urban population-share data.
 #'   Available sources are:
 #'   \itemize{
 #'     \item "WDI": World development indicators from the World Bank
 #'   }
-#'   See the "Combining data sources with '-'" section below for how to combine data sources.
-#'
-#' @examples \dontrun{
-#' library(mrdrivers)
-#' calcOutput("UrbanPast")
-#' }
-#'
 calcUrbanPast <- function(UrbanPast = "WDI") { # nolint
 
   data <- switch(

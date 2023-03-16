@@ -1,5 +1,4 @@
-#' @describeIn calcPopulationPast Get future urban population share projections
-#'
+#' @rdname calcPopulationPast
 #' @param UrbanFuture A string designating the source for the future urban population-share data.
 #'   Available sources are:
 #'   \itemize{
@@ -7,13 +6,6 @@
 #'     \item "SDPs":
 #'     \item "SSP2EU":
 #'   }
-#'   See the "Combining data sources with '-'" section below for how to combine data sources.
-#'
-#' @examples \dontrun{
-#' library(mrdrivers)
-#' calcOutput("UrbanFuture")
-#' }
-#'
 calcUrbanFuture <- function(UrbanFuture = "SSPs") { # nolint
 
   data <- switch(

@@ -1,13 +1,12 @@
 #' Get GDP and GDPpc scenario building blocks
 #'
+#' @description
 #' Get the past and future GDP scenario building blocks with calcGDPPast and calcGDPFuture, respectively.
 #' If GDP data for a scenario is required, even if just for a single year, always use [calcGDP()], as what is returned
 #' by calcGDPPast or calcGDPFuture may not end up as is in the scenario, depending on the harmonization function.
 #' Use calcGDPPast and calcGDPFuture only when trying to access specific GDP data.
 #'
-#' @details # Combining data sources with "-"
-#'  Data sources can be combined with "-" and passed to both the -Past and -Future arguments, i.e. "WDI-MI". This
-#'  signifies that WDI data will be taken first, but missing data will be then be filled in with data from MI.
+#' See the "Combining data sources with '-'" section below for how to combine data sources.
 #'
 #' @param GDPPast A string designating the source for the historical GDP data. Available sources are:
 #'   \itemize{
@@ -22,14 +21,8 @@
 #'           "MADDISON_USD05_PPP_pc", "WB_USD05_MER_pc", "IMF_USD05_MER_pc", "UN_USD05_MER_pc". In all cases, the per
 #'           capita GDP will be multiplied by WDI population data to get absolute GDP data.
 #'   }
-#'   See the "Combining data sources with '-'" section below for how to combine data sources.
-#'
 #' @inheritParams calcGDP
-#'
-#' @examples \dontrun{
-#' library(mrdrivers)
-#' calcOutput("GDPPast")
-#' }
+#' @inheritSection calcScenarioConstructor Combining data sources with "-"
 #' @keywords internal
 calcGDPPast <- function(GDPPast = "WDI-MI", unit = "constant 2005 Int$PPP") { # nolint
   # Check user input
@@ -100,7 +93,7 @@ calcInternalGDPPastEurostat <- function(unit) {
 }
 
 calcInternalGDPPastJames <- function(subtype) {
-  gdpPPPpc <- readSource(type = "James", subtype = subtype)
+  gdpPPPpc <- readSource("James", subtype = subtype)
   pop <- readSource("WDI", subtype = "SP.POP.TOTL")
   years <- intersect(getYears(gdpPPPpc), getYears(pop))
   data <- gdpPPPpc[, years, ] * pop[, years, ]

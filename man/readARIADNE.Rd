@@ -3,14 +3,11 @@
 \name{readARIADNE}
 \alias{readARIADNE}
 \alias{convertARIADNE}
-\alias{readARIADNE_ReferenceScenario}
 \title{Read ARIADNE Reference Scenario}
 \usage{
 readARIADNE(subtype)
 
 convertARIADNE(x, subtype)
-
-readARIADNE_ReferenceScenario(subtype)
 }
 \arguments{
 \item{subtype}{data subtype. Either "population", "gdp", or "gdp_corona"}

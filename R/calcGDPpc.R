@@ -27,6 +27,10 @@ calcGDPpc <- function(scenario = c("SSPs", "SDPs", "SSP2EU"),
                       supplementary = TRUE,
                       ...)
 
+  if (average2020 && grepl("SSPsOld", scenario)) {
+    warning("Average 2020 is not compatible with SSPsOld. Setting to FALSE.")
+    average2020 <- FALSE
+  }
   if (average2020) {
     # For REMIND, the concensus is to avergae the 2020 value so as to dampen the effect of the COVID shock. (The
     # reasoning being that REMIND uses 5-year time steps, and that the year-in-itself should represent the 2,5 years
@@ -51,7 +55,7 @@ calcGDPpc <- function(scenario = c("SSPs", "SDPs", "SSP2EU"),
     gdppc2020 <- gdp2020 / pop2020
     getNames(gdppc2020) <- getNames(gdppc$x)
     gdppc$x[, 2020, ] <- gdppc2020
-    gdppc$description <- paste(gdppc$description, "2020 value averaged over 2018-2022 time period.")
+    gdppc$description <- paste(gdppc$description, "|| 2020 value averaged over 2018-2022 time period.")
     # Return only 5 year time steps, since the yearly data around 2020 is not connected to the 2020 value anymore.
     years5ts <- getYears(gdppc$x, as.integer = TRUE)[getYears(gdppc$x, as.integer = TRUE) %% 5 == 0 &
                                                      getYears(gdppc$x, as.integer = TRUE) != 1960]

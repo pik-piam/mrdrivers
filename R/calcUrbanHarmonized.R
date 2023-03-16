@@ -8,7 +8,7 @@ calcUrbanHarmonized <- function(args) {
   harmonizedData <- switch(
     args$harmonization,
     "past"   = toolHarmonizePast(args$past$x, args$future$x),
-    stop("Bad input for calcUrban. Invalid 'harmonization' argument.")
+    stop(glue("Bad input for calcUrbanHarmonized. Argument harmonization = '{args$harmonization}' is invalid."))
   )
 
   # Cap urban share at 99%.

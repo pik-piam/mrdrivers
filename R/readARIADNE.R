@@ -98,11 +98,3 @@ convertARIADNE <- function(x, subtype) {
 
   return(x)
 }
-
-
-
-
-#' @rdname readARIADNE
-readARIADNE_ReferenceScenario <- function(subtype) { # nolint
-  readSource("ARIADNE", subtype = subtype)
-}

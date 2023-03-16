@@ -1,39 +1,55 @@
 #' Vectorised scenario construction
 #'
+#' @description
+#' Internal function called by the main mrdrivers calc functions, that maps over any vectorised arguments. Should only
+#' be of interest to package developers.
+#'
 #' @details # Vectorization of arguments
-#'  Vectors are accepted for -Calib, -Past and -Future arguments.
+#'  Vectors are accepted for most arguments.
 #'  If given a vector, different combinations are created and returned all at once. If more than one
 #'  argument is vectorised, the arguments have to have the same length. Which time series are created can be
-#'  illustrated with the following example. Let's say the harmonization function and past data source are vectors of
+#'  illustrated with the following example. Let's say the "harmonization" and "pastdata" arguments are vectors of
 #'  length 3. Then there will be in total 3 time series that are produced: the first time series is the result of
-#'  combining the first harmonization function with the first past data source, the second time series the result of
-#'  combining the second harmonization function with the second past data source, and the third time series the result
-#'  of  using the respective third entry. The future data source used in each case is the same, since in this example
-#'  only one future data source is provided.
+#'  combining the first harmonization element with the first pastdata element, the second time series the result of
+#'  combining the second harmonization element with the second pastdata element, and the third time series the result
+#'  of using the respective third entry. The futuredata element used in each case is the same, since in this example
+#'  only one futuredata element is provided.
 #'
-#' @param driver A string designating the driver.
-#' @param scenario A string designating the scenario.
+#' @param driver A string designating the driver. Available drivers are:
+#' \itemize{
+#'  \item GDP
+#'  \item Population
+#'  \item GDPpc
+#'  \item Labour
+#'  \item Urban
+#' }
+#'
+#' @param scenario A string (or vector of strings) designating the scenario(s) to be returned. Use
+#' [toolGetScenarioDefinition()] to learn what scenarios are available.
+#'
 #' @param extension2150 A string specifying if/how the scenarios should be extended until 2150. Can be either:
-#'   \itemize{
-#'     \item "bezier" (default): A bezier curve extension that leads to a smooth flattening of the scenario: the
-#'           slope in the last year of the scenario is halved by 2150. Currently only works for scenarios with 2100 as
-#'           their last year.
-#'     \item "constant": The last value of the scenarios is taken as constant until 2150.
-#'     \item "none": No extension.
-#'   }
+#' \itemize{
+#'   \item "bezier" (default): A bezier curve extension that leads to a smooth flattening of the scenario: the
+#'         slope in the last year of the scenario is halved by 2150. Currently only works for scenarios with 2100 as
+#'         their last year.
+#'   \item "constant": The last value of the scenarios is taken as constant until 2150.
+#'   \item "none": No extension.
+#' }
+#'
 #' @param naming A string giving the naming scheme of the data dimension. Can be either:
-#'   \itemize{
-#'     \item "indicator_scenario" (default): Returns names of the type "gdp_SSP2", or "pop_SSP2".
-#'     \item "indicator.scenario": Returns names of the type "gdp.SSP2", or "pop.SSP2".
-#'     \item "scenario": Returns names of the type "SSP2".
-#'   }
-#'  Set naming to "scenario" when you want to operate on SSP2 gdp and population data for instance, and not have to
-#'  worry about the conflicting names.
+#' \itemize{
+#'   \item "indicator_scenario" (default): Returns names of the type "gdp_SSP2", or "pop_SSP2".
+#'   \item "indicator.scenario": Returns names of the type "gdp.SSP2", or "pop.SSP2".
+#'   \item "scenario": Returns names of the type "SSP2".
+#' }
+#' Set naming to "scenario" when you want to operate on SSP2 gdp and population data for instance, and not have to
+#' worry about the conflicting names.
+#'
 #' @param popAsWeight If TRUE, then population data of the same scenario is used as weight.
 #'
 #' @inheritDotParams calcScenarioConstructor
-#'
 #' @inherit madrat::calcOutput return
+#' @inherit calcHarmonizedData seealso
 #' @keywords internal
 calcDriver <- function(driver,
                        scenario,
@@ -69,13 +85,17 @@ calcDriver <- function(driver,
 
 #' ScenarioConstructor
 #'
+#' @details # Combining data sources with "-"
+#' Data sources can be combined with "-" and passed to both the pastData and futureData arguments, i.e. "WDI-MI". This
+#' signifies that WDI data will be taken first, but missing data will be then be filled in with data from MI.
+#'
 #' @param harmonization A string designating the harmonization function.
 #' @param pastData A string passed to the calc'Driver'Past function, e.g. [calcGDPPast()] or [calcPopulationPast()].
 #' @param futureData A string passed to the calc'Driver'Future function, e.g. [calcGDPFuture()] or
 #'   [calcPopulationFuture()].
-#' @inheritParams calcDriver
 #' @param ... Arguments passed on to the 'driver'Past, 'driver'Future and driver'Harmonization' functions.
-#'
+#' @inheritParams calcDriver
+#' @inherit calcHarmonizedData seealso
 #' @inherit madrat::calcOutput return
 #' @keywords internal
 calcScenarioConstructor <- function(driver,
@@ -113,8 +133,7 @@ calcScenarioConstructor <- function(driver,
   list(x = harmonizedData$x,
        weight = weight,
        unit = harmonizedData$unit,
-       description = glue("{driver} data. Datasource for the Past: {pastData}. Datasource for the Future: \\
-                          {futureData}. Calibrated to {harmonizedData$description}"))
+       description = glue("{driver} {scenario} data: {harmonizedData$description}"))
 }
 
 
@@ -123,6 +142,12 @@ calcScenarioConstructor <- function(driver,
 #' @param ... Arguments passed on to harmonization functions
 #' @inheritParams calcScenarioConstructor
 #' @inherit madrat::calcOutput return
+#' @seealso \itemize{
+#'   \item [calcGDPPast()], [calcGDPFuture()], [calcGDPpcPast()] and [calcGDPpcFuture()] for the builiding blocks of
+#'     the GDP and GDPpc scenarios.
+#'   \item [calcPopulationPast()], [calcPopulationFuture()], [calcLabourPast()], [calcLabourFuture()], [calcUrbanPast()]
+#'     and [calcUrbanFuture()] for the builiding blocks of the Population, Labor and Urban scenarios.
+#' }
 #' @keywords internal
 calcHarmonizedData <- function(driver, scenario, pastData, futureData, harmonization, ...) {
   # Depending on the setup, the scenario construction either requires 'past' and 'future' scenarios, or not!
@@ -155,6 +180,7 @@ calcHarmonizedData <- function(driver, scenario, pastData, futureData, harmoniza
 #'
 #' @inheritParams calcScenarioConstructor
 #' @inherit madrat::calcOutput return
+#' @inherit calcHarmonizedData seealso
 #' @keywords internal
 calcPastData <- function(driver, pastData, unit) {
   switch(
@@ -188,6 +214,7 @@ calcPastData <- function(driver, pastData, unit) {
 #'
 #' @inheritParams calcScenarioConstructor
 #' @inherit madrat::calcOutput return
+#' @inherit calcHarmonizedData seealso
 #' @keywords internal
 calcFutureData <- function(driver, futureData, unit) {
   switch(

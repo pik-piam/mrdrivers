@@ -1,18 +1,16 @@
 #' Read TWN Population projections.
-#' 
+#'
 #' @description
-#' `r lifecycle::badge('deprecated')`  
-#' 
+#' `r lifecycle::badge('deprecated')`
+#'
 #' Read-in Population projections for Taiwan
-#' 
+#'
 #' @param subtype A string. Variant of population projection.
-#' 
+#'
 #' @return A magpie object of the TWN population data
-#' 
+#'
 #' @seealso [madrat::readSource()]
-#' @family "Future" population functions
-#' @family PopulationTWN functions
-#' 
+#'
 #' @examples \dontrun{ 
 #' library(mrdrivers)
 #' readSource("PopulationTWN", subtype = "medium")}

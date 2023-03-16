@@ -15,3 +15,5 @@
 ^tests/.lintr$
 ^Makefile$
 ^vignettes/.lintr$
+^doc$
+^Meta$

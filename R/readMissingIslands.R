@@ -1,17 +1,15 @@
 #' Read in the "Missing Islands" dataset
 #'
 #' @description Read in gdp or population data for minor islands (not included in big inventories) from a custom made
-#'   data set that gets data from a variety of sources (e.g. CIA World Factbook, Insee, BEA, PRISM, and Woldometers).
+#' data set that gets data from a variety of sources (e.g. CIA World Factbook, Insee, BEA, PRISM, and Woldometers).
 #'
 #' @param subtype pop for population, or gdp for gdp
-#'
-#' @seealso [madrat::readSource()]
-#'
-#' @return Magpie object
+#' @inherit madrat::readSource return
+#' @seealso [madrat::readSource()] and [madrat::downloadSource()]
 #' @examples \dontrun{
 #' readSource("MissingIslands", subtype = "pop", convert = FALSE)
 #' }
-#'
+#' @order 2
 readMissingIslands <- function(subtype) {
   files <- c(pop = "pop_past_missing.csv", gdp = "gdp_past_missing.csv")
   file <- toolSubtypeSelect(subtype = subtype, files = files)
@@ -24,12 +22,14 @@ readMissingIslands <- function(subtype) {
 
 #' @rdname readMissingIslands
 #' @param x MAgPIE object returned by readMissingIslands
+#' @order 3
 convertMissingIslands <- function(x) {
   toolGeneralConvert(x, note = FALSE)
 }
 
 
 #' @rdname readMissingIslands
+#' @order 1
 downloadMissingIslands <- function() {
   urlMissingIslands <- "https://zenodo.org/record/4421504/files/MissingIslands.zip"
   utils::download.file(urlMissingIslands, destfile = "MissingIslands.zip", quiet = TRUE)

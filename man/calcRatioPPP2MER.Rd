@@ -2,14 +2,14 @@
 % Please edit documentation in R/calcRatioPPP2MER.R
 \name{calcRatioPPP2MER}
 \alias{calcRatioPPP2MER}
-\title{Get PPP to MER ratio}
+\title{MER over PPP ratio}
 \usage{
 calcRatioPPP2MER(from = "WDI", when = 2005)
 }
 \arguments{
-\item{from}{A string indicating the source}
+\item{from}{A string indicating the source. Can be either "WDI" (default) or "OECD".}
 
-\item{when}{An integer with the year for which the PPP2MER ratio is to be returned.}
+\item{when}{An integer (defaults to 2005) specifying the year of the PPP2MER factor.}
 }
 \value{
 magpie object with the requested output data either on country or on
@@ -17,12 +17,13 @@ regional level depending on the choice of argument "aggregate" or a list of info
 if supplementary is set to TRUE.
 }
 \description{
-Get PPP to MER ratio
+Get a conversion factor to convert GDP in constant 2005 Int$PPP into constant 2005 US$MER.
+Use the when argument to switch the year of the conversion factor.
 }
 \examples{
 \dontrun{
 library(mrdrivers)
-calcOutput("calcfrom")
+calcOutput("RatioPPP2MER")
 }
 
 }

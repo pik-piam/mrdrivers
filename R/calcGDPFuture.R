@@ -9,11 +9,6 @@
 #'     \item "OECD": OECD
 #'   }
 #'   See the "Combining data sources with '-'" section below for how to combine data sources.
-#'
-#' @examples \dontrun{
-#' library(mrdrivers)
-#' calcOutput("GDPFuture")
-#' }
 calcGDPFuture <- function(GDPFuture = "SSPs-MI", unit = "constant 2005 Int$PPP") { # nolint
   # Check user input
   toolCheckUserInput("GDPFuture", as.list(environment()))
@@ -35,8 +30,6 @@ calcInternalGDPFuture <- function(GDPFuture, unit) { # nolint
     "SSP2EU" = calcOutput("InternalGDPFutureSSP2EU", unit = unit, aggregate = FALSE),
     "SDPs"   = calcOutput("InternalGDPFutureSDPs", unit = unit, aggregate = FALSE),
     "MI"     = calcOutput("InternalGDPMI", unit = unit, aggregate = FALSE),
-    # Deprecated options ?
-    "OECD"   = readSource("OECD", subtype = "gdp") * 1000,
     stop("Bad input for calcGDPFuture. Invalid 'GDPFuture' argument.")
   )
 

@@ -1,13 +1,15 @@
-#' Get PPP to MER ratio
+#' MER over PPP ratio
 #'
-#' @param from A string indicating the source
-#' @param when An integer with the year for which the PPP2MER ratio is to be returned.
+#' Get a conversion factor to convert GDP in constant 2005 Int$PPP into constant 2005 US$MER.
+#' Use the when argument to switch the year of the conversion factor.
 #'
-#' @seealso [madrat::calcOutput()]
+#' @param from A string indicating the source. Can be either "WDI" (default) or "OECD".
+#' @param when An integer (defaults to 2005) specifying the year of the PPP2MER factor.
 #' @inherit madrat::calcOutput return
+#' @seealso [madrat::calcOutput()]
 #' @examples \dontrun{
 #' library(mrdrivers)
-#' calcOutput("calcfrom")
+#' calcOutput("RatioPPP2MER")
 #' }
 #'
 calcRatioPPP2MER <- function(from = "WDI", when = 2005) {

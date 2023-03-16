@@ -2,7 +2,7 @@
 % Please edit documentation in R/toolGeneralConvert.R
 \name{toolGeneralConvert}
 \alias{toolGeneralConvert}
-\title{Tool used to consolidate the most common conversion operations}
+\title{Tool used to consolidate the most common "convert" operations}
 \usage{
 toolGeneralConvert(
   x,
@@ -37,7 +37,7 @@ toolGeneralConvert(
 A magpie object.
 }
 \description{
-The most important and common conversion operations are:
+The most important and common "convert" operations are:
 \itemize{
 \item removing undefined countries,
 \item using default set names "iso3c", "year", and "variable",

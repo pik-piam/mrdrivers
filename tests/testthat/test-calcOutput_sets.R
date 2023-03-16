@@ -18,17 +18,17 @@ test_that("set names", {
 
   expectCorrectSetNames(calcOutput("PopulationPast"))
   expectCorrectSetNames(calcOutput("PopulationFuture"))
-  expectCorrectSetNames(calcOutput("Population"))
+  expectCorrectSetNames(calcOutput("Population", extension2150 = "none"))
   expectCorrectSetNames(calcOutput("UrbanPast"))
   expectCorrectSetNames(calcOutput("UrbanFuture"))
-  expectCorrectSetNames(calcOutput("Urban"))
+  expectCorrectSetNames(calcOutput("Urban", extension2150 = "none"))
+  expectCorrectSetNames(calcOutput("Labour", extension2150 = "none"))
   expectCorrectSetNames(calcOutput("GDPPast"))
   expectCorrectSetNames(calcOutput("GDPFuture"))
   expectCorrectSetNames(calcOutput("GDPpcPast"))
   expectCorrectSetNames(calcOutput("GDPpcFuture"))
-  expectCorrectSetNames(calcOutput("GDPpc"))
-  expectCorrectSetNames(calcOutput("GDP"))
-  expectCorrectSetNames(calcOutput("Labour"))
+  expectCorrectSetNames(calcOutput("GDP", extension2150 = "none"))
+  expectCorrectSetNames(calcOutput("GDPpc", extension2150 = "none"))
   # I want to keep; expectCorrectSetNames(calcOutput("RatioPPP2MER"))
 })
 
@@ -36,45 +36,45 @@ test_that("set names", {
 # Save all calcOutputs for later use
 calcs <- list("PopulationPast" = calcOutput("PopulationPast"),
               "PopulationFuture" = calcOutput("PopulationFuture"),
-              "Population" = calcOutput("Population"),
+              "Population" = calcOutput("Population", extension2150 = "none"),
               "UrbanPast" = calcOutput("UrbanPast"),
               "UrbanFuture" = calcOutput("UrbanFuture"),
-              "Urban" = calcOutput("Urban"),
+              "Urban" = calcOutput("Urban", extension2150 = "none"),
               "GDPpcPast" = calcOutput("GDPpcPast"),
               "GDPpcFuture" = calcOutput("GDPpcFuture"),
-              "GDPpc" = calcOutput("GDPpc"),
+              "GDPpc" = calcOutput("GDPpc", extension2150 = "none"),
               "GDPPast" = calcOutput("GDPPast"),
               "GDPFuture" = calcOutput("GDPFuture"),
-              "GDP" = calcOutput("GDP"),
-              "Labour" = calcOutput("Labour"))
+              "GDP" = calcOutput("GDP", extension2150 = "none"),
+              "Labour" = calcOutput("Labour", extension2150 = "none"))
 
 calcs2 <- list("PopulationPast" = calcOutput("PopulationPast", aggregate = FALSE),
                "PopulationFuture" = calcOutput("PopulationFuture", aggregate = FALSE),
-               "Population" = calcOutput("Population", aggregate = FALSE),
+               "Population" = calcOutput("Population", extension2150 = "none", aggregate = FALSE),
                "UrbanPast" = calcOutput("UrbanPast", aggregate = FALSE),
                "UrbanFuture" = calcOutput("UrbanFuture", aggregate = FALSE),
-               "Urban" = calcOutput("Urban", aggregate = FALSE),
+               "Urban" = calcOutput("Urban", extension2150 = "none", aggregate = FALSE),
                "GDPpcPast" = calcOutput("GDPpcPast", aggregate = FALSE),
                "GDPpcFuture" = calcOutput("GDPpcFuture", aggregate = FALSE),
-               "GDPpc" = calcOutput("GDPpc", aggregate = FALSE),
+               "GDPpc" = calcOutput("GDPpc", extension2150 = "none", aggregate = FALSE),
                "GDPPast" = calcOutput("GDPPast", aggregate = FALSE),
                "GDPFuture" = calcOutput("GDPFuture", aggregate = FALSE),
-               "GDP" = calcOutput("GDP", aggregate = FALSE),
-               "Labour" = calcOutput("Labour", aggregate = FALSE))
+               "GDP" = calcOutput("GDP", extension2150 = "none", aggregate = FALSE),
+               "Labour" = calcOutput("Labour", extension2150 = "none", aggregate = FALSE))
 
 calcs3 <- list("PopulationPast" = calcOutput("PopulationPast", supplementary = TRUE),
                "PopulationFuture" = calcOutput("PopulationFuture", supplementary = TRUE),
-               "Population" = calcOutput("Population", supplementary = TRUE),
+               "Population" = calcOutput("Population", extension2150 = "none", supplementary = TRUE),
                "UrbanPast" = calcOutput("UrbanPast", supplementary = TRUE),
                "UrbanFuture" = calcOutput("UrbanFuture", supplementary = TRUE),
-               "Urban" = calcOutput("Urban", supplementary = TRUE),
+               "Urban" = calcOutput("Urban", extension2150 = "none", supplementary = TRUE),
                "GDPpcPast" = calcOutput("GDPpcPast", supplementary = TRUE),
                "GDPpcFuture" = calcOutput("GDPpcFuture", supplementary = TRUE),
-               "GDPpc" = calcOutput("GDPpc", supplementary = TRUE),
+               "GDPpc" = calcOutput("GDPpc", extension2150 = "none", supplementary = TRUE),
                "GDPPast" = calcOutput("GDPPast", supplementary = TRUE),
                "GDPFuture" = calcOutput("GDPFuture", supplementary = TRUE),
-               "GDP" = calcOutput("GDP", supplementary = TRUE),
-               "Labour" = calcOutput("Labour", supplementary = TRUE))
+               "GDP" = calcOutput("GDP", extension2150 = "none", supplementary = TRUE),
+               "Labour" = calcOutput("Labour", extension2150 = "none", supplementary = TRUE))
 
 
 test_that("variable names", {

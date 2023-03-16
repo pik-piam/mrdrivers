@@ -1,5 +1,4 @@
-#' @describeIn calcPopulationPast Get future population projections
-#'
+#' @rdname calcPopulationPast
 #' @param PopulationFuture A string designating the source for the future population data.
 #'   Available sources are:
 #'   \itemize{
@@ -11,13 +10,6 @@
 #'     \item "MI": Missing island dataset
 #'     \item "SSPsOld": Old SSPs from the IIASA database
 #'   }
-#'   See the "Combining data sources with '-'" section below for how to combine data sources.
-#'
-#' @examples \dontrun{
-#' library(mrdrivers)
-#' calcOutput("PopulationFuture")
-#' }
-#'
 calcPopulationFuture <- function(PopulationFuture = "SSPs-UN_PopDiv-MI") { # nolint
   # Check user input
   toolCheckUserInput("PopulationFuture", as.list(environment()))
@@ -43,10 +35,7 @@ calcInternalPopulationFuture <- function(PopulationFuture) { # nolint
 
   data <- toolFinishingTouches(data)
 
-  list(x = data,
-       weight = NULL,
-       unit = "million",
-       description = paste0("Population data from ", PopulationFuture))
+  list(x = data, weight = NULL, unit = "million", description = glue("Population {PopulationFuture} data"))
 }
 
 

@@ -13,36 +13,14 @@ calcLabour(scenario = c("SSPs", "SDPs", "SSP2EU"), ...)
 calcUrban(scenario = c("SSPs", "SDPs", "SSP2EU"), asShare = TRUE, ...)
 }
 \arguments{
-\item{scenario}{A character vector designating the scenario(s) to be returned. Use \code{\link[=toolGetScenarioDefinition]{toolGetScenarioDefinition()}} to
-learn what scenarios are available.}
+\item{scenario}{A string (or vector of strings) designating the scenario(s) to be returned. Use
+\code{\link[=toolGetScenarioDefinition]{toolGetScenarioDefinition()}} to learn what scenarios are available.}
 
-\item{...}{
-  Arguments passed on to \code{\link[=calcDriver]{calcDriver}}, \code{\link[=calcScenarioConstructor]{calcScenarioConstructor}}
-  \describe{
-    \item{\code{extension2150}}{A string specifying if/how the scenarios should be extended until 2150. Can be either:
-\itemize{
-\item "bezier" (default): A bezier curve extension that leads to a smooth flattening of the scenario: the
-slope in the last year of the scenario is halved by 2150. Currently only works for scenarios with 2100 as
-their last year.
-\item "constant": The last value of the scenarios is taken as constant until 2150.
-\item "none": No extension.
-}}
-    \item{\code{naming}}{A string giving the naming scheme of the data dimension. Can be either:
-\itemize{
-\item "indicator_scenario" (default): Returns names of the type "gdp_SSP2", or "pop_SSP2".
-\item "indicator.scenario": Returns names of the type "gdp.SSP2", or "pop.SSP2".
-\item "scenario": Returns names of the type "SSP2".
-}
-Set naming to "scenario" when you want to operate on SSP2 gdp and population data for instance, and not have to
-worry about the conflicting names.}
-    \item{\code{popAsWeight}}{If TRUE, then population data of the same scenario is used as weight.}
-    \item{\code{harmonization}}{A string designating the harmonization function.}
-    \item{\code{pastData}}{A string passed to the calc'Driver'Past function, e.g. \code{\link[=calcGDPPast]{calcGDPPast()}} or \code{\link[=calcPopulationPast]{calcPopulationPast()}}.}
-    \item{\code{futureData}}{A string passed to the calc'Driver'Future function, e.g. \code{\link[=calcGDPFuture]{calcGDPFuture()}} or
-\code{\link[=calcPopulationFuture]{calcPopulationFuture()}}.}
-  }}
+\item{...}{Arguments passed on to \code{\link[=calcDriver]{calcDriver()}}, of which "extension2150" and "naming" are most often of interest.
+Other \code{\link[=calcDriver]{calcDriver()}} arguments are used for scenario fine-tuning and by package developers.}
 
-\item{asShare}{If TRUE (default) urban population shares are returned. If FALSE, then urban population in millions.}
+\item{asShare}{If TRUE (default) urban population shares are returned. If FALSE, then urban population in millions is
+returned.}
 }
 \value{
 magpie object with the requested output data either on country or on
@@ -50,14 +28,17 @@ regional level depending on the choice of argument "aggregate" or a list of info
 if supplementary is set to TRUE.
 }
 \description{
-Like all scenarios in mrdrivers, the Population, Labour and Urbaninzation rate scenarios are the result of a
-harmonization exercise between a past data and future projections.
+Like all scenarios in mrdrivers, the Population, Labour and Urban population share scenarios are the result of a
+harmonization exercise between past data and future projections.
+
 By default the following scenarios are returned:
 \itemize{
 \item the SSPs, i.e. SSP1-5
 \item the SDPs, i.e. SDP, SDP_EI, SDP_RC, and SDP_MC
 \item SSP2EU
 }
+
+See the vignette: \code{vignette("scenarios")} for scenario options, definitions and references.
 }
 \examples{
 \dontrun{
@@ -69,16 +50,8 @@ calcOutput("Population")
 calcOutput("Population", scenario = "SSP2EU")
 
 # Return the ISIMIP SSP scenarios
-calcOutput("Population",
-           scenario = "ISIMIP",
-           extension2150 = "none",
-           aggregate = FALSE)
+calcOutput("Population", scenario = "ISIMIP", extension2150 = "none", aggregate = FALSE)
 }
-\dontrun{
-library(mrdrivers)
-calcLabour()
-}
-
 \dontrun{
 library(mrdrivers)
 calcOutput("Urban")
@@ -87,9 +60,9 @@ calcOutput("Urban")
 }
 \seealso{
 \itemize{
-\item \code{\link[madrat:calcOutput]{madrat::calcOutput()}} for how to return supplementary information and other control options,
-\item \code{\link[=calcDriver]{calcDriver()}} and \code{\link[=calcScenarioConstructor]{calcScenarioConstructor()}} for how to create new scenarios
-\item \link{calcGDPPast}, \link{calcGDPFuture}, \link{calcGDPpcPast} and \link{calcGDPpcFuture} for the builiding blocks of the
-scenarios.
+\item \code{\link[=toolGetScenarioDefinition]{toolGetScenarioDefinition()}} for scenario options and definitions.
+\item \code{\link[madrat:calcOutput]{madrat::calcOutput()}} for how to return supplementary information and other control options.
+\item \code{\link[=calcDriver]{calcDriver()}}, \code{\link[=calcScenarioConstructor]{calcScenarioConstructor()}} and \code{\link[=calcHarmonizedData]{calcHarmonizedData()}} for how to create new scenarios
+(for developers).
 }
 }
