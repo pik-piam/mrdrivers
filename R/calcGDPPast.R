@@ -141,7 +141,7 @@ fillWithWBFromJames2019 <- function(data, unit) {
 
 calcInternalGDPPastPWT <- function(unit) {
   data <- readSource("PWT")[, , "rgdpna"]
-  data <- GDPuc::convertGDP(data, "constant 2017 Int$PPP", unit, replace_NAs = c("linear", "no_conversion"))
+  data <- GDPuc::convertGDP(data, "constant 2005 Int$PPP", unit, replace_NAs = c("linear", "no_conversion"))
   getNames(data) <- glue("gdp in {unit}")
-  list(x = data, weight = NULL, unit = "constant 2005 Int$PPP", description = "GDP from PWT")
+  list(x = data, weight = NULL, unit = unit, description = "GDP from PWT")
 }
