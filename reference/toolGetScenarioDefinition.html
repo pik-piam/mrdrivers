@@ -12,7 +12,7 @@ are constructed, i.e. what past data, future data and harmonization methods are 
     
     <a class="navbar-brand me-2" href="../index.html">mrdrivers</a>
 
-    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">1.1.0</small>
+    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">1.1.1</small>
 
     
     <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbar" aria-controls="navbar" aria-expanded="false" aria-label="Toggle navigation">
@@ -105,7 +105,7 @@ as a list.</p></dd>
 <span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;"> 8</span> GDP    SSPs       -               -          GDPpcWithPop   </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;"> 9</span> GDP    SDPs       -               -          GDPpcWithPop   </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;">10</span> GDP    SSP2EU     Eurostat-WDI-MI SSP2EU-MI  calibSSP2EU    </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #949494;"># … with 19 more rows</span></span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #949494;"># ℹ 19 more rows</span></span>
 <span class="r-in"><span><span class="fu">toolGetScenarioDefinition</span><span class="op">(</span>driver <span class="op">=</span> <span class="st">"GDP"</span><span class="op">)</span></span></span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #949494;"># A tibble: 7 × 5</span></span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>   driver scenario   pastData             futureData harmonization  </span>
@@ -119,14 +119,13 @@ as a list.</p></dd>
 <span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;">7</span> GDP    SSPsOld    IHME_USD05_PPP_pc-MI SSPs-MI    past_transition</span>
 <span class="r-in"><span><span class="fu">toolGetScenarioDefinition</span><span class="op">(</span>scen <span class="op">=</span> <span class="st">"SSP2EU"</span><span class="op">)</span></span></span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #949494;"># A tibble: 5 × 5</span></span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>   driver     scenario pastData                  futureData          harmonizat…¹</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>   <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span>      <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span>    <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span>                     <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span>               <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span>       </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;">1</span> GDPpc      SSP2EU   -                         -                   GDPoverPop  </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;">2</span> GDP        SSP2EU   Eurostat-WDI-MI           SSP2EU-MI           calibSSP2EU </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;">3</span> Population SSP2EU   Eurostat-WDI-UN_PopDiv-MI SSP2EU-UN_PopDiv-MI calibSSP2EU </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;">4</span> Labour     SSP2EU   -                         SSP2EU              -           </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;">5</span> Urban      SSP2EU   WDI                       SSP2EU              past        </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #949494;"># … with abbreviated variable name ¹​harmonization</span></span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>   driver     scenario pastData                  futureData         harmonization</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>   <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span>      <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span>    <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span>                     <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span>              <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span>        </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;">1</span> GDPpc      SSP2EU   -                         -                  GDPoverPop   </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;">2</span> GDP        SSP2EU   Eurostat-WDI-MI           SSP2EU-MI          calibSSP2EU  </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;">3</span> Population SSP2EU   Eurostat-WDI-UN_PopDiv-MI SSP2EU-UN_PopDiv-… calibSSP2EU  </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;">4</span> Labour     SSP2EU   -                         SSP2EU             -            </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;">5</span> Urban      SSP2EU   WDI                       SSP2EU             past         </span>
 <span class="r-in"><span><span class="fu">toolGetScenarioDefinition</span><span class="op">(</span>driver <span class="op">=</span> <span class="st">"Population"</span>, scen <span class="op">=</span> <span class="st">"SSPs"</span>, aslist <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span></span></span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> $driver</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> [1] "Population"</span>
