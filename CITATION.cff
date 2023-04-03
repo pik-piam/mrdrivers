@@ -1,0 +1,24 @@
+cff-version: 1.2.0
+message: If you use this software, please cite it using the metadata from this file.
+type: software
+title: 'mrdrivers: Create GDP and Population Scenarios'
+version: 1.1.1
+date-released: '2023-04-03'
+abstract: Create GDP and population scenarios This package constructs the GDP and
+  population scenarios used as drivers in both the REMIND and MAgPIE models.
+authors:
+- family-names: Koch
+  given-names: Johannes
+  email: jokoch@pik-potsdam.de
+- family-names: Soergel
+  given-names: Bjoern
+- family-names: Leip
+  given-names: Deborra
+- family-names: Benke
+  given-names: Falk
+- family-names: Dietrich
+  given-names: Jan Philipp
+license: LGPL (>= 3)
+url: https://pik-piam.github.io/mrdrivers
+repository-code: https://github.com/pik-piam/mrdrivers
+

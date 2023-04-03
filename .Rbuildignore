@@ -17,3 +17,4 @@
 ^vignettes/.lintr$
 ^doc$
 ^Meta$
+^.*CITATION.cff$
