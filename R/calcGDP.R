@@ -76,7 +76,7 @@ calcGDP <- function(scenario = c("SSPs", "SDPs", "SSP2EU"),
                     supplementary = TRUE,
                     ...)
 
-  if (average2020 && grepl("SSPsOld", scenario)) {
+  if (average2020 && any(grepl("SSPsOld", scenario))) {
     warning("Average 2020 is not compatible with SSPsOld. Setting to FALSE.")
     average2020 <- FALSE
   }

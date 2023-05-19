@@ -71,13 +71,17 @@ toolGetScenarioDefinition <- function(driver = NULL, scen = NULL, aslist = FALSE
   # End of scenario-design section
 
   s <- scenarios
+  if (exists("mrdrivers_scenarios")) {
+    message("Also considering user defined scenarios in mrdrivers_scenarios.")
+    s <- dplyr::bind_rows(s, get("mrdrivers_scenarios"))
+  }
 
   if (!is.null(driver)) {
     availableDrivers <- dplyr::pull(scenarios, driver) %>% unique()
     if (!all(driver %in% availableDrivers)) {
       stop(glue::glue("Unknown driver. Available drivers are: {paste(availableDrivers, collapse = ', ')}"))
     }
-    s <- dplyr::filter(scenarios, driver %in% !!driver)
+    s <- dplyr::filter(s, driver %in% !!driver)
   }
 
   if (!is.null(scen)) {

@@ -8,7 +8,8 @@ calcGDPHarmonized <- function(args) {
     "GDPpcWithPop"    = toolMultiplyGDPpcWithPop(args$scenario, args$unit),
     "calibSSP2EU"     = toolGDPHarmonizeSSP2EU(args$past, args$future, args$unit),
     "past_transition" = toolHarmonizePastTransition(args$past$x, args$future$x, yEnd = 2050, aslist = TRUE),
-    stop(glue("Bad input for calcGDPHarmonized. Argument harmonization = '{args$harmonization}' is invalid."))
+    stop(glue("Bad input for calcGDPHarmonized. Argument harmonization = '{args$harmonization}' is invalid. \\
+              Possible values are: 'GDPpcWithPop', 'calibsSSP2EU' or 'past_transition'."))
   )
   list(x = harmonizedData$x, weight = NULL, unit = glue("mil. {args$unit}"), description = harmonizedData$description)
 }
