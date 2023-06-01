@@ -9,7 +9,7 @@
 <title>Scenarios • mrdrivers</title>
 <script src="../deps/jquery-3.6.0/jquery-3.6.0.min.js"></script><meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
 <link href="../deps/bootstrap-5.2.2/bootstrap.min.css" rel="stylesheet">
-<script src="../deps/bootstrap-5.2.2/bootstrap.bundle.min.js"></script><link href="../deps/Source_Sans_Pro-0.4.5/font.css" rel="stylesheet">
+<script src="../deps/bootstrap-5.2.2/bootstrap.bundle.min.js"></script><link href="../deps/Source_Sans_Pro-0.4.6/font.css" rel="stylesheet">
 <!-- Font Awesome icons --><link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.12.1/css/all.min.css" integrity="sha256-mmgLkCYLUQbXn0B1SRqzHar6dCnv9oZFPEC1g1cwlkk=" crossorigin="anonymous">
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.12.1/css/v4-shims.min.css" integrity="sha256-wZjR52fzng1pJHwx4aV2AO3yyTOXrcDW7jBpJtTwVxw=" crossorigin="anonymous">
 <!-- bootstrap-toc --><script src="https://cdn.jsdelivr.net/gh/afeld/bootstrap-toc@v1.0.1/dist/bootstrap-toc.min.js" integrity="sha256-4veVQbu7//Lk5TSmc7YV48MxtMy98e26cf5MrgZYnwo=" crossorigin="anonymous"></script><!-- headroom.js --><script src="https://cdnjs.cloudflare.com/ajax/libs/headroom/0.11.0/headroom.min.js" integrity="sha256-AsUX4SJE1+yuDu5+mAVzJbuYNPHj/WroHuZ8Ir/CkE0=" crossorigin="anonymous"></script><script src="https://cdnjs.cloudflare.com/ajax/libs/headroom/0.11.0/jQuery.headroom.min.js" integrity="sha256-ZX/yNShbjqsohH1k95liqY9Gd8uOiE1S4vZc+9KQ1K4=" crossorigin="anonymous"></script><!-- clipboard.js --><script src="https://cdnjs.cloudflare.com/ajax/libs/clipboard.js/2.0.6/clipboard.min.js" integrity="sha256-inc5kl9MA1hkeYUt+EC3BhlIgyp/2jDIyBLS6k3UxPI=" crossorigin="anonymous"></script><!-- search --><script src="https://cdnjs.cloudflare.com/ajax/libs/fuse.js/6.4.6/fuse.js" integrity="sha512-zv6Ywkjyktsohkbp9bb45V6tEMoWhzFzXis+LrMehmJZZSys19Yxf1dopHx7WzIKxr5tK2dVcYmaCk2uqdjF4A==" crossorigin="anonymous"></script><script src="https://cdnjs.cloudflare.com/ajax/libs/autocomplete.js/0.38.0/autocomplete.jquery.min.js" integrity="sha512-GU9ayf+66Xx2TmpxqJpliWbT5PiGYxpaG8rfnBEk1LL8l1KGkRShhngwdXK1UgqhAzWpZHSiYPc09/NwDQIGyg==" crossorigin="anonymous"></script><script src="https://cdnjs.cloudflare.com/ajax/libs/mark.js/8.11.1/mark.min.js" integrity="sha512-5CYOlHXGh6QpOFA/TeTylKLWfB3ftPsde7AnmhuitiTX4K5SqCLBeKro6sPS8ilsz1Q4NRx3v8Ko2IBiszzdww==" crossorigin="anonymous"></script><!-- pkgdown --><script src="../pkgdown.js"></script><meta property="og:title" content="Scenarios">
@@ -27,7 +27,7 @@
     
     <a class="navbar-brand me-2" href="../index.html">mrdrivers</a>
 
-    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">1.1.1</small>
+    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">1.2.0</small>
 
     
     <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbar" aria-controls="navbar" aria-expanded="false" aria-label="Toggle navigation">
@@ -117,8 +117,29 @@ used to see what driver/scenario options are available.</p>
 <span><span class="co">#&gt; <span style="color: #BCBCBC;">27</span> Urban      SSPs       WDI                       SSPs            past         </span></span>
 <span><span class="co">#&gt; <span style="color: #BCBCBC;">28</span> Urban      SDPs       WDI                       SDPs            past         </span></span>
 <span><span class="co">#&gt; <span style="color: #BCBCBC;">29</span> Urban      SSP2EU     WDI                       SSP2EU          past</span></span></code></pre></div>
-<p>So for example, there are currently 6 GDPpc scenarios available: the
-SSPs, the SDPs, SSP2EU, noCovid, longCovid and shortCovid scenarios.</p>
+<p>So for example, there are currently 7 GDPpc scenarios available: the
+SSPs, the SDPs, SSP2EU, noCovid, longCovid, shortCovid and SSPsOld
+scenarios.</p>
+</div>
+<div class="section level2">
+<h2 id="user-defined-scenarios">User Defined Scenarios<a class="anchor" aria-label="anchor" href="#user-defined-scenarios"></a>
+</h2>
+<p>The user can create custom scenarios by creating a tibble called
+“mrdivers_scenarios” in the global environment, and filling it with the
+desired scenario definitions. The structure of the “mrdivers_scenarios”
+object should be identical to that of the return object of
+<code><a href="../reference/toolGetScenarioDefinition.html">toolGetScenarioDefinition()</a></code>, and the scenario building
+blocks have to be available. For example, say the user wanted to create
+SSP scenarios, but without using the Missing Islands data-set. The
+following command executed in the global environment would make the
+“nomi” (no-missing islands) scenario available.</p>
+<div class="sourceCode" id="cb2"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="va">mrdrivers_scenarios</span> <span class="op">&lt;-</span> <span class="fu">tibble</span><span class="fu">::</span><span class="fu"><a href="https://tibble.tidyverse.org/reference/tribble.html" class="external-link">tribble</a></span><span class="op">(</span></span>
+<span>  <span class="op">~</span><span class="va">driver</span>,      <span class="op">~</span><span class="va">scenario</span>,      <span class="op">~</span><span class="va">pastData</span>,                    <span class="op">~</span><span class="va">futureData</span>,            <span class="op">~</span><span class="va">harmonization</span>,</span>
+<span>  <span class="st">"GDPpc"</span>,      <span class="st">"nomi"</span>,         <span class="st">"WDI"</span>,                        <span class="st">"SSPsOld"</span>,              <span class="st">"calibSSPs"</span>,</span>
+<span>  <span class="st">"Population"</span>, <span class="st">"nomi"</span>,         <span class="st">"WDI"</span>,                        <span class="st">"SSPs"</span>,                 <span class="st">"withPEAPandFuture"</span>,</span>
+<span>  <span class="st">"GDP"</span>,        <span class="st">"nomi"</span>,         <span class="st">"-"</span>,                          <span class="st">"-"</span>,                    <span class="st">"GDPpcWithPop"</span></span>
+<span><span class="op">)</span></span></code></pre></div>
 </div>
 <div class="section level2">
 <h2 id="default-scenarios">Default Scenarios<a class="anchor" aria-label="anchor" href="#default-scenarios"></a>
