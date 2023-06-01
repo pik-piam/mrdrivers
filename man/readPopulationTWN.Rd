@@ -18,9 +18,9 @@ A magpie object of the TWN population data
 Read-in Population projections for Taiwan
 }
 \examples{
-\dontrun{ 
-library(mrdrivers)
-readSource("PopulationTWN", subtype = "medium")}
+\dontrun{
+readSource("PopulationTWN", subtype = "medium")
+}
 }
 \seealso{
 \code{\link[madrat:readSource]{madrat::readSource()}}

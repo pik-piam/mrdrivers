@@ -26,11 +26,11 @@ calcGDPpc(
 \item{unit}{A string specifying the unit of GDP. Can be either:
 \itemize{
 \item "constant 2005 Int$PPP" (default): Scenarios are constructed in constant 2005 Int$PPP.
-\item "constant 2005 US$MER": Scenarios are constructed in constant 2005 Int$PPP and converted before being
-returned with \code{\link[GDPuc:convertGDP]{GDPuc::convertGDP()}}.
+\item "constant 2005 US$MER": Scenarios are constructed in constant 2005 Int$PPP and then converted with
+\code{\link[GDPuc:convertGDP]{GDPuc::convertGDP()}}.
 \item "constant 2017 Int$PPP": Scenarios are constructed in constant 2017 Int$PPP.
-\item "constant 2017 US$MER": Scenarios are constructed in constant 2017 Int$PPP and converted before being
-returned with \code{\link[GDPuc:convertGDP]{GDPuc::convertGDP()}}.
+\item "constant 2017 US$MER": Scenarios are constructed in constant 2017 Int$PPP and then converted with
+\code{\link[GDPuc:convertGDP]{GDPuc::convertGDP()}}.
 }
 In all cases, GDP is returned in millions.}
 
@@ -61,8 +61,6 @@ See the vignette: \code{vignette("scenarios")} for scenario options, definitions
 }
 \examples{
 \dontrun{
-library(mrdrivers)
-
 # Return default scenarios
 calcOutput("GDP")
 
@@ -74,7 +72,6 @@ calcOutput("GDP", scenario = "SSPsOld", extension2150 = "constant", average2020 
 }
 
 \dontrun{
-library(mrdrivers)
 calcOutput("GDPpc")
 }
 

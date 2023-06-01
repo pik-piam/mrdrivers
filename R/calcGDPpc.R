@@ -1,6 +1,5 @@
 #' @rdname calcGDP
 #' @examples \dontrun{
-#' library(mrdrivers)
 #' calcOutput("GDPpc")
 #' }
 #'
@@ -27,7 +26,7 @@ calcGDPpc <- function(scenario = c("SSPs", "SDPs", "SSP2EU"),
                       supplementary = TRUE,
                       ...)
 
-  if (average2020 && grepl("SSPsOld", scenario)) {
+  if (average2020 && any(grepl("SSPsOld", scenario))) {
     warning("Average 2020 is not compatible with SSPsOld. Setting to FALSE.")
     average2020 <- FALSE
   }
@@ -53,6 +52,7 @@ calcGDPpc <- function(scenario = c("SSPs", "SDPs", "SSP2EU"),
                           aggregate = FALSE,
                           years = 2020)
     gdppc2020 <- gdp2020 / pop2020
+    gdppc2020[is.nan(gdppc2020)] <- 0
     getNames(gdppc2020) <- getNames(gdppc$x)
     gdppc$x[, 2020, ] <- gdppc2020
     gdppc$description <- paste(gdppc$description, "|| 2020 value averaged over 2018-2022 time period.")

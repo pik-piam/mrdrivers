@@ -20,7 +20,6 @@
 #' @inherit calcGDP seealso
 #'
 #' @examples \dontrun{
-#' library(mrdrivers)
 #' # Return the default scenarios
 #' calcOutput("Population")
 #'

@@ -2,7 +2,6 @@
 #' @param asShare If TRUE (default) urban population shares are returned. If FALSE, then urban population in millions is
 #' returned.
 #' @examples \dontrun{
-#' library(mrdrivers)
 #' calcOutput("Urban")
 #' }
 #'

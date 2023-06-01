@@ -29,7 +29,21 @@ library(magrittr)
 toolGetScenarioDefinition() %>% print(n = 200)
 ```
 
-So for example, there are currently 6 GDPpc scenarios available: the SSPs, the SDPs, SSP2EU, noCovid, longCovid and shortCovid scenarios.
+So for example, there are currently 7 GDPpc scenarios available: the SSPs, the SDPs, SSP2EU, noCovid, longCovid, shortCovid and SSPsOld scenarios.
+
+# User Defined Scenarios
+
+The user can create custom scenarios by creating a tibble called "mrdivers_scenarios" in the global environment, and filling it with the desired scenario definitions. The structure of the "mrdivers_scenarios" object should be identical to that of the return object of `toolGetScenarioDefinition()`, and the scenario building blocks have to be available. For example, say the user wanted to create SSP scenarios, but without using the Missing Islands data-set. The following command executed in the global environment would make the "nomi" (no-missing islands) scenario available.
+
+```{r}
+mrdrivers_scenarios <- tibble::tribble(
+  ~driver,      ~scenario,      ~pastData,                    ~futureData,            ~harmonization,
+  "GDPpc",      "nomi",         "WDI",                        "SSPsOld",              "calibSSPs",
+  "Population", "nomi",         "WDI",                        "SSPs",                 "withPEAPandFuture",
+  "GDP",        "nomi",         "-",                          "-",                    "GDPpcWithPop"
+)
+```
+
 
 # Default Scenarios
 
