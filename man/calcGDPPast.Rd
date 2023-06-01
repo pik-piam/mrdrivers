@@ -30,11 +30,11 @@ See the "Combining data sources with '-'" section below for how to combine data 
 \item{unit}{A string specifying the unit of GDP. Can be either:
 \itemize{
 \item "constant 2005 Int$PPP" (default): Scenarios are constructed in constant 2005 Int$PPP.
-\item "constant 2005 US$MER": Scenarios are constructed in constant 2005 Int$PPP and converted before being
-returned with \code{\link[GDPuc:convertGDP]{GDPuc::convertGDP()}}.
+\item "constant 2005 US$MER": Scenarios are constructed in constant 2005 Int$PPP and then converted with
+\code{\link[GDPuc:convertGDP]{GDPuc::convertGDP()}}.
 \item "constant 2017 Int$PPP": Scenarios are constructed in constant 2017 Int$PPP.
-\item "constant 2017 US$MER": Scenarios are constructed in constant 2017 Int$PPP and converted before being
-returned with \code{\link[GDPuc:convertGDP]{GDPuc::convertGDP()}}.
+\item "constant 2017 US$MER": Scenarios are constructed in constant 2017 Int$PPP and then converted with
+\code{\link[GDPuc:convertGDP]{GDPuc::convertGDP()}}.
 }
 In all cases, GDP is returned in millions.}
 

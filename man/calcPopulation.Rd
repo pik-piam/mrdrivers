@@ -42,7 +42,6 @@ See the vignette: \code{vignette("scenarios")} for scenario options, definitions
 }
 \examples{
 \dontrun{
-library(mrdrivers)
 # Return the default scenarios
 calcOutput("Population")
 
@@ -53,7 +52,9 @@ calcOutput("Population", scenario = "SSP2EU")
 calcOutput("Population", scenario = "ISIMIP", extension2150 = "none", aggregate = FALSE)
 }
 \dontrun{
-library(mrdrivers)
+calcOutput("Labour")
+}
+\dontrun{
 calcOutput("Urban")
 }
 

@@ -19,11 +19,11 @@
 #' @param unit A string specifying the unit of GDP. Can be either:
 #' \itemize{
 #'   \item "constant 2005 Int$PPP" (default): Scenarios are constructed in constant 2005 Int$PPP.
-#'   \item "constant 2005 US$MER": Scenarios are constructed in constant 2005 Int$PPP and converted before being
-#'                                 returned with [GDPuc::convertGDP()].
+#'   \item "constant 2005 US$MER": Scenarios are constructed in constant 2005 Int$PPP and then converted with
+#'   [GDPuc::convertGDP()].
 #'   \item "constant 2017 Int$PPP": Scenarios are constructed in constant 2017 Int$PPP.
-#'   \item "constant 2017 US$MER": Scenarios are constructed in constant 2017 Int$PPP and converted before being
-#'                                 returned with [GDPuc::convertGDP()].
+#'   \item "constant 2017 US$MER": Scenarios are constructed in constant 2017 Int$PPP and then converted with
+#'   [GDPuc::convertGDP()].
 #' }
 #' In all cases, GDP is returned in millions.
 #'
@@ -42,8 +42,6 @@
 #' }
 #'
 #' @examples \dontrun{
-#' library(mrdrivers)
-#'
 #' # Return default scenarios
 #' calcOutput("GDP")
 #'

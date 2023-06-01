@@ -8,7 +8,6 @@
 #' @inherit madrat::calcOutput return
 #' @seealso [madrat::calcOutput()]
 #' @examples \dontrun{
-#' library(mrdrivers)
 #' calcOutput("RatioPPP2MER")
 #' }
 #'

@@ -1,6 +1,5 @@
 #' @rdname calcGDP
 #' @examples \dontrun{
-#' library(mrdrivers)
 #' calcOutput("GDPpc")
 #' }
 #'

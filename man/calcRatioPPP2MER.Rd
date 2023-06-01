@@ -22,7 +22,6 @@ Use the when argument to switch the year of the conversion factor.
 }
 \examples{
 \dontrun{
-library(mrdrivers)
 calcOutput("RatioPPP2MER")
 }
 
