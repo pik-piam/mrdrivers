@@ -125,8 +125,10 @@ calcScenarioConstructor <- function(driver,
     weight <- calcOutput("Population", scenario = scenario, extension2150 = extension2150, aggregate = FALSE)
     # Give weight same names as data, so that aggregate doesn't mess up data dim
     getNames(weight) <- getNames(harmonizedData$x)
-    # Make sure weight has the same yearly resolution as harmonizedData
-    # (this relates specifically to the noCovid scenario)
+    # Make sure weight and harmonizedData have the same yearly resolution. Sometimes x has more years than weigth,
+    # thus the intersect operation. Then if weight has more years than x, only years that exist in x are used.
+    # (this applies specifically to the noCovid and ISIMIP scenarios)
+    harmonizedData$x <- harmonizedData$x[, intersect(getYears(harmonizedData$x), getYears(weight)), ]
     weight <- weight[, getYears(harmonizedData$x), ]
   }
 
