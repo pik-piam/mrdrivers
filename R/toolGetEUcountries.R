@@ -1,7 +1,7 @@
 # These countries are the ones (essentiall the EU-27) that receive special treatment
 # in the SSP2EU scenario.
 toolGetEUcountries <- function(onlyWithARIADNEgdpData = FALSE) {
-  x <- toolGetMapping("regionmappingH12.csv") %>%
+  x <- toolGetMapping("regionmappingH12.csv", where = "mappingfolder") %>%
     tibble::as_tibble() %>%
     dplyr::filter(.data$RegionCode == "EUR", .data$CountryCode != "GBR") %>%
     dplyr::pull(.data$CountryCode)
