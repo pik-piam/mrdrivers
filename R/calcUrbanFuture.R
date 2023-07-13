@@ -75,7 +75,7 @@ mapSHAPEurban <- function(ssp, sdp, sspUrb) {
   if (grepl("|", ssp, fixed = TRUE)) {
     # distinguish between OECD and non-OECD
     ssp <- strsplit(ssp, split = "\\|")[[1]]
-    oecdMapping <- toolGetMapping("regionmappingOECD.csv", type = "regional")
+    oecdMapping <- toolGetMapping("regionmappingOECD.csv", type = "regional", where = "mappingfolder")
     oecd <- oecdMapping[oecdMapping$RegionCode == "OECD", "CountryCode"]
     nonOECD <- oecdMapping[oecdMapping$RegionCode == "Non-OECD", "CountryCode"]
     mbind(setNames(sspUrb[oecd, , ssp[1]], sdp),
