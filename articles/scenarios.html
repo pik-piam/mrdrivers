@@ -27,7 +27,7 @@
     
     <a class="navbar-brand me-2" href="../index.html">mrdrivers</a>
 
-    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">1.2.1</small>
+    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">1.3.0</small>
 
     
     <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbar" aria-controls="navbar" aria-expanded="false" aria-label="Toggle navigation">
@@ -85,38 +85,40 @@
 used to see what driver/scenario options are available.</p>
 <div class="sourceCode" id="cb1"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="fu"><a href="../reference/toolGetScenarioDefinition.html">toolGetScenarioDefinition</a></span><span class="op">(</span><span class="op">)</span> <span class="op">%&gt;%</span> <span class="fu"><a href="https://rdrr.io/r/base/print.html" class="external-link">print</a></span><span class="op">(</span>n <span class="op">=</span> <span class="fl">200</span><span class="op">)</span></span>
-<span><span class="co">#&gt; <span style="color: #949494;"># A tibble: 29 × 5</span></span></span>
+<span><span class="co">#&gt; <span style="color: #949494;"># A tibble: 31 × 5</span></span></span>
 <span><span class="co">#&gt;    driver     scenario   pastData                  futureData      harmonization</span></span>
 <span><span class="co">#&gt;    <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span>      <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span>      <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span>                     <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span>           <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span>        </span></span>
 <span><span class="co">#&gt; <span style="color: #BCBCBC;"> 1</span> GDPpc      SSPs       WDI-MI                    SSPsOld-MI      calibSSPs    </span></span>
 <span><span class="co">#&gt; <span style="color: #BCBCBC;"> 2</span> GDPpc      SDPs       -                         -               calibSDPs    </span></span>
 <span><span class="co">#&gt; <span style="color: #BCBCBC;"> 3</span> GDPpc      SSP2EU     -                         -               GDPoverPop   </span></span>
-<span><span class="co">#&gt; <span style="color: #BCBCBC;"> 4</span> GDPpc      noCovid    WDI-MI                    SSPsOld-MI      calibNoCovid </span></span>
-<span><span class="co">#&gt; <span style="color: #BCBCBC;"> 5</span> GDPpc      longCovid  -                         -               calibLongCov…</span></span>
-<span><span class="co">#&gt; <span style="color: #BCBCBC;"> 6</span> GDPpc      shortCovid -                         -               calibShortCo…</span></span>
-<span><span class="co">#&gt; <span style="color: #BCBCBC;"> 7</span> GDPpc      SSPsOld    -                         -               GDPoverPop   </span></span>
-<span><span class="co">#&gt; <span style="color: #BCBCBC;"> 8</span> GDP        SSPs       -                         -               GDPpcWithPop </span></span>
-<span><span class="co">#&gt; <span style="color: #BCBCBC;"> 9</span> GDP        SDPs       -                         -               GDPpcWithPop </span></span>
-<span><span class="co">#&gt; <span style="color: #BCBCBC;">10</span> GDP        SSP2EU     Eurostat-WDI-MI           SSP2EU-MI       calibSSP2EU  </span></span>
-<span><span class="co">#&gt; <span style="color: #BCBCBC;">11</span> GDP        noCovid    -                         -               GDPpcWithPop </span></span>
-<span><span class="co">#&gt; <span style="color: #BCBCBC;">12</span> GDP        longCovid  -                         -               GDPpcWithPop </span></span>
-<span><span class="co">#&gt; <span style="color: #BCBCBC;">13</span> GDP        shortCovid -                         -               GDPpcWithPop </span></span>
-<span><span class="co">#&gt; <span style="color: #BCBCBC;">14</span> GDP        SSPsOld    IHME_USD05_PPP_pc-MI      SSPs-MI         past_transit…</span></span>
-<span><span class="co">#&gt; <span style="color: #BCBCBC;">15</span> Population SSPs       WDI-UN_PopDiv-MI          SSPs-UN_PopDiv… withPEAPandF…</span></span>
-<span><span class="co">#&gt; <span style="color: #BCBCBC;">16</span> Population SDPs       WDI-UN_PopDiv-MI          SDPs-UN_PopDiv… withPEAPandF…</span></span>
-<span><span class="co">#&gt; <span style="color: #BCBCBC;">17</span> Population SSP2EU     Eurostat-WDI-UN_PopDiv-MI SSP2EU-UN_PopD… calibSSP2EU  </span></span>
-<span><span class="co">#&gt; <span style="color: #BCBCBC;">18</span> Population ISIMIP     UN_PopDiv-MI              SSPs-UN_PopDiv… calibISIMIP  </span></span>
-<span><span class="co">#&gt; <span style="color: #BCBCBC;">19</span> Population SSPsOld    WDI-MI                    SSPsOld-MI      past_transit…</span></span>
-<span><span class="co">#&gt; <span style="color: #BCBCBC;">20</span> Population noCovid    WDI-UN_PopDiv-MI          SSPs-UN_PopDiv… withPEAPandF…</span></span>
-<span><span class="co">#&gt; <span style="color: #BCBCBC;">21</span> Population longCovid  WDI-UN_PopDiv-MI          SSPs-UN_PopDiv… withPEAPandF…</span></span>
-<span><span class="co">#&gt; <span style="color: #BCBCBC;">22</span> Population shortCovid WDI-UN_PopDiv-MI          SSPs-UN_PopDiv… withPEAPandF…</span></span>
-<span><span class="co">#&gt; <span style="color: #BCBCBC;">23</span> Labour     SSPs       -                         SSPs            -            </span></span>
-<span><span class="co">#&gt; <span style="color: #BCBCBC;">24</span> Labour     SDPs       -                         SDPs            -            </span></span>
-<span><span class="co">#&gt; <span style="color: #BCBCBC;">25</span> Labour     SSP2EU     -                         SSP2EU          -            </span></span>
-<span><span class="co">#&gt; <span style="color: #BCBCBC;">26</span> Labour     SSPsOld    -                         SSPsOld         -            </span></span>
-<span><span class="co">#&gt; <span style="color: #BCBCBC;">27</span> Urban      SSPs       WDI                       SSPs            past         </span></span>
-<span><span class="co">#&gt; <span style="color: #BCBCBC;">28</span> Urban      SDPs       WDI                       SDPs            past         </span></span>
-<span><span class="co">#&gt; <span style="color: #BCBCBC;">29</span> Urban      SSP2EU     WDI                       SSP2EU          past</span></span></code></pre></div>
+<span><span class="co">#&gt; <span style="color: #BCBCBC;"> 4</span> GDPpc      ISIMIP     WDI-MI                    SSPsOld-MI      calibSSPs    </span></span>
+<span><span class="co">#&gt; <span style="color: #BCBCBC;"> 5</span> GDPpc      noCovid    WDI-MI                    SSPsOld-MI      calibNoCovid </span></span>
+<span><span class="co">#&gt; <span style="color: #BCBCBC;"> 6</span> GDPpc      longCovid  -                         -               calibLongCov…</span></span>
+<span><span class="co">#&gt; <span style="color: #BCBCBC;"> 7</span> GDPpc      shortCovid -                         -               calibShortCo…</span></span>
+<span><span class="co">#&gt; <span style="color: #BCBCBC;"> 8</span> GDPpc      SSPsOld    -                         -               GDPoverPop   </span></span>
+<span><span class="co">#&gt; <span style="color: #BCBCBC;"> 9</span> GDP        SSPs       -                         -               GDPpcWithPop </span></span>
+<span><span class="co">#&gt; <span style="color: #BCBCBC;">10</span> GDP        SDPs       -                         -               GDPpcWithPop </span></span>
+<span><span class="co">#&gt; <span style="color: #BCBCBC;">11</span> GDP        ISIMIP     -                         -               GDPpcWithPop </span></span>
+<span><span class="co">#&gt; <span style="color: #BCBCBC;">12</span> GDP        SSP2EU     Eurostat-WDI-MI           SSP2EU-MI       calibSSP2EU  </span></span>
+<span><span class="co">#&gt; <span style="color: #BCBCBC;">13</span> GDP        noCovid    -                         -               GDPpcWithPop </span></span>
+<span><span class="co">#&gt; <span style="color: #BCBCBC;">14</span> GDP        longCovid  -                         -               GDPpcWithPop </span></span>
+<span><span class="co">#&gt; <span style="color: #BCBCBC;">15</span> GDP        shortCovid -                         -               GDPpcWithPop </span></span>
+<span><span class="co">#&gt; <span style="color: #BCBCBC;">16</span> GDP        SSPsOld    IHME_USD05_PPP_pc-MI      SSPs-MI         past_transit…</span></span>
+<span><span class="co">#&gt; <span style="color: #BCBCBC;">17</span> Population SSPs       WDI-UN_PopDiv-MI          SSPs-UN_PopDiv… withPEAPandF…</span></span>
+<span><span class="co">#&gt; <span style="color: #BCBCBC;">18</span> Population SDPs       WDI-UN_PopDiv-MI          SDPs-UN_PopDiv… withPEAPandF…</span></span>
+<span><span class="co">#&gt; <span style="color: #BCBCBC;">19</span> Population SSP2EU     Eurostat-WDI-UN_PopDiv-MI SSP2EU-UN_PopD… calibSSP2EU  </span></span>
+<span><span class="co">#&gt; <span style="color: #BCBCBC;">20</span> Population ISIMIP     UN_PopDiv-MI              SSPs-UN_PopDiv… calibISIMIP  </span></span>
+<span><span class="co">#&gt; <span style="color: #BCBCBC;">21</span> Population SSPsOld    WDI-MI                    SSPsOld-MI      past_transit…</span></span>
+<span><span class="co">#&gt; <span style="color: #BCBCBC;">22</span> Population noCovid    WDI-UN_PopDiv-MI          SSPs-UN_PopDiv… withPEAPandF…</span></span>
+<span><span class="co">#&gt; <span style="color: #BCBCBC;">23</span> Population longCovid  WDI-UN_PopDiv-MI          SSPs-UN_PopDiv… withPEAPandF…</span></span>
+<span><span class="co">#&gt; <span style="color: #BCBCBC;">24</span> Population shortCovid WDI-UN_PopDiv-MI          SSPs-UN_PopDiv… withPEAPandF…</span></span>
+<span><span class="co">#&gt; <span style="color: #BCBCBC;">25</span> Labour     SSPs       -                         SSPs            -            </span></span>
+<span><span class="co">#&gt; <span style="color: #BCBCBC;">26</span> Labour     SDPs       -                         SDPs            -            </span></span>
+<span><span class="co">#&gt; <span style="color: #BCBCBC;">27</span> Labour     SSP2EU     -                         SSP2EU          -            </span></span>
+<span><span class="co">#&gt; <span style="color: #BCBCBC;">28</span> Labour     SSPsOld    -                         SSPsOld         -            </span></span>
+<span><span class="co">#&gt; <span style="color: #BCBCBC;">29</span> Urban      SSPs       WDI                       SSPs            past         </span></span>
+<span><span class="co">#&gt; <span style="color: #BCBCBC;">30</span> Urban      SDPs       WDI                       SDPs            past         </span></span>
+<span><span class="co">#&gt; <span style="color: #BCBCBC;">31</span> Urban      SSP2EU     WDI                       SSP2EU          past</span></span></code></pre></div>
 <p>So for example, there are currently 7 GDPpc scenarios available: the
 SSPs, the SDPs, SSP2EU, noCovid, longCovid, shortCovid and SSPsOld
 scenarios.</p>
