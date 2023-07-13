@@ -37,6 +37,7 @@ toolGetScenarioDefinition <- function(driver = NULL, scen = NULL, aslist = FALSE
     "GDPpc",      "SSPs",       "WDI-MI",                     "SSPsOld-MI",           "calibSSPs",
     "GDPpc",      "SDPs",       "-",                          "-",                    "calibSDPs",
     "GDPpc",      "SSP2EU",     "-",                          "-",                    "GDPoverPop",
+    "GDPpc",      "ISIMIP",     "WDI-MI",                     "SSPsOld-MI",           "calibSSPs",
     "GDPpc",      "noCovid",    "WDI-MI",                     "SSPsOld-MI",           "calibNoCovid",
     "GDPpc",      "longCovid",  "-",                          "-",                    "calibLongCovid",
     "GDPpc",      "shortCovid", "-",                          "-",                    "calibShortCovid",
@@ -44,6 +45,7 @@ toolGetScenarioDefinition <- function(driver = NULL, scen = NULL, aslist = FALSE
     # GDP scenarios
     "GDP",        "SSPs",       "-",                          "-",                    "GDPpcWithPop",
     "GDP",        "SDPs",       "-",                          "-",                    "GDPpcWithPop",
+    "GDP",        "ISIMIP",     "-",                          "-",                    "GDPpcWithPop",
     "GDP",        "SSP2EU",     "Eurostat-WDI-MI",            "SSP2EU-MI",            "calibSSP2EU",
     "GDP",        "noCovid",    "-",                          "-",                    "GDPpcWithPop",
     "GDP",        "longCovid",  "-",                          "-",                    "GDPpcWithPop",
