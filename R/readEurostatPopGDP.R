@@ -48,7 +48,7 @@ convEurostatPopulation <- function(x) {
   getNames(x) <- "population"
   # Use the "DE_TOT" values for Germany, if they exist (DE_TOT = East + West Germany)
   x["DE", , ] <- if ("DE_TOT" %in% getItems(x, 1)) x["DE_TOT", , ] else x["DE", , ]
-  # Drop any countries with more than 2 charachters in their Eurostat identifier. Those are aggregates.
+  # Drop any countries with more than 2 characters in their Eurostat identifier. Those are aggregates.
   myCountries <- getItems(x, 1)[purrr::map_lgl(getItems(x, 1), ~ nchar(.x) == 2)]
   x <- x[myCountries, , ]
   # Convert the eurostat countrycodes to iso3c codes
