@@ -35,15 +35,14 @@ toolHarmonizeWithPEAPandFuture <- function(past, future) {
 toolHarmonizeSSP2EU <- function(past, future) {
   harmonizedData <- toolHarmonizeWithPEAPandFuture(past, future)
 
-  # For SSP2EU: simply glue past (until 2019) with future (starting 2020)
-  # Get EUR countries.
+  # For EUR countries use only growth rates of EUROSTAT projections (load in fresh: future only has 5 year steps)
   euCountries <- toolGetEUcountries()
-
-  futYears <- getYears(future$x)[getYears(future$x, as.integer = TRUE) >= 2020]
-  harmonizedData$x[euCountries, futYears, ] <- future$x[euCountries, futYears, ]
+  dataEurostat <- readSource("EurostatPopGDP", "population_projections") * 1e-6
+  x <- toolHarmonizePastGrFuture(past$x[euCountries, , ], dataEurostat[euCountries, , ])
+  harmonizedData$x[euCountries, , ] <- x[euCountries, getYears(harmonizedData$x), ]
 
   list(x = harmonizedData$x,
-       description = glue("{harmonizedData$description} For European countries, just glue past with future."))
+       description = glue("{harmonizedData$description} For European countries, just use future growth rates."))
 }
 
 toolHarmonizeISIMIP <- function(past, future, yEnd) {
