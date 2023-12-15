@@ -36,10 +36,10 @@ bezierExtension <- function(data, timeExtend) {
 
   # If Bezier extension would lead to negative GDP, set bezier coordinates equal to start point
   # (comes down to a constant extension instead)
-  for (i in 1:nr) for (j in 1:nd) if (bc[i, 2100, j] == 0 || bc[i, 2150, j] < 0 ) bc[i, , j] <- bc[i, 2100, j]
+  for (i in 1:nr) for (j in 1:nd) if (bc[i, 2100, j] == 0 || bc[i, 2150, j] < 0) bc[i, , j] <- bc[i, 2100, j]
 
   x <- rep(c(2100, 2110, 2140, 2150), nr * nd)
-  y <- purrr::reduce(purrr::map(1:nd, ~purrr::reduce(purrr::map(1:nr, function(y) bc[y, ,.x]), c)), c)
+  y <- purrr::reduce(purrr::map(1:nd, ~purrr::reduce(purrr::map(1:nr, function(y) bc[y, , .x]), c)), c)
   z <- purrr::reduce(purrr::map(1:(nr * nd), ~rep(.x, 4)), c)
 
   # grid::bezierGrob returns the point in a weird graphical unit, and "only" returns 48 points, but is super fast.
@@ -47,7 +47,7 @@ bezierExtension <- function(data, timeExtend) {
   cfx <- x[1] / as.numeric(bezierPoints[[1]]$x[[1]])
   cfy <- y[1] / as.numeric(bezierPoints[[1]]$y[[1]])
   id <- paste(purrr::reduce(purrr::map(getNames(data), ~rep(.x, nr)), c),
-              rep(getRegions(data), nd),
+              rep(getItems(data, 1), nd),
               sep = "-")
 
   extension <- purrr::map2(bezierPoints, id,

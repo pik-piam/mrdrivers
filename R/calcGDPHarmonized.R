@@ -78,9 +78,9 @@ toolGDPHarmonizeSSP2EU <- function(past, future, unit) {
   combined <- combined[, getYears(combined)[getYears(combined, as.integer = TRUE) <= 2100], ]
 
   list(x = combined,
-      description = glue("equal to SSP2 in all countries except for EU countries. \\
-                         For EU countries use {past$description} until 2021, \\
-                         growth rates from Eurostat until 2024, \\
-                         growth rates from {future$description} until 2070, \\
-                         and converge to 2150 (bezier-extended) SSP2 values thereafter."))
+       description = glue("equal to SSP2 in all countries except for EU countries. \\
+                          For EU countries use {past$description} until 2021, \\
+                          growth rates from Eurostat until 2024, \\
+                          growth rates from {future$description} until 2070, \\
+                          and converge to 2150 (bezier-extended) SSP2 values thereafter."))
 }

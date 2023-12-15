@@ -32,7 +32,8 @@ calcInternalPopulationFuture <- function(PopulationFuture) { # nolint
     "UN_PopDiv" = calcOutput("InternalPopulationFutureUN_PopDiv", aggregate = FALSE, supplementary = TRUE),
     "MI"        = calcOutput("InternalPopMI", aggregate = FALSE, supplementary = TRUE),
     "SSPsOld"   = calcOutput("InternalPopulationFutureSSPsOld", aggregate = FALSE, supplementary = TRUE),
-    stop("Bad input for PopulationFuture. Invalid 'PopulationFuture' argument."))
+    stop("Bad input for PopulationFuture. Invalid 'PopulationFuture' argument.")
+  )
 
   data$x <- toolFinishingTouches(data$x)
   data

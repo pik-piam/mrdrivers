@@ -7,7 +7,7 @@ toolGetEUcountries <- function(onlyWithARIADNEgdpData = FALSE) {
     dplyr::pull(.data$CountryCode)
 
   if (onlyWithARIADNEgdpData) {
-     x <- x[x %in% where(readSource("ARIADNE", "gdp_corona") != 0)$true$regions]
+    x <- x[x %in% where(readSource("ARIADNE", "gdp_corona") != 0)$true$regions]
   }
   x
 }
