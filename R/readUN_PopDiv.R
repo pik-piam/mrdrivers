@@ -13,7 +13,7 @@ readUN_PopDiv <- function(subtype = "estimates") { # nolint
   }
   file <- "WPP2022_POP_F01_1_POPULATION_SINGLE_AGE_BOTH_SEXES.xlsx"
   sheet <- if (subtype == "estimates") "Estimates" else "Medium variant"
-  readxl::read_xlsx(file, sheet = sheet, skip = 16, col_types = "text") %>%
+  readxl::read_xlsx(file, sheet = sheet, skip = 16, col_types = "text", progress = FALSE) %>%
     dplyr::select("ISO3 Alpha-code", "year" = "Year", dplyr::matches("^[0-9]*$")) %>%
     dplyr::filter(!is.na(.data$`ISO3 Alpha-code`)) %>%
     tidyr::pivot_longer(cols = dplyr::matches("^[0-9]*$"),

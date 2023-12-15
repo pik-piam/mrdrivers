@@ -19,7 +19,6 @@ Depends:
     madrat (>= 2.5.1),
     magclass (>= 6.0.3)
 Imports: 
-    bezier,
     countrycode,
     dplyr,
     lifecycle,

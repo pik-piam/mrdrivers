@@ -27,9 +27,12 @@ toolHarmonizeWithPEAPandFuture <- function(past, future) {
 
   # Use PEAP growth rates until last year of IMF WEO data, and future growth rates after that
   x <- past$x %>% toolHarmonizePastGrFuture(shortTerm) %>% toolHarmonizePastGrFuture(future$x)
+
+  lastPastYear <- max(getYears(past$x, as.integer = TRUE))
   list(x = x,
-       description = glue("use past data from '{past$description}', then the growth rates from the Wolrld Bank's \\
-                           PEAP until {lastYearIMF}, and then the growth rates from '{future$description}'."))
+       description = glue("use {past$description} until {lastPastYear}, \\
+                          growth rates from the Wolrld Bank's PEAP until {lastYearIMF}, \\
+                          and growth rates from {future$description} thereafter."))
 }
 
 toolHarmonizeSSP2EU <- function(past, future) {
@@ -42,7 +45,9 @@ toolHarmonizeSSP2EU <- function(past, future) {
   harmonizedData$x[euCountries, , ] <- x[euCountries, getYears(harmonizedData$x), ]
 
   list(x = harmonizedData$x,
-       description = glue("{harmonizedData$description} For European countries, just use future growth rates."))
+       description = glue("equal to SSP2 in all countries except for EU countries. \\
+                          For EU countries use {past$description} until 2021, \\
+                          and growth rates from projections ({future$description}) thereafter."))
 }
 
 toolHarmonizeISIMIP <- function(past, future, yEnd) {
@@ -55,7 +60,6 @@ toolHarmonizeISIMIP <- function(past, future, yEnd) {
   x <- toolHarmonizePastTransition(past$x, future$x, yEnd)
 
   list(x = x,
-       description = glue("use past data from '{past$description}' - should be UN_PopDiv with data, currently, until \\
-                           2020. Add the 2021 projections from UN_PopDiv. Then converge towards \\
-                           '{future$description}' by {yEnd}."))
+       description = glue("use {past$description} until 2020, UN_PopDiv projections for 2021, \\
+                          and converge towards {future$description} by {yEnd}."))
 }

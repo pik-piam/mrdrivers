@@ -28,7 +28,7 @@ calcGDPpcFuture <- function(GDPpcFuture = "SSPsOld-MI", # nolint
 
   data <- data[, getYears(weight), ]
 
-  list(x = data, weight = weight, unit = unit, description = glue("GDPpc data from {GDPpcFuture}"))
+  list(x = data, weight = weight, unit = unit, description = glue("{GDPpcFuture} projections"))
 }
 
 toolGDPpcFutureSSPsOld <- function(unit, mi = FALSE) {

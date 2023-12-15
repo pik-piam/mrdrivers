@@ -44,6 +44,7 @@
 #' @examples \dontrun{
 #' # Return default scenarios
 #' calcOutput("GDP")
+#' calcOutput("GDPpc")
 #'
 #' # Return only the SSP2EU GDP scenario
 #' calcOutput("GDP", scenario = "SSP2EU")
@@ -79,7 +80,7 @@ calcGDP <- function(scenario = c("SSPs", "SDPs", "SSP2EU"),
     average2020 <- FALSE
   }
   if (average2020) {
-    # For REMIND, the concensus is to avergae the 2020 value so as to dampen the effect of the COVID shock. (The
+    # For REMIND, the consensus is to average the 2020 value so as to dampen the effect of the COVID shock. (The
     # reasoning being that REMIND uses 5-year time steps, and that the year-in-itself should represent the 2,5 years
     # before and after.)
     xNew2020 <- (gdp$x[, 2018, ] + gdp$x[, 2019, ] + gdp$x[, 2020, ] + gdp$x[, 2021, ] + gdp$x[, 2022, ]) / 5
@@ -89,7 +90,7 @@ calcGDP <- function(scenario = c("SSPs", "SDPs", "SSP2EU"),
     gdp$description <- paste(gdp$description, "|| 2020 value averaged over 2018-2022 time period.")
     # Return only 5 year time steps, since the yearly data around 2020 is not connected to the 2020 value anymore.
     years5ts <- getYears(gdp$x, as.integer = TRUE)[getYears(gdp$x, as.integer = TRUE) %% 5 == 0 &
-                                                   getYears(gdp$x, as.integer = TRUE) != 1960]
+                                                     getYears(gdp$x, as.integer = TRUE) != 1960]
     gdp$x <- gdp$x[, years5ts, ]
     gdp$weight <- gdp$weight[, years5ts, ]
     gdp$description <- paste(gdp$description, "5 year time steps only.")

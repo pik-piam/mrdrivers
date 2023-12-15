@@ -14,7 +14,7 @@
 readIMF <- function(subtype = "current_account", subset = "WEOOct2022all.xls") {
   # Check function input
   if (!subtype %in% c("current_account", "GDPpc")) {
-    stop("Bad input for readiMD. Invalid 'subtype' argument.")
+    stop("Bad input for readIMF. Invalid 'subtype' argument.")
   }
 
   # Define source file

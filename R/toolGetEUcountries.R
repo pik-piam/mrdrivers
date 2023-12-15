@@ -1,4 +1,4 @@
-# These countries are the ones (essentiall the EU-27) that receive special treatment
+# These countries are the ones (essential the EU-27) that receive special treatment
 # in the SSP2EU scenario.
 toolGetEUcountries <- function(onlyWithARIADNEgdpData = FALSE) {
   x <- toolGetMapping("regionmappingH12.csv", type = "regional", where = "mappingfolder") %>%

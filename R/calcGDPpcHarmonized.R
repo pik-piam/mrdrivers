@@ -5,7 +5,8 @@
 #' @inherit madrat::calcOutput return
 #' @keywords internal
 calcGDPpcHarmonized <- function(args) {
-  harmonizedData <- switch(args$harmonization,
+  harmonizedData <- switch(
+    args$harmonization,
     "calibSSPs"       = toolGDPpcHarmonizeSSP(args$past, args$future, args$unit, yEnd = 2100),
     "calibSDPs"       = toolGDPpcHarmonizeSDP(args$unit),
     "GDPoverPop"      = toolDivideGDPbyPop(args$scenario, args$unit),
@@ -83,19 +84,22 @@ toolGDPpcHarmonizeSSP <- function(past, future, unit, yEnd, noCovid = FALSE) {
     as.magpie() %>%
     toolCountryFill(fill = 0)
 
+  lastPastYear <- max(getYears(past$x, as.integer = TRUE))
+
   list(x = combinedGDPpc,
-       description = glue("use past data ({past$description}) until {yStart}, short term growth rates from IMF \\
-                           and afterwards transition to future data ({future$description}) by {yEnd}."))
+       description = glue("use {past$description} until {lastPastYear}, \\
+                          short term growth rates from IMF until {yStart}, \\
+                          and transition to {future$description} by {yEnd}."))
 }
 
 toolGDPpcHarmonizeSDP <- function(unit) {
 
   gdppcapSSP1 <- calcOutput("GDPpc",
-                             scenario = "SSPs",
-                             unit = unit,
-                             extension2150 = "none",
-                             average2020 = FALSE,
-                             aggregate = FALSE)[, , "gdppc_SSP1"]
+                            scenario = "SSPs",
+                            unit = unit,
+                            extension2150 = "none",
+                            average2020 = FALSE,
+                            aggregate = FALSE)[, , "gdppc_SSP1"]
 
   # standard SDP inherits SSP1 GDP
   gdppcapSDP <- gdppcapSSP1
@@ -144,7 +148,7 @@ toolGDPpcHarmonizeShortCovid <- function(unit) {
                           average2020 = FALSE,
                           aggregate = FALSE)
 
-  gdppcNoCovid <- calcOutput("GDPpc",
+  gdppcNoCovid <- calcOutput("GDPpc", # nolint
                              scenario = "noCovid",
                              unit = unit,
                              extension2150 = "none",
@@ -170,7 +174,7 @@ toolGDPpcHarmonizeLongCovid <- function(unit) {
                           average2020 = FALSE,
                           aggregate = FALSE)
 
-  gdppcNoCovid <- calcOutput("GDPpc",
+  gdppcNoCovid <- calcOutput("GDPpc", # nolint
                              scenario = "noCovid",
                              unit = unit,
                              extension2150 = "none",
@@ -225,29 +229,29 @@ convergeSpecial <- function(x, yearStart, yearEnd) {
       ),
       # Fast convergence
       value = dplyr::if_else(
-         .data$year > yearStart &
-            ((.data$SSP %in% c("SSP1", "SSP5") & .data$d >= 0) |
+        .data$year > yearStart &
+          ((.data$SSP %in% c("SSP1", "SSP5") & .data$d >= 0) |
              (.data$SSP %in% c("SSP3", "SSP4") & .data$d < 0)),
-         dplyr::if_else(
-             .data$year <= yearEnd,
-             .data$iiasa_gdppc - .data$d * (yearEnd - .data$year) / (yearEnd - yearStart),
-             .data$iiasa_gdppc
-         ),
-         .data$value
+        dplyr::if_else(
+          .data$year <= yearEnd,
+          .data$iiasa_gdppc - .data$d * (yearEnd - .data$year) / (yearEnd - yearStart),
+          .data$iiasa_gdppc
+        ),
+        .data$value
       ),
       # Slow convergence
       value = dplyr::if_else(
         .data$year > yearStart &
-            ((.data$SSP %in% c("SSP3", "SSP4") & .data$d >= 0) |
+          ((.data$SSP %in% c("SSP3", "SSP4") & .data$d >= 0) |
              (.data$SSP %in% c("SSP1", "SSP5") & .data$d < 0)),
         dplyr::if_else(
-            .data$year <= y2,
-            .data$iiasa_gdppc - .data$d,
-            dplyr::if_else(
-              .data$year <= yearEnd,
-              .data$iiasa_gdppc - .data$d * (yearEnd - .data$year) / (yearEnd - y2),
-              .data$iiasa_gdppc
-            )
+          .data$year <= y2,
+          .data$iiasa_gdppc - .data$d,
+          dplyr::if_else(
+            .data$year <= yearEnd,
+            .data$iiasa_gdppc - .data$d * (yearEnd - .data$year) / (yearEnd - y2),
+            .data$iiasa_gdppc
+          )
         ),
         .data$value
       ),
@@ -310,9 +314,9 @@ computeSHAPEgrowth <- function(shapeGDPScenario, gdppcapSSP1, startFromYear) {
         modificationFactor <- logisticTransition(
           gdppcap[, yr, ], l0 = 1.15, l = 1, k = 20, x0 = 15e3, useLog10 = TRUE
         )
-      }
-      # service-driven (SDP_MC): growth rate reduced based on relative distance to technology frontier (given by the US)
-      else if (shapeGDPScenario == "gdppc_SDP_MC") {
+        # service-driven (SDP_MC): growth rate reduced based on relative distance to technology frontier
+        # (given by the US)
+      } else if (shapeGDPScenario == "gdppc_SDP_MC") {
         # define US as technology frontier
         frontier <- gdppcap["USA", yr, ]
         getItems(frontier, 1) <- "GLO"
@@ -321,9 +325,8 @@ computeSHAPEgrowth <- function(shapeGDPScenario, gdppcapSSP1, startFromYear) {
         modificationFactor <- logisticTransition(
           reldiff2frontier[, yr, ], l0 = 1, l = 0.5, k = -30, x0 = 0.2, useLog10 = FALSE
         )
-      }
-      # society-driven (SDP_RC): gradual transition to zero growth for high-income countries
-      else if (shapeGDPScenario == "gdppc_SDP_RC") {
+        # society-driven (SDP_RC): gradual transition to zero growth for high-income countries
+      } else if (shapeGDPScenario == "gdppc_SDP_RC") {
         modificationFactor <- logisticTransition(gdppcap[, yr, ], l0 = 1, l = 0, k = 10, x0 = 30e3, useLog10 = TRUE)
       } else {
         stop("cannot create SHAPE GDP scenarios: unknown scenario")
