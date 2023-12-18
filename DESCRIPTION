@@ -1,7 +1,7 @@
 Package: mrdrivers
 Type: Package
 Title: Create GDP and Population Scenarios
-Version: 1.4.0
+Version: 1.5.0
 Authors@R: c(person(given = "Johannes", 
                     family = "Koch", 
                     email = "jokoch@pik-potsdam.de", 
@@ -19,7 +19,6 @@ Depends:
     madrat (>= 2.5.1),
     magclass (>= 6.0.3)
 Imports: 
-    bezier,
     countrycode,
     dplyr,
     lifecycle,
@@ -49,6 +48,6 @@ Suggests:
 Encoding: UTF-8
 Roxygen: list(markdown = TRUE)
 RoxygenNote: 7.2.3
-Date: 2023-08-18
+Date: 2023-12-15
 Config/testthat/edition: 3
 VignetteBuilder: knitr

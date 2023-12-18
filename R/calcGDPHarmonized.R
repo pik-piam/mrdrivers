@@ -46,28 +46,27 @@ toolGDPHarmonizeSSP2EU <- function(past, future, unit) {
                      supplementary = TRUE)
   ssp2Data <- ssps$x[, , "gdp_SSP2"]
 
-  # For SSP2EU: simply glue past with future
-  # Get EUR countries.
+  # For SSP2EU: EU countries are equal to past
   euCountries <- toolGetEUcountries(onlyWithARIADNEgdpData = TRUE)
-  ssp2EUData <- ssp2Data[, getYears(ssp2Data)[getYears(ssp2Data, as.integer = TRUE) <= 2100], ]
-  ssp2EUData[euCountries, , ] <- 0
-  ssp2EUData[euCountries, getYears(past$x), ] <- past$x[euCountries, , ]
+  ssp2EUData <- ssp2Data[euCountries, getYears(ssp2Data)[getYears(ssp2Data, as.integer = TRUE) <= 2100], ]
+  ssp2EUData[, , ] <- 0
+  ssp2EUData[, getYears(past$x), ] <- past$x[euCountries, , ]
 
   # Use GDP growth rates of eurostat for the years 2022, 2023, 2024
   gr <- readSource("EurostatPopGDP", "GDPgr_projections")
-  ssp2EUData[euCountries, 2022, ] <- ssp2EUData[euCountries, 2021, ] * (1 + gr[euCountries, 2022, ] / 100)
-  ssp2EUData[euCountries, 2023, ] <- ssp2EUData[euCountries, 2022, ] * (1 + gr[euCountries, 2023, ] / 100)
-  ssp2EUData[euCountries, 2024, ] <- ssp2EUData[euCountries, 2023, ] * (1 + gr[euCountries, 2024, ] / 100)
+  ssp2EUData[, 2022, ] <- ssp2EUData[, 2021, ] * (1 + gr[euCountries, 2022, ] / 100)
+  ssp2EUData[, 2023, ] <- ssp2EUData[, 2022, ] * (1 + gr[euCountries, 2023, ] / 100)
+  ssp2EUData[, 2024, ] <- ssp2EUData[, 2023, ] * (1 + gr[euCountries, 2024, ] / 100)
 
   # After 2024 use growth rates from future object
   pastYears <- getYears(ssp2EUData)[getYears(ssp2EUData, as.integer = TRUE) <= 2024]
   cy <- union(pastYears, getYears(future$x))
-  ssp2EUData[euCountries, cy, ] <- toolHarmonizePastGrFuture(ssp2EUData[euCountries, pastYears, ],
-                                                             future$x[euCountries, , ])
+  ssp2EUData[, cy, ] <- toolHarmonizePastGrFuture(ssp2EUData[, pastYears, ],
+                                                  future$x[euCountries, , ])
 
   # After 2070, transition to SSP2 values by 2150
   pastYears <- getYears(ssp2EUData)[getYears(ssp2EUData, as.integer = TRUE) <= 2070]
-  combinedSSP2EU <- toolHarmonizePastTransition(ssp2EUData[euCountries, pastYears, ],
+  combinedSSP2EU <- toolHarmonizePastTransition(ssp2EUData[, pastYears, ],
                                                 ssp2Data[euCountries, , ],
                                                 2150)
 
@@ -79,7 +78,9 @@ toolGDPHarmonizeSSP2EU <- function(past, future, unit) {
   combined <- combined[, getYears(combined)[getYears(combined, as.integer = TRUE) <= 2100], ]
 
   list(x = combined,
-      description = glue("Equal to SSP2 in all countries except for EUR countries. For EUR countries glue past data \\
-                          ({past$description}) with future data ({future$description}) and after 2070 converge to \\
-                          2150 SSP2 values."))
+       description = glue("equal to SSP2 in all countries except for EU countries. \\
+                          For EU countries use {past$description} until 2021, \\
+                          growth rates from Eurostat until 2024, \\
+                          growth rates from {future$description} until 2070, \\
+                          and converge to 2150 (bezier-extended) SSP2 values thereafter."))
 }

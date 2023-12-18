@@ -14,7 +14,7 @@
 readIMF <- function(subtype = "current_account", subset = "WEOOct2022all.xls") {
   # Check function input
   if (!subtype %in% c("current_account", "GDPpc")) {
-    stop("Bad input for readiMD. Invalid 'subtype' argument.")
+    stop("Bad input for readIMF. Invalid 'subtype' argument.")
   }
 
   # Define source file
@@ -34,9 +34,9 @@ readIMF <- function(subtype = "current_account", subset = "WEOOct2022all.xls") {
     dplyr::mutate(value = gsub(",", "", .data$value),
                   dplyr::across(.cols = c("year", "value"),
                                 ~ suppressWarnings(as.double(.x))),
-                                # The warnings that are being suppressed above, come from
-                                # character strings that can't be converted to numeric, and
-                                # are thus returned as NA.
+                  # The warnings that are being suppressed above, come from
+                  # character strings that can't be converted to numeric, and
+                  # are thus returned as NA.
                   value = tidyr::replace_na(.data$value, 0)) %>%
     tidyr::pivot_wider(names_from = "Subject Descriptor")
 

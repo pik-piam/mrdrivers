@@ -39,7 +39,7 @@ calcInternalPopulationPast <- function(PopulationPast) { # nolint
   getNames(data) <- "population"
   data <- toolFinishingTouches(data)
 
-  list(x = data, weight = NULL, unit = "million", description = glue("Population {PopulationPast} data"))
+  list(x = data, weight = NULL, unit = "million", description = glue("{PopulationPast} data"))
 }
 
 
@@ -84,5 +84,5 @@ calcInternalPopulationPastEurostat <- function() { # nolint
   }
   # Extrapolate in years outside of WDI range
   dataEurostat <- toolInterpolateAndExtrapolate(dataEurostat)
-  list(x = dataEurostat, weight = NULL, unit = "million", description = "Population data from Eurostat")
+  list(x = dataEurostat, weight = NULL, unit = "million", description = "Eurostat data")
 }

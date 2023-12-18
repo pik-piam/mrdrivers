@@ -24,18 +24,19 @@ calcPopulationFuture <- function(PopulationFuture = "SSPs-UN_PopDiv-MI") { # nol
 # Internal Function
 ######################################################################################
 calcInternalPopulationFuture <- function(PopulationFuture) { # nolint
-  data <- switch(PopulationFuture,
-                 "SSPs"      = calcOutput("InternalPopulationFutureSSPs", aggregate = FALSE),
-                 "SSP2EU"    = calcOutput("InternalPopulationFutureSSP2EU", aggregate = FALSE),
-                 "SDPs"      = calcOutput("InternalPopulationFutureSDPs", aggregate = FALSE),
-                 "UN_PopDiv" = calcOutput("InternalPopulationFutureUN_PopDiv", aggregate = FALSE),
-                 "MI"        = readSource("MissingIslands", "pop"),
-                 "SSPsOld"   = calcOutput("InternalPopulationFutureSSPsOld", aggregate = FALSE),
-                 stop("Bad input for PopulationFuture. Invalid 'PopulationFuture' argument."))
+  data <- switch(
+    PopulationFuture,
+    "SSPs"      = calcOutput("InternalPopulationFutureSSPs", aggregate = FALSE, supplementary = TRUE),
+    "SSP2EU"    = calcOutput("InternalPopulationFutureSSP2EU", aggregate = FALSE, supplementary = TRUE),
+    "SDPs"      = calcOutput("InternalPopulationFutureSDPs", aggregate = FALSE, supplementary = TRUE),
+    "UN_PopDiv" = calcOutput("InternalPopulationFutureUN_PopDiv", aggregate = FALSE, supplementary = TRUE),
+    "MI"        = calcOutput("InternalPopMI", aggregate = FALSE, supplementary = TRUE),
+    "SSPsOld"   = calcOutput("InternalPopulationFutureSSPsOld", aggregate = FALSE, supplementary = TRUE),
+    stop("Bad input for PopulationFuture. Invalid 'PopulationFuture' argument.")
+  )
 
-  data <- toolFinishingTouches(data)
-
-  list(x = data, weight = NULL, unit = "million", description = glue("Population {PopulationFuture} data"))
+  data$x <- toolFinishingTouches(data$x)
+  data
 }
 
 
@@ -46,7 +47,7 @@ calcInternalPopulationFuture <- function(PopulationFuture) { # nolint
 calcInternalPopulationFutureSSPs <- function() { # nolint
   data <- readSource("SSP", "pop2018Update") * 1e-3
   getNames(data) <- paste0("pop_", getNames(data))
-  list(x = data, weight = NULL, unit = "million", description = "Population data from SSP")
+  list(x = data, weight = NULL, unit = "million", description = "SSP projections")
 }
 
 calcInternalPopulationFutureSDPs <- function() { # nolint
@@ -55,7 +56,7 @@ calcInternalPopulationFutureSDPs <- function() { # nolint
   data <- purrr::map(c("SDP", "SDP_EI", "SDP_RC", "SDP_MC"),
                      ~ setNames(data_SSP1, gsub("SSP1", .x, getNames(data_SSP1)))) %>%
     mbind()
-  list(x = data, weight = NULL, unit = "million", description = "Population data from SDP")
+  list(x = data, weight = NULL, unit = "million", description = "SSP1 projections")
 }
 
 calcInternalPopulationFutureSSP2EU <- function() { # nolint
@@ -74,7 +75,10 @@ calcInternalPopulationFutureSSP2EU <- function() { # nolint
     setNames("pop_SSP2EU")
   data[euCountries, , ] <- 0
   data[euCountries, cy, ] <- dataEurostat[euCountries, cy, ]
-  list(x = data, weight = NULL, unit = "million", description = "Population data from SSP2EU")
+  list(x = data,
+       weight = NULL,
+       unit = "million",
+       description = "SSP2 projections for non-EU countries, and EUROSTAT projections for EU countries")
 }
 
 calcInternalPopulationFutureSSPsOld <- function() { # nolint
@@ -85,11 +89,16 @@ calcInternalPopulationFutureSSPsOld <- function() { # nolint
   getNames(data) <- paste0("pop_", gsub("_v[[:alnum:],[:punct:]]*", "", getNames(data)))
   getNames(data) <- sub("SSP4d", "SSP4", getNames(data))
 
-  list(x = data, weight = NULL, unit = "million", description = "Population data from SSPsOld")
+  list(x = data, weight = NULL, unit = "million", description = "old SSP projections")
 }
 
 calcInternalPopulationFutureUN_PopDiv <- function() { # nolint
   data <- readSource("UN_PopDiv", "medium") * 1e-3
   getNames(data) <- "pop_medium_variant"
-  list(x = data, weight = NULL, unit = "million", description = "Population data from UN_PopDiv")
+  list(x = data, weight = NULL, unit = "million", description = "UN_PopDiv projections")
+}
+
+calcInternalPopMI <- function() {
+  data <- readSource("MissingIslands", "pop")
+  list(x = data, weight = NULL, unit = "million", description = "MI projections")
 }

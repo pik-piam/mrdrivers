@@ -121,21 +121,34 @@ calcScenarioConstructor <- function(driver,
   harmonizedData$x <- toolFinishingTouches(x = harmonizedData$x, extension2150 = extension2150, naming = naming)
 
   weight <- NULL
+  description <- harmonizedData$description
   if (popAsWeight) {
-    weight <- calcOutput("Population", scenario = scenario, extension2150 = extension2150, aggregate = FALSE)
+    weight <- calcOutput("Population",
+                         scenario = scenario,
+                         extension2150 = extension2150,
+                         aggregate = FALSE,
+                         supplementary = TRUE)
     # Give weight same names as data, so that aggregate doesn't mess up data dim
-    getNames(weight) <- getNames(harmonizedData$x)
+    getNames(weight$x) <- getNames(harmonizedData$x)
     # Make sure weight and harmonizedData have the same yearly resolution. Sometimes x has more years than weigth,
     # thus the intersect operation. Then if weight has more years than x, only years that exist in x are used.
     # (this applies specifically to the noCovid and ISIMIP scenarios)
-    harmonizedData$x <- harmonizedData$x[, intersect(getYears(harmonizedData$x), getYears(weight)), ]
-    weight <- weight[, getYears(harmonizedData$x), ]
+    harmonizedData$x <- harmonizedData$x[, intersect(getYears(harmonizedData$x), getYears(weight$x)), ]
+    weight$x <- weight$x[, getYears(harmonizedData$x), ]
+    description <- glue("{description} Associated {weight$description}")
+  }
+
+  if (extension2150 == "bezier") {
+    description <- glue("{description} Extended from 2100 to 2150 using bezier curves, resulting in a smooth \\
+                        flattening of the scenario (the slope in 2150 is equal to half of that in 2100).")
+  } else if (extension2150 == "constant") {
+    description <- glue("{description} Extended from 2100 to 2150 using the constant 2100 value.")
   }
 
   list(x = harmonizedData$x,
-       weight = weight,
+       weight = weight$x,
        unit = harmonizedData$unit,
-       description = glue("{driver} {scenario} data: {harmonizedData$description}"))
+       description = glue("{driver} {scenario} scenarios: {description}"))
 }
 
 

@@ -57,7 +57,7 @@ calcInternalGDPPast <- function(GDPPast, unit) { # nolint
 
   data <- toolFinishingTouches(data)
 
-  list(x = data, weight = NULL, unit = glue("mil. {unit}"), description = glue("GDP data from {GDPPast}."))
+  list(x = data, weight = NULL, unit = glue("mil. {unit}"), description = glue("{GDPPast} data"))
 }
 
 
@@ -69,12 +69,12 @@ calcInternalGDPPast <- function(GDPPast, unit) { # nolint
 calcInternalGDPPastWDI <- function(unit) {
   # "NY.GDP.MKTP.PP.KD" = GDP in constant 2017 Int$PPP (as of time of writing this function)
   data <- readSource("WDI", "NY.GDP.MKTP.PP.KD") %>%
-     GDPuc::convertGDP("constant 2017 Int$PPP", unit, replace_NAs = c("linear", "no_conversion"))
+    GDPuc::convertGDP("constant 2017 Int$PPP", unit, replace_NAs = c("linear", "no_conversion"))
 
   data <- fillWithWBFromJames2019(data, unit)
 
   getNames(data) <- glue("gdp in {unit}")
-  list(x = data, weight = NULL, unit = unit, description = "GDP from WDI")
+  list(x = data, weight = NULL, unit = unit, description = "WDI data")
 }
 
 calcInternalGDPPastEurostat <- function(unit) {
@@ -89,7 +89,7 @@ calcInternalGDPPastEurostat <- function(unit) {
   data <- data %>% toolCountryFill(fill = 0) %>% suppressMessages()
 
   getNames(data) <- glue("gdp in {unit}")
-  list(x = data, weight = NULL, unit = unit, description = "GDP from Eurostat")
+  list(x = data, weight = NULL, unit = unit, description = "Eurostat data")
 }
 
 calcInternalGDPPastJames <- function(subtype) {

@@ -18,7 +18,7 @@ calcGDPpcPast <- function(GDPpcPast = "WDI-MI", unit = "constant 2005 Int$PPP") 
                        PopulationPast = GDPpcPast,
                        aggregate = FALSE)
 
-  list(x = data, weight = weight, unit = unit, description = glue("GDPpc data from {GDPpcPast}."))
+  list(x = data, weight = weight, unit = unit, description = glue("{GDPpcPast} data"))
 }
 
 cGDPpcFromGDPAndPop <- function(GDPpcPast, unit) { # nolint

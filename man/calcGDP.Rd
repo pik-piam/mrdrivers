@@ -63,6 +63,7 @@ See the vignette: \code{vignette("scenarios")} for scenario options, definitions
 \dontrun{
 # Return default scenarios
 calcOutput("GDP")
+calcOutput("GDPpc")
 
 # Return only the SSP2EU GDP scenario
 calcOutput("GDP", scenario = "SSP2EU")

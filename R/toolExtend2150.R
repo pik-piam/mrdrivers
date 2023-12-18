@@ -1,8 +1,8 @@
 # Extend until 2150 in 5 year time steps. Either with bezierExtension or constant.
-# The bezier extension is only possible if there is data until 2100, and only concerns
-# the years between 2100 and 2150.
 toolExtend2150 <- function(data, extension2150) {
   if (extension2150 != "none") {
+    # The bezier extension is only possible if there is data until 2100, and only affects years between 2100 and 2150.
+    # It extends the time series in such a way as for the slope in 2105 to be half of that in 2100.
     if (extension2150 == "bezier" && "y2100" %in% getYears(data)) {
       data <- bezierExtension(data, seq(2105, 2150, 5))
     } else {
@@ -18,63 +18,54 @@ toolExtend2150 <- function(data, extension2150) {
   data
 }
 
+
 bezierExtension <- function(data, timeExtend) {
+  # Define bezier coordinates
+  bc <- new.magpie(getItems(data, 1), c(2100, 2110, 2140, 2150), getNames(data), fill = 0)
 
-  extension <- new.magpie(getItems(data, 1), timeExtend, getNames(data), fill = 0)
+  slopeStart <- (data[, 2100, ] - data[, 2095, ]) / 5
+  slopeEnd <- slopeStart / 2
 
-  slope <- (data[, 2100, ] - data[, 2095, ]) / 5
+  bc[, 2100, ] <- data[, 2100, ]
+  bc[, 2110, ] <- data[, 2100, ] + slopeStart * 10
+  bc[, 2140, ] <- data[, 2100, ] + slopeEnd * 40
+  bc[, 2150, ] <- data[, 2100, ] + slopeEnd * 50
 
   nr <- nregions(data)
+  nd <- ndata(data)
 
-  for (scen in getNames(data)) {
-    yStart <- data[, 2100, scen] %>% as.matrix()
-    xStart <- matrix(2100, nrow = 249, ncol = 1)
-    slopeStart <- slope[, , scen] %>% as.matrix()
+  # If Bezier extension would lead to negative GDP, set bezier coordinates equal to start point
+  # (comes down to a constant extension instead)
+  for (i in 1:nr) for (j in 1:nd) if (bc[i, 2100, j] == 0 || bc[i, 2150, j] < 0) bc[i, , j] <- bc[i, 2100, j]
 
-    slopeEnd <- slopeStart / 2
-    yEnd <- yStart + slopeEnd * 50
-    xEnd <- matrix(2150, nrow = nr, ncol = 1)
+  x <- rep(c(2100, 2110, 2140, 2150), nr * nd)
+  y <- purrr::reduce(purrr::map(1:nd, ~purrr::reduce(purrr::map(1:nr, function(y) bc[y, , .x]), c)), c)
+  z <- purrr::reduce(purrr::map(1:(nr * nd), ~rep(.x, 4)), c)
 
-    x1 <- matrix(2110, nrow = nr, ncol = 1)
-    y1 <- yStart + slopeStart * 10
-    x2 <- matrix(2140, nrow = nr, ncol = 1)
-    y2 <- yEnd - slopeEnd * 10
+  # grid::bezierGrob returns the point in a weird graphical unit, and "only" returns 48 points, but is super fast.
+  bezierPoints <- grid::bezierGrob(x, y, id = z) %>% grid::bezierPoints()
+  cfx <- x[1] / as.numeric(bezierPoints[[1]]$x[[1]])
+  cfy <- y[1] / as.numeric(bezierPoints[[1]]$y[[1]])
+  id <- paste(purrr::reduce(purrr::map(getNames(data), ~rep(.x, nr)), c),
+              rep(getItems(data, 1), nd),
+              sep = "-")
 
-    for (i in 1:nr) {
-      # If Bezier extension would lead to negative GDP, keep last value constant instead
-      if (yStart[i] == 0 || yEnd[i] < 0) {
-        extension[i, , scen] <- data[i, 2100, scen]
-        next
-      }
-
-      p <- matrix(c(xStart[i], yStart[i], x1[i], y1[i], x2[i], y2[i], xEnd[i], yEnd[i]),
-                  nrow = 4,
-                  ncol = 2,
-                  byrow = TRUE)
-
-      # Get Bezier curve (Use max_dist method because it's super fast)
-      # Keep this code for later: bp <- bezier::bezier(t = seq(0, 1, length = 10), p = p)
-      pob <- bezier::pointsOnBezier(p = p,
-                                    method = "max_dist",
-                                    max.dist = max(abs(yEnd[i] - yStart[i]), 50) / 100,
-                                    print.progress = FALSE) %>%
-        suppressWarnings()
-      # The above Warnings which are suppressed are
-      # : "essentially perfect fit: summary may be unreliable"
-
-      # Get y coordinates of points with x coordinates = timeExtend
-      myBezierOutflow <- pob$points %>%
-        tibble::as_tibble(.name_repair = ~ paste0("V", seq_along(.x))) %>%
-        # Complicatd / elegant use of function factories to get closest points to timeExtend coordinates
-        dplyr::mutate(dplyr::across("V1", purrr::map(timeExtend, ~ function(y) {
-          abs(y - .x)
-        }))) %>%
-        dplyr::filter(dplyr::if_any(tidyselect::contains("_"), ~ .x == min(.x))) %>%
-        dplyr::pull(.data$V2)
-
-      extension[i, , scen] <- myBezierOutflow
-    }
-  }
+  extension <- purrr::map2(bezierPoints, id,
+                           ~.x %>%
+                             tibble::as_tibble() %>%
+                             dplyr::mutate(x = as.numeric(x) * cfx,
+                                           y = as.numeric(y) * cfy,
+                                           id = .y)) %>%
+    purrr::list_rbind() %>%
+    # Complicated / elegant use of function factories to get closest points to timeExtend coordinates
+    # First create columns with distance to timeExtend points
+    dplyr::mutate(dplyr::across("x", purrr::map(timeExtend, ~ function(y) abs(y - .x)))) %>%
+    # Then keep only the rows with the min values of the newly created columns
+    dplyr::filter(dplyr::if_any(tidyselect::contains("_"), ~ .x == min(.x)), .by = "id") %>%
+    dplyr::mutate(year = round(x)) %>%
+    tidyr::separate_wider_delim("id", names = c("data", "iso3c"), delim = "-") %>%
+    dplyr::select("iso3c", "year", "data", "y") %>%
+    as.magpie()
 
   mbind(data, extension)
 }

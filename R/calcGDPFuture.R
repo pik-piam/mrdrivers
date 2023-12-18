@@ -26,16 +26,15 @@ calcGDPFuture <- function(GDPFuture = "SSPs-MI", unit = "constant 2005 Int$PPP")
 calcInternalGDPFuture <- function(GDPFuture, unit) { # nolint
   data <- switch(
     GDPFuture,
-    "SSPs"   = calcOutput("InternalGDPFutureSSPs", unit = unit, aggregate = FALSE),
-    "SSP2EU" = calcOutput("InternalGDPFutureSSP2EU", unit = unit, aggregate = FALSE),
-    "SDPs"   = calcOutput("InternalGDPFutureSDPs", unit = unit, aggregate = FALSE),
-    "MI"     = calcOutput("InternalGDPMI", unit = unit, aggregate = FALSE),
+    "SSPs"   = calcOutput("InternalGDPFutureSSPs", unit = unit, aggregate = FALSE, supplementary = TRUE),
+    "SSP2EU" = calcOutput("InternalGDPFutureSSP2EU", unit = unit, aggregate = FALSE, supplementary = TRUE),
+    "SDPs"   = calcOutput("InternalGDPFutureSDPs", unit = unit, aggregate = FALSE, supplementary = TRUE),
+    "MI"     = calcOutput("InternalGDPMI", unit = unit, aggregate = FALSE, supplementary = TRUE),
     stop("Bad input for calcGDPFuture. Invalid 'GDPFuture' argument.")
   )
 
-  data <- toolFinishingTouches(data)
-
-  list(x = data, weight = NULL, unit = glue("mil. {unit}"), description = glue("GDP data from {GDPFuture}"))
+  data$x <- toolFinishingTouches(data$x)
+  data
 }
 
 
@@ -77,7 +76,7 @@ calcInternalGDPFutureSSPs <- function(unit) {
       GDPuc::convertGDP("constant 2005 Int$PPP", unit, replace_NAs = c("linear", "no_conversion"))
 
     y2 <- getYears(data2005PPP)[getYears(data2005PPP, as.integer = TRUE) > c15 &
-                                 getYears(data2005PPP, as.integer = TRUE) < 2100]
+                                  getYears(data2005PPP, as.integer = TRUE) < 2100]
     dataFarFut <- data2005PPP[, y2, ] * NA
 
     # Convert to 2017 Int$PPP using the 2017 value of base 2005 GDP deflator
@@ -87,14 +86,14 @@ calcInternalGDPFutureSSPs <- function(unit) {
 
     data2017PPP <- mbind(dataNearFut, dataFarFut, data2100)
 
-    q <- data2005PPP / data2017PPP
+    ratio <- data2005PPP / data2017PPP
     # For interpolation to work, the last and first values have to be non-NA/non-NaN
-    q[, 2100, ][is.na(q[, 2100, ])] <- 0
+    ratio[, 2100, ][is.na(ratio[, 2100, ])] <- 0
     # The first 2 years of the SSP data set are incomplete. For countries that only lack data in these first 2 years,
     # set NaN to 0.
-    q[, 2000, ][is.nan(q[, 2000, ]) & !is.nan(q[, 2010, ])] <- 0
+    ratio[, 2000, ][is.nan(ratio[, 2000, ]) & !is.nan(ratio[, 2010, ])] <- 0
 
-    q <- as.data.frame(q, rev = 2) %>%
+    ratio <- as.data.frame(ratio, rev = 2) %>%
       dplyr::rename("value" = ".value") %>%
       dplyr::arrange(.data$year) %>%
       dplyr::group_by(.data$iso3c, .data$variable) %>%
@@ -102,7 +101,7 @@ calcInternalGDPFutureSSPs <- function(unit) {
       dplyr::ungroup() %>%
       as.magpie(tidy = TRUE)
 
-    data2017PPP <- data2005PPP / q
+    data2017PPP <- data2005PPP / ratio
     data2017PPP[is.na(data2017PPP)] <- data2005PPP[is.na(data2017PPP)]
     # Above should probably be "<- 0"
     ##################
@@ -111,10 +110,10 @@ calcInternalGDPFutureSSPs <- function(unit) {
 
   # If unit was in $MER
   if (constructUnit != unit) {
-     data <- GDPuc::convertGDP(data, constructUnit, unit, replace_NAs = c("linear", "no_conversion"))
+    data <- GDPuc::convertGDP(data, constructUnit, unit, replace_NAs = c("linear", "no_conversion"))
   }
 
-  list(x = data, weight = NULL, unit = unit, description = "GDP data from SSPs")
+  list(x = data, weight = NULL, unit = glue("mil. {unit}"), description = "SSP projections")
 }
 
 calcInternalGDPFutureSDPs <- function(unit) {
@@ -124,12 +123,12 @@ calcInternalGDPFutureSDPs <- function(unit) {
                      ~ setNames(dataSSP1, gsub("SSP1", .x, getNames(dataSSP1)))) %>%
     mbind()
 
-  list(x = data, weight = NULL, unit = unit, description = "GDP data from SDPs")
+  list(x = data, weight = NULL, unit = glue("mil. {unit}"), description = "SDP projections")
 }
 
 calcInternalGDPFutureSSP2EU <- function(unit) {
   dataSSP2EU <- readSource("ARIADNE", "gdp_corona") %>%
-      GDPuc::convertGDP("constant 2005 Int$PPP", unit, replace_NAs = c("linear", "no_conversion"))
+    GDPuc::convertGDP("constant 2005 Int$PPP", unit, replace_NAs = c("linear", "no_conversion"))
   dataSSP <- calcOutput("InternalGDPFutureSSPs", unit = unit, aggregate = FALSE)
 
   # Get EU-27 countries
@@ -143,11 +142,11 @@ calcInternalGDPFutureSSP2EU <- function(unit) {
   data <- dataSSP[, , "gdp_SSP2"] %>% setNames("gdp_SSP2EU")
   data[euCountries, , ] <- 0
   data[euCountries, cy, ] <- dataSSP2EU[euCountries, cy, ]
-  list(x = data, weight = NULL, unit = unit, description = "GDP data from ARIADNE")
+  list(x = data, weight = NULL, unit = glue("mil. {unit}"), description = "ARIADNE projections")
 }
 
 calcInternalGDPMI <- function(unit) {
   data <- readSource("MissingIslands", "gdp") %>%
     GDPuc::convertGDP("constant 2005 Int$PPP", unit, replace_NAs = c("linear", "no_conversion"))
-  list(x = data, weight = NULL, unit = unit, description = "GDP data from MI")
+  list(x = data, weight = NULL, unit = glue("mil. {unit}"), description = "MI projections")
 }

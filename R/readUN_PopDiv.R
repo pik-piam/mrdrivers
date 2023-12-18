@@ -13,7 +13,7 @@ readUN_PopDiv <- function(subtype = "estimates") { # nolint
   }
   file <- "WPP2022_POP_F01_1_POPULATION_SINGLE_AGE_BOTH_SEXES.xlsx"
   sheet <- if (subtype == "estimates") "Estimates" else "Medium variant"
-  readxl::read_xlsx(file, sheet = sheet, skip = 16, col_types = "text") %>%
+  readxl::read_xlsx(file, sheet = sheet, skip = 16, col_types = "text", progress = FALSE) %>%
     dplyr::select("ISO3 Alpha-code", "year" = "Year", dplyr::matches("^[0-9]*$")) %>%
     dplyr::filter(!is.na(.data$`ISO3 Alpha-code`)) %>%
     tidyr::pivot_longer(cols = dplyr::matches("^[0-9]*$"),
@@ -29,14 +29,14 @@ readUN_PopDiv <- function(subtype = "estimates") { # nolint
 #' @rdname readUN_PopDiv
 #' @order 3
 #' @param x MAgPIE object returned from readUN_PopDiv
-convertUN_PopDiv <- function(x) {
+convertUN_PopDiv <- function(x) { # nolint
   toolGeneralConvert(x, no_remove_warning = "XKX")
 }
 
 #' @rdname readUN_PopDiv
 #' @order 1
 downloadUN_PopDiv <- function() { # nolint
-  url <- "https://population.un.org/wpp/Download/Files/1_Indicators%20(Standard)/EXCEL_FILES/2_Population/WPP2022_POP_F01_1_POPULATION_SINGLE_AGE_BOTH_SEXES.xlsx"
+  url <- "https://population.un.org/wpp/Download/Files/1_Indicators%20(Standard)/EXCEL_FILES/2_Population/WPP2022_POP_F01_1_POPULATION_SINGLE_AGE_BOTH_SEXES.xlsx" # nolint
   utils::download.file(url, basename(url), quiet = TRUE)
 
   # Compose meta data
