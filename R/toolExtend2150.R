@@ -42,27 +42,27 @@ bezierExtension <- function(data, timeExtend) {
   y <- purrr::reduce(purrr::map(1:nd, ~purrr::reduce(purrr::map(1:nr, function(y) bc[y, , .x]), c)), c)
   z <- purrr::reduce(purrr::map(1:(nr * nd), ~rep(.x, 4)), c)
 
-  # grid::bezierGrob returns the point in a weird graphical unit, and "only" returns 48 points, but is super fast.
-  bezierPoints <- grid::bezierGrob(x, y, id = z) %>% grid::bezierPoints()
-  cfx <- x[1] / as.numeric(bezierPoints[[1]]$x[[1]])
-  cfy <- y[1] / as.numeric(bezierPoints[[1]]$y[[1]])
+  # grid operations are super fast. Have to convert the results of bezierpoints from inches back to values.
+  bezierPoints <- grid::bezierGrob(x, y, id = z) %>%
+    grid::bezierPoints() %>%
+    purrr::map(~ list("x" = grid::convertX(.x$x, "npc", valueOnly = TRUE),
+                      "y" = grid::convertY(.x$y, "npc", valueOnly = TRUE)))
+
   id <- paste(purrr::reduce(purrr::map(getNames(data), ~rep(.x, nr)), c),
               rep(getItems(data, 1), nd),
               sep = "-")
 
+  closestYear <- function(x) purrr::map_int(x, ~timeExtend[which.min(abs(.x - timeExtend))])
+
   extension <- purrr::map2(bezierPoints, id,
-                           ~.x %>%
-                             tibble::as_tibble() %>%
-                             dplyr::mutate(x = as.numeric(x) * cfx,
-                                           y = as.numeric(y) * cfy,
-                                           id = .y)) %>%
+                           ~.x %>% tibble::as_tibble() %>% dplyr::mutate(id = .y)) %>%
     purrr::list_rbind() %>%
     # Complicated / elegant use of function factories to get closest points to timeExtend coordinates
     # First create columns with distance to timeExtend points
     dplyr::mutate(dplyr::across("x", purrr::map(timeExtend, ~ function(y) abs(y - .x)))) %>%
     # Then keep only the rows with the min values of the newly created columns
     dplyr::filter(dplyr::if_any(tidyselect::contains("_"), ~ .x == min(.x)), .by = "id") %>%
-    dplyr::mutate(year = round(x)) %>%
+    dplyr::mutate(year = closestYear(x)) %>%
     tidyr::separate_wider_delim("id", names = c("data", "iso3c"), delim = "-") %>%
     dplyr::select("iso3c", "year", "data", "y") %>%
     as.magpie()
