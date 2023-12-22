@@ -4,7 +4,7 @@ toolExtend2150 <- function(data, extension2150) {
     # The bezier extension is only possible if there is data until 2100, and only affects years between 2100 and 2150.
     # It extends the time series in such a way as for the slope in 2105 to be half of that in 2100.
     if (extension2150 == "bezier" && "y2100" %in% getYears(data)) {
-      data <- bezierExtension(data, seq(2105, 2150, 5))
+      data <- toolBezierExtension(data, seq(2105, 2150, 5))
     } else {
       helper <- getSets(data)
       data <- time_interpolate(data,
@@ -19,7 +19,7 @@ toolExtend2150 <- function(data, extension2150) {
 }
 
 
-bezierExtension <- function(data, timeExtend) {
+toolBezierExtension <- function(data, timeExtend) {
   # Define bezier coordinates
   bc <- new.magpie(getItems(data, 1), c(2100, 2110, 2140, 2150), getNames(data), fill = 0)
 
