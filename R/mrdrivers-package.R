@@ -7,14 +7,13 @@
 #'
 #' @name mrdrivers-package
 #' @aliases mrdrivers-package mrdrivers
-#' @docType package
 #' @import madrat magclass
 #' @importFrom magrittr %>%
 #' @importFrom rlang .data
 #' @importFrom glue glue
 #' @exportPattern "^((calc(GDP|GDPpc|Population|Labour|Urban)(Past|Future|$))|read|download)"
 #' @keywords internal
-NULL
+"_PACKAGE"
 
 # Suppress R CMD check note
 #' @importFrom lifecycle deprecate_soft
