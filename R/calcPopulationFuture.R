@@ -8,7 +8,6 @@
 #'     \item "SDPs":
 #'     \item "UN_PopDiv": United Nations
 #'     \item "MI": Missing island dataset
-#'     \item "SSPsOld": Old SSPs from the IIASA database
 #'   }
 calcPopulationFuture <- function(PopulationFuture = "SSPs-UN_PopDiv-MI") { # nolint
   # Check user input
@@ -27,11 +26,11 @@ calcInternalPopulationFuture <- function(PopulationFuture) { # nolint
   data <- switch(
     PopulationFuture,
     "SSPs"      = calcOutput("InternalPopulationFutureSSPs", aggregate = FALSE, supplementary = TRUE),
+    "SSP2"      = calcOutput("InternalPopulationFutureSSP2", aggregate = FALSE, supplementary = TRUE),
     "SSP2EU"    = calcOutput("InternalPopulationFutureSSP2EU", aggregate = FALSE, supplementary = TRUE),
     "SDPs"      = calcOutput("InternalPopulationFutureSDPs", aggregate = FALSE, supplementary = TRUE),
     "UN_PopDiv" = calcOutput("InternalPopulationFutureUN_PopDiv", aggregate = FALSE, supplementary = TRUE),
     "MI"        = calcOutput("InternalPopMI", aggregate = FALSE, supplementary = TRUE),
-    "SSPsOld"   = calcOutput("InternalPopulationFutureSSPsOld", aggregate = FALSE, supplementary = TRUE),
     stop("Bad input for PopulationFuture. Invalid 'PopulationFuture' argument.")
   )
 
@@ -45,9 +44,14 @@ calcInternalPopulationFuture <- function(PopulationFuture) { # nolint
 # Functions
 ######################################################################################
 calcInternalPopulationFutureSSPs <- function() { # nolint
-  data <- readSource("SSP", "pop2018Update") * 1e-3
+  data <- readSource("SSP", "pop")
   getNames(data) <- paste0("pop_", getNames(data))
   list(x = data, weight = NULL, unit = "million", description = "SSP projections")
+}
+
+calcInternalPopulationFutureSSP2 <- function() { # nolint
+  data <- calcOutput("InternalPopulationFutureSSPs", aggregate = FALSE)[, , "pop_SSP2"]
+  list(x = data, weight = NULL, unit = "million", description = "SSP2 projections")
 }
 
 calcInternalPopulationFutureSDPs <- function() { # nolint
@@ -79,17 +83,6 @@ calcInternalPopulationFutureSSP2EU <- function() { # nolint
        weight = NULL,
        unit = "million",
        description = "SSP2 projections for non-EU countries, and EUROSTAT projections for EU countries")
-}
-
-calcInternalPopulationFutureSSPsOld <- function() { # nolint
-  data <- readSource("SSP", "pop")
-
-  # Refactor names
-  data <- collapseNames(data)
-  getNames(data) <- paste0("pop_", gsub("_v[[:alnum:],[:punct:]]*", "", getNames(data)))
-  getNames(data) <- sub("SSP4d", "SSP4", getNames(data))
-
-  list(x = data, weight = NULL, unit = "million", description = "old SSP projections")
 }
 
 calcInternalPopulationFutureUN_PopDiv <- function() { # nolint

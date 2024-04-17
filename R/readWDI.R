@@ -14,6 +14,12 @@
 #' \item \code{"AG.SRF.TOTL.K2"}: Surface area (in square kms)
 #' }
 #'
+#' @details
+#'  The workflow to update the WDI data is the following: call the download function manually, and rename the new
+#'  WDI.rds file including the download date. Then change the file_name that is read by readWDI. This ensures, that
+#'  the past data isn't changed between users.
+#'
+#'
 #' @inherit madrat::readSource return
 #' @seealso [madrat::readSource()] and [madrat::downloadSource()]
 #'
@@ -22,7 +28,7 @@
 #' }
 #' @order 2
 readWDI <- function(subtype) {
-  x <- readr::read_rds("WDI_20_02_2023.Rds")
+  x <- readr::read_rds("WDI_15_04_2024.Rds")
   possibleSubtypes <- colnames(x)[!colnames(x) %in% c("iso3c", "iso2c", "country", "year")]
 
   if (!subtype %in% possibleSubtypes) {
@@ -91,5 +97,5 @@ downloadWDI <- function() {
        author        = "World Bank",
        release_date  = "-",
        license       = "-",
-       comment       = "see also <https://databank.worldbank.org/source/world-development-indicators>")
+       comment       = "see also https://databank.worldbank.org/source/world-development-indicators")
 }

@@ -76,9 +76,10 @@ calcInternalPopulationPastEurostat <- function() { # nolint
     if (max(yearsWith0) > max(yearsWithout0)) {
       futureYears <- getYears(dataWDI)[getYears(dataWDI) >= min(yearsWithout0)]
       futureYearsWithou0 <- futureYears[futureYears %in% yearsWithout0]
-      dataEurostat[c, futureYears, ] <- toolHarmonizePastGrFuture(
+      dataEurostat[c, futureYears, ] <- toolHarmonizePast(
         past = dataEurostat[c, futureYearsWithou0, ],
-        future = dataWDI[c, , ]
+        future = dataWDI[c, , ],
+        method = "growth"
       )
     }
   }

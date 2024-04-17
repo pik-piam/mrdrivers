@@ -4,12 +4,10 @@
 \alias{calcRatioPPP2MER}
 \title{MER over PPP ratio}
 \usage{
-calcRatioPPP2MER(from = "WDI", when = 2005)
+calcRatioPPP2MER(when = 2017)
 }
 \arguments{
-\item{from}{A string indicating the source. Can be either "WDI" (default) or "OECD".}
-
-\item{when}{An integer (defaults to 2005) specifying the year of the PPP2MER factor.}
+\item{when}{An integer (defaults to 2017) specifying the year of the PPP2MER factor.}
 }
 \value{
 magpie object with the requested output data either on country or on
@@ -17,8 +15,8 @@ regional level depending on the choice of argument "aggregate" or a list of info
 if supplementary is set to TRUE.
 }
 \description{
-Get a conversion factor to convert GDP in constant 2005 Int$PPP into constant 2005 US$MER.
-Use the when argument to switch the year of the conversion factor.
+Get a conversion factor to convert GDP in constant 2017 Int$PPP into constant 2017 US$MER.
+Use the when argument to switch the year of the conversion factor. Source = WDI.
 }
 \examples{
 \dontrun{

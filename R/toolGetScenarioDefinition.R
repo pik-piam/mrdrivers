@@ -34,41 +34,33 @@ toolGetScenarioDefinition <- function(driver = NULL, scen = NULL, aslist = FALSE
   scenarios <- tibble::tribble(
     ~driver,      ~scenario,    ~pastData,                    ~futureData,            ~harmonization,
     # GDPpc scenarios
-    "GDPpc",      "SSPs",       "WDI-MI",                     "SSPsOld-MI",           "calibSSPs",
+    "GDPpc",      "SSPs",       "WDI-MI",                     "SSPs-MI",              "calibSSPs",
+    "GDPpc",      "SSP2",       "WDI-MI",                     "SSP2-MI",              "calibSSPs",
     "GDPpc",      "SDPs",       "-",                          "-",                    "calibSDPs",
     "GDPpc",      "SSP2EU",     "-",                          "-",                    "GDPoverPop",
-    "GDPpc",      "ISIMIP",     "WDI-MI",                     "SSPsOld-MI",           "calibSSPs",
-    "GDPpc",      "noCovid",    "WDI-MI",                     "SSPsOld-MI",           "calibNoCovid",
-    "GDPpc",      "longCovid",  "-",                          "-",                    "calibLongCovid",
-    "GDPpc",      "shortCovid", "-",                          "-",                    "calibShortCovid",
-    "GDPpc",      "SSPsOld",    "-",                          "-",                    "GDPoverPop",
+    "GDPpc",      "ISIMIP",     "WDI-MI",                     "SSPs-MI",              "calibSSPs",
     # GDP scenarios
     "GDP",        "SSPs",       "-",                          "-",                    "GDPpcWithPop",
+    "GDP",        "SSP2",       "-",                          "-",                    "GDPpcWithPop",
     "GDP",        "SDPs",       "-",                          "-",                    "GDPpcWithPop",
     "GDP",        "ISIMIP",     "-",                          "-",                    "GDPpcWithPop",
     "GDP",        "SSP2EU",     "Eurostat-WDI-MI",            "SSP2EU-MI",            "calibSSP2EU",
-    "GDP",        "noCovid",    "-",                          "-",                    "GDPpcWithPop",
-    "GDP",        "longCovid",  "-",                          "-",                    "GDPpcWithPop",
-    "GDP",        "shortCovid", "-",                          "-",                    "GDPpcWithPop",
-    "GDP",        "SSPsOld",    "IHME_USD05_PPP_pc-MI",       "SSPs-MI",              "past_transition",
     # Population Scenarios
     "Population", "SSPs",       "WDI-UN_PopDiv-MI",           "SSPs-UN_PopDiv-MI",    "withPEAPandFuture",
+    "Population", "SSP2",       "WDI-UN_PopDiv-MI",           "SSP2-UN_PopDiv-MI",    "withPEAPandFuture",
     "Population", "SDPs",       "WDI-UN_PopDiv-MI",           "SDPs-UN_PopDiv-MI",    "withPEAPandFuture",
     "Population", "SSP2EU",     "Eurostat-WDI-UN_PopDiv-MI",  "SSP2EU-UN_PopDiv-MI",  "calibSSP2EU",
     "Population", "ISIMIP",     "UN_PopDiv-MI",               "SSPs-UN_PopDiv-MI",    "calibISIMIP",
-    "Population", "SSPsOld",    "WDI-MI",                     "SSPsOld-MI",           "past_transition",
-    "Population", "noCovid",    "WDI-UN_PopDiv-MI",           "SSPs-UN_PopDiv-MI",    "withPEAPandFuture",
-    "Population", "longCovid",  "WDI-UN_PopDiv-MI",           "SSPs-UN_PopDiv-MI",    "withPEAPandFuture",
-    "Population", "shortCovid", "WDI-UN_PopDiv-MI",           "SSPs-UN_PopDiv-MI",    "withPEAPandFuture",
     # Labour Scenarios
-    "Labour",     "SSPs",       "-",                          "SSPs",                 "-",
-    "Labour",     "SDPs",       "-",                          "SDPs",                 "-",
-    "Labour",     "SSP2EU",     "-",                          "SSP2EU",               "-",
-    "Labour",     "SSPsOld",    "-",                          "SSPsOld",              "-",
+    "Labour",     "SSPs",       "WDI",                         "SSPs",                 "pastAndLevel",
+    "Labour",     "SSP2",       "WDI",                         "SSP2",                 "pastAndLevel",
+    "Labour",     "SDPs",       "WDI",                         "SDPs",                 "pastAndLevel",
+    "Labour",     "SSP2EU",     "WDI",                         "SSP2EU",               "pastAndLevel",
     # Urban population scenarios
-    "Urban",      "SSPs",       "WDI",                        "SSPs",                 "past",
-    "Urban",      "SDPs",       "WDI",                        "SDPs",                 "past",
-    "Urban",      "SSP2EU",     "WDI",                        "SSP2EU",               "past"
+    "Urban",      "SSPs",       "WDI",                         "SSPs",                 "pastAndGrowth",
+    "Urban",      "SSP2",       "WDI",                         "SSP2",                 "pastAndGrowth",
+    "Urban",      "SDPs",       "WDI",                         "SDPs",                 "pastAndGrowth",
+    "Urban",      "SSP2EU",     "WDI",                         "SSP2EU",               "pastAndGrowth"
   )
   # End of scenario-design section
 

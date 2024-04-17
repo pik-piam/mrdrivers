@@ -1,4 +1,11 @@
 toolCheckUserInput <- function(driver, args) {
+  permitted_args <- c("pastData", "futureData", "harmonization", "scenario", "unit", "yearEnd", "extension2150",
+                      "average2020", "naming", "popAsWeight", "asShare", "GDPPast", "GDPFuture", "GDPpcPast", "GDPpcFuture",
+                      "PopulationPast", "PopulationFuture", "LabourPast", "LabourFuture", "UrbanPast", "UrbanFuture")
+  if (!all(names(args) %in% permitted_args)) {
+    stop(glue("Bad argument to calc{driver}: '{names(args)[! names(args) %in% permitted_args]}'."))
+  }
+
   # Check existence of pastData, futureData and harmonization
   if (!all(c("pastData", "futureData", "harmonization") %in% names(args)) &&
        any(c("pastData", "futureData", "harmonization") %in% names(args))) {

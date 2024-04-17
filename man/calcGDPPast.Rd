@@ -8,13 +8,13 @@
 \alias{calcGDPpcPast}
 \title{Get GDP and GDPpc scenario building blocks}
 \usage{
-calcGDPFuture(GDPFuture = "SSPs-MI", unit = "constant 2005 Int$PPP")
+calcGDPFuture(GDPFuture = "SSPs-MI", unit = "constant 2017 Int$PPP")
 
-calcGDPPast(GDPPast = "WDI-MI", unit = "constant 2005 Int$PPP")
+calcGDPPast(GDPPast = "WDI-MI", unit = "constant 2017 Int$PPP")
 
-calcGDPpcFuture(GDPpcFuture = "SSPsOld-MI", unit = "constant 2005 Int$PPP")
+calcGDPpcFuture(GDPpcFuture = "SSPs-MI", unit = "constant 2017 Int$PPP")
 
-calcGDPpcPast(GDPpcPast = "WDI-MI", unit = "constant 2005 Int$PPP")
+calcGDPpcPast(GDPpcPast = "WDI-MI", unit = "constant 2017 Int$PPP")
 }
 \arguments{
 \item{GDPFuture}{A string designating the source for the future GDP data. Available sources are:
@@ -23,16 +23,12 @@ calcGDPpcPast(GDPpcPast = "WDI-MI", unit = "constant 2005 Int$PPP")
 \item "SSP2EU": Combined SSP2 and Eurostat (for the EU countries) source
 \item "SDPs":
 \item "MI": Missing island dataset
-\item "OECD": OECD
 }
 See the "Combining data sources with '-'" section below for how to combine data sources.}
 
 \item{unit}{A string specifying the unit of GDP. Can be either:
 \itemize{
-\item "constant 2005 Int$PPP" (default): Scenarios are constructed in constant 2005 Int$PPP.
-\item "constant 2005 US$MER": Scenarios are constructed in constant 2005 Int$PPP and then converted with
-\code{\link[GDPuc:convertGDP]{GDPuc::convertGDP()}}.
-\item "constant 2017 Int$PPP": Scenarios are constructed in constant 2017 Int$PPP.
+\item "constant 2017 Int$PPP" (default): Scenarios are constructed in constant 2017 Int$PPP.
 \item "constant 2017 US$MER": Scenarios are constructed in constant 2017 Int$PPP and then converted with
 \code{\link[GDPuc:convertGDP]{GDPuc::convertGDP()}}.
 }
@@ -43,13 +39,6 @@ In all cases, GDP is returned in millions.}
 \item "WDI": World development indicators from the World Bank
 \item "MI": Missing island dataset
 \item "Eurostat": Eurostat
-\item The IHME/James data set. This data set is tertiary source that uses available secondary sources (e.g. WDI
-and PWT) to create completed GDP per capita time series
-(See \href{https://pophealthmetrics.biomedcentral.com/articles/10.1186/1478-7954-10-12}{paper}).
-To access, pass one of the subtypes
-"IHME_USD05_PPP_pc", "IHME_USD05_MER_pc", "IMF_USD05_PPP_pc", "PENN_USD05_PPP_pc", "WB_USD05_PPP_pc",
-"MADDISON_USD05_PPP_pc", "WB_USD05_MER_pc", "IMF_USD05_MER_pc", "UN_USD05_MER_pc". In all cases, the per
-capita GDP will be multiplied by WDI population data to get absolute GDP data.
 }}
 
 \item{GDPpcFuture}{A string designating the source for the future GDP data. Available sources are:

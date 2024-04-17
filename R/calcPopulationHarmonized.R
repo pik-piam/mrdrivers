@@ -1,16 +1,15 @@
 #' Get Harmonized Population Data
 #'
-#' @param args Arguments passed on to harmonization functions
+#' @inheritParams calcGDPpcHarmonized
 #' @inherit madrat::calcOutput return
 #' @keywords internal
-calcPopulationHarmonized <- function(args) {
+calcPopulationHarmonized <- function(harmonization, past, future, yEnd, ...) {
   # Combine "past" and "future" time series.
-  harmonizedData <- switch(args$harmonization,
-    "withPEAPandFuture" = toolHarmonizeWithPEAPandFuture(args$past, args$future),
-    "calibSSP2EU"       = toolHarmonizeSSP2EU(args$past, args$future),
-    "calibISIMIP"       = toolHarmonizeISIMIP(args$past, args$future, yEnd = 2030),
-    "past_transition"   = toolHarmonizePastTransition(args$past$x, args$future$x, yEnd = 2050, aslist = TRUE),
-    stop(glue("Bad input for calcPopulationHarmonized. Argument harmonization = '{args$harmonization}' is invalid."))
+  harmonizedData <- switch(harmonization,
+    "withPEAPandFuture" = toolHarmonizeWithPEAPandFuture(past, future),
+    "calibSSP2EU"       = toolHarmonizeSSP2EU(past, future),
+    "calibISIMIP"       = toolHarmonizeISIMIP(past, future, yEnd = if(rlang::is_missing(yEnd)) 2030 else yEnd),
+    stop(glue("Bad input for calcPopulationHarmonized. Argument harmonization = '{harmonization}' is invalid."))
   )
   list(x = harmonizedData$x, weight = NULL, unit = "million", description = harmonizedData$description)
 }
@@ -22,11 +21,11 @@ toolHarmonizeWithPEAPandFuture <- function(past, future) {
   shortTerm <- readSource("PEAP")
   fill <- readSource("MissingIslands", subtype = "pop", convert = FALSE)
   shortTerm <- shortTerm %>% toolFillWith(fill) %>% toolInterpolateAndExtrapolate()
-  lastYearIMF <- max(getYears(readSource("IMF"), as.integer = TRUE))
+  lastYearIMF <- max(getYears(readSource("IMF", "GDPpc"), as.integer = TRUE))
   shortTerm <- shortTerm[, getYears(shortTerm, as.integer = TRUE) <= lastYearIMF, ]
 
   # Use PEAP growth rates until last year of IMF WEO data, and future growth rates after that
-  x <- past$x %>% toolHarmonizePastGrFuture(shortTerm) %>% toolHarmonizePastGrFuture(future$x)
+  x <- past$x %>% toolHarmonizePast(shortTerm, method = "growth") %>% toolHarmonizePast(future$x, method = "growth")
 
   lastPastYear <- max(getYears(past$x, as.integer = TRUE))
   list(x = x,
@@ -41,7 +40,7 @@ toolHarmonizeSSP2EU <- function(past, future) {
   # For EUR countries use only growth rates of EUROSTAT projections (load in fresh: future only has 5 year steps)
   euCountries <- toolGetEUcountries()
   dataEurostat <- readSource("EurostatPopGDP", "population_projections") * 1e-6
-  x <- toolHarmonizePastGrFuture(past$x[euCountries, , ], dataEurostat[euCountries, , ])
+  x <- toolHarmonizePast(past$x[euCountries, , ], dataEurostat[euCountries, , ], method = "growth")
   harmonizedData$x[euCountries, , ] <- x[euCountries, getYears(harmonizedData$x), ]
 
   list(x = harmonizedData$x,
@@ -51,15 +50,9 @@ toolHarmonizeSSP2EU <- function(past, future) {
 }
 
 toolHarmonizeISIMIP <- function(past, future, yEnd) {
-  # Extend past by the first year of future, to make sure there is 1 year overlap between past and future
-  data20xx <- calcOutput("PopulationFuture", PopulationFuture = "UN_PopDiv-MI", aggregate = FALSE)[, 1, ]
-  getNames(data20xx) <- getNames(past$x)
-  past$x <- mbind(past$x, data20xx)
-
-  # Then use toolHarmonizePastTransition
-  x <- toolHarmonizePastTransition(past$x, future$x, yEnd)
+  x <- toolHarmonizePast(past$x, future$x, method = "transition", yEnd = yEnd)
 
   list(x = x,
-       description = glue("use {past$description} until 2020, UN_PopDiv projections for 2021, \\
+       description = glue("use {past$description} until {max(getYears(past$x, as.integer = TRUE))}, \\
                           and converge towards {future$description} by {yEnd}."))
 }

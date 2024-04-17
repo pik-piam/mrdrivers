@@ -18,10 +18,7 @@
 #'
 #' @param unit A string specifying the unit of GDP. Can be either:
 #' \itemize{
-#'   \item "constant 2005 Int$PPP" (default): Scenarios are constructed in constant 2005 Int$PPP.
-#'   \item "constant 2005 US$MER": Scenarios are constructed in constant 2005 Int$PPP and then converted with
-#'   [GDPuc::convertGDP()].
-#'   \item "constant 2017 Int$PPP": Scenarios are constructed in constant 2017 Int$PPP.
+#'   \item "constant 2017 Int$PPP" (default): Scenarios are constructed in constant 2017 Int$PPP.
 #'   \item "constant 2017 US$MER": Scenarios are constructed in constant 2017 Int$PPP and then converted with
 #'   [GDPuc::convertGDP()].
 #' }
@@ -48,13 +45,10 @@
 #'
 #' # Return only the SSP2EU GDP scenario
 #' calcOutput("GDP", scenario = "SSP2EU")
-#'
-#' # Return the now-outdated GDP scenarios used before summer 2021,
-#' calcOutput("GDP", scenario = "SSPsOld", extension2150 = "constant", average2020 = FALSE)
 #' }
 #'
 calcGDP <- function(scenario = c("SSPs", "SDPs", "SSP2EU"),
-                    unit = "constant 2005 Int$PPP",
+                    unit = "constant 2017 Int$PPP",
                     average2020 = TRUE,
                     ...) {
   # Check user input
@@ -75,10 +69,6 @@ calcGDP <- function(scenario = c("SSPs", "SDPs", "SSP2EU"),
                     supplementary = TRUE,
                     ...)
 
-  if (average2020 && any(grepl("SSPsOld", scenario))) {
-    warning("Average 2020 is not compatible with SSPsOld. Setting to FALSE.")
-    average2020 <- FALSE
-  }
   if (average2020) {
     # For REMIND, the consensus is to average the 2020 value so as to dampen the effect of the COVID shock. (The
     # reasoning being that REMIND uses 5-year time steps, and that the year-in-itself should represent the 2,5 years

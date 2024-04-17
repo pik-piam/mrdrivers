@@ -18,7 +18,8 @@ convertEurostatPopGDP(x, subtype)
 \item "population": Population, ref demo_gind
 \item "population_projections": Population projections, ref proj_19np
 \item "GDP": GDP, ref nama_10_gdp
-\item "GDPgr_projections": Projected GDP growth rates, 2023 forecast.
+\item "GDPgr_projections_short": Projected GDP growth rates, 2023 forecast.
+\item "GDPgr_projections_long":
 }}
 
 \item{x}{MAgPIE object returned by readEurostatPopGDP}

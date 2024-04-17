@@ -1,28 +1,27 @@
 #' Get Harmonized Urban Data
 #'
-#' @param args Arguments passed on to harmonization functions
+#' @inheritParams calcGDPpcHarmonized
 #' @inherit madrat::calcOutput return
 #' @keywords internal
-calcUrbanHarmonized <- function(args) {
+calcUrbanHarmonized <- function(harmonization, past, future, ...) {
   # Combine "past" and "future" time series.
   harmonizedData <- switch(
-    args$harmonization,
-    "past"   = toolHarmonizePast(args$past$x, args$future$x),
-    stop(glue("Bad input for calcUrbanHarmonized. Argument harmonization = '{args$harmonization}' is invalid."))
+    harmonization,
+    "pastAndLevel"      = toolHarmonizePast(past$x, future$x, method = "level"),
+    "pastAndGrowth"     = toolHarmonizePast(past$x, future$x, method = "growth"),
+    "pastAndTransition" = toolHarmonizePast(past$x, future$x, method = "transition", yEnd = 2100),
+    stop(glue("Bad input for calcUrbanHarmonized. Argument harmonization = '{harmonization}' is invalid."))
+  )
+  # Get description of harmonization function.
+  description <- switch(
+    harmonization,
+    "pastAndLevel" = glue("use {past$description} until {max(getYears(past$x, as.integer = TRUE))} \\
+                           and then switch directly to {future$description}."),
+    ""
   )
 
   # Cap urban share at 99%.
   harmonizedData[harmonizedData > 0.99] <- 0.99
 
-  # Get description of harmonization function.
-  description <- switch(
-    args$harmonization,
-    "past"   = args$pastData,
-  )
-
-  list(x = harmonizedData,
-       weight = NULL,
-       unit = "share of population",
-       description = glue("Urban population data. Datasource for the Past: {args$pastData}.\\
-                           Datasource for the Future: {args$futureData}. Calibrated to {description}"))
+  list(x = harmonizedData, weight = NULL, unit = "share of population", description = description)
 }

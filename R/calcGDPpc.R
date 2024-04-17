@@ -4,7 +4,7 @@
 #' }
 #'
 calcGDPpc <- function(scenario = c("SSPs", "SDPs", "SSP2EU"),
-                      unit = "constant 2005 Int$PPP",
+                      unit = "constant 2017 Int$PPP",
                       average2020 = TRUE,
                       ...) {
   # Check user input
@@ -26,10 +26,6 @@ calcGDPpc <- function(scenario = c("SSPs", "SDPs", "SSP2EU"),
                       supplementary = TRUE,
                       ...)
 
-  if (average2020 && any(grepl("SSPsOld", scenario))) {
-    warning("Average 2020 is not compatible with SSPsOld. Setting to FALSE.")
-    average2020 <- FALSE
-  }
   if (average2020) {
     # For REMIND, the concensus is to avergae the 2020 value so as to dampen the effect of the COVID shock. (The
     # reasoning being that REMIND uses 5-year time steps, and that the year-in-itself should represent the 2,5 years
