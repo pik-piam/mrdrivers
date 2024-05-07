@@ -8,7 +8,7 @@
 #'     \item "MI": Missing island dataset
 #'   }
 #'   See the "Combining data sources with '-'" section below for how to combine data sources.
-calcGDPFuture <- function(GDPFuture = "SSPs-MI", unit = "constant 2017 Int$PPP") { # nolint
+calcGDPFuture <- function(GDPFuture, unit) { # nolint
   # Check user input
   toolCheckUserInput("GDPFuture", as.list(environment()))
   # Call calcInternalGDPFuture function the appropriate number of times (map) and combine (reduce)

@@ -48,23 +48,17 @@
 #' }
 #'
 calcGDP <- function(scenario = c("SSPs", "SDPs", "SSP2EU"),
-                    unit = "constant 2017 Int$PPP",
+                    unit = "constant 2005 Int$PPP",
                     average2020 = TRUE,
                     ...) {
   # Check user input
   toolCheckUserInput(driver = "GDP", args = c(list(...), as.list(environment())))
 
-  # GDP scenarios are constructed in PPPs. If MERs are desired, scenarios with the
-  # same base year but in PPPs are constructed, and converted to MERs at the end.
-  constructUnit <- unit
-  if (grepl("^constant .* US\\$MER$", unit)) {
-    constructUnit <- paste0("constant ",  substr(unit, 10, 13), " Int$PPP")
-  }
-
+  # GDP scenarios are constructed in 2017 Int$PPP, and converted, if necessary, at the end.
   gdp <- calcOutput("Driver",
                     driver = "GDP",
                     scenario = scenario,
-                    unit = constructUnit,
+                    unit = "constant 2017 Int$PPP",
                     aggregate = FALSE,
                     supplementary = TRUE,
                     ...)
@@ -87,10 +81,17 @@ calcGDP <- function(scenario = c("SSPs", "SDPs", "SSP2EU"),
     message("The 2020 value is an an avergae over the 2018-2022 time period!! Only returning 5 year time steps.")
   }
 
-  if (constructUnit != unit) {
+  # Convert to US$MER if required
+  if (grepl("US$MER", unit)) {
     # Convert by interpolating and extrapolating missing conversion factors when possible.
-    gdp$x <- GDPuc::convertGDP(gdp$x, constructUnit, unit, replace_NAs = c("linear", "no_conversion"))
+    gdp$x <- GDPuc::convertGDP(gdp$x,
+                               unit_in = "constant 2017 Int$PPP",
+                               unit_out = "constant 2017 US$MER",
+                               replace_NAs = c("linear", "no_conversion"))
   }
+  # Temporary shifting to 2005 prices, using only the US deflator for all countries, and neglecting any changes in
+  # PPPs or MERs.
+  if (grepl("2005", unit)) gdp$x <- gdp$x * 0.8121123
 
   list(x = gdp$x, weight = gdp$weight, unit = glue("mil. {unit}"), description = gdp$description)
 }

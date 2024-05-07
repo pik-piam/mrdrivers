@@ -24,9 +24,9 @@ test_that("set names", {
   expectCorrectSetNames(calcOutput("Urban", extension2150 = "none"))
   expectCorrectSetNames(calcOutput("Labour", extension2150 = "none"))
   expectCorrectSetNames(calcOutput("GDPPast"))
-  expectCorrectSetNames(calcOutput("GDPFuture"))
+  expectCorrectSetNames(calcOutput("GDPFuture", GDPFuture = "SSPs", unit = "constant 2017 Int$PPP"))
   expectCorrectSetNames(calcOutput("GDPpcPast"))
-  expectCorrectSetNames(calcOutput("GDPpcFuture"))
+  expectCorrectSetNames(calcOutput("GDPpcFuture", GDPpcFuture = "SSPs", unit = "constant 2017 Int$PPP"))
   expectCorrectSetNames(calcOutput("GDP", extension2150 = "none"))
   expectCorrectSetNames(calcOutput("GDPpc", extension2150 = "none"))
   # I want to keep; expectCorrectSetNames(calcOutput("RatioPPP2MER"))
@@ -41,10 +41,10 @@ calcs <- list("PopulationPast" = calcOutput("PopulationPast"),
               "UrbanFuture" = calcOutput("UrbanFuture"),
               "Urban" = calcOutput("Urban", extension2150 = "none"),
               "GDPpcPast" = calcOutput("GDPpcPast"),
-              "GDPpcFuture" = calcOutput("GDPpcFuture"),
+              "GDPpcFuture" = calcOutput("GDPpcFuture", GDPpcFuture = "SSPs", unit = "constant 2017 Int$PPP"),
               "GDPpc" = calcOutput("GDPpc", extension2150 = "none"),
               "GDPPast" = calcOutput("GDPPast"),
-              "GDPFuture" = calcOutput("GDPFuture"),
+              "GDPFuture" = calcOutput("GDPFuture", GDPFuture = "SSPs", unit = "constant 2017 Int$PPP"),
               "GDP" = calcOutput("GDP", extension2150 = "none"),
               "Labour" = calcOutput("Labour", extension2150 = "none"))
 
@@ -55,10 +55,10 @@ calcs2 <- list("PopulationPast" = calcOutput("PopulationPast", aggregate = FALSE
                "UrbanFuture" = calcOutput("UrbanFuture", aggregate = FALSE),
                "Urban" = calcOutput("Urban", extension2150 = "none", aggregate = FALSE),
                "GDPpcPast" = calcOutput("GDPpcPast", aggregate = FALSE),
-               "GDPpcFuture" = calcOutput("GDPpcFuture", aggregate = FALSE),
+               "GDPpcFuture" = calcOutput("GDPpcFuture", GDPpcFuture = "SSPs", unit = "constant 2017 Int$PPP", aggregate = FALSE),
                "GDPpc" = calcOutput("GDPpc", extension2150 = "none", aggregate = FALSE),
                "GDPPast" = calcOutput("GDPPast", aggregate = FALSE),
-               "GDPFuture" = calcOutput("GDPFuture", aggregate = FALSE),
+               "GDPFuture" = calcOutput("GDPFuture", GDPFuture = "SSPs", unit = "constant 2017 Int$PPP", aggregate = FALSE),
                "GDP" = calcOutput("GDP", extension2150 = "none", aggregate = FALSE),
                "Labour" = calcOutput("Labour", extension2150 = "none", aggregate = FALSE))
 
@@ -69,10 +69,10 @@ calcs3 <- list("PopulationPast" = calcOutput("PopulationPast", supplementary = T
                "UrbanFuture" = calcOutput("UrbanFuture", supplementary = TRUE),
                "Urban" = calcOutput("Urban", extension2150 = "none", supplementary = TRUE),
                "GDPpcPast" = calcOutput("GDPpcPast", supplementary = TRUE),
-               "GDPpcFuture" = calcOutput("GDPpcFuture", supplementary = TRUE),
+               "GDPpcFuture" = calcOutput("GDPpcFuture", GDPpcFuture = "SSPs", unit = "constant 2017 Int$PPP", supplementary = TRUE),
                "GDPpc" = calcOutput("GDPpc", extension2150 = "none", supplementary = TRUE),
                "GDPPast" = calcOutput("GDPPast", supplementary = TRUE),
-               "GDPFuture" = calcOutput("GDPFuture", supplementary = TRUE),
+               "GDPFuture" = calcOutput("GDPFuture", GDPFuture = "SSPs", unit = "constant 2017 Int$PPP", supplementary = TRUE),
                "GDP" = calcOutput("GDP", extension2150 = "none", supplementary = TRUE),
                "Labour" = calcOutput("Labour", extension2150 = "none", supplementary = TRUE))
 

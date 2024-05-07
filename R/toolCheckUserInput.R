@@ -32,12 +32,12 @@ toolCheckUserInput <- function(driver, args) {
   }
 
   # Check 'unit' argument
-  if ("unit" %in% names(args) && length(args$unit) != 1 && !grepl("^constant (2005|2017) ", args$unit)) {
-     stop(glue("Bad argument to calc{driver}. Currently, only constant 2005 or 2017 dollars are accepted."))
+  if ("unit" %in% names(args) && (length(args$unit) != 1 || !grepl("^constant (2017|2005) ", args$unit))) {
+     stop(glue("Bad argument to calc{driver}. Currently, only constant 2017 dollars are accepted."))
   }
 
   # Check 'average2020' argument
-  if ("average2020" %in% names(args) && length(args$average2020) != 1 && !is.logical(args$average2020)) {
+  if ("average2020" %in% names(args) && (length(args$average2020) != 1 || !is.logical(args$average2020))) {
      stop(glue("Bad argument to calc{driver}. 'average2020' has to be TRUE of FALSE."))
   }
 

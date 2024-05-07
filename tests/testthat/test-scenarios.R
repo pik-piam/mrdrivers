@@ -24,4 +24,8 @@ test_that("All scenarios work", {
              ~expectCorrectOutput(calcOutput("Population", scenario = .x, extension2150 = "none")))
   purrr::map(toolGetScenarioDefinition("GDP")$scenario,
              ~expectCorrectOutput(calcOutput("GDP", scenario = .x, extension2150 = "none")))
+  purrr::map(toolGetScenarioDefinition("Labour")$scenario,
+             ~expectCorrectOutput(calcOutput("Labour", scenario = .x, extension2150 = "none")))
+  purrr::map(toolGetScenarioDefinition("Urban")$scenario,
+             ~expectCorrectOutput(calcOutput("Urban", scenario = .x, extension2150 = "none")))
 })

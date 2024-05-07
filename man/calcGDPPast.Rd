@@ -8,11 +8,11 @@
 \alias{calcGDPpcPast}
 \title{Get GDP and GDPpc scenario building blocks}
 \usage{
-calcGDPFuture(GDPFuture = "SSPs-MI", unit = "constant 2017 Int$PPP")
+calcGDPFuture(GDPFuture, unit)
 
-calcGDPPast(GDPPast = "WDI-MI", unit = "constant 2017 Int$PPP")
+calcGDPPast(GDPPast = "WDI-MI", unit = "constant 2005 Int$PPP")
 
-calcGDPpcFuture(GDPpcFuture = "SSPs-MI", unit = "constant 2017 Int$PPP")
+calcGDPpcFuture(GDPpcFuture, unit)
 
 calcGDPpcPast(GDPpcPast = "WDI-MI", unit = "constant 2017 Int$PPP")
 }

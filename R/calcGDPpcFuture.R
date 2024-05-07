@@ -7,8 +7,7 @@
 #'     \item "MI": Missing island dataset
 #'   }
 #'   See the "Combining data sources with '-'" section below for how to combine data sources.
-calcGDPpcFuture <- function(GDPpcFuture = "SSPs-MI", # nolint
-                            unit = "constant 2017 Int$PPP") {
+calcGDPpcFuture <- function(GDPpcFuture, unit) { # nolint
 
   data <- switch(
     GDPpcFuture,
