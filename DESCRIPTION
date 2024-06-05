@@ -22,7 +22,7 @@ Imports:
     countrycode,
     dplyr,
     lifecycle,
-    GDPuc (>= 0.8.0),
+    GDPuc (>= 1.0.0),
     glue,
     magrittr,
     purrr,

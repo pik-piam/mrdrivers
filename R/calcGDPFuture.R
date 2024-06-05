@@ -55,6 +55,7 @@ calcInternalGDPFutureSSPs <- function(unit) {
     constructUnit <- unit
   }
 
+  # THIS MAY BE DEPRECATED IN THE NEAR FUTURE
   # The default construct unit is "constant 2017 Int$PPP". If another unit is
   # demanded, then some modifications have to be done.
   if (constructUnit != "constant 2017 Int$PPP") {
