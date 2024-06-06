@@ -4,10 +4,14 @@
 \alias{calcLabourHarmonized}
 \title{Get Harmonized Labour Data}
 \usage{
-calcLabourHarmonized(args)
+calcLabourHarmonized(harmonization, past, future, ...)
 }
 \arguments{
-\item{args}{Arguments passed on to harmonization functions}
+\item{harmonization}{description}
+
+\item{past}{description}
+
+\item{future}{description}
 }
 \value{
 magpie object with the requested output data either on country or on

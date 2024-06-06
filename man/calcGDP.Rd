@@ -25,10 +25,7 @@ calcGDPpc(
 
 \item{unit}{A string specifying the unit of GDP. Can be either:
 \itemize{
-\item "constant 2005 Int$PPP" (default): Scenarios are constructed in constant 2005 Int$PPP.
-\item "constant 2005 US$MER": Scenarios are constructed in constant 2005 Int$PPP and then converted with
-\code{\link[GDPuc:convertGDP]{GDPuc::convertGDP()}}.
-\item "constant 2017 Int$PPP": Scenarios are constructed in constant 2017 Int$PPP.
+\item "constant 2017 Int$PPP" (default): Scenarios are constructed in constant 2017 Int$PPP.
 \item "constant 2017 US$MER": Scenarios are constructed in constant 2017 Int$PPP and then converted with
 \code{\link[GDPuc:convertGDP]{GDPuc::convertGDP()}}.
 }
@@ -67,9 +64,6 @@ calcOutput("GDPpc")
 
 # Return only the SSP2EU GDP scenario
 calcOutput("GDP", scenario = "SSP2EU")
-
-# Return the now-outdated GDP scenarios used before summer 2021,
-calcOutput("GDP", scenario = "SSPsOld", extension2150 = "constant", average2020 = FALSE)
 }
 
 \dontrun{

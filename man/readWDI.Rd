@@ -36,6 +36,11 @@ if the convert argument is set to TRUE, should be on ISO code country level.
 \description{
 Download, read and convert WDI (World development indicators) data.
 }
+\details{
+The workflow to update the WDI data is the following: call the download function manually, and rename the new
+WDI.rds file including the download date. Then change the file_name that is read by readWDI. This ensures, that
+the past data isn't changed between users.
+}
 \examples{
 \dontrun{
 readSource("WDI", subtype = "SP.POP.TOTL")

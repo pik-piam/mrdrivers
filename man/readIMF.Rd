@@ -8,16 +8,14 @@
 \usage{
 downloadIMF()
 
-readIMF(subtype = "current_account", subset = "WEOOct2022all.xls")
+readIMF()
 
-convertIMF(x, subtype = "current_account")
+convertIMF(x, subtype = "all")
 }
 \arguments{
-\item{subtype}{Either "current_account" or "GDPpc"}
-
-\item{subset}{Either "WEOOct2022all.xls" or "WEOallOct2019.xls"}
-
 \item{x}{MAgPIE object returned by readIMF}
+
+\item{subtype}{Use to filter the IMF data}
 }
 \value{
 The read-in data, usually a magpie object. If supplementary is TRUE a list including
@@ -26,7 +24,8 @@ should match the source data. The spatial dimension should either match the sour
 if the convert argument is set to TRUE, should be on ISO code country level.
 }
 \description{
-Read-in IMF data
+Read-in data from the IMF's World Economic Outlook.
+Currently reading GDP per capita and current account balance data.
 }
 \examples{
 \dontrun{

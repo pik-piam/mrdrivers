@@ -7,16 +7,17 @@
 #'     \item "MI": Missing island dataset
 #'   }
 #'   See the "Combining data sources with '-'" section below for how to combine data sources.
-calcGDPpcFuture <- function(GDPpcFuture = "SSPsOld-MI", # nolint
-                            unit = "constant 2005 Int$PPP") {
+calcGDPpcFuture <- function(GDPpcFuture, unit) { # nolint
 
   data <- switch(
     GDPpcFuture,
-    "SSPsOld"    = toolGDPpcFutureSSPsOld(unit),
-    "SDPs"       = toolGDPpcFutureSDPs(unit),
-    "SDPs-MI"    = toolGDPpcFutureSDPs(unit, mi = TRUE),
-    "SSPsOld-MI" = toolGDPpcFutureSSPsOld(unit, mi = TRUE),
-    "MI"         = toolGDPpcMI(unit),
+    "SSPs"    = toolGDPpcFutureSSPs(unit),
+    "SSP2"    = toolGDPpcFutureSSPs(unit)[, , "gdppc_SSP2"],
+    "SDPs"    = toolGDPpcFutureSDPs(unit),
+    "SDPs-MI" = toolGDPpcFutureSDPs(unit, mi = TRUE),
+    "SSPs-MI" = toolGDPpcFutureSSPs(unit, mi = TRUE),
+    "SSP2-MI" = toolGDPpcFutureSSPs(unit, mi = TRUE)[, , "gdppc_SSP2"],
+    "MI"      = toolGDPpcMI(unit),
     stop("Bad input for calcGDPFuture. Invalid 'GDPFuture' argument.")
   )
 
@@ -31,14 +32,13 @@ calcGDPpcFuture <- function(GDPpcFuture = "SSPsOld-MI", # nolint
   list(x = data, weight = weight, unit = unit, description = glue("{GDPpcFuture} projections"))
 }
 
-toolGDPpcFutureSSPsOld <- function(unit, mi = FALSE) {
+toolGDPpcFutureSSPs <- function(unit, mi = FALSE) {
   h1 <- if (mi) "SSPs-MI" else "SSPs"
-  h2 <- if (mi) "SSPsOld-MI" else "SSPsOld"
 
   gdp <- calcOutput("GDPFuture", GDPFuture = h1, unit = unit, aggregate = FALSE)
   gdp <- setNames(gdp, c("gdppc_SSP1", "gdppc_SSP2", "gdppc_SSP3", "gdppc_SSP4", "gdppc_SSP5"))
 
-  pop <- calcOutput("PopulationFuture", PopulationFuture = h2, aggregate = FALSE)
+  pop <- calcOutput("PopulationFuture", PopulationFuture = h1, aggregate = FALSE)
   pop <- setNames(pop, c("gdppc_SSP1", "gdppc_SSP2", "gdppc_SSP3", "gdppc_SSP4", "gdppc_SSP5"))
 
   years <- intersect(getYears(gdp), getYears(pop))
@@ -48,7 +48,7 @@ toolGDPpcFutureSSPsOld <- function(unit, mi = FALSE) {
 }
 
 toolGDPpcFutureSDPs <- function(unit, mi = FALSE) {
-  dataSSP1 <- toolGDPpcFutureSSPsOld(unit, mi)[, , "gdppc_SSP1"]
+  dataSSP1 <- toolGDPpcFutureSSPs(unit, mi)[, , "gdppc_SSP1"]
 
   purrr::map(c("SDP", "SDP_EI", "SDP_RC", "SDP_MC"),
              ~ setNames(dataSSP1, gsub("SSP1", .x, getNames(dataSSP1)))) %>%

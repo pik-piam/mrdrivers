@@ -18,13 +18,11 @@ test_that("Default calcOutput Population calls", {
 })
 
 test_that("Default calcOutput GDP calls", {
-  expect_snapshot_value(calcOutput("GDPFuture"), style = "json2")
   expect_snapshot_value(calcOutput("GDPPast"), style = "json2")
   expect_snapshot_value(calcOutput("GDP"), style = "json2")
 })
 
 test_that("Default calcOutput GDPpc calls", {
-  expect_snapshot_value(calcOutput("GDPpcFuture"), style = "json2")
   expect_snapshot_value(calcOutput("GDPpcPast"), style = "json2")
   expect_snapshot_value(calcOutput("GDPpc"), style = "json2")
 })

@@ -130,11 +130,15 @@ calcScenarioConstructor <- function(driver,
                          supplementary = TRUE)
     # Give weight same names as data, so that aggregate doesn't mess up data dim
     getNames(weight$x) <- getNames(harmonizedData$x)
-    # Make sure weight and harmonizedData have the same yearly resolution. Sometimes x has more years than weigth,
-    # thus the intersect operation. Then if weight has more years than x, only years that exist in x are used.
-    # (this applies specifically to the noCovid and ISIMIP scenarios)
-    harmonizedData$x <- harmonizedData$x[, intersect(getYears(harmonizedData$x), getYears(weight$x)), ]
-    weight$x <- weight$x[, getYears(harmonizedData$x), ]
+    # Make sure weight and harmonizedData have the same yearly resolution.
+    # Sometimes weght has more years than x, thus the intersect operation.
+    weight$x <- weight$x[, intersect(getYears(harmonizedData$x), getYears(weight$x)), ]
+    # If x has more years than weight, add these years and interpolate
+    missingYears <- getYears(harmonizedData$x)[! getYears(harmonizedData$x) %in% getYears(weight$x)]
+    weight$x <- add_columns(weight$x, missingYears, dim = 2, fill = 0)
+    weight$x <- weight$x[, sort(getYears(weight$x)), ]
+    weight$x <- toolInterpolateAndExtrapolate(weight$x, extrapolate = FALSE)
+
     description <- glue("{description} Associated {weight$description}")
   }
 
@@ -168,26 +172,49 @@ calcHarmonizedData <- function(driver, scenario, pastData, futureData, harmoniza
   # Depending on the setup, the scenario construction either requires 'past' and 'future' scenarios, or not!
   # For example, many GDP scenarios are actually constructed as GDPpc scenarios, and then simply multiplied with
   # population scenarios.
-  if (pastData != "-") {
-    past <- calcOutput("PastData", driver = driver, pastData = pastData, aggregate = FALSE, supplementary = TRUE, ...)
-  }
-  if (futureData != "-") {
-    future <- calcOutput("FutureData",
-                         driver = driver,
-                         futureData = futureData,
-                         aggregate = FALSE,
-                         supplementary = TRUE,
-                         ...)
-  }
+  past <- if (pastData != "-") {
+    calcOutput("PastData", driver = driver, pastData = pastData, aggregate = FALSE, supplementary = TRUE, ...)
+  } else NULL
+  future <- if (futureData != "-") {
+    calcOutput("FutureData", driver = driver, futureData = futureData, aggregate = FALSE, supplementary = TRUE, ...)
+  } else NULL
 
-  args <- c(list(...), as.list(environment()))
   switch(
     driver,
-    "Population" = calcOutput("PopulationHarmonized", args = args, aggregate = FALSE, supplementary = TRUE),
-    "GDP"        = calcOutput("GDPHarmonized",        args = args, aggregate = FALSE, supplementary = TRUE),
-    "GDPpc"      = calcOutput("GDPpcHarmonized",      args = args, aggregate = FALSE, supplementary = TRUE),
-    "Labour"     = calcOutput("LabourHarmonized",     args = args, aggregate = FALSE, supplementary = TRUE),
-    "Urban"      = calcOutput("UrbanHarmonized",      args = args, aggregate = FALSE, supplementary = TRUE)
+    "Population" = calcOutput("PopulationHarmonized",
+                              harmonization = harmonization,
+                              past = past,
+                              future = future,
+                              aggregate = FALSE,
+                              supplementary = TRUE,
+                              ...),
+    "GDP"        = calcOutput("GDPHarmonized",
+                              harmonization = harmonization,
+                              past = past,
+                              future = future,
+                              scenario = scenario,
+                              aggregate = FALSE,
+                              supplementary = TRUE,
+                              ...),
+    "GDPpc"      = calcOutput("GDPpcHarmonized",harmonization = harmonization,
+                              past = past,
+                              future = future,
+                              scenario = scenario,
+                              aggregate = FALSE,
+                              supplementary = TRUE,
+                              ...),
+    "Labour"     = calcOutput("LabourHarmonized",harmonization = harmonization,
+                              past = past,
+                              future = future,
+                              aggregate = FALSE,
+                              supplementary = TRUE,
+                              ...),
+    "Urban"      = calcOutput("UrbanHarmonized",harmonization = harmonization,
+                              past = past,
+                              future = future,
+                              aggregate = FALSE,
+                              supplementary = TRUE,
+                              ...)
   )
 }
 

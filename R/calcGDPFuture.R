@@ -6,10 +6,9 @@
 #'     \item "SSP2EU": Combined SSP2 and Eurostat (for the EU countries) source
 #'     \item "SDPs":
 #'     \item "MI": Missing island dataset
-#'     \item "OECD": OECD
 #'   }
 #'   See the "Combining data sources with '-'" section below for how to combine data sources.
-calcGDPFuture <- function(GDPFuture = "SSPs-MI", unit = "constant 2005 Int$PPP") { # nolint
+calcGDPFuture <- function(GDPFuture, unit) { # nolint
   # Check user input
   toolCheckUserInput("GDPFuture", as.list(environment()))
   # Call calcInternalGDPFuture function the appropriate number of times (map) and combine (reduce)
@@ -27,6 +26,7 @@ calcInternalGDPFuture <- function(GDPFuture, unit) { # nolint
   data <- switch(
     GDPFuture,
     "SSPs"   = calcOutput("InternalGDPFutureSSPs", unit = unit, aggregate = FALSE, supplementary = TRUE),
+    "SSP2"   = calcOutput("InternalGDPFutureSSP2", unit = unit, aggregate = FALSE, supplementary = TRUE),
     "SSP2EU" = calcOutput("InternalGDPFutureSSP2EU", unit = unit, aggregate = FALSE, supplementary = TRUE),
     "SDPs"   = calcOutput("InternalGDPFutureSDPs", unit = unit, aggregate = FALSE, supplementary = TRUE),
     "MI"     = calcOutput("InternalGDPMI", unit = unit, aggregate = FALSE, supplementary = TRUE),
@@ -43,12 +43,10 @@ calcInternalGDPFuture <- function(GDPFuture, unit) { # nolint
 # Functions
 ######################################################################################
 calcInternalGDPFutureSSPs <- function(unit) {
+  # Read in gdp SSP projections (in billions) and convert to millions
   data <- readSource("SSP", subtype = "gdp") * 1000
-
-  # Refactor names
-  data <- collapseNames(data)
-  getSets(data)[3] <- "variable"
-  getNames(data) <- paste0("gdp_", gsub("_v[[:alnum:],[:punct:]]*", "", getNames(data)))
+  # Add gdp_ to variable dimension
+  getNames(data) <- paste0("gdp_", getNames(data))
 
   # GDPFutureSSP is constructed in PPPs.
   if (grepl("^constant .* US\\$MER$", unit)) {
@@ -57,36 +55,36 @@ calcInternalGDPFutureSSPs <- function(unit) {
     constructUnit <- unit
   }
 
-  # The default construct unit is "constant 2005 Int$PPP". If another unit is
+  # THIS MAY BE DEPRECATED IN THE NEAR FUTURE
+  # The default construct unit is "constant 2017 Int$PPP". If another unit is
   # demanded, then some modifications have to be done.
-  if (constructUnit != "constant 2005 Int$PPP") {
+  if (constructUnit != "constant 2017 Int$PPP") {
     # Construct SSP pathways in constant YYYY Int$PPP.
     # For the near future, convert using current conversion factors.
     # After that the scenarios are built by converting the US GDP, and building
     # the other countries in relation to the US so that by 2100, they have the
-    # same ratio as in 2005 Int$PPP.
-    data2005PPP <- data
+    # same ratio as in 2017 Int$PPP.
+    data2017PPP <- data
 
-    # The near future is defined hear by the next 15 years, or until 10 years after the last
-    # imf prediction.
+    # The near future is defined hear by the next 15 years, or until 10 years after the last imf prediction.
     c15 <- max(getYears(readSource("IMF", "GDPpc"), as.integer = TRUE)) + 10
 
-    y1 <- getYears(data2005PPP)[getYears(data2005PPP, as.integer = TRUE) <= c15]
-    dataNearFut <- data2005PPP[, y1, ] %>%
-      GDPuc::convertGDP("constant 2005 Int$PPP", unit, replace_NAs = c("linear", "no_conversion"))
+    y1 <- getYears(data2017PPP)[getYears(data2017PPP, as.integer = TRUE) <= c15]
+    dataNearFut <- data2017PPP[, y1, ] %>%
+      GDPuc::convertGDP("constant 2017 Int$PPP", unit, replace_NAs = c("linear", "no_conversion"))
 
-    y2 <- getYears(data2005PPP)[getYears(data2005PPP, as.integer = TRUE) > c15 &
-                                  getYears(data2005PPP, as.integer = TRUE) < 2100]
-    dataFarFut <- data2005PPP[, y2, ] * NA
+    y2 <- getYears(data2017PPP)[getYears(data2017PPP, as.integer = TRUE) > c15 &
+                                  getYears(data2017PPP, as.integer = TRUE) < 2100]
+    dataFarFut <- data2017PPP[, y2, ] * NA
 
-    # Convert to 2017 Int$PPP using the 2017 value of base 2005 GDP deflator
-    # (in constant 2017 LCU per constant 2005 LCU) of the USA
+    # Convert to 2005 Int$PPP using the 2005 value of base 2017 GDP deflator
+    # (in constant 2005 LCU per constant 2017 LCU) of the USA
     # LONGTERM: allow other PPP units
-    data2100 <- data2005PPP[, 2100, ] * 1.23304244543521
+    data2100 <- data2017PPP[, 2100, ] * GDPuc::convertSingle(1, "USA", "2010", "constant 2017 LCU", "constant 2005 LCU")
 
-    data2017PPP <- mbind(dataNearFut, dataFarFut, data2100)
+    data2005 <- mbind(dataNearFut, dataFarFut, data2100)
 
-    ratio <- data2005PPP / data2017PPP
+    ratio <- data2017PPP / data2005
     # For interpolation to work, the last and first values have to be non-NA/non-NaN
     ratio[, 2100, ][is.na(ratio[, 2100, ])] <- 0
     # The first 2 years of the SSP data set are incomplete. For countries that only lack data in these first 2 years,
@@ -101,11 +99,11 @@ calcInternalGDPFutureSSPs <- function(unit) {
       dplyr::ungroup() %>%
       as.magpie(tidy = TRUE)
 
-    data2017PPP <- data2005PPP / ratio
-    data2017PPP[is.na(data2017PPP)] <- data2005PPP[is.na(data2017PPP)]
+    data2005 <- data2017PPP / ratio
+    data2005[is.na(data2005)] <- data2017PPP[is.na(data2005)]
     # Above should probably be "<- 0"
     ##################
-    data <- data2017PPP
+    data <- data2005
   }
 
   # If unit was in $MER
@@ -114,6 +112,11 @@ calcInternalGDPFutureSSPs <- function(unit) {
   }
 
   list(x = data, weight = NULL, unit = glue("mil. {unit}"), description = "SSP projections")
+}
+
+calcInternalGDPFutureSSP2 <- function(unit) {
+  data <- calcOutput("InternalGDPFutureSSPs", unit = unit, aggregate = FALSE)[, , "gdp_SSP2"]
+  list(x = data, weight = NULL, unit = glue("mil. {unit}"), description = "SSP2 projections")
 }
 
 calcInternalGDPFutureSDPs <- function(unit) {
@@ -127,22 +130,32 @@ calcInternalGDPFutureSDPs <- function(unit) {
 }
 
 calcInternalGDPFutureSSP2EU <- function(unit) {
-  dataSSP2EU <- readSource("ARIADNE", "gdp_corona") %>%
-    GDPuc::convertGDP("constant 2005 Int$PPP", unit, replace_NAs = c("linear", "no_conversion"))
-  dataSSP <- calcOutput("InternalGDPFutureSSPs", unit = unit, aggregate = FALSE)
+  euCountries <- toolGetEUcountries()
 
-  # Get EU-27 countries
-  euCountries <- toolGetEUcountries(onlyWithARIADNEgdpData = TRUE)
+  dataSSP2EU <- readSource("EurostatPopGDP", "GDP")[euCountries, , ] %>%
+    GDPuc::convertGDP("constant 2015 Int$PPP", unit, replace_NAs = c("linear", "no_conversion"))
+  grShort <- readSource("EurostatPopGDP", "GDPgr_projections_short")[euCountries, , ]
+  grLong  <- readSource("EurostatPopGDP", "GDPgr_projections_long")[euCountries, , ]
 
-  # Get common years
-  cy <- intersect(getYears(dataSSP),  getYears(dataSSP2EU))
+  dataSSP2EU <- add_columns(dataSSP2EU, dim = 2, addnm = getYears(grShort)[!getYears(grShort) %in% getYears(dataSSP2EU)])
+  dataSSP2EU <- add_columns(dataSSP2EU, dim = 2, addnm = getYears(grLong)[!getYears(grLong) %in% getYears(dataSSP2EU)])
+
+  for (y in getYears(grShort, as.integer = TRUE)) {
+    dataSSP2EU[, y, ] <- dataSSP2EU[, y - 1, ] * (1 + grShort[euCountries, y, ] / 100)
+  }
+  for (y in getYears(grLong, as.integer = TRUE)) {
+    dataSSP2EU[, y, ] <- dataSSP2EU[, y - 1, ] * (1 + grLong[euCountries, y, ] / 100)
+  }
+
+  dataSSP2 <- calcOutput("InternalGDPFutureSSPs", unit = unit, aggregate = FALSE)[, , "gdp_SSP2"]
 
   # Start with the SSP2 scenario until 2100. Change the name, and overwrite the EUR
   # countries with the Eurostat data.
-  data <- dataSSP[, , "gdp_SSP2"] %>% setNames("gdp_SSP2EU")
-  data[euCountries, , ] <- 0
-  data[euCountries, cy, ] <- dataSSP2EU[euCountries, cy, ]
-  list(x = data, weight = NULL, unit = glue("mil. {unit}"), description = "ARIADNE projections")
+  cy <- intersect(getYears(dataSSP2), getYears(dataSSP2EU))
+  data <- dataSSP2[, cy, ] %>% setNames("gdp_SSP2EU")
+  data[euCountries, cy, ] <- dataSSP2EU[, cy, ]
+  data[is.na(data)] <- 0
+  list(x = data, weight = NULL, unit = glue("mil. {unit}"), description = "Eurostat projections")
 }
 
 calcInternalGDPMI <- function(unit) {

@@ -4,10 +4,14 @@
 \alias{calcPopulationHarmonized}
 \title{Get Harmonized Population Data}
 \usage{
-calcPopulationHarmonized(args)
+calcPopulationHarmonized(harmonization, past, future, yEnd, ...)
 }
 \arguments{
-\item{args}{Arguments passed on to harmonization functions}
+\item{harmonization}{description}
+
+\item{past}{description}
+
+\item{future}{description}
 }
 \value{
 magpie object with the requested output data either on country or on

@@ -45,7 +45,6 @@ Available sources are:
 \item "SDPs":
 \item "UN_PopDiv": United Nations
 \item "MI": Missing island dataset
-\item "SSPsOld": Old SSPs from the IIASA database
 }}
 
 \item{PopulationPast}{A string designating the source for the historical population data.

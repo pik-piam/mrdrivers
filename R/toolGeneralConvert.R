@@ -55,5 +55,5 @@ toolGeneralConvert <- function(x,
   }
 
   # Sort by year
-  x <- x[, sort(getYears(x)), ]
+  x[, sort(getYears(x)), ]
 }

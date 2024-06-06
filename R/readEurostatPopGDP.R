@@ -7,7 +7,8 @@
 #' \item "population": Population, ref demo_gind
 #' \item "population_projections": Population projections, ref proj_19np
 #' \item "GDP": GDP, ref nama_10_gdp
-#' \item "GDPgr_projections": Projected GDP growth rates, 2023 forecast.
+#' \item "GDPgr_projections_short": Projected GDP growth rates, 2023 forecast.
+#' \item "GDPgr_projections_long":
 #' }
 #' @inherit madrat::readSource return
 #' @seealso [madrat::readSource()] and [madrat::downloadSource()]
@@ -18,12 +19,19 @@
 readEurostatPopGDP <- function(subtype) {
   x <- switch(
     subtype,
-    "population" = readr::read_rds("demo_gind_num_code_FF.rds"),
-    "population_projections" = readr::read_rds("proj_19np_num_code_FF.rds"),
-    "GDP" = readr::read_rds("nama_10_gdp_num_code_FF.rds"),
-    "GDPgr_projections" = readr::read_csv("Economic-Forecast---Winter-2023.csv", col_types = "cddd") %>%
+    "population" = readr::read_rds("population.rds"),
+    "population_projections" = readr::read_rds("population_projections.rds"),
+    "GDP" = readr::read_rds("GDP.rds"),
+    "GDPgr_projections_short" = readr::read_csv("Economic-Forecast---Winter-2024.csv", col_types = "cddd") %>%
       tidyr::pivot_longer(2:4, names_to = "time") %>%
       dplyr::rename("geo" = "Category"),
+    "GDPgr_projections_long" = purrr::map(readxl::excel_sheets("Ageing_Report_2024-Country_fiches_1.xlsx"),
+                                          ~readxl::read_xlsx("Ageing_Report_2024-Country_fiches_1.xlsx",
+                                                             sheet = .x,
+                                                             range = "E22:BA23") %>%
+                                            dplyr::mutate("geo" = .x) %>%
+                                            tidyr::pivot_longer(tidyselect::starts_with("2"), names_to = "time")) %>%
+      purrr::list_rbind(),
     stop("Bad input for readEurostatPopGDP. Invalid 'subtype' argument.")
   )
   as.magpie(x, spatial = "geo", temporal = "time")
@@ -35,10 +43,11 @@ readEurostatPopGDP <- function(subtype) {
 convertEurostatPopGDP <- function(x, subtype) {
   switch(
     subtype,
-    "population"             = convEurostatPopulation(x),
-    "population_projections" = convEurostatPopulation(x),
-    "GDP"                    = convEurostatGDP(x),
-    "GDPgr_projections"      = convEurostatGDPgrProjections(x)
+    "population"               = convEurostatPopulation(x),
+    "population_projections"   = convEurostatPopulation(x),
+    "GDP"                      = convEurostatGDP(x),
+    "GDPgr_projections_short"  = convEurostatGDPgrProjectionsShort(x),
+    "GDPgr_projections_long"   = convEurostatGDPgrProjectionsLong(x)
   )
 }
 
@@ -59,23 +68,31 @@ convEurostatPopulation <- function(x) {
 }
 
 convEurostatGDP <- function(x) {
+  # Drop EA, EA12, EA19, EA20, EU15, EU27_2020, EU28, XK
+  x <- x[getItems(x, 1)[!getItems(x, 1) %in% c("EA", "EA12", "EA19", "EA20", "EU15", "EU27_2020", "EU28", "XK")], , ]
   # Convert the eurostat countrycodes to iso3c codes
-  getItems(x, 1) <- countrycode::countrycode(getItems(x, 1), "eurostat", "iso3c", warn = FALSE)
-  # ABOVE warning that is being ignored:
-  # Some values were not matched unambiguously: EA, EA12, EA19, EA20, EU15, EU27_2020, EU28, XK
+  getItems(x, 1) <- countrycode::countrycode(getItems(x, 1), "eurostat", "iso3c")
 
   x <- toolGeneralConvert(x, note = FALSE)
 
-  # Convert from constant 2005 LCU to constant 2005 Int$PPP.
+  # Convert from constant 2015 LCU to constant 2015 Int$PPP.
   getNames(x) <- "GDP"
-  GDPuc::convertGDP(x, "constant 2005 LCU", "constant 2005 Int$PPP", replace_NAs = c("linear", "no_conversion"))
+  GDPuc::convertGDP(x, "constant 2015 LCU", "constant 2015 Int$PPP", replace_NAs = c("linear", "no_conversion"))
 }
 
-convEurostatGDPgrProjections <- function(x) {
+convEurostatGDPgrProjectionsShort <- function(x) {
   # Drop EA and EU country aggregates
   x <- x[getItems(x, 1)[!getItems(x, 1) %in% c("EA", "EU")], , ]
   # Convert the eurostat countrycodes to iso3c codes
   getItems(x, 1) <- countrycode::countrycode(getItems(x, 1), "country.name", "iso3c")
+  toolGeneralConvert(x, note = FALSE)
+}
+
+convEurostatGDPgrProjectionsLong <- function(x) {
+  # Drop EA and EU country aggregates
+  x <- x[getItems(x, 1)[!getItems(x, 1) %in% c("EA", "EU27")], , ]
+  # Convert the eurostat countrycodes to iso3c codes
+  getItems(x, 1) <- countrycode::countrycode(getItems(x, 1), "eurostat", "iso3c")
   toolGeneralConvert(x, note = FALSE)
 }
 
@@ -87,21 +104,20 @@ downloadEurostatPopGDP <- function(subtype) {
   switch(
     subtype,
     # Filter for "AVG" = average population.
-    "population" = eurostat::get_eurostat("demo_gind",
-                                          filters = list(indic_de = "AVG"),
-                                          time_format = "num",
-                                          cache_dir = "."),
+    "population" = eurostat::get_eurostat("demo_gind", filters = list(indic_de = "AVG"), time_format = "num") %>%
+      readr::write_rds("population.rds"),
     # Filter for baseline projection of total population.
     "population_projections" = eurostat::get_eurostat("proj_19np",
                                                       filters = list(sex = "T", projection = "BSL", age = "TOTAL"),
-                                                      time_format = "num",
-                                                      cache_dir = "."),
-    # Filter for GDP at market prices (=B1GQ) in Chained-Linked Volumes in 2005 mil. National Currencies (= CLV05_MNAC)
+                                                      time_format = "num") %>%
+      readr::write_rds("population_projections.rds"),
+    # Filter for GDP at market prices (=B1GQ) in Chained-Linked Volumes in 2015 mil. National Currencies (= CLV15_MNAC)
     "GDP" = eurostat::get_eurostat("nama_10_gdp",
-                                   filters = list(freq = "A", na_item = "B1GQ", unit = "CLV05_MNAC"),
-                                   time_format = "num",
-                                   cache_dir = "."),
-    "GDPgr_projections" = stop("Download EUROSTAT GDP growth rate projections manually.")
+                                   filters = list(freq = "A", na_item = "B1GQ", unit = "CLV15_MNAC"),
+                                   time_format = "num") %>%
+      readr::write_rds("GDP.rds"),
+    "GDPgr_projections_short" = stop("Download EUROSTAT GDP growth rate projections manually."),
+    "GDPgr_projections_long" = stop("Download EUROSTAT GDP growth rate projections manually.")
   )
 
   switch(

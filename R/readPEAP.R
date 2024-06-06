@@ -8,7 +8,7 @@
 #' @seealso [madrat::readSource()] and [madrat::downloadSource()]
 #' @order 2
 readPEAP <- function() {
-  file <- "Data_Extract_From_Population_estimates_and_projections_13_02_2023.csv"
+  file <- "Data_Extract_From_Population_estimates_and_projections_15_04_2024.csv"
   myColTypes <- readr::cols(.default = "d",
                             "Country Name" = "_",
                             "Country Code" = "c",
@@ -44,7 +44,7 @@ downloadPEAP  <- function() {
        description   = "Population Estimates and Projections by the World Bank 1960-2050",
        unit          = "-",
        author        = "World Bank",
-       release_date  = "2023",
+       release_date  = "2024",
        license       = "-",
-       comment       = "Manual download required! Accessed on the 13.02.2023.")
+       comment       = "Manual download required! Accessed on the 15.04.2024.")
 }

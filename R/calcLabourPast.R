@@ -17,15 +17,24 @@ calcLabourPast <- function(LabourPast = "WDI") { # nolint
 calcInternalLabourPast <- function(LabourPast) { # nolint
   x <- switch(
     LabourPast,
-    "WDI" = readSource("WDI", "SP.POP.1564.TO"),
+    "WDI"  = readSource("WDI", "SP.POP.1564.TO"),
+    "SSPs" = calcOutput("InternalLabourPastSSPs", aggregate = FALSE),
     stop("Bad input for calcLabour. Invalid 'LabourPast' argument.")
   )
 
   # Apply finishing touches to combined time-series
   x <- toolFinishingTouches(x)
 
-  # Hopefully temporary: rename lab scnearios pop. Necessary for REMIND to work.
+  # Hopefully temporary: rename lab scenarios pop. Necessary for REMIND to work.
   getNames(x) <- sub("lab_", "pop_", getNames(x))
 
-  list(x = x, weight = NULL, unit = "million", description = glue("Working age population data."))
+  list(x = x, weight = NULL, unit = "million", description = glue("{LabourPast} data."))
+}
+
+calcInternalLabourPastSSPs <- function() {
+  x <- readSource("SSP", "lab")[, , "Historical Reference"]
+  # Remove years which only contain 0
+  x <- x[, !apply(x, 2, function(y) all(y == 0)), ]
+  getNames(x) <- paste0("lab_", getNames(x))
+  list(x = x, weight = NULL, unit = "million", description = "Labor from SSPs")
 }

@@ -18,10 +18,7 @@
 #'
 #' @param unit A string specifying the unit of GDP. Can be either:
 #' \itemize{
-#'   \item "constant 2005 Int$PPP" (default): Scenarios are constructed in constant 2005 Int$PPP.
-#'   \item "constant 2005 US$MER": Scenarios are constructed in constant 2005 Int$PPP and then converted with
-#'   [GDPuc::convertGDP()].
-#'   \item "constant 2017 Int$PPP": Scenarios are constructed in constant 2017 Int$PPP.
+#'   \item "constant 2017 Int$PPP" (default): Scenarios are constructed in constant 2017 Int$PPP.
 #'   \item "constant 2017 US$MER": Scenarios are constructed in constant 2017 Int$PPP and then converted with
 #'   [GDPuc::convertGDP()].
 #' }
@@ -48,9 +45,6 @@
 #'
 #' # Return only the SSP2EU GDP scenario
 #' calcOutput("GDP", scenario = "SSP2EU")
-#'
-#' # Return the now-outdated GDP scenarios used before summer 2021,
-#' calcOutput("GDP", scenario = "SSPsOld", extension2150 = "constant", average2020 = FALSE)
 #' }
 #'
 calcGDP <- function(scenario = c("SSPs", "SDPs", "SSP2EU"),
@@ -60,25 +54,15 @@ calcGDP <- function(scenario = c("SSPs", "SDPs", "SSP2EU"),
   # Check user input
   toolCheckUserInput(driver = "GDP", args = c(list(...), as.list(environment())))
 
-  # GDP scenarios are constructed in PPPs. If MERs are desired, scenarios with the
-  # same base year but in PPPs are constructed, and converted to MERs at the end.
-  constructUnit <- unit
-  if (grepl("^constant .* US\\$MER$", unit)) {
-    constructUnit <- paste0("constant ",  substr(unit, 10, 13), " Int$PPP")
-  }
-
+  # GDP scenarios are constructed in 2017 Int$PPP, and converted, if necessary, at the end.
   gdp <- calcOutput("Driver",
                     driver = "GDP",
                     scenario = scenario,
-                    unit = constructUnit,
+                    unit = "constant 2017 Int$PPP",
                     aggregate = FALSE,
                     supplementary = TRUE,
                     ...)
 
-  if (average2020 && any(grepl("SSPsOld", scenario))) {
-    warning("Average 2020 is not compatible with SSPsOld. Setting to FALSE.")
-    average2020 <- FALSE
-  }
   if (average2020) {
     # For REMIND, the consensus is to average the 2020 value so as to dampen the effect of the COVID shock. (The
     # reasoning being that REMIND uses 5-year time steps, and that the year-in-itself should represent the 2,5 years
@@ -97,10 +81,17 @@ calcGDP <- function(scenario = c("SSPs", "SDPs", "SSP2EU"),
     message("The 2020 value is an an avergae over the 2018-2022 time period!! Only returning 5 year time steps.")
   }
 
-  if (constructUnit != unit) {
+  # Convert to US$MER if required
+  if (grepl("US$MER", unit)) {
     # Convert by interpolating and extrapolating missing conversion factors when possible.
-    gdp$x <- GDPuc::convertGDP(gdp$x, constructUnit, unit, replace_NAs = c("linear", "no_conversion"))
+    gdp$x <- GDPuc::convertGDP(gdp$x,
+                               unit_in = "constant 2017 Int$PPP",
+                               unit_out = "constant 2017 US$MER",
+                               replace_NAs = c("linear", "no_conversion"))
   }
+  # Temporary shifting to 2005 prices, using only the US deflator for all countries, and neglecting any changes in
+  # PPPs or MERs.
+  if (grepl("2005", unit)) gdp$x <- gdp$x * 0.8121123
 
   list(x = gdp$x, weight = gdp$weight, unit = glue("mil. {unit}"), description = gdp$description)
 }

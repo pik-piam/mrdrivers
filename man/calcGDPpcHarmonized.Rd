@@ -4,10 +4,18 @@
 \alias{calcGDPpcHarmonized}
 \title{Get Harmonized GDPpc Data}
 \usage{
-calcGDPpcHarmonized(args)
+calcGDPpcHarmonized(harmonization, past, future, scenario, unit, ...)
 }
 \arguments{
-\item{args}{Arguments passed on to harmonization functions}
+\item{harmonization}{description}
+
+\item{past}{description}
+
+\item{future}{description}
+
+\item{scenario}{description}
+
+\item{unit}{description}
 }
 \value{
 magpie object with the requested output data either on country or on

@@ -10,4 +10,25 @@
 
 Create scenarios of GDP, Population, GDP per capita, and Urban population share
 }
+\seealso{
+Useful links:
+\itemize{
+  \item \url{https://pik-piam.github.io/mrdrivers}
+  \item \url{https://github.com/pik-piam/mrdrivers}
+  \item Report bugs at \url{https://github.com/pik-piam/mrdrivers/issues}
+}
+
+}
+\author{
+\strong{Maintainer}: Johannes Koch \email{jokoch@pik-potsdam.de}
+
+Authors:
+\itemize{
+  \item Bjoern Soergel
+  \item Deborra Leip
+  \item Falk Benke
+  \item Jan Philipp Dietrich
+}
+
+}
 \keyword{internal}
