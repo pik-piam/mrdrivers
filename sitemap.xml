@@ -70,9 +70,6 @@
     <loc>https://pik-piam.github.io/mrdrivers/reference/mrdrivers-package.html</loc>
   </url>
   <url>
-    <loc>https://pik-piam.github.io/mrdrivers/reference/readARIADNE.html</loc>
-  </url>
-  <url>
     <loc>https://pik-piam.github.io/mrdrivers/reference/readEurostatPopGDP.html</loc>
   </url>
   <url>
@@ -88,16 +85,7 @@
     <loc>https://pik-piam.github.io/mrdrivers/reference/readMissingIslands.html</loc>
   </url>
   <url>
-    <loc>https://pik-piam.github.io/mrdrivers/reference/readOECD.html</loc>
-  </url>
-  <url>
     <loc>https://pik-piam.github.io/mrdrivers/reference/readPEAP.html</loc>
-  </url>
-  <url>
-    <loc>https://pik-piam.github.io/mrdrivers/reference/readPWT.html</loc>
-  </url>
-  <url>
-    <loc>https://pik-piam.github.io/mrdrivers/reference/readPopulationTWN.html</loc>
   </url>
   <url>
     <loc>https://pik-piam.github.io/mrdrivers/reference/readSSP.html</loc>
@@ -115,9 +103,6 @@
     <loc>https://pik-piam.github.io/mrdrivers/reference/toolGetScenarioDefinition.html</loc>
   </url>
   <url>
-    <loc>https://pik-piam.github.io/mrdrivers/reference/toolHarmonizePastGrFuture.html</loc>
-  </url>
-  <url>
-    <loc>https://pik-piam.github.io/mrdrivers/reference/toolHarmonizePastTransition.html</loc>
+    <loc>https://pik-piam.github.io/mrdrivers/reference/toolHarmonizePast.html</loc>
   </url>
 </urlset>
