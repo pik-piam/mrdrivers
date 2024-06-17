@@ -56,7 +56,7 @@ calcGDPpc <- function(scenario = c("SSPs", "SDPs", "SSP2EU"),
   }
 
   # Convert to US$MER if required
-  if (grepl("US$MER", unit)) {
+  if (grepl("US\\$MER", unit)) {
     # Convert by interpolating and extrapolating missing conversion factors when possible.
     gdppc$x <- GDPuc::convertGDP(gdppc$x,
                                  unit_in = "constant 2017 Int$PPP",
