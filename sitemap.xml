@@ -1,108 +1,38 @@
-<?xml version="1.0" encoding="UTF-8"?>
-<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
-  <url>
-    <loc>https://pik-piam.github.io/mrdrivers/404.html</loc>
-  </url>
-  <url>
-    <loc>https://pik-piam.github.io/mrdrivers/LICENSE.html</loc>
-  </url>
-  <url>
-    <loc>https://pik-piam.github.io/mrdrivers/articles/index.html</loc>
-  </url>
-  <url>
-    <loc>https://pik-piam.github.io/mrdrivers/articles/scenarios.html</loc>
-  </url>
-  <url>
-    <loc>https://pik-piam.github.io/mrdrivers/authors.html</loc>
-  </url>
-  <url>
-    <loc>https://pik-piam.github.io/mrdrivers/index.html</loc>
-  </url>
-  <url>
-    <loc>https://pik-piam.github.io/mrdrivers/reference/calcDriver.html</loc>
-  </url>
-  <url>
-    <loc>https://pik-piam.github.io/mrdrivers/reference/calcFutureData.html</loc>
-  </url>
-  <url>
-    <loc>https://pik-piam.github.io/mrdrivers/reference/calcGDP.html</loc>
-  </url>
-  <url>
-    <loc>https://pik-piam.github.io/mrdrivers/reference/calcGDPHarmonized.html</loc>
-  </url>
-  <url>
-    <loc>https://pik-piam.github.io/mrdrivers/reference/calcGDPPast.html</loc>
-  </url>
-  <url>
-    <loc>https://pik-piam.github.io/mrdrivers/reference/calcGDPpcHarmonized.html</loc>
-  </url>
-  <url>
-    <loc>https://pik-piam.github.io/mrdrivers/reference/calcHarmonizedData.html</loc>
-  </url>
-  <url>
-    <loc>https://pik-piam.github.io/mrdrivers/reference/calcLabourHarmonized.html</loc>
-  </url>
-  <url>
-    <loc>https://pik-piam.github.io/mrdrivers/reference/calcPastData.html</loc>
-  </url>
-  <url>
-    <loc>https://pik-piam.github.io/mrdrivers/reference/calcPopulation.html</loc>
-  </url>
-  <url>
-    <loc>https://pik-piam.github.io/mrdrivers/reference/calcPopulationHarmonized.html</loc>
-  </url>
-  <url>
-    <loc>https://pik-piam.github.io/mrdrivers/reference/calcPopulationPast.html</loc>
-  </url>
-  <url>
-    <loc>https://pik-piam.github.io/mrdrivers/reference/calcRatioPPP2MER.html</loc>
-  </url>
-  <url>
-    <loc>https://pik-piam.github.io/mrdrivers/reference/calcScenarioConstructor.html</loc>
-  </url>
-  <url>
-    <loc>https://pik-piam.github.io/mrdrivers/reference/calcUrbanHarmonized.html</loc>
-  </url>
-  <url>
-    <loc>https://pik-piam.github.io/mrdrivers/reference/index.html</loc>
-  </url>
-  <url>
-    <loc>https://pik-piam.github.io/mrdrivers/reference/mrdrivers-package.html</loc>
-  </url>
-  <url>
-    <loc>https://pik-piam.github.io/mrdrivers/reference/readEurostatPopGDP.html</loc>
-  </url>
-  <url>
-    <loc>https://pik-piam.github.io/mrdrivers/reference/readIMF.html</loc>
-  </url>
-  <url>
-    <loc>https://pik-piam.github.io/mrdrivers/reference/readJames.html</loc>
-  </url>
-  <url>
-    <loc>https://pik-piam.github.io/mrdrivers/reference/readJames2019.html</loc>
-  </url>
-  <url>
-    <loc>https://pik-piam.github.io/mrdrivers/reference/readMissingIslands.html</loc>
-  </url>
-  <url>
-    <loc>https://pik-piam.github.io/mrdrivers/reference/readPEAP.html</loc>
-  </url>
-  <url>
-    <loc>https://pik-piam.github.io/mrdrivers/reference/readSSP.html</loc>
-  </url>
-  <url>
-    <loc>https://pik-piam.github.io/mrdrivers/reference/readUN_PopDiv.html</loc>
-  </url>
-  <url>
-    <loc>https://pik-piam.github.io/mrdrivers/reference/readWDI.html</loc>
-  </url>
-  <url>
-    <loc>https://pik-piam.github.io/mrdrivers/reference/toolGeneralConvert.html</loc>
-  </url>
-  <url>
-    <loc>https://pik-piam.github.io/mrdrivers/reference/toolGetScenarioDefinition.html</loc>
-  </url>
-  <url>
-    <loc>https://pik-piam.github.io/mrdrivers/reference/toolHarmonizePast.html</loc>
-  </url>
+<urlset xmlns = 'http://www.sitemaps.org/schemas/sitemap/0.9'>
+<url><loc>https://pik-piam.github.io/mrdrivers/404.html</loc></url>
+<url><loc>https://pik-piam.github.io/mrdrivers/LICENSE.html</loc></url>
+<url><loc>https://pik-piam.github.io/mrdrivers/articles/index.html</loc></url>
+<url><loc>https://pik-piam.github.io/mrdrivers/articles/scenarios.html</loc></url>
+<url><loc>https://pik-piam.github.io/mrdrivers/authors.html</loc></url>
+<url><loc>https://pik-piam.github.io/mrdrivers/index.html</loc></url>
+<url><loc>https://pik-piam.github.io/mrdrivers/reference/calcDriver.html</loc></url>
+<url><loc>https://pik-piam.github.io/mrdrivers/reference/calcFutureData.html</loc></url>
+<url><loc>https://pik-piam.github.io/mrdrivers/reference/calcGDP.html</loc></url>
+<url><loc>https://pik-piam.github.io/mrdrivers/reference/calcGDPHarmonized.html</loc></url>
+<url><loc>https://pik-piam.github.io/mrdrivers/reference/calcGDPPast.html</loc></url>
+<url><loc>https://pik-piam.github.io/mrdrivers/reference/calcGDPpcHarmonized.html</loc></url>
+<url><loc>https://pik-piam.github.io/mrdrivers/reference/calcHarmonizedData.html</loc></url>
+<url><loc>https://pik-piam.github.io/mrdrivers/reference/calcLabourHarmonized.html</loc></url>
+<url><loc>https://pik-piam.github.io/mrdrivers/reference/calcPastData.html</loc></url>
+<url><loc>https://pik-piam.github.io/mrdrivers/reference/calcPopulation.html</loc></url>
+<url><loc>https://pik-piam.github.io/mrdrivers/reference/calcPopulationHarmonized.html</loc></url>
+<url><loc>https://pik-piam.github.io/mrdrivers/reference/calcPopulationPast.html</loc></url>
+<url><loc>https://pik-piam.github.io/mrdrivers/reference/calcRatioPPP2MER.html</loc></url>
+<url><loc>https://pik-piam.github.io/mrdrivers/reference/calcScenarioConstructor.html</loc></url>
+<url><loc>https://pik-piam.github.io/mrdrivers/reference/calcUrbanHarmonized.html</loc></url>
+<url><loc>https://pik-piam.github.io/mrdrivers/reference/index.html</loc></url>
+<url><loc>https://pik-piam.github.io/mrdrivers/reference/mrdrivers-package.html</loc></url>
+<url><loc>https://pik-piam.github.io/mrdrivers/reference/readEurostatPopGDP.html</loc></url>
+<url><loc>https://pik-piam.github.io/mrdrivers/reference/readIMF.html</loc></url>
+<url><loc>https://pik-piam.github.io/mrdrivers/reference/readJames.html</loc></url>
+<url><loc>https://pik-piam.github.io/mrdrivers/reference/readJames2019.html</loc></url>
+<url><loc>https://pik-piam.github.io/mrdrivers/reference/readMissingIslands.html</loc></url>
+<url><loc>https://pik-piam.github.io/mrdrivers/reference/readPEAP.html</loc></url>
+<url><loc>https://pik-piam.github.io/mrdrivers/reference/readSSP.html</loc></url>
+<url><loc>https://pik-piam.github.io/mrdrivers/reference/readUN_PopDiv.html</loc></url>
+<url><loc>https://pik-piam.github.io/mrdrivers/reference/readWDI.html</loc></url>
+<url><loc>https://pik-piam.github.io/mrdrivers/reference/toolGeneralConvert.html</loc></url>
+<url><loc>https://pik-piam.github.io/mrdrivers/reference/toolGetScenarioDefinition.html</loc></url>
+<url><loc>https://pik-piam.github.io/mrdrivers/reference/toolHarmonizePast.html</loc></url>
 </urlset>
+
