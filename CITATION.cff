@@ -3,7 +3,7 @@ message: If you use this software, please cite it using the metadata from this f
 type: software
 title: 'mrdrivers: Create GDP and Population Scenarios'
 version: 2.0.2
-date-released: '2024-07-26'
+date-released: '2024-08-01'
 abstract: Create GDP and population scenarios This package constructs the GDP and
   population scenarios used as drivers in both the REMIND and MAgPIE models.
 authors:
