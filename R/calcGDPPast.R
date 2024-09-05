@@ -17,7 +17,7 @@
 #' @inheritParams calcGDP
 #' @inheritSection calcScenarioConstructor Combining data sources with "-"
 #' @keywords internal
-calcGDPPast <- function(GDPPast = "WDI-MI", unit = "constant 2005 Int$PPP") { # nolint
+calcGDPPast <- function(GDPPast = "WDI-MI", unit = "constant 2017 Int$PPP") { # nolint
   # Check user input
   toolCheckUserInput("GDPPast", as.list(environment()))
   # Call calcInternalGDPPast function the appropriate number of times (map) and combine (reduce)

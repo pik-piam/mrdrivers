@@ -48,7 +48,7 @@
 #' }
 #'
 calcGDP <- function(scenario = c("SSPs", "SDPs", "SSP2EU"),
-                    unit = "constant 2005 Int$PPP",
+                    unit = "constant 2017 Int$PPP",
                     average2020 = TRUE,
                     ...) {
   # Check user input
