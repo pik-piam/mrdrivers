@@ -40,9 +40,14 @@ A magpie object.
 The most important and common "convert" operations are:
 \itemize{
 \item removing undefined countries,
-\item using default set names "iso3c", "year", and "variable",
 \item substituting NAs, see the "substituteNAsWith" argument,
+\item using default set names "iso3c", "year", and "variable",
 \item fill in countries,
 \item sort in chronological order.
+}
+}
+\examples{
+\dontrun{
+toolGeneralConvert(x)
 }
 }

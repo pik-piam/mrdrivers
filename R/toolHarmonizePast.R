@@ -26,7 +26,19 @@
 #' @param yEnd Additional input for "transition" method. Year by which the transition period is completed.
 #'
 #' @return A magpie object with the same dimensions as 'future'.
+#' @export
+#'
+#' @examples \dontrun{
+#' toolHarmonizePast(past, future)
+#' }
 toolHarmonizePast <- function(past, future, method = "level", yEnd = 2100) {
+  if (!is.magpie(past) && !is.magpie(future)) {
+    pastDescription <- past$description
+    past <- past$x
+    futureDescription <- future$description
+    future <- future$x
+  }
+
   # Check dimensions of past
   if (dim(past)[3] != 1) {
     stop("The past data may only have one datatype, i.e. dim(past)[3] needs to be 1.")
@@ -42,7 +54,7 @@ toolHarmonizePast <- function(past, future, method = "level", yEnd = 2100) {
   # If lastPastYear is not in future data, then create future data for lastPastYear
   # by linear interpolation. That way the return object really has all the past data.
   if (!lastPastYear %in% getYears(future, as.integer = TRUE)) {
-    future <- magclass::time_interpolate(future, lastPastYear, integrate_interpolated_years = TRUE)
+    future <- time_interpolate(future, lastPastYear, integrate_interpolated_years = TRUE)
   }
 
   # Create past data for all future scenarios
@@ -61,6 +73,9 @@ toolHarmonizePast <- function(past, future, method = "level", yEnd = 2100) {
     tmpFuture[, , ] <- tmpPast[, lastPastYear, ] * future[, yearsFuture, ] / future[, lastPastYear, ]
     tmpFuture[is.nan(tmpFuture)] <- 0
   }
+  if (method == "parallel") {
+    tmpFuture[, , ] <- future[, yearsFuture, ] + (tmpPast[, lastPastYear, ] - future[, lastPastYear, ])
+  }
   if (method == "transition") {
     yearsTrans <- yearsFuture[which(yearsFuture <= yEnd)]
     tmpTrans <- new.magpie(getItems(future, 1), yearsTrans, getNames(future), fill = 0)
@@ -77,5 +92,22 @@ toolHarmonizePast <- function(past, future, method = "level", yEnd = 2100) {
     # Answer is yes!
   }
 
-  mbind(tmpPast, tmpFuture)
+  x <- mbind(tmpPast, tmpFuture)
+
+  if (!(exists("pastDescription", inherits = FALSE) && exists("futureDescription", inherits = FALSE))) {
+    return(x)
+  }
+
+  description <- switch(
+    method,
+    "level" = glue("use {pastDescription} until {max(getYears(past, as.integer = TRUE))} and then switch directly \\
+                   to {futureDescription}."),
+    "growth" = glue("use {pastDescription} until {max(getYears(past, as.integer = TRUE))} and then follow the \\
+                    growth of {futureDescription}."),
+    "transition" = glue("use {pastDescription} until {max(getYears(past, as.integer = TRUE))} and converge towards \\
+                         {futureDescription} by {yEnd}."),
+    stop("Unkwown method.")
+  )
+
+  list(x = x, description = description)
 }
