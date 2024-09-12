@@ -25,42 +25,46 @@
 #' @examples
 #' toolGetScenarioDefinition()
 #' toolGetScenarioDefinition(driver = "GDP")
-#' toolGetScenarioDefinition(scen = "SSP2EU")
+#' toolGetScenarioDefinition(scen = "SSP2")
 #' toolGetScenarioDefinition(driver = "Population", scen = "SSPs", aslist = TRUE)
 #'
 toolGetScenarioDefinition <- function(driver = NULL, scen = NULL, aslist = FALSE) {
 
   # Start of scenario-design section: Developers can modify this section!
   scenarios <- tibble::tribble(
-    ~driver,      ~scenario,    ~pastData,                    ~futureData,            ~harmonization,
+    ~driver,      ~scenario,    ~pastData,                 ~futureData,              ~harmonization,
     # GDPpc scenarios
-    "GDPpc",      "SSPs",       "WDI-MI",                     "SSPs-MI",              "calibSSPs",
-    "GDPpc",      "SSP2",       "WDI-MI",                     "SSP2-MI",              "calibSSPs",
-    "GDPpc",      "SDPs",       "-",                          "-",                    "calibSDPs",
-    "GDPpc",      "SSP2EU",     "-",                          "-",                    "GDPoverPop",
-    "GDPpc",      "ISIMIP",     "WDI-MI",                     "SSPs-MI",              "calibSSPs",
+    "GDPpc",      "SSPs",       "WDI-MI-James",            "SSPs",                   "GDPpcSSPs",
+    "GDPpc",      "SSP2",       "WDI-MI-James",            "SSP2",                   "GDPpcSSPs",
+    "GDPpc",      "SSP2EU",     "WDI-MI-James",            "SSP2EU",                 "GDPpcSSPs",
+    "GDPpc",      "SDPs",       "-",                       "-",                      "GDPpcSDPs",
+    "GDPpc",      "ISIMIP",     "WDI-MI-James",            "SSPs",                   "GDPpcSSPs",
+    "GDPpc",      "ADBs",       "WDI-MI-James",            "ADBs-SSP2",              "GDPpcADBs",
     # GDP scenarios
-    "GDP",        "SSPs",       "-",                          "-",                    "GDPpcWithPop",
-    "GDP",        "SSP2",       "-",                          "-",                    "GDPpcWithPop",
-    "GDP",        "SDPs",       "-",                          "-",                    "GDPpcWithPop",
-    "GDP",        "ISIMIP",     "-",                          "-",                    "GDPpcWithPop",
-    "GDP",        "SSP2EU",     "Eurostat-WDI-MI",            "SSP2EU-MI",            "calibSSP2EU",
+    "GDP",        "SSPs",       "-",                       "-",                      "GDPpcWithPop",
+    "GDP",        "SSP2",       "-",                       "-",                      "GDPpcWithPop",
+    "GDP",        "SSP2EU",     "-",                       "-",                      "GDPpcWithPop",
+    "GDP",        "SDPs",       "-",                       "-",                      "GDPpcWithPop",
+    "GDP",        "ISIMIP",     "-",                       "-",                      "GDPpcWithPop",
+    "GDP",        "ADBs",       "-",                       "-",                      "GDPpcWithPop",
     # Population Scenarios
-    "Population", "SSPs",       "WDI-UN_PopDiv-MI",           "SSPs-UN_PopDiv-MI",    "withPEAPandFuture",
-    "Population", "SSP2",       "WDI-UN_PopDiv-MI",           "SSP2-UN_PopDiv-MI",    "withPEAPandFuture",
-    "Population", "SDPs",       "WDI-UN_PopDiv-MI",           "SDPs-UN_PopDiv-MI",    "withPEAPandFuture",
-    "Population", "SSP2EU",     "Eurostat-WDI-UN_PopDiv-MI",  "SSP2EU-UN_PopDiv-MI",  "calibSSP2EU",
-    "Population", "ISIMIP",     "UN_PopDiv-MI",               "SSPs-UN_PopDiv-MI",    "calibISIMIP",
+    "Population", "SSPs",       "WDI-UN_PopDiv-MI",        "SSPs-UN_PopDiv",         "PopSSPs",
+    "Population", "SSP2",       "WDI-UN_PopDiv-MI",        "SSP2-UN_PopDiv",         "PopSSPs",
+    "Population", "SSP2EU",     "WDI-UN_PopDiv-MI",        "SSP2EU-UN_PopDiv",       "PopSSPs",
+    "Population", "SDPs",       "WDI-UN_PopDiv-MI",        "SDPs-UN_PopDiv",         "PopSSPs",
+    "Population", "ISIMIP",     "UN_PopDiv-MI",            "SSPs-UN_PopDiv",         "PopISIMIP",
+    "Population", "ADBs",       "WDI-UN_PopDiv-MI",        "ADBs-SSP2-UN_PopDiv",    "PopSSPs",
     # Labour Scenarios
-    "Labour",     "SSPs",       "WDI",                         "SSPs",                 "pastAndLevel",
-    "Labour",     "SSP2",       "WDI",                         "SSP2",                 "pastAndLevel",
-    "Labour",     "SDPs",       "WDI",                         "SDPs",                 "pastAndLevel",
-    "Labour",     "SSP2EU",     "WDI",                         "SSP2EU",               "pastAndLevel",
+    "Labour",     "SSPs",       "WDI-UN_PopDiv",           "SSPs-UN_PopDiv",         "pastAndLevel",
+    "Labour",     "SSP2",       "WDI-UN_PopDiv",           "SSP2-UN_PopDiv",         "pastAndLevel",
+    "Labour",     "SSP2EU",     "WDI-UN_PopDiv",           "SSP2EU-UN_PopDiv",       "pastAndLevel",
+    "Labour",     "SDPs",       "WDI-UN_PopDiv",           "SDPs-UN_PopDiv",         "pastAndLevel",
+    "Labour",     "ADBs",       "-",                       "-",                      "LabourADBs",
     # Urban population scenarios
-    "Urban",      "SSPs",       "WDI",                         "SSPs",                 "pastAndGrowth",
-    "Urban",      "SSP2",       "WDI",                         "SSP2",                 "pastAndGrowth",
-    "Urban",      "SDPs",       "WDI",                         "SDPs",                 "pastAndGrowth",
-    "Urban",      "SSP2EU",     "WDI",                         "SSP2EU",               "pastAndGrowth"
+    "Urban",      "SSPs",       "WDI",                     "SSPs",                   "pastAndGrowth",
+    "Urban",      "SSP2",       "WDI",                     "SSP2",                   "pastAndGrowth",
+    "Urban",      "SSP2EU",     "WDI",                     "SSP2EU",                 "pastAndGrowth",
+    "Urban",      "SDPs",       "WDI",                     "SDPs",                   "pastAndGrowth",
   )
   # End of scenario-design section
 

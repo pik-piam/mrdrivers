@@ -2,20 +2,27 @@
 % Please edit documentation in R/readSSP.R
 \name{readSSP}
 \alias{readSSP}
-\alias{downloadSSP}
 \alias{convertSSP}
+\alias{downloadSSP}
 \title{Read SSP}
 \usage{
 readSSP()
 
-downloadSSP()
+convertSSP(
+  x,
+  subtype = "all",
+  subset = c("SSP1", "SSP2", "SSP3", "SSP4", "SSP5")
+)
 
-convertSSP(x, subtype = "all")
+downloadSSP()
 }
 \arguments{
 \item{x}{MAgPIE object returned from readSSP}
 
 \item{subtype}{A string, either "all", "gdp", "pop", "lab", "urb"}
+
+\item{subset}{A vector of strings designating the scenarios. Defaults to c("SSP1", "SSP2", "SSP3", "SSP4", "SSP5").
+"Historical Reference" is also available as a scenario.}
 }
 \value{
 The read-in data, usually a magpie object. If supplementary is TRUE a list including
@@ -24,7 +31,8 @@ should match the source data. The spatial dimension should either match the sour
 if the convert argument is set to TRUE, should be on ISO code country level.
 }
 \description{
-Read-in an SSP data as magclass object
+Read-in an SSP data as magclass object. Filter for subtype and subset in the convert Function to use common read
+cache (speeds up the compuations).
 }
 \examples{
 \dontrun{
