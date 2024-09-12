@@ -10,7 +10,7 @@ downloadMissingIslands()
 
 readMissingIslands(subtype)
 
-convertMissingIslands(x)
+convertMissingIslands(x, subtype)
 }
 \arguments{
 \item{subtype}{pop for population, or gdp for gdp}
@@ -29,7 +29,7 @@ data set that gets data from a variety of sources (e.g. CIA World Factbook, Inse
 }
 \examples{
 \dontrun{
-readSource("MissingIslands", subtype = "pop", convert = FALSE)
+readSource("MissingIslands", subtype = "pop")
 }
 }
 \seealso{

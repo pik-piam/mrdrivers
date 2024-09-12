@@ -1,7 +1,6 @@
 #' MadRat drivers Input Data Library
 #'
 #' @description
-#' `r lifecycle::badge('stable')`
 #'
 #' Create scenarios of GDP, Population, GDP per capita, and Urban population share
 #'
@@ -14,7 +13,3 @@
 #' @exportPattern "^((calc(GDP|GDPpc|Population|Labour|Urban)(Past|Future|$))|read|download)"
 #' @keywords internal
 "_PACKAGE"
-
-# Suppress R CMD check note
-#' @importFrom lifecycle deprecate_soft
-NULL

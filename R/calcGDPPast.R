@@ -1,112 +1,101 @@
-#' Get GDP and GDPpc scenario building blocks
+#' Get scenario building blocks
 #'
 #' @description
-#' Get the past and future GDP scenario building blocks with calcGDPPast and calcGDPFuture, respectively.
-#' If GDP data for a scenario is required, even if just for a single year, always use [calcGDP()], as what is returned
-#' by calcGDPPast or calcGDPFuture may not end up as is in the scenario, depending on the harmonization function.
-#' Use calcGDPPast and calcGDPFuture only when trying to access specific GDP data.
+#' Get the past and future scenario building blocks.
+#' If scenario data is required, even if just for a single year, always use the calc call to the final scenario, e.g.
+#' [calcGDP()] or [calcPopulation()], as what is returned by the calc...Past and calc...Future functions may not end up
+#' as is in the scenario, depending on the harmonization function.
+#' These functions are only still exported for compatibility with existing code in the PIAM input data pipeline.
+#'
+#' See the vignette: \code{vignette("scenarios")} for references for the different data sources.
 #'
 #' See the "Combining data sources with '-'" section below for how to combine data sources.
 #'
-#' @param GDPPast A string designating the source for the historical GDP data. Available sources are:
-#'   \itemize{
-#'     \item "WDI": World development indicators from the World Bank
-#'     \item "MI": Missing island dataset
-#'     \item "Eurostat": Eurostat
-#'   }
-#' @inheritParams calcGDP
+#' @param pastData A string specifying the sources for historic data.
+#' @param extension1960 A string specifying how the data should be extended backwards to 1960.
 #' @inheritSection calcScenarioConstructor Combining data sources with "-"
 #' @keywords internal
-calcGDPPast <- function(GDPPast = "WDI-MI", unit = "constant 2017 Int$PPP") { # nolint
+#' @order 1
+calcGDPPast <- function(pastData = "WDI-MI-James", extension1960 = "MI-James") {
   # Check user input
   toolCheckUserInput("GDPPast", as.list(environment()))
+
   # Call calcInternalGDPPast function the appropriate number of times (map) and combine (reduce)
   # !! Keep formula syntax for madrat caching to work
-  purrr::pmap(list("GDPPast" = unlist(strsplit(GDPPast, "-")), "unit" = unit),
-              ~calcOutput("InternalGDPPast", aggregate = FALSE, supplementary = TRUE, ...)) %>%
-    toolReduce(mbindOrFillWith = "fillWith")
+  data <- purrr::pmap(list("pastData" = unlist(strsplit(pastData, "-"))),
+                      ~calcOutput("InternalGDPPast", aggregate = FALSE, supplementary = TRUE, ...)) %>%
+    toolListFillWith()
+
+  # If required, project GDP series back to 1960 using growth rates from the extension1960 data set.
+  if (extension1960 != "none") {
+    data1960 <-  calcOutput("GDPPast",
+                            pastData = extension1960,
+                            extension1960 = "none",
+                            aggregate = FALSE,
+                            supplementary = TRUE)
+    data <- toolHarmonizeFuture(past = data1960, future = data, method = "growth")
+    data$x <- toolInterpolateAndExtrapolate(data$x)
+  }
+
+  list(x = data$x,
+       weight = NULL,
+       unit = glue("mil. {toolGetUnitDollar(inPPP = TRUE)}"),
+       description = data$description)
 }
 
-######################################################################################
-# Internal Function
-######################################################################################
-calcInternalGDPPast <- function(GDPPast, unit) { # nolint
+calcInternalGDPPast <- function(pastData) {
   # Call appropriate calcInternalGDPPast function.
   data <- switch(
-    GDPPast,
-    "WDI"      = calcOutput("InternalGDPPastWDI", unit = unit, aggregate = FALSE),
-    "Eurostat" = calcOutput("InternalGDPPastEurostat", unit = unit, aggregate = FALSE),
-    "MI"       = calcOutput("InternalGDPMI", unit = unit, aggregate = FALSE),
-    stop("Bad input for calcGDPPast. Invalid 'GDPPast' argument.")
+    pastData,
+    "WDI"   = readSource("WDI", "gdp"),
+    "MI"    = readSource("MissingIslands", "gdp"),
+    "James" = toolGDPPastJames(),
+    stop("Bad input for calcGDPPast. Invalid 'pastData' argument.")
   )
 
-  data <- toolFinishingTouches(data)
+  getNames(data) <- pastData
 
-  list(x = data, weight = NULL, unit = glue("mil. {unit}"), description = glue("{GDPPast} data"))
+  list(x = data,
+       weight = NULL,
+       unit = glue("mil. {toolGetUnitDollar(inPPP = TRUE)}"),
+       description = glue("{pastData} data"))
+}
+
+toolGDPPastJames <- function() {
+  gdppc <- readSource("James", "gdp")
+  pop <- calcOutput("PopulationPast", aggregate = FALSE)
+  years <- intersect(getYears(gdppc), getYears(pop))
+  gdppc[, years, ] * pop[, years, ]
 }
 
 
+#' @rdname calcGDPPast
+#' @param scenario A string specifying the scenario, from which the historic GDP and population data sources are taken.
+#' @order 2
+calcGDPpcPast <- function(scenario = "SSPs") {
+  # We can not fill data sources as in GDP and Pop, as GDP and pop on their part are filled with MI, and the countries
+  # which are filled in do not match. (WDI has pop data for some countries, but not GDP.) So to make sure that the
+  # GDP per capita is consistent, we have to pass it on to the GDP and pop functions.
+  gdpPastData <- toolGetScenarioDefinition("GDPpc", scenario, aslist = TRUE)$pastData
+  popPastData <- toolGetScenarioDefinition("Population", scenario, aslist = TRUE)$pastData
+  gdp <- calcOutput("GDPPast", pastData = gdpPastData, aggregate = FALSE)
+  pop <- calcOutput("PopulationPast", pastData = popPastData, aggregate = FALSE)
+  years <- intersect(getYears(gdp), getYears(pop))
+  data <- gdp[, years, ] / pop[, years, ]
+  data[is.nan(data) | data == Inf] <- 0
+  getNames(data) <- paste(gdpPastData, "gdp data", "over", popPastData, "pop data")
 
+  # The weight does not go into the weight of the final scenario. So exact matching with GDPpc not necessary...
+  weight <- pop
+  getNames(weight) <- getNames(data)
+  # Make sure weight and data have the same yearly resolution.
+  ## Sometimes weght has more years than x, thus the intersect operation.
+  weight <- weight[, intersect(getYears(data), getYears(weight)), ]
+  ## If x has more years than weight, add these years and interpolate
+  missingYears <- getYears(data)[! getYears(data) %in% getYears(weight)]
+  weight <- add_columns(weight, missingYears, dim = 2, fill = 0)
+  weight <- weight[, sort(getYears(weight)), ]
+  weight <- toolInterpolateAndExtrapolate(weight)
 
-######################################################################################
-# Functions
-######################################################################################
-calcInternalGDPPastWDI <- function(unit) {
-  # "NY.GDP.MKTP.PP.KD" = GDP in constant 2017 Int$PPP (as of time of writing this function)
-  data <- readSource("WDI", "NY.GDP.MKTP.PP.KD") %>%
-    GDPuc::toolConvertGDP("constant 2017 Int$PPP", unit, replace_NAs = c("linear", "no_conversion"))
-
-  data <- fillWithWBFromJames2019(data, unit)
-
-  getNames(data) <- glue("gdp in {unit}")
-  list(x = data, weight = NULL, unit = unit, description = "WDI data")
-}
-
-calcInternalGDPPastEurostat <- function(unit) {
-  euCountries <- toolGetEUcountries()
-
-  data <- readSource("EurostatPopGDP", "GDP")[euCountries, , ] %>%
-    GDPuc::toolConvertGDP("constant 2015 Int$PPP", unit, replace_NAs = c("linear", "no_conversion"))
-
-  data <- fillWithWBFromJames2019(data, unit)
-  data <- data %>% toolCountryFill(fill = 0) %>% suppressMessages()
-
-  getNames(data) <- glue("gdp in {unit}")
-  list(x = data, weight = NULL, unit = unit, description = "Eurostat data")
-}
-
-# Use the James2019  WB_USD05_PPP_pc series to fill in past data until 1960.
-# Using mainly growth rates, since conversion of James2019 data into 2005 Int$PPP not certain to be correct.
-fillWithWBFromJames2019 <- function(data, unit) {
-  gdppc <- readSource("James2019", "WB_USD05_PPP_pc") %>%
-    GDPuc::toolConvertGDP("constant 2005 Int$PPP", unit, replace_NAs = c("linear", "no_conversion"))
-
-  pop <- readSource("WDI", "SP.POP.TOTL")
-
-  cy <- intersect(getYears(gdppc), getYears(pop))
-  pastGDP <- gdppc[, cy, ] * pop[, cy, ]
-  getSets(pastGDP) <- c("iso3c", "year", "variable")
-  getNames(pastGDP) <- "WB_USD05_PPP"
-
-  x <- new.magpie(getItems(data, 1),
-                  1960:max(getYears(data, as.integer = TRUE)),
-                  getNames(data),
-                  fill = 0)
-  getSets(x) <- getSets(pastGDP)
-  for (i in getItems(data, 1)) {
-    tmp <- data[i, getYears(data)[data[i, , ] != 0], ]
-    ihmeData <- pastGDP[i, cy[pastGDP[i, , ] != 0], ]
-
-    if (length(tmp) == 0 && length(ihmeData) == 0) {
-      next
-    } else if (length(tmp) != 0 && length(ihmeData) == 0) {
-      x[i, getYears(tmp), ] <- tmp
-    } else if (length(tmp) == 0 && length(ihmeData) != 0) {
-      x[i, cy, ] <- toolFillYears(ihmeData, cy)
-    } else {
-      r <- toolHarmonizeFutureGrPast(past = toolFillYears(ihmeData, cy), future = tmp)
-      x[i, getYears(r), ] <- r
-    }
-  }
-  x
+  list(x = data, weight = weight, unit = toolGetUnitDollar(inPPP = TRUE), description = glue("{getNames(data)}"))
 }
