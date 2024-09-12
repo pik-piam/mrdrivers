@@ -5,13 +5,13 @@
 #' @param subtype A string. Type of WDI data that should be read. Use the
 #' World Bank indicator abbreviation. Available subtypes are:
 #' \itemize{
-#' \item \code{"SP.POP.TOTL"}: Population, total
-#' \item \code{"SP.POP.1564.TO"}: Working age population (15-64 years old)
-#' \item \code{"SP.URB.TOTL.IN.ZS"}: Urban Population (% of total)
-#' \item \code{"NY.GDP.MKTP.PP.KD"}: GDP,PPP (constant 2017 international Dollar)
-#' \item \code{"NV.AGR.TOTL.KD"}: Ag GDP, MER, (2010 US$)
-#' \item \code{"PA.NUS.PPPC.RF"}: Price level ratio of PPP conversion factor (GDP) to market exchange rate
-#' \item \code{"AG.SRF.TOTL.K2"}: Surface area (in square kms)
+#' \item "pop" or "SP.POP.TOTL": Population, total
+#' \item "lab" or "SP.POP.1564.TO": Working age population (15-64 years old)
+#' \item "urb" or "SP.URB.TOTL.IN.ZS": Urban Population (% of total)
+#' \item "gdp" or "NY.GDP.MKTP.PP.KD": GDP, PPP (constant 2017 international Dollar)
+#' \item "NV.AGR.TOTL.KD": Ag GDP, MER, (2010 US$)
+#' \item "PA.NUS.PPPC.RF": Price level ratio of PPP conversion factor (GDP) to market exchange rate
+#' \item "AG.SRF.TOTL.K2": Surface area (in square kms)
 #' }
 #'
 #' @details
@@ -24,21 +24,32 @@
 #' @seealso [madrat::readSource()] and [madrat::downloadSource()]
 #'
 #' @examples \dontrun{
-#' readSource("WDI", subtype = "SP.POP.TOTL")
+#' readSource("WDI", subtype = "pop")
 #' }
 #' @order 2
 readWDI <- function(subtype) {
+  # Add some aliases for easier referencing
+  subtype <- switch(
+    subtype,
+    "gdp" = "NY.GDP.MKTP.PP.KD",
+    "pop" = "SP.POP.TOTL",
+    "lab" = "SP.POP.1564.TO",
+    "urb" = "SP.URB.TOTL.IN.ZS",
+    subtype
+  )
+
   x <- readr::read_rds("WDI_15_04_2024.Rds")
+
   possibleSubtypes <- colnames(x)[!colnames(x) %in% c("iso3c", "iso2c", "country", "year")]
 
   if (!subtype %in% possibleSubtypes) {
-     stop(glue("Bad subtype. Possible subtypes are: \n{paste0(possibleSubtypes, collapse = '\n')}."))
+    stop(glue("Bad subtype. Possible subtypes are: \n{paste0(possibleSubtypes, collapse = '\n')}."))
   }
 
   x[, c("iso2c", "year", subtype)] %>%
     # Replace "." with "_" otherwise readSource messes up the data dim
     dplyr::rename_with(~ gsub(".", "_", .x, fixed = TRUE)) %>%
-    as.magpie(spatial = 1, tidy = TRUE, replacement = ".")
+    as.magpie(spatial = "iso2c", temporal = "year", tidy = TRUE, replacement = ".")
 }
 
 
@@ -46,6 +57,15 @@ readWDI <- function(subtype) {
 #' @param x MAgPIE object returned by readWDI
 #' @order 3
 convertWDI <- function(x, subtype) {
+  # Add some aliases for easier referencing
+  subtype <- switch(
+    subtype,
+    "gdp" = "NY.GDP.MKTP.PP.KD",
+    "pop" = "SP.POP.TOTL",
+    "lab" = "SP.POP.1564.TO",
+    "urb" = "SP.URB.TOTL.IN.ZS",
+    subtype
+  )
 
   if (subtype %in% c("SP.POP.TOTL", "SP.POP.1564.TO", "NY.GDP.MKTP.PP.KD", "NV.AGR.TOTL.KD")) {
     # Change scale of indicators
@@ -62,11 +82,7 @@ convertWDI <- function(x, subtype) {
                                           custom_match = c("JG" = "JEY"),
                                           warn = FALSE)
 
-  x <- toolGeneralConvert(x)
-
-  # Remove years which only contain 0s as entries
-  x <- x[, !apply(x, 2, function(y) all(y == 0)), ]
-  x
+  toolGeneralConvert(x)
 }
 
 
@@ -76,14 +92,15 @@ downloadWDI <- function() {
   rlang::check_installed("WDI")
   # The WDI data is updated with the function "WDISearch(cache = WDIcache())"
   WDI::WDIsearch(cache = WDI::WDIcache())
-  indicator <- c("SP.POP.TOTL",       # Total population
-                 "SP.POP.1564.TO",    # Working age population (15-64 years old)
-                 "SP.URB.TOTL.IN.ZS", # Urban Population (% of total)
-                 "PA.NUS.PPPC.RF",    # Price Level Ration (PPP/MER)
-                 "NY.GDP.MKTP.PP.KD", # GDP [constant 2017 Int$PPP]
-                 "NV.AGR.TOTL.KD",    # For mrvalidation: AgFF value added [constant 2015 US$MER]
-                 "AG.SRF.TOTL.K2"     # For mredgebuildings: surface area [square kms]
-                 )
+  indicator <- c(
+    "SP.POP.TOTL",       # Total population
+    "SP.POP.1564.TO",    # Working age population (15-64 years old)
+    "SP.URB.TOTL.IN.ZS", # Urban Population (% of total)
+    "PA.NUS.PPPC.RF",    # Price Level Ration (PPP/MER)
+    "NY.GDP.MKTP.PP.KD", # GDP [constant 2017 Int$PPP]
+    "NV.AGR.TOTL.KD",    # For mrvalidation: AgFF value added [constant 2015 US$MER]
+    "AG.SRF.TOTL.K2"     # For mredgebuildings: surface area [square kms]
+  )
   endYear <- as.numeric(strsplit(as.character(Sys.Date()), "-")[[1]][1]) - 1
   wdi <- WDI::WDI(indicator = indicator, start = 1960, end = endYear)
   readr::write_rds(wdi, "WDI.Rds")

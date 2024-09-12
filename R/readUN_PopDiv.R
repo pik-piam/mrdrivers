@@ -1,27 +1,35 @@
 #' Read UN Population Division Data
 #'
-#' Read past UN population data.
+#' Read UN population data.
 #'
-#' @param subtype String indicating version and sheet
+#' @param subtype Either "pop" or "lab".
+#' @param subset Either "estimates" or "medium".
 #' @inherit madrat::readSource return
 #' @seealso [madrat::readSource()] and [madrat::downloadSource()]
 #' @order 2
-readUN_PopDiv <- function(subtype = "estimates") { # nolint
+readUN_PopDiv <- function(subtype, subset = "estimates") { # nolint: object_name_linter.
   # Check function input
-  if (!subtype %in% c("estimates", "medium")) {
+  if (!subtype %in% c("pop", "lab")) {
     stop("Bad input for readUN_PopDiv. Invalid 'subtype' argument.")
   }
+  if (!subset %in% c("estimates", "medium")) {
+    stop("Bad input for readUN_PopDiv. Invalid 'subset' argument.")
+  }
+
   file <- "WPP2022_POP_F01_1_POPULATION_SINGLE_AGE_BOTH_SEXES.xlsx"
-  sheet <- if (subtype == "estimates") "Estimates" else "Medium variant"
+  sheet <- if (subset == "estimates") "Estimates" else "Medium variant"
+
+  ageRange <- if (subtype == "pop") c(0:99, "100+") else 15:64
+
   readxl::read_xlsx(file, sheet = sheet, skip = 16, col_types = "text", progress = FALSE) %>%
-    dplyr::select("ISO3 Alpha-code", "year" = "Year", dplyr::matches("^[0-9]*$")) %>%
+    dplyr::select("Variant", "ISO3 Alpha-code", "year" = "Year", dplyr::matches("^[0-9]")) %>%
     dplyr::filter(!is.na(.data$`ISO3 Alpha-code`)) %>%
-    tidyr::pivot_longer(cols = dplyr::matches("^[0-9]*$"),
+    tidyr::pivot_longer(cols = dplyr::matches("^[0-9]"),
                         names_to = "age",
                         values_transform = c("value" = as.numeric)) %>%
-    dplyr::group_by(.data$`ISO3 Alpha-code`, .data$year) %>%
-    dplyr::summarise(value = sum(.data$value), .groups = "drop") %>%
-    as.magpie(spatial = "ISO3 Alpha-code")
+    dplyr::filter(.data$age %in% ageRange) %>%
+    dplyr::summarise(value = sum(.data$value), .by = c("Variant", "ISO3 Alpha-code", "year")) %>%
+    as.magpie(spatial = "ISO3 Alpha-code", temporal = "year", tidy = TRUE)
 }
 
 
@@ -29,14 +37,16 @@ readUN_PopDiv <- function(subtype = "estimates") { # nolint
 #' @rdname readUN_PopDiv
 #' @order 3
 #' @param x MAgPIE object returned from readUN_PopDiv
-convertUN_PopDiv <- function(x) { # nolint
+convertUN_PopDiv <- function(x) { # nolint: object_name_linter.
+  # Convert from thousands to millions
+  x <- x * 1e-3
   toolGeneralConvert(x, no_remove_warning = "XKX")
 }
 
 #' @rdname readUN_PopDiv
 #' @order 1
-downloadUN_PopDiv <- function() { # nolint
-  url <- "https://population.un.org/wpp/Download/Files/1_Indicators%20(Standard)/EXCEL_FILES/2_Population/WPP2022_POP_F01_1_POPULATION_SINGLE_AGE_BOTH_SEXES.xlsx" # nolint
+downloadUN_PopDiv <- function() { # nolint: object_name_linter.
+  url <- "https://population.un.org/wpp/Download/Files/1_Indicators%20(Standard)/EXCEL_FILES/2_Population/WPP2022_POP_F01_1_POPULATION_SINGLE_AGE_BOTH_SEXES.xlsx" # nolint: line_length_linter.
   utils::download.file(url, basename(url), quiet = TRUE)
 
   # Compose meta data

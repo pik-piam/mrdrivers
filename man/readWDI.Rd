@@ -16,13 +16,13 @@ convertWDI(x, subtype)
 \item{subtype}{A string. Type of WDI data that should be read. Use the
 World Bank indicator abbreviation. Available subtypes are:
 \itemize{
-\item \code{"SP.POP.TOTL"}: Population, total
-\item \code{"SP.POP.1564.TO"}: Working age population (15-64 years old)
-\item \code{"SP.URB.TOTL.IN.ZS"}: Urban Population (\% of total)
-\item \code{"NY.GDP.MKTP.PP.KD"}: GDP,PPP (constant 2017 international Dollar)
-\item \code{"NV.AGR.TOTL.KD"}: Ag GDP, MER, (2010 US$)
-\item \code{"PA.NUS.PPPC.RF"}: Price level ratio of PPP conversion factor (GDP) to market exchange rate
-\item \code{"AG.SRF.TOTL.K2"}: Surface area (in square kms)
+\item "pop" or "SP.POP.TOTL": Population, total
+\item "lab" or "SP.POP.1564.TO": Working age population (15-64 years old)
+\item "urb" or "SP.URB.TOTL.IN.ZS": Urban Population (\% of total)
+\item "gdp" or "NY.GDP.MKTP.PP.KD": GDP, PPP (constant 2017 international Dollar)
+\item "NV.AGR.TOTL.KD": Ag GDP, MER, (2010 US$)
+\item "PA.NUS.PPPC.RF": Price level ratio of PPP conversion factor (GDP) to market exchange rate
+\item "AG.SRF.TOTL.K2": Surface area (in square kms)
 }}
 
 \item{x}{MAgPIE object returned by readWDI}
@@ -43,7 +43,7 @@ the past data isn't changed between users.
 }
 \examples{
 \dontrun{
-readSource("WDI", subtype = "SP.POP.TOTL")
+readSource("WDI", subtype = "pop")
 }
 }
 \seealso{

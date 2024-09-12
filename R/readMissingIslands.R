@@ -7,23 +7,32 @@
 #' @inherit madrat::readSource return
 #' @seealso [madrat::readSource()] and [madrat::downloadSource()]
 #' @examples \dontrun{
-#' readSource("MissingIslands", subtype = "pop", convert = FALSE)
+#' readSource("MissingIslands", subtype = "pop")
 #' }
 #' @order 2
 readMissingIslands <- function(subtype) {
   files <- c(pop = "pop_past_missing.csv", gdp = "gdp_past_missing.csv")
   file <- toolSubtypeSelect(subtype = subtype, files = files)
-  x <- utils::read.csv(file, header = TRUE)
-  names(x) <- substring(names(x), 1, 5)
-  as.magpie(x)
-}
 
+  utils::read.csv(file, header = TRUE) %>%
+    tidyr::pivot_longer(tidyselect::starts_with("y"), names_to = "year") %>%
+    dplyr::mutate(year = substring(.data$year, 1, 5)) %>%
+    dplyr::rename("iso3c" = "dummy") %>%
+    as.magpie(spatial = "iso3c", temporal = "year", tidy = TRUE)
+}
 
 
 #' @rdname readMissingIslands
 #' @param x MAgPIE object returned by readMissingIslands
 #' @order 3
-convertMissingIslands <- function(x) {
+convertMissingIslands <- function(x, subtype) {
+  if (subtype == "gdp") {
+    x <- GDPuc::toolConvertGDP(x,
+                               unit_in = "constant 2005 Int$PPP",
+                               unit_out = toolGetUnitDollar(inPPP = TRUE),
+                               replace_NAs = c("linear", "no_conversion"))
+  }
+
   toolGeneralConvert(x, note = FALSE)
 }
 

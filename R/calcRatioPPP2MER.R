@@ -1,7 +1,8 @@
 #' MER over PPP ratio
 #'
 #' Get a conversion factor to convert GDP in constant 2017 Int$PPP into constant 2017 US$MER.
-#' Use the when argument to switch the year of the conversion factor. Source = WDI.
+#' Use the "when" argument to switch the year of the conversion factor. Source = WDI. Countries with missing data are
+#' filled in with 1. Regional aggregation is weighed by GDP from WDI-MI in the year set by "when".
 #'
 #' @param when An integer (defaults to 2017) specifying the year of the PPP2MER factor.
 #' @inherit madrat::calcOutput return
@@ -16,12 +17,7 @@ calcRatioPPP2MER <- function(when = 2017) {
   # Replace 0s with 1s. This was done previously. Other solutions here should be taken into consideration.
   data[data == 0] <- 1
 
-  weight <- calcOutput("GDPPast", aggregate = FALSE)[, when, ]
-
-  # TMP: have to use old sets and names for now, to not break interfaces
-  getSets(data) <- c("Region", "year", "d3")
-  getNames(data) <- NULL
-  getYears(data) <- NULL
+  weight <- calcOutput("GDPPast", aggregate = FALSE, years = when)
 
   list(x = data,
        weight = weight,

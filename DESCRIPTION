@@ -22,7 +22,6 @@ Depends:
 Imports: 
     countrycode,
     dplyr,
-    lifecycle,
     glue,
     magrittr,
     purrr,
@@ -31,20 +30,17 @@ Imports:
     rlang,
     tibble,
     tidyr,
-    tidyselect,
-    zoo
+    tidyselect
 Suggests: 
     covr,
     crayon,
-    eurostat,
-    kableExtra,
     knitr,
-    pander,
     rmarkdown,
     testthat (>= 3.0.0),
     WDI,
     withr (>= 2.4.2),
-    yaml
+    yaml,
+    zoo
 Encoding: UTF-8
 Roxygen: list(markdown = TRUE)
 RoxygenNote: 7.3.2

@@ -33,14 +33,13 @@ provided by this package are listed below.
 
 readSource:
 
-    #> [1] "readWDI"            "readIMF"            "readEurostatPopGDP"
-    #> [4] "readUN_PopDiv"      "readPEAP"           "readSSP"           
-    #> [7] "readMissingIslands" "readJames2019"
+    #> [1] "readSSP"       "readWDI"       "readIMF"       "readUN_PopDiv"
+    #> [5] "readPEAP"
 
 calcOutput:
 
-    #> [1] "calcGDP"        "calcGDPpc"      "calcPopulation" "calcLabour"    
-    #> [5] "calcUrban"
+    #> [1] "calcGDP"          "calcGDPpc"        "calcPopulation"   "calcLabour"      
+    #> [5] "calcUrban"        "calcRatioPPP2MER"
 
 ## Scenarios
 
@@ -49,9 +48,7 @@ per capita, Population, Labour, and Urban Population Share) are:
 
 - the SSPs, i.e. SSP1-5
 
-- the SDPs, i.e. SDP, SDP_EI, SDP_RC, and SDP_MC
-
-- SSP2EU
+- the SDPs, i.e. SDP, SDP_EI, SDP_MC and SDP_RC
 
 see `vignette("scenarios")` for more information on available scenarios
 and references of the default scenarios.

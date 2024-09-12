@@ -23,7 +23,7 @@ readPEAP <- function() {
     dplyr::select("iso3c" = "Country Code", "year", "value") %>%
     dplyr::mutate(variable = "population", year = sub(" .*", "", .data$year)) %>%
     dplyr::relocate("value", .after = tidyselect::last_col()) %>%
-    as.magpie()
+    as.magpie(spatial = "iso3c", temporal = "year", tidy = TRUE)
 }
 
 #' @rdname readPEAP
@@ -36,8 +36,8 @@ convertPEAP <- function(x) {
 #' @rdname readPEAP
 #' @order 1
 downloadPEAP  <- function() {
- stop("Manual download of PEAP data required!")
- # Compose meta data
+  stop("Manual download of PEAP data required!")
+  # Compose meta data
   list(url           = "https://databank.worldbank.org/source/population-estimates-and-projections#",
        doi           = "-",
        title         = "Population Estimates and Projections",

@@ -11,5 +11,5 @@ madrat_mainfolder <- "/home/johannes/madrat_GDP_update" # nolint
 if (dir.exists(madrat_mainfolder)) {
   oldCfg <- madrat::getConfig()
   madrat::setConfig(mainfolder = madrat_mainfolder, cachefolder = "test_mrdrivers", .verbose = FALSE)
-  withr::defer(options(madrat_cfg = oldCfg), teardown_env())
+  withr::defer(options(madrat_cfg = oldCfg), teardown_env()) # nolint
 }
