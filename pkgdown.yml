@@ -1,9 +1,9 @@
 pandoc: 3.1.11
-pkgdown: 2.1.0
+pkgdown: 2.1.1
 pkgdown_sha: ~
 articles:
   scenarios: scenarios.html
-last_built: 2024-08-02T12:32Z
+last_built: 2024-09-20T13:38Z
 urls:
   reference: https://pik-piam.github.io/mrdrivers/reference
   article: https://pik-piam.github.io/mrdrivers/articles
