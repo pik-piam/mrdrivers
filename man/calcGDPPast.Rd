@@ -10,7 +10,7 @@
 \usage{
 calcGDPFuture(GDPFuture, unit)
 
-calcGDPPast(GDPPast = "WDI-MI", unit = "constant 2005 Int$PPP")
+calcGDPPast(GDPPast = "WDI-MI", unit = "constant 2017 Int$PPP")
 
 calcGDPpcFuture(GDPpcFuture, unit)
 
