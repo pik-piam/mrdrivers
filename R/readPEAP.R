@@ -36,8 +36,8 @@ convertPEAP <- function(x) {
 #' @rdname readPEAP
 #' @order 1
 downloadPEAP  <- function() {
- stop("Manual download of PEAP data required!")
- # Compose meta data
+  stop("Manual download of PEAP data required!")
+  # Compose meta data
   list(url           = "https://databank.worldbank.org/source/population-estimates-and-projections#",
        doi           = "-",
        title         = "Population Estimates and Projections",

@@ -53,24 +53,21 @@ The key `madrat::readSource()` and `madrat::calcOutput()` functions provided by 
 readSource:
 
 ```{r, echo=FALSE}
-c("readWDI", "readIMF", "readEurostatPopGDP", "readUN_PopDiv", "readPEAP", "readSSP", "readMissingIslands", 
-  "readJames2019")
+c("readSSP", "readWDI", "readIMF", "readUN_PopDiv", "readPEAP")
 ```
 
 calcOutput:
 
 ```{r, echo=FALSE}
-c("calcGDP", "calcGDPpc", "calcPopulation", "calcLabour", "calcUrban")
+c("calcGDP", "calcGDPpc", "calcPopulation", "calcLabour", "calcUrban", "calcRatioPPP2MER")
 ```
 
 ## Scenarios
 
-The current default scenarios returned for all drivers (i.e. GDP, GDP per capita, Population, Labour,  and Urban Population Share) are:
+The current default scenarios returned for all drivers (i.e. GDP, GDP per capita, Population, Labour, and Urban Population Share) are:
 
 -   the SSPs, i.e. SSP1-5
 
--   the SDPs, i.e. SDP, SDP_EI, SDP_RC, and SDP_MC
-
--   SSP2EU
+-   the SDPs, i.e. SDP, SDP_EI, SDP_MC and SDP_RC
 
 see `vignette("scenarios")` for more information on available scenarios and references of the default scenarios.

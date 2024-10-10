@@ -1,89 +1,76 @@
-#' Get Population and Labour scenario building blocks
-#'
-#' See the "Combining data sources with '-'" section below for how to combine data sources.
-#'
-#' @param PopulationPast A string designating the source for the historical population data.
-#'   Available sources are:
-#'   \itemize{
-#'     \item "WDI": World development indicators from the World Bank
-#'     \item "UN_PopDiv": United Nations
-#'     \item "MI": Missing island dataset
-#'     \item "Eurostat": Eurostat
-#'   }
-#' @inheritSection calcScenarioConstructor Combining data sources with "-"
-#' @keywords internal
-calcPopulationPast <- function(PopulationPast = "WDI-UN_PopDiv-MI") { # nolint
+#' @rdname calcGDPPast
+calcPopulationPast <- function(pastData = "WDI-UN_PopDiv-MI") {
   # Check user input
   toolCheckUserInput("PopulationPast", as.list(environment()))
   # Call calcInternalPopulationPast function the appropriate number of times (map) and combine (reduce)
   # !! Keep formula syntax for madrat caching to work
-  purrr::pmap(list("PopulationPast" = unlist(strsplit(PopulationPast, "-"))),
+  purrr::pmap(list("pastData" = unlist(strsplit(pastData, "-"))),
               ~calcOutput("InternalPopulationPast", aggregate = FALSE, supplementary = TRUE, ...)) %>%
-    toolReduce(mbindOrFillWith = "fillWith")
+    toolListFillWith()
 }
 
-
-######################################################################################
-# Internal Function
-######################################################################################
-calcInternalPopulationPast <- function(PopulationPast) { # nolint
+calcInternalPopulationPast <- function(pastData) {
   data <- switch(
-    PopulationPast,
-    "WDI"       = readSource("WDI", "SP.POP.TOTL"),
-    "UN_PopDiv" = readSource("UN_PopDiv") * 1e-3,
+    pastData,
+    "WDI"       = readSource("WDI", "pop"),
+    "UN_PopDiv" = readSource("UN_PopDiv", "pop", "estimates"),
     "MI"        = readSource("MissingIslands", "pop"),
-    "Eurostat"  = calcOutput("InternalPopulationPastEurostat", aggregate = FALSE),
-    stop("Bad input for PopulationPast. Invalid 'PopulationPast' argument.")
+    stop("Bad input for calcPopulationPast. Invalid 'pastData' argument.")
   )
 
-  getNames(data) <- "population"
-  data <- toolFinishingTouches(data)
+  getNames(data) <- pastData
 
-  list(x = data, weight = NULL, unit = "million", description = glue("{PopulationPast} data"))
+  list(x = data, weight = NULL, unit = "million", description = glue("{pastData} data"))
 }
 
 
-######################################################################################
-# Functions
-######################################################################################
-calcInternalPopulationPastEurostat <- function() { # nolint
-  # Scale to milions
-  dataEurostat <- readSource("EurostatPopGDP", "population") * 1e-6
-  # Set all eurostat countries with data, but that are not apart of the EUR region or GBR to 0
-  euCountries <- toolGetEUcountries()
-  dataEurostat[!getItems(dataEurostat, 1) %in% euCountries, , ] <- 0
-  # Fill in gaps in data (do not extrapolate)
-  dataEurostat <- toolInterpolateAndExtrapolate(dataEurostat, extrapolate = FALSE)
-  # Extrapolate missing data for eu countries using wdi growth rates
-  dataWDI <- readSource("WDI", "SP.POP.TOTL")
-  for (c in euCountries) {
-    # Skip countries with no data, or with complete data
-    if (all(dataEurostat[c, , ] == 0) || all(dataEurostat[c, , ] != 0)) next
-    # Get WDI years with 0 in dataEurostat
-    yearsWith0 <- getYears(dataWDI)[dataEurostat[c, getYears(dataWDI), ] == 0]
-    if (purrr::is_empty(yearsWith0)) next
-    yearsWithout0 <- getYears(dataWDI)[dataEurostat[c, getYears(dataWDI), ] != 0]
-    # Extrapolate into the past, in the dataWDI years
-    if (min(yearsWith0) < min(yearsWithout0)) {
-      pastYears <- getYears(dataWDI)[getYears(dataWDI) <= max(yearsWithout0)]
-      pastYearsWithout0 <- pastYears[pastYears %in% yearsWithout0]
-      dataEurostat[c, pastYears, ] <- toolHarmonizeFutureGrPast(
-        past = dataWDI[c, , ],
-        future = dataEurostat[c, pastYearsWithout0, ]
-      )
-    }
-    # Extrapolate into the future, in the dataWDI years
-    if (max(yearsWith0) > max(yearsWithout0)) {
-      futureYears <- getYears(dataWDI)[getYears(dataWDI) >= min(yearsWithout0)]
-      futureYearsWithou0 <- futureYears[futureYears %in% yearsWithout0]
-      dataEurostat[c, futureYears, ] <- toolHarmonizePast(
-        past = dataEurostat[c, futureYearsWithou0, ],
-        future = dataWDI[c, , ],
-        method = "growth"
-      )
-    }
+
+#' @rdname calcGDPPast
+calcLabourPast <- function(pastData = "WDI-UN_PopDiv") {
+  # Check user input
+  toolCheckUserInput("LabourPast", as.list(environment()))
+  # Call calcInternalPopulationFuture function the appropriate number of times (map) and combine (reduce)
+  # !! Keep formula syntax for madrat caching to work
+  purrr::pmap(list("pastData" = unlist(strsplit(pastData, "-"))),
+              ~calcOutput("InternalLabourPast", aggregate = FALSE, supplementary = TRUE, ...)) %>%
+    toolListFillWith()
+}
+
+calcInternalLabourPast <- function(pastData) {
+  data <- switch(
+    pastData,
+    "WDI"       = readSource("WDI", "lab"),
+    "UN_PopDiv" = readSource("UN_PopDiv", "lab", "estimates"),
+    "SSPs"      = readSource("SSP", "lab", "Historical Reference"),
+    stop("Bad input for calcLabourPast. Invalid 'pastData' argument.")
+  )
+
+  getNames(data) <- pastData
+
+  list(x = data, weight = NULL, unit = "million", description = glue("{pastData} data"))
+}
+
+
+#' @rdname calcGDPPast
+calcUrbanPast <- function(pastData = "WDI") {
+  data <- switch(
+    pastData,
+    "WDI" = readSource("WDI", "urb") / 100,
+    stop("Bad input for calcUrbanPast. Invalid 'pastData' argument.")
+  )
+
+  # TWN is missing an urban share. Give it that of HKG.
+  if (all(data["TWN", , ] == 0)) {
+    data["TWN", , ] <- data["HKG", , ]
   }
-  # Extrapolate in years outside of WDI range
-  dataEurostat <- toolInterpolateAndExtrapolate(dataEurostat)
-  list(x = dataEurostat, weight = NULL, unit = "million", description = "Eurostat data")
+
+  getNames(data) <- pastData
+
+  weight <- calcOutput("PopulationPast", pastData = pastData, aggregate = FALSE)
+  getNames(weight) <- getNames(data)
+
+  list(x = data,
+       weight = weight,
+       unit = "share of population",
+       description = glue("{pastData} data (with missing TWN values set to that of HKG)"))
 }

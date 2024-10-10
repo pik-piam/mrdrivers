@@ -1,23 +1,31 @@
-# Extend until 2150 in 5 year time steps. Either with bezierExtension or constant.
+#' Extend until 2150 in 5 year time steps
+#'
+#' toolExtend2150 extends a magpit object until 2150 in 5 year time steps. Either with bezierExtension or constant.
+#'
+#' @param data A list with "x", a magpie object, and "description" elements
+#' @inheritParams calcDriver
+#' @keywords internal
+#' @return The modified data list.
 toolExtend2150 <- function(data, extension2150) {
-  if (extension2150 != "none") {
-    # The bezier extension is only possible if there is data until 2100, and only affects years between 2100 and 2150.
-    # It extends the time series in such a way as for the slope in 2105 to be half of that in 2100.
-    if (extension2150 == "bezier" && "y2100" %in% getYears(data)) {
-      data <- toolBezierExtension(data, seq(2105, 2150, 5))
-    } else {
-      helper <- getSets(data)
-      data <- time_interpolate(data,
-                               seq(2005, 2150, 5),
-                               extrapolation_type = "constant",
-                               integrate_interpolated_years = TRUE)
-      # Time_interpolate destroys the setNames for some reason...
-      getSets(data) <- helper
-    }
+  # The bezier extension is only possible if there is data until 2100, and only affects years between 2100 and 2150.
+  # It extends the time series in such a way as for the slope in 2105 to be half of that in 2100.
+  if (extension2150 == "bezier" && "y2100" %in% getYears(data$x)) {
+    data$x <- toolBezierExtension(data$x, seq(2105, 2150, 5))
+    data$description <- glue("{data$description} Extended from 2100 to 2150 using bezier curves, resulting in a \\
+                               smooth flattening of the scenario (the slope in 2150 is equal to half of that in \\
+                               2100).")
+  } else {
+    helper <- getSets(data$x)
+    data <- time_interpolate(data$x,
+                             seq(2005, 2150, 5),
+                             extrapolation_type = "constant",
+                             integrate_interpolated_years = TRUE)
+    # Time_interpolate destroys the setNames for some reason...
+    getSets(data$x) <- helper
+    data$description <- glue("{data$description} Extended from 2100 to 2150 using the constant 2100 value.")
   }
   data
 }
-
 
 toolBezierExtension <- function(data, timeExtend) {
   # Define bezier coordinates
@@ -35,8 +43,17 @@ toolBezierExtension <- function(data, timeExtend) {
   nd <- ndata(data)
 
   # If Bezier extension would lead to negative GDP, set bezier coordinates equal to start point
-  # (comes down to a constant extension instead)
-  for (i in 1:nr) for (j in 1:nd) if (bc[i, 2100, j] == 0 || bc[i, 2150, j] < 0) bc[i, , j] <- bc[i, 2100, j]
+  # (comes down to a constant extension instead).
+  # Magpie implementation would look like this:
+  # Code: for (i in 1:nr) for (j in 1:nd) if (bc[i, 2100, j] == 0 || bc[i, 2150, j] < 0) bc[i, , j] <- bc[i, 2100, j]
+  # but it is faster to transform into tibble, do the operation there, and transform back
+  bc <- bc %>%
+    tibble::as_tibble() %>%
+    tidyr::pivot_wider(names_from = "year", names_prefix = "y") %>%
+    dplyr::mutate(dplyr::across(tidyselect::starts_with("y"),
+                                ~dplyr::if_else(.data$y2150 < 0 | .data$y2100 == 0, .data$y2100, .x))) %>%
+    tidyr::pivot_longer(tidyselect::starts_with("y"), names_to = "year", names_transform = ~sub("y", "", .x)) %>%
+    as.magpie(spatial = "region", temporal = "year", tidy = TRUE)
 
   x <- rep(c(2100, 2110, 2140, 2150), nr * nd)
   y <- purrr::reduce(purrr::map(1:nd, ~purrr::reduce(purrr::map(1:nr, function(y) bc[y, , .x]), c)), c)
@@ -55,7 +72,9 @@ toolBezierExtension <- function(data, timeExtend) {
   closestYear <- function(x) purrr::map_int(x, ~timeExtend[which.min(abs(.x - timeExtend))])
 
   extension <- purrr::map2(bezierPoints, id,
-                           ~.x %>% tibble::as_tibble() %>% dplyr::mutate(id = .y)) %>%
+                           ~.x %>%
+                             tibble::as_tibble() %>%
+                             dplyr::mutate(id = .y)) %>%
     purrr::list_rbind() %>%
     # Complicated / elegant use of function factories to get closest points to timeExtend coordinates
     # First create columns with distance to timeExtend points
@@ -65,7 +84,7 @@ toolBezierExtension <- function(data, timeExtend) {
     dplyr::mutate(year = closestYear(x)) %>%
     tidyr::separate_wider_delim("id", names = c("data", "iso3c"), delim = "-") %>%
     dplyr::select("iso3c", "year", "data", "y") %>%
-    as.magpie()
+    as.magpie(spatial = "iso3c", temporal = "year", tidy = TRUE)
 
   mbind(data, extension)
 }

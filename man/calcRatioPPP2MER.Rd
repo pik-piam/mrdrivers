@@ -16,7 +16,8 @@ if supplementary is set to TRUE.
 }
 \description{
 Get a conversion factor to convert GDP in constant 2017 Int$PPP into constant 2017 US$MER.
-Use the when argument to switch the year of the conversion factor. Source = WDI.
+Use the "when" argument to switch the year of the conversion factor. Source = WDI. Countries with missing data are
+filled in with 1. Regional aggregation is weighed by GDP from WDI-MI in the year set by "when".
 }
 \examples{
 \dontrun{
