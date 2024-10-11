@@ -15,7 +15,7 @@ See the &quot;Combining data sources with '-'&quot; section below for how to com
 
     <a class="navbar-brand me-2" href="../index.html">mrdrivers</a>
 
-    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">3.0.0</small>
+    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">3.0.1</small>
 
 
     <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbar" aria-controls="navbar" aria-expanded="false" aria-label="Toggle navigation">
@@ -78,7 +78,7 @@ Use calcGDPPast and calcGDPFuture only when trying to access specific GDP data.<
 <dt id="arg-unit">unit<a class="anchor" aria-label="anchor" href="#arg-unit"></a></dt>
 <dd><p>A string specifying the unit of GDP. Can be either:</p><ul><li><p>"constant 2017 Int$PPP" (default): Scenarios are constructed in constant 2017 Int$PPP.</p></li>
 <li><p>"constant 2017 US$MER": Scenarios are constructed in constant 2017 Int$PPP and then converted with
-<code><a href="https://pik-piam.github.io/GDPuc/reference/convertGDP.html" class="external-link">GDPuc::convertGDP()</a></code>.</p></li>
+<code><a href="https://pik-piam.github.io/GDPuc/reference/convertGDP.html" class="external-link">GDPuc::toolConvertGDP()</a></code>.</p></li>
 </ul><p>In all cases, GDP is returned in millions.</p></dd>
 
 
