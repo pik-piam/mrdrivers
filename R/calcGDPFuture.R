@@ -71,7 +71,7 @@ calcInternalGDPFutureSSPs <- function(unit) {
 
     y1 <- getYears(data2017PPP)[getYears(data2017PPP, as.integer = TRUE) <= c15]
     dataNearFut <- data2017PPP[, y1, ] %>%
-      GDPuc::convertGDP("constant 2017 Int$PPP", unit, replace_NAs = c("linear", "no_conversion"))
+      GDPuc::toolConvertGDP("constant 2017 Int$PPP", unit, replace_NAs = c("linear", "no_conversion"))
 
     y2 <- getYears(data2017PPP)[getYears(data2017PPP, as.integer = TRUE) > c15 &
                                   getYears(data2017PPP, as.integer = TRUE) < 2100]
@@ -108,7 +108,7 @@ calcInternalGDPFutureSSPs <- function(unit) {
 
   # If unit was in $MER
   if (constructUnit != unit) {
-    data <- GDPuc::convertGDP(data, constructUnit, unit, replace_NAs = c("linear", "no_conversion"))
+    data <- GDPuc::toolConvertGDP(data, constructUnit, unit, replace_NAs = c("linear", "no_conversion"))
   }
 
   list(x = data, weight = NULL, unit = glue("mil. {unit}"), description = "SSP projections")
@@ -133,7 +133,7 @@ calcInternalGDPFutureSSP2EU <- function(unit) {
   euCountries <- toolGetEUcountries()
 
   dataSSP2EU <- readSource("EurostatPopGDP", "GDP")[euCountries, , ] %>%
-    GDPuc::convertGDP("constant 2015 Int$PPP", unit, replace_NAs = c("linear", "no_conversion"))
+    GDPuc::toolConvertGDP("constant 2015 Int$PPP", unit, replace_NAs = c("linear", "no_conversion"))
   grShort <- readSource("EurostatPopGDP", "GDPgr_projections_short")[euCountries, , ]
   grLong  <- readSource("EurostatPopGDP", "GDPgr_projections_long")[euCountries, , ]
 
@@ -160,6 +160,6 @@ calcInternalGDPFutureSSP2EU <- function(unit) {
 
 calcInternalGDPMI <- function(unit) {
   data <- readSource("MissingIslands", "gdp") %>%
-    GDPuc::convertGDP("constant 2005 Int$PPP", unit, replace_NAs = c("linear", "no_conversion"))
+    GDPuc::toolConvertGDP("constant 2005 Int$PPP", unit, replace_NAs = c("linear", "no_conversion"))
   list(x = data, weight = NULL, unit = glue("mil. {unit}"), description = "MI projections")
 }

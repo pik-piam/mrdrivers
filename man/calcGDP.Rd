@@ -27,7 +27,7 @@ calcGDPpc(
 \itemize{
 \item "constant 2017 Int$PPP" (default): Scenarios are constructed in constant 2017 Int$PPP.
 \item "constant 2017 US$MER": Scenarios are constructed in constant 2017 Int$PPP and then converted with
-\code{\link[GDPuc:convertGDP]{GDPuc::convertGDP()}}.
+\code{\link[GDPuc:convertGDP]{GDPuc::toolConvertGDP()}}.
 }
 In all cases, GDP is returned in millions.}
 

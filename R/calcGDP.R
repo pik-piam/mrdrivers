@@ -20,7 +20,7 @@
 #' \itemize{
 #'   \item "constant 2017 Int$PPP" (default): Scenarios are constructed in constant 2017 Int$PPP.
 #'   \item "constant 2017 US$MER": Scenarios are constructed in constant 2017 Int$PPP and then converted with
-#'   [GDPuc::convertGDP()].
+#'   [GDPuc::toolConvertGDP()].
 #' }
 #' In all cases, GDP is returned in millions.
 #'
@@ -84,7 +84,7 @@ calcGDP <- function(scenario = c("SSPs", "SDPs", "SSP2EU"),
   # Convert to US$MER if required
   if (grepl("US\\$MER", unit)) {
     # Convert by interpolating and extrapolating missing conversion factors when possible.
-    gdp$x <- GDPuc::convertGDP(gdp$x,
+    gdp$x <- GDPuc::toolConvertGDP(gdp$x,
                                unit_in = "constant 2017 Int$PPP",
                                unit_out = "constant 2017 US$MER",
                                replace_NAs = c("linear", "no_conversion"))
