@@ -54,7 +54,7 @@ calcInternalGDPPast <- function(GDPPast, unit) { # nolint
 calcInternalGDPPastWDI <- function(unit) {
   # "NY.GDP.MKTP.PP.KD" = GDP in constant 2017 Int$PPP (as of time of writing this function)
   data <- readSource("WDI", "NY.GDP.MKTP.PP.KD") %>%
-    GDPuc::convertGDP("constant 2017 Int$PPP", unit, replace_NAs = c("linear", "no_conversion"))
+    GDPuc::toolConvertGDP("constant 2017 Int$PPP", unit, replace_NAs = c("linear", "no_conversion"))
 
   data <- fillWithWBFromJames2019(data, unit)
 
@@ -66,7 +66,7 @@ calcInternalGDPPastEurostat <- function(unit) {
   euCountries <- toolGetEUcountries()
 
   data <- readSource("EurostatPopGDP", "GDP")[euCountries, , ] %>%
-    GDPuc::convertGDP("constant 2015 Int$PPP", unit, replace_NAs = c("linear", "no_conversion"))
+    GDPuc::toolConvertGDP("constant 2015 Int$PPP", unit, replace_NAs = c("linear", "no_conversion"))
 
   data <- fillWithWBFromJames2019(data, unit)
   data <- data %>% toolCountryFill(fill = 0) %>% suppressMessages()
@@ -79,7 +79,7 @@ calcInternalGDPPastEurostat <- function(unit) {
 # Using mainly growth rates, since conversion of James2019 data into 2005 Int$PPP not certain to be correct.
 fillWithWBFromJames2019 <- function(data, unit) {
   gdppc <- readSource("James2019", "WB_USD05_PPP_pc") %>%
-    GDPuc::convertGDP("constant 2005 Int$PPP", unit, replace_NAs = c("linear", "no_conversion"))
+    GDPuc::toolConvertGDP("constant 2005 Int$PPP", unit, replace_NAs = c("linear", "no_conversion"))
 
   pop <- readSource("WDI", "SP.POP.TOTL")
 

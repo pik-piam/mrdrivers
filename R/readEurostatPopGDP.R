@@ -77,7 +77,7 @@ convEurostatGDP <- function(x) {
 
   # Convert from constant 2015 LCU to constant 2015 Int$PPP.
   getNames(x) <- "GDP"
-  GDPuc::convertGDP(x, "constant 2015 LCU", "constant 2015 Int$PPP", replace_NAs = c("linear", "no_conversion"))
+  GDPuc::toolConvertGDP(x, "constant 2015 LCU", "constant 2015 Int$PPP", replace_NAs = c("linear", "no_conversion"))
 }
 
 convEurostatGDPgrProjectionsShort <- function(x) {

@@ -3,6 +3,7 @@
 export(toolGetScenarioDefinition)
 export(toolGetUnitDollar)
 exportPattern("^((calc(GDP|GDPpc|Population|Labour|Urban)(Past|Future|$))|read|download)")
+import(GDPuc)
 import(madrat)
 import(magclass)
 importFrom(glue,glue)
