@@ -14,12 +14,12 @@ readIMF <- function() {
   # Define what data, i.e.which "WEO subject codes", to keep: here GDPpc and current account balance
   myWEOCodes <- c("NGDPRPPPPC", "BCA")
 
-  my_locale <- readr::default_locale()
-  my_locale$encoding <- "UTF-16LE"
+  myLocale <- readr::default_locale()
+  myLocale$encoding <- "UTF-16LE"
 
   weoData <- readr::read_tsv("WEOApr2024all.ashx",
                              col_types = c(.default = "c"),
-                             locale = my_locale,
+                             locale = myLocale,
                              na = c("", "n/a", "--"),
                              progress = FALSE) %>%
     dplyr::filter(.data$`WEO Subject Code` %in% myWEOCodes) %>%
@@ -44,9 +44,13 @@ readIMF <- function() {
 #' @param subtype Use to filter the IMF data
 #' @order 3
 convertIMF <- function(x, subtype = "all") {
+  if (!subtype %in% c("all", "GDPpc", "BCA")) {
+    stop("Bad input for readIMF. Invalid 'subtype' argument. Available subtypes are 'all', 'GDPpc', and 'BCA'.")
+  }
+
   # Use convert function to filter
   if (subtype == "GDPpc") {
-    h <-"Gross domestic product per capita, constant prices [Units Purchasing power parity; 2017 international dollar]"
+    h <- "Gross domestic product per capita, constant prices [Units Purchasing power parity; 2017 international dollar]"
     x <- x[, , h]
   }
   if (subtype == "BCA") x <- x[, , "Current account balance [Billions U.S. dollars]"]

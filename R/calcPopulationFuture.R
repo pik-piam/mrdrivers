@@ -1,97 +1,105 @@
-#' @rdname calcPopulationPast
-#' @param PopulationFuture A string designating the source for the future population data.
-#'   Available sources are:
-#'   \itemize{
-#'     \item "SSPs": From the Wittgenstein Center [here](http://pure.iiasa.ac.at/id/eprint/17550/) and
-#'                   [here](http://pure.iiasa.ac.at/id/eprint/16710/)
-#'     \item "SSP2EU": Combined SSP2 and Eurostat (for the EU countries) source
-#'     \item "SDPs":
-#'     \item "UN_PopDiv": United Nations
-#'     \item "MI": Missing island dataset
-#'   }
-calcPopulationFuture <- function(PopulationFuture = "SSPs-UN_PopDiv-MI") { # nolint
+#' @rdname calcGDPPast
+calcPopulationFuture <- function(futureData = "SSPs-UN_PopDiv") {
   # Check user input
   toolCheckUserInput("PopulationFuture", as.list(environment()))
   # Call calcInternalPopulationFuture function the appropriate number of times (map) and combine (reduce)
   # !! Keep formula syntax for madrat caching to work
-  purrr::pmap(list("PopulationFuture" = unlist(strsplit(PopulationFuture, "-"))),
+  purrr::pmap(list("futureData" = unlist(strsplit(futureData, "-"))),
               ~calcOutput("InternalPopulationFuture", aggregate = FALSE, supplementary = TRUE, ...)) %>%
-    toolReduce(mbindOrFillWith = "fillWith")
+    toolListFillWith()
 }
 
-######################################################################################
-# Internal Function
-######################################################################################
-calcInternalPopulationFuture <- function(PopulationFuture) { # nolint
+calcInternalPopulationFuture <- function(futureData) {
   data <- switch(
-    PopulationFuture,
-    "SSPs"      = calcOutput("InternalPopulationFutureSSPs", aggregate = FALSE, supplementary = TRUE),
-    "SSP2"      = calcOutput("InternalPopulationFutureSSP2", aggregate = FALSE, supplementary = TRUE),
-    "SSP2EU"    = calcOutput("InternalPopulationFutureSSP2EU", aggregate = FALSE, supplementary = TRUE),
-    "SDPs"      = calcOutput("InternalPopulationFutureSDPs", aggregate = FALSE, supplementary = TRUE),
-    "UN_PopDiv" = calcOutput("InternalPopulationFutureUN_PopDiv", aggregate = FALSE, supplementary = TRUE),
-    "MI"        = calcOutput("InternalPopMI", aggregate = FALSE, supplementary = TRUE),
-    stop("Bad input for PopulationFuture. Invalid 'PopulationFuture' argument.")
+    futureData,
+    "SSPs"      = readSource("SSP", "pop"),
+    "SSP2"      = readSource("SSP", "pop", "SSP2"),
+    "SSP2EU"    = setNames(readSource("SSP", "pop", "SSP2"), "SSP2EU"),
+    "SDPs"      = toolPopulationFutureSDPs(),
+    "UN_PopDiv" = readSource("UN_PopDiv", "pop", "medium"),
+    "ADBs"      = readSource("ADB", "pop"),
+    stop("Bad input for calcPopulationFuture. Invalid 'futureData' argument.")
   )
 
-  data$x <- toolFinishingTouches(data$x)
-  data
+  list(x = data, weight = NULL, unit = "million", description = glue("{futureData} projections"))
+}
+
+toolPopulationFutureSDPs <- function(sdps = c("SDP", "SDP_EI", "SDP_MC", "SDP_RC")) {
+  popSSP1 <- readSource("SSP", "pop", "SSP1") # nolint: object_usage_linter.
+  purrr::map(sdps, ~setNames(popSSP1, .x)) %>% mbind()
+}
+
+
+#' @rdname calcGDPPast
+calcLabourFuture <- function(futureData = "SSPs") {
+  # Check user input
+  toolCheckUserInput("LabourFuture", as.list(environment()))
+  # Call calcInternalPopulationFuture function the appropriate number of times (map) and combine (reduce)
+  # !! Keep formula syntax for madrat caching to work
+  purrr::pmap(list("futureData" = unlist(strsplit(futureData, "-"))),
+              ~calcOutput("InternalLabourFuture", aggregate = FALSE, supplementary = TRUE, ...)) %>%
+    toolListFillWith()
+}
+
+calcInternalLabourFuture <- function(futureData) {
+  data <- switch(
+    futureData,
+    "SSPs"      = readSource("SSP", "lab"),
+    "SSP2"      = readSource("SSP", "lab", "SSP2"),
+    "SSP2EU"    = setNames(readSource("SSP", "lab", "SSP2"), "SSP2EU"),
+    "SDPs"      = toolLabourFutureSDPs(),
+    "UN_PopDiv" = readSource("UN_PopDiv", "lab", "medium"),
+    stop("Bad input for calcLabour. Invalid 'futureData' argument.")
+  )
+
+  list(x = data, weight = NULL, unit = "million", description = glue("{futureData} projections"))
+}
+
+toolLabourFutureSDPs <- function(sdps = c("SDP", "SDP_EI", "SDP_MC", "SDP_RC")) {
+  labSSP1 <- readSource("SSP", "lab", "SSP1") # nolint: object_usage_linter.
+  purrr::map(sdps, ~setNames(labSSP1, .x)) %>% mbind()
 }
 
 
 
-######################################################################################
-# Functions
-######################################################################################
-calcInternalPopulationFutureSSPs <- function() { # nolint
-  data <- readSource("SSP", "pop")
-  getNames(data) <- paste0("pop_", getNames(data))
-  list(x = data, weight = NULL, unit = "million", description = "SSP projections")
+#' @rdname calcGDPPast
+calcUrbanFuture <- function(futureData = "SSPs") {
+  data <- switch(
+    futureData,
+    "SSPs"   = toolUrbanFutureSSPs(),
+    "SSP2"   = toolUrbanFutureSSPs("SSP2"),
+    "SSP2EU" = setNames(toolUrbanFutureSSPs("SSP2"), "SSP2EU"),
+    "SDPs"   = toolUrbanFutureSDPs(),
+    stop("Bad input for calcUrbanFuture. Invalid 'futureData' argument.")
+  )
+
+  # Use population as weight. Give weight same names as data, so that aggregate does not mess up data dim.
+  weight <- calcOutput("PopulationFuture", futureData = futureData, aggregate = FALSE)
+  getNames(weight) <- getNames(data)
+
+  list(x = data, weight = weight, unit = "share of population", description = glue("{futureData} projections"))
 }
 
-calcInternalPopulationFutureSSP2 <- function() { # nolint
-  data <- calcOutput("InternalPopulationFutureSSPs", aggregate = FALSE)[, , "pop_SSP2"]
-  list(x = data, weight = NULL, unit = "million", description = "SSP2 projections")
+toolUrbanFutureSSPs <- function(ssps = c("SSP1", "SSP2", "SSP3", "SSP4", "SSP5")) {
+  data <- readSource("SSP", "urb", ssps)
+  # Drop 2010 and 2015 values, and add missing years.
+  data <- data[, c(2010, 2015), , invert = TRUE]
+  time_interpolate(data, seq(2025, 2095, by = 10), integrate_interpolated_years = TRUE)
 }
 
-calcInternalPopulationFutureSDPs <- function() { # nolint
-  data_SSP1 <- calcOutput("InternalPopulationFutureSSPs", aggregate = FALSE)[, , "pop_SSP1"] # nolint
-
-  data <- purrr::map(c("SDP", "SDP_EI", "SDP_RC", "SDP_MC"),
-                     ~ setNames(data_SSP1, gsub("SSP1", .x, getNames(data_SSP1)))) %>%
-    mbind()
-  list(x = data, weight = NULL, unit = "million", description = "SSP1 projections")
-}
-
-calcInternalPopulationFutureSSP2EU <- function() { # nolint
-  dataEurostat <- readSource("EurostatPopGDP", "population_projections") * 1e-6
-  dataSSP2 <- calcOutput("InternalPopulationFutureSSPs", aggregate = FALSE)[, , "pop_SSP2"]
-
-  # Get EUR countries - GBR. (Great Britatin still in EUR mapping, but no Eurostat projections exist.)
-  euCountries <- toolGetEUcountries()
-
-  # Get common years
-  cy <- intersect(getYears(dataSSP2),  getYears(dataEurostat))
-
-  # Start with the SSP2 scenario until 2100. Change the name, and overwrite the EUR
-  # countries with the Eurostat data.
-  data <- dataSSP2[, getYears(dataSSP2)[getYears(dataSSP2, as.integer = TRUE) <= 2100], ] %>%
-    setNames("pop_SSP2EU")
-  data[euCountries, , ] <- 0
-  data[euCountries, cy, ] <- dataEurostat[euCountries, cy, ]
-  list(x = data,
-       weight = NULL,
-       unit = "million",
-       description = "SSP2 projections for non-EU countries, and EUROSTAT projections for EU countries")
-}
-
-calcInternalPopulationFutureUN_PopDiv <- function() { # nolint
-  data <- readSource("UN_PopDiv", "medium") * 1e-3
-  getNames(data) <- "pop_medium_variant"
-  list(x = data, weight = NULL, unit = "million", description = "UN_PopDiv projections")
-}
-
-calcInternalPopMI <- function() {
-  data <- readSource("MissingIslands", "pop")
-  list(x = data, weight = NULL, unit = "million", description = "MI projections")
+# The SDP urban population share scenarios are mapped from the SSP scenarios.
+# The SDP, SDP_EI and SDP_MC have high urban pop share from SSP1. The SDP_RC scenario has low urban pop share from
+# SSP3 for OECD countries, and medium urban pop share from SSP2 for non-OECD countries.
+# The alternative scenario combinations SDP_LS and SDP_GS are not coded explicitly here.
+# They will re-use urban population share settings: SDP_LS = SDP_MC (Green cities), SDP_GS = SDP_EI (Tech cities).
+toolUrbanFutureSDPs <- function() {
+  urbSSPs <- toolUrbanFutureSSPs()
+  # SSP1 for the first 3 SDP scenarios
+  urbSDPs <- purrr::map(c("SDP", "SDP_EI", "SDP_MC"), ~setNames(urbSSPs[, , "SSP1"], .x)) %>% mbind()
+  # SSP2 and SSP3 for SDP_RC
+  urbSDPrc <- setNames(urbSSPs[, , "SSP2"], "SDP_RC")
+  oecdMapping <- toolGetMapping("regionmappingOECD.csv", type = "regional", where = "mappingfolder")
+  oecdCountries <- oecdMapping[oecdMapping$RegionCode == "OECD", "CountryCode"]
+  urbSDPrc[oecdCountries, , ] <- urbSSPs[oecdCountries, , "SSP3"]
+  mbind(urbSDPs, urbSDPrc)
 }

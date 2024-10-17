@@ -7,7 +7,7 @@
 #' @inherit madrat::readSource return
 #' @seealso [madrat::readSource()] and [madrat::downloadSource()]
 #' @examples \dontrun{
-#' readSource("MissingIslands", subtype = "pop", convert = FALSE)
+#' readSource("MissingIslands", subtype = "pop")
 #' }
 #' @order 2
 readMissingIslands <- function(subtype) {
@@ -19,11 +19,17 @@ readMissingIslands <- function(subtype) {
 }
 
 
-
 #' @rdname readMissingIslands
 #' @param x MAgPIE object returned by readMissingIslands
 #' @order 3
-convertMissingIslands <- function(x) {
+convertMissingIslands <- function(x, subtype) {
+  if (subtype == "gdp") {
+    x <- GDPuc::toolConvertGDP(x,
+                               unit_in = "constant 2005 Int$PPP",
+                               unit_out = toolGetUnitDollar(inPPP = TRUE),
+                               replace_NAs = c("linear", "no_conversion"))
+  }
+
   toolGeneralConvert(x, note = FALSE)
 }
 
