@@ -24,65 +24,70 @@ test_that("set names", {
   expectCorrectSetNames(calcOutput("Urban", extension2150 = "none"))
   expectCorrectSetNames(calcOutput("Labour", extension2150 = "none"))
   expectCorrectSetNames(calcOutput("GDPPast"))
-  expectCorrectSetNames(calcOutput("GDPFuture", GDPFuture = "SSPs", unit = "constant 2017 Int$PPP"))
+  expectCorrectSetNames(calcOutput("GDPFuture", futureData = "SSPs"))
   expectCorrectSetNames(calcOutput("GDPpcPast"))
-  expectCorrectSetNames(calcOutput("GDPpcFuture", GDPpcFuture = "SSPs", unit = "constant 2017 Int$PPP"))
+  expectCorrectSetNames(calcOutput("GDPpcFuture"))
   expectCorrectSetNames(calcOutput("GDP", extension2150 = "none"))
   expectCorrectSetNames(calcOutput("GDPpc", extension2150 = "none"))
-  # I want to keep; expectCorrectSetNames(calcOutput("RatioPPP2MER"))
+  expectCorrectSetNames(calcOutput("RatioPPP2MER"))
 })
 
 
 # Save all calcOutputs for later use
-calcs <- list("PopulationPast" = calcOutput("PopulationPast"),
-              "PopulationFuture" = calcOutput("PopulationFuture"),
-              "Population" = calcOutput("Population", extension2150 = "none"),
-              "UrbanPast" = calcOutput("UrbanPast"),
-              "UrbanFuture" = calcOutput("UrbanFuture"),
-              "Urban" = calcOutput("Urban", extension2150 = "none"),
-              "GDPpcPast" = calcOutput("GDPpcPast"),
-              "GDPpcFuture" = calcOutput("GDPpcFuture", GDPpcFuture = "SSPs", unit = "constant 2017 Int$PPP"),
-              "GDPpc" = calcOutput("GDPpc", extension2150 = "none"),
-              "GDPPast" = calcOutput("GDPPast"),
-              "GDPFuture" = calcOutput("GDPFuture", GDPFuture = "SSPs", unit = "constant 2017 Int$PPP"),
-              "GDP" = calcOutput("GDP", extension2150 = "none"),
-              "Labour" = calcOutput("Labour", extension2150 = "none"))
+calcs <- list(
+  "PopulationPast" = calcOutput("PopulationPast"),
+  "PopulationFuture" = calcOutput("PopulationFuture"),
+  "Population" = calcOutput("Population", extension2150 = "none"),
+  "UrbanPast" = calcOutput("UrbanPast"),
+  "UrbanFuture" = calcOutput("UrbanFuture"),
+  "Urban" = calcOutput("Urban", extension2150 = "none"),
+  "GDPpcPast" = calcOutput("GDPpcPast"),
+  "GDPpcFuture" = calcOutput("GDPpcFuture"),
+  "GDPpc" = calcOutput("GDPpc", extension2150 = "none"),
+  "GDPPast" = calcOutput("GDPPast"),
+  "GDPFuture" = calcOutput("GDPFuture", futureData = "SSPs"),
+  "GDP" = calcOutput("GDP", extension2150 = "none"),
+  "Labour" = calcOutput("Labour", extension2150 = "none")
+)
 
-calcs2 <- list("PopulationPast" = calcOutput("PopulationPast", aggregate = FALSE),
-               "PopulationFuture" = calcOutput("PopulationFuture", aggregate = FALSE),
-               "Population" = calcOutput("Population", extension2150 = "none", aggregate = FALSE),
-               "UrbanPast" = calcOutput("UrbanPast", aggregate = FALSE),
-               "UrbanFuture" = calcOutput("UrbanFuture", aggregate = FALSE),
-               "Urban" = calcOutput("Urban", extension2150 = "none", aggregate = FALSE),
-               "GDPpcPast" = calcOutput("GDPpcPast", aggregate = FALSE),
-               "GDPpcFuture" = calcOutput("GDPpcFuture", GDPpcFuture = "SSPs", unit = "constant 2017 Int$PPP", aggregate = FALSE),
-               "GDPpc" = calcOutput("GDPpc", extension2150 = "none", aggregate = FALSE),
-               "GDPPast" = calcOutput("GDPPast", aggregate = FALSE),
-               "GDPFuture" = calcOutput("GDPFuture", GDPFuture = "SSPs", unit = "constant 2017 Int$PPP", aggregate = FALSE),
-               "GDP" = calcOutput("GDP", extension2150 = "none", aggregate = FALSE),
-               "Labour" = calcOutput("Labour", extension2150 = "none", aggregate = FALSE))
+calcs2 <- list(
+  "PopulationPast" = calcOutput("PopulationPast", aggregate = FALSE),
+  "PopulationFuture" = calcOutput("PopulationFuture", aggregate = FALSE),
+  "Population" = calcOutput("Population", extension2150 = "none", aggregate = FALSE),
+  "UrbanPast" = calcOutput("UrbanPast", aggregate = FALSE),
+  "UrbanFuture" = calcOutput("UrbanFuture", aggregate = FALSE),
+  "Urban" = calcOutput("Urban", extension2150 = "none", aggregate = FALSE),
+  "GDPpcPast" = calcOutput("GDPpcPast", aggregate = FALSE),
+  "GDPpcFuture" = calcOutput("GDPpcFuture", aggregate = FALSE),
+  "GDPpc" = calcOutput("GDPpc", extension2150 = "none", aggregate = FALSE),
+  "GDPPast" = calcOutput("GDPPast", aggregate = FALSE),
+  "GDPFuture" = calcOutput("GDPFuture", aggregate = FALSE),
+  "GDP" = calcOutput("GDP", extension2150 = "none", aggregate = FALSE),
+  "Labour" = calcOutput("Labour", extension2150 = "none", aggregate = FALSE)
+)
 
-calcs3 <- list("PopulationPast" = calcOutput("PopulationPast", supplementary = TRUE),
-               "PopulationFuture" = calcOutput("PopulationFuture", supplementary = TRUE),
-               "Population" = calcOutput("Population", extension2150 = "none", supplementary = TRUE),
-               "UrbanPast" = calcOutput("UrbanPast", supplementary = TRUE),
-               "UrbanFuture" = calcOutput("UrbanFuture", supplementary = TRUE),
-               "Urban" = calcOutput("Urban", extension2150 = "none", supplementary = TRUE),
-               "GDPpcPast" = calcOutput("GDPpcPast", supplementary = TRUE),
-               "GDPpcFuture" = calcOutput("GDPpcFuture", GDPpcFuture = "SSPs", unit = "constant 2017 Int$PPP", supplementary = TRUE),
-               "GDPpc" = calcOutput("GDPpc", extension2150 = "none", supplementary = TRUE),
-               "GDPPast" = calcOutput("GDPPast", supplementary = TRUE),
-               "GDPFuture" = calcOutput("GDPFuture", GDPFuture = "SSPs", unit = "constant 2017 Int$PPP", supplementary = TRUE),
-               "GDP" = calcOutput("GDP", extension2150 = "none", supplementary = TRUE),
-               "Labour" = calcOutput("Labour", extension2150 = "none", supplementary = TRUE))
+calcs3 <- list(
+  "PopulationPast" = calcOutput("PopulationPast", supplementary = TRUE),
+  "PopulationFuture" = calcOutput("PopulationFuture", supplementary = TRUE),
+  "Population" = calcOutput("Population", extension2150 = "none", supplementary = TRUE),
+  "UrbanPast" = calcOutput("UrbanPast", supplementary = TRUE),
+  "UrbanFuture" = calcOutput("UrbanFuture", supplementary = TRUE),
+  "Urban" = calcOutput("Urban", extension2150 = "none", supplementary = TRUE),
+  "GDPpcPast" = calcOutput("GDPpcPast", supplementary = TRUE),
+  "GDPpcFuture" = calcOutput("GDPpcFuture",  supplementary = TRUE),
+  "GDPpc" = calcOutput("GDPpc", extension2150 = "none", supplementary = TRUE),
+  "GDPPast" = calcOutput("GDPPast", supplementary = TRUE),
+  "GDPFuture" = calcOutput("GDPFuture", supplementary = TRUE),
+  "GDP" = calcOutput("GDP", extension2150 = "none", supplementary = TRUE),
+  "Labour" = calcOutput("Labour", extension2150 = "none", supplementary = TRUE)
+)
 
 
 test_that("variable names", {
-
   expectCorrectVariableNames <- function(x, y) {
     correctNames <- paste0(y, "_",
-                            c("SSP1", "SSP2", "SSP3", "SSP4", "SSP5",
-                              "SDP", "SDP_EI", "SDP_MC", "SDP_RC", "SSP2EU"))
+                           c("SSP1", "SSP2", "SSP3", "SSP4", "SSP5",
+                             "SDP", "SDP_EI", "SDP_MC", "SDP_RC", "SSP2EU"))
     expect_equal(getNames(calcs[[x]]), correctNames)
     expect_equal(getNames(calcs2[[x]]), correctNames)
   }
@@ -115,8 +120,8 @@ test_that("GDPpc is equal to GDP divided by pop", {
   x <- calcOutput("GDPpc", extension2150 = "none", naming = "scenario", aggregate = FALSE)
   y <- {
     calcOutput("GDP", extension2150 = "none", naming = "scenario", aggregate = FALSE) /
-    calcOutput("Population", extension2150 = "none", naming = "scenario", aggregate = FALSE, years = getYears(x))
-    }
+      calcOutput("Population", extension2150 = "none", naming = "scenario", aggregate = FALSE, years = getYears(x))
+  }
   # Remove comments before comparing
   comment(x) <- NULL
   expect_equal(x, y)
@@ -164,7 +169,7 @@ test_that("GDPpc factored by its weight is equal to GDP, in MER", {
   l <- calcOutput("GDPpc",
                   extension2150 = "none",
                   naming = "scenario",
-                  unit = "constant 2005 US$MER",
+                  unit = "constant 2017 US$MER",
                   aggregate = FALSE,
                   supplementary = TRUE)
   x <- l$x * l$weight
@@ -172,7 +177,7 @@ test_that("GDPpc factored by its weight is equal to GDP, in MER", {
   y <- calcOutput("GDP",
                   extension2150 = "none",
                   naming = "scenario",
-                  unit = "constant 2005 US$MER",
+                  unit = "constant 2017 US$MER",
                   aggregate = FALSE)
 
   # Remove comments before comparing
@@ -183,18 +188,18 @@ test_that("GDPpc factored by its weight is equal to GDP, in MER", {
 test_that("ppp2mer is consistent with GDP in PPP and MER", {
   gdp1 <- calcOutput("GDP", unit = "constant 2017 US$MER", aggregate = FALSE)
   gdp2 <- calcOutput("GDP", unit = "constant 2017 Int$PPP", aggregate = FALSE)
-  ppp2mer_def <- calcOutput("RatioPPP2MER", aggregate = FALSE)
+  ppp2merDef <- calcOutput("RatioPPP2MER", aggregate = FALSE)
 
-  diff <- gdp1 / gdp2 - ppp2mer_def
+  diff <- gdp1 / gdp2 - ppp2merDef
 
   expect_lt(max(diff), 1e-12)
 
   # On regional level
   gdp1 <- calcOutput("GDP", unit = "constant 2017 US$MER")
   gdp2 <- calcOutput("GDP", unit = "constant 2017 Int$PPP")
-  ppp2mer_def <- calcOutput("RatioPPP2MER")
+  ppp2merDef <- calcOutput("RatioPPP2MER")
 
-  diff <- gdp1 / gdp2 - ppp2mer_def
+  diff <- gdp1 / gdp2 - ppp2merDef
 
   expect_lt(max(diff[, 2020, ]), 1e-2)
 })

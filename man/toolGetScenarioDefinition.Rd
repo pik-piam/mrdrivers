@@ -33,7 +33,7 @@ are constructed, i.e. what past data, future data and harmonization methods are 
 \examples{
 toolGetScenarioDefinition()
 toolGetScenarioDefinition(driver = "GDP")
-toolGetScenarioDefinition(scen = "SSP2EU")
+toolGetScenarioDefinition(scen = "SSP2")
 toolGetScenarioDefinition(driver = "Population", scen = "SSPs", aslist = TRUE)
 
 }

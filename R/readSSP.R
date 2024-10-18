@@ -1,6 +1,7 @@
 #' Read SSP
 #'
-#' Read-in an SSP data as magclass object
+#' Read-in an SSP data as magclass object. Filter for subtype and subset in the convert Function to use common read
+#' cache (speeds up the compuations).
 #'
 #' @inherit madrat::readSource return
 #' @seealso [madrat::readSource()]
@@ -15,16 +16,16 @@ readSSP <- function() {
                          col_types = myColTypes,
                          progress = FALSE) %>%
     tidyr::unite("Model.Scenario.Variable.Unit", c("Model", "Scenario", "Variable", "Unit"), sep = ".") %>%
-    tidyr::pivot_longer(cols = where(is.numeric), names_to = "year")
+    tidyr::pivot_longer(cols = tidyselect::where(is.numeric), names_to = "year")
 
   # The above SSP release 3.0.1 does not have any data on urban population share. So we get that from an older release.
   myColTypes <- paste(c(rep.int("c", 5), rep.int("d", 41)), collapse = "")
-  x_urb <- readr::read_csv("SspDb_country_data_2013-06-12.csv.zip", col_types = myColTypes, progress = FALSE) %>%
+  xUrb <- readr::read_csv("SspDb_country_data_2013-06-12.csv.zip", col_types = myColTypes, progress = FALSE) %>%
     dplyr::filter(.data$MODEL == "NCAR", .data$VARIABLE == "Population|Urban|Share") %>%
     tidyr::unite("Model.Scenario.Variable.Unit",  c("MODEL", "SCENARIO", "VARIABLE", "UNIT"), sep = ".") %>%
     # Drop columns (years) with only NAs
     dplyr::select(tidyselect::vars_select_helpers$where(~ !all(is.na(.x)))) %>%
-    tidyr::pivot_longer(cols = where(is.numeric), names_to = "year") %>%
+    tidyr::pivot_longer(cols = tidyselect::where(is.numeric), names_to = "year") %>%
     # Convert Region codes now (normally only done in convert) to harmonize with region codes in x. Use custom match
     # with the country.names in x to make sure that when the country.names are converted to iso3c in convert,
     # no duplicates appear.
@@ -42,7 +43,7 @@ readSSP <- function() {
                                                                        "VNM" = "Viet Nam")),
                   .keep = "unused")
 
-  dplyr::bind_rows(x, x_urb) %>%
+  dplyr::bind_rows(x, xUrb) %>%
     as.magpie(spatial = "Region", temporal = "year", tidy = TRUE, filter = FALSE)
 }
 
@@ -50,38 +51,39 @@ readSSP <- function() {
 #' @order 2
 #' @param x MAgPIE object returned from readSSP
 #' @param subtype A string, either "all", "gdp", "pop", "lab", "urb"
-convertSSP <- function(x, subtype = "all") {
-  # Filter for subtype in the convert Function to use common read cache
+#' @param subset A vector of strings designating the scenarios. Defaults to c("SSP1", "SSP2", "SSP3", "SSP4", "SSP5").
+#'   "Historical Reference" is also available as a scenario.
+convertSSP <- function(x, subtype = "all", subset = c("SSP1", "SSP2", "SSP3", "SSP4", "SSP5")) {
+  if (!subtype %in% c("all", "gdp", "pop", "lab", "urb")) {
+    stop(glue("Bad input for readSSP. Invalid 'subtype' argument. Available subtypes are 'all', 'gdp', 'pop', 'lab' \\
+              and 'urb'."))
+  }
+
   if (subtype == "gdp") {
     x <- mselect(x,
                  Model = "OECD ENV-Growth 2023",
-                 Scenario = c("SSP1", "SSP2", "SSP3", "SSP4", "SSP5"),
+                 Scenario = subset,
                  Variable = "GDP|PPP",
                  Unit = "billion USD_2017/yr")
+    # Convert from billions to millions
+    x <- x * 1e3
   }
   if (subtype == "pop") {
-    x <- mselect(x,
-                 Model = "IIASA-WiC POP 2023",
-                 Scenario = c("SSP1", "SSP2", "SSP3", "SSP4", "SSP5"),
-                 Variable = "Population",
-                 Unit = "million")
+    x <- mselect(x, Model = "IIASA-WiC POP 2023", Scenario = subset, Variable = "Population", Unit = "million")
   }
   if (subtype == "lab") {
     # Choose only age groups between 15 and 64
     agegrps <- getNames(x, dim = "Variable")[grepl("^Population(.*)(19|24|29|34|39|44|49|54|59|64)$",
                                                    getNames(x, dim = "Variable"))]
-    x <- mselect(x,
-                 Model = "IIASA-WiC POP 2023",
-                 Variable = agegrps,
-                 Unit = "million")
+    x <- mselect(x, Model = "IIASA-WiC POP 2023", Scenario = subset, Variable = agegrps, Unit = "million")
   }
   if (subtype == "urb") {
-    x <- mselect(x,
-                 Model = "NCAR",
-                 Variable = "Population|Urban|Share",
-                 Unit = "%")
-    # Clean up Scenario names
+    x <- mselect(x, Model = "NCAR", Variable = "Population|Urban|Share", Unit = "%")
+    # Clean up Scenario names before filtering with subset
     getNames(x, dim = "Scenario") <- sub("_.*", "", getNames(x, dim = "Scenario"))
+    x <- mselect(x, Scenario = subset)
+    # Convert from percentage to share
+    x <- x / 100
   }
 
   # Reduce dimension by summation when possible
@@ -97,7 +99,7 @@ convertSSP <- function(x, subtype = "all") {
 }
 
 #' @rdname readSSP
-#' @order 1
+#' @order 3
 downloadSSP <- function() {
   stop("Manual download of SSP data required!")
   # Compose meta data

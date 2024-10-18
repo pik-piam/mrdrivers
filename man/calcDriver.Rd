@@ -9,8 +9,7 @@ calcDriver(
   scenario,
   popAsWeight = FALSE,
   naming = "indicator_scenario",
-  extension2150 = "bezier",
-  ...
+  extension2150 = "bezier"
 )
 }
 \arguments{
@@ -31,7 +30,7 @@ calcDriver(
 \item{naming}{A string giving the naming scheme of the data dimension. Can be either:
 \itemize{
 \item "indicator_scenario" (default): Returns names of the type "gdp_SSP2", or "pop_SSP2".
-\item "indicator.scenario": Returns names of the type "gdp.SSP2", or "pop.SSP2".
+\item "indicator.scenario": (deprecated) Returns names of the type "gdp.SSP2", or "pop.SSP2".
 \item "scenario": Returns names of the type "SSP2".
 }
 Set naming to "scenario" when you want to operate on SSP2 gdp and population data for instance, and not have to
@@ -45,15 +44,6 @@ their last year.
 \item "constant": The last value of the scenarios is taken as constant until 2150.
 \item "none": No extension.
 }}
-
-\item{...}{
-  Arguments passed on to \code{\link[=calcScenarioConstructor]{calcScenarioConstructor}}
-  \describe{
-    \item{\code{harmonization}}{A string designating the harmonization function.}
-    \item{\code{pastData}}{A string passed to the calc'Driver'Past function, e.g. \code{\link[=calcGDPPast]{calcGDPPast()}} or \code{\link[=calcPopulationPast]{calcPopulationPast()}}.}
-    \item{\code{futureData}}{A string passed to the calc'Driver'Future function, e.g. \code{\link[=calcGDPFuture]{calcGDPFuture()}} or
-\code{\link[=calcPopulationFuture]{calcPopulationFuture()}}.}
-  }}
 }
 \value{
 magpie object with the requested output data either on country or on
@@ -77,11 +67,6 @@ only one futuredata element is provided.
 }
 
 \seealso{
-\itemize{
-\item \code{\link[=calcGDPPast]{calcGDPPast()}}, \code{\link[=calcGDPFuture]{calcGDPFuture()}}, \code{\link[=calcGDPpcPast]{calcGDPpcPast()}} and \code{\link[=calcGDPpcFuture]{calcGDPpcFuture()}} for the builiding blocks of
-the GDP and GDPpc scenarios.
-\item \code{\link[=calcPopulationPast]{calcPopulationPast()}}, \code{\link[=calcPopulationFuture]{calcPopulationFuture()}}, \code{\link[=calcLabourPast]{calcLabourPast()}}, \code{\link[=calcLabourFuture]{calcLabourFuture()}}, \code{\link[=calcUrbanPast]{calcUrbanPast()}}
-and \code{\link[=calcUrbanFuture]{calcUrbanFuture()}} for the builiding blocks of the Population, Labor and Urban scenarios.
-}
+\code{\link[=calcGDPPast]{calcGDPPast()}} for the scenario builiding blocks.
 }
 \keyword{internal}

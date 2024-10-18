@@ -5,7 +5,7 @@
 #' @param returnOnlyBase TRUE or FALSE (default). If true only the base year is returned (as string).
 #' @param inPPP TRUE or FALSE (default). If TRUE the the string ends in 'Int$PPP', instead of 'Int$MER'.
 #'
-#' @return A string with the monetary unit: 'constant 2017 US$MER'.
+#' @return A string with the monetary unit: `r toolGetUnitDollar()`.
 #' @export
 #'
 #' @examples
