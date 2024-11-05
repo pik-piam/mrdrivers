@@ -267,12 +267,13 @@ computeSHAPEgrowth <- function(shapeGDPScenario, gdppcapSSP1, startFromYear) {
         stop("cannot create SHAPE GDP scenarios: unknown scenario")
       }
 
-      # for service (SDP_MC) and society (SDP_RC) additionally add a smoothing for 2020 and 2025 timesteps
-      # apply only 1/3 (2020-2024) and 2/3 (2025-2029) of the modification
+      # for service (SDP_MC) and society (SDP_RC) additionally add a smoothing for the first two 5-year timesteps
+      # (2025 and 2030 with current default startFromYear = 2025)
+      # apply only 1/3 of the modification for first 5 years, and 2/3 of the modification for another 5 years
       if (shapeGDPScenario %in% c("gdppc_SDP_MC", "gdppc_SDP_RC")) {
-        if (yr >= 2020 && yr < 2025) {
+        if (yr >= startFromYear && yr < startFromYear + 5) {
           modificationFactor[, yr, ] <- 1 / 3. * (modificationFactor[, yr, ] - 1) + 1
-        } else if (yr >= 2025 && yr < 2030) {
+        } else if (yr >= startFromYear + 5 && yr < startFromYear + 10) {
           modificationFactor[, yr, ] <- 2 / 3. * (modificationFactor[, yr, ] - 1) + 1
         }
       }
