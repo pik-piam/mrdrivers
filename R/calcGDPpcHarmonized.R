@@ -95,7 +95,7 @@ toolGDPpcHarmonizeSDP <- function(unit) {
   combined <- purrr::map(c("gdppc_SDP_EI", "gdppc_SDP_MC", "gdppc_SDP_RC"),
                          computeSHAPEgrowth,
                          gdppcapSSP1 = gdppcapSSP1,
-                         startFromYear = 2020) %>%
+                         startFromYear = 2025) %>%
     mbind() %>%
     mbind(gdppcapSDP)
 
