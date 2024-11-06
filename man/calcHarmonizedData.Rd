@@ -2,9 +2,9 @@
 % Please edit documentation in R/calcDriver.R
 \name{calcHarmonizedData}
 \alias{calcHarmonizedData}
-\title{Get Harmonized Data}
+\title{Get harmonized data}
 \usage{
-calcHarmonizedData(driver, scenario, pastData, futureData, harmonization, ...)
+calcHarmonizedData(driver, scenario)
 }
 \arguments{
 \item{driver}{A string designating the driver. Available drivers are:
@@ -18,15 +18,6 @@ calcHarmonizedData(driver, scenario, pastData, futureData, harmonization, ...)
 
 \item{scenario}{A string (or vector of strings) designating the scenario(s) to be returned. Use
 \code{\link[=toolGetScenarioDefinition]{toolGetScenarioDefinition()}} to learn what scenarios are available.}
-
-\item{pastData}{A string passed to the calc'Driver'Past function, e.g. \code{\link[=calcGDPPast]{calcGDPPast()}} or \code{\link[=calcPopulationPast]{calcPopulationPast()}}.}
-
-\item{futureData}{A string passed to the calc'Driver'Future function, e.g. \code{\link[=calcGDPFuture]{calcGDPFuture()}} or
-\code{\link[=calcPopulationFuture]{calcPopulationFuture()}}.}
-
-\item{harmonization}{A string designating the harmonization function.}
-
-\item{...}{Arguments passed on to harmonization functions}
 }
 \value{
 magpie object with the requested output data either on country or on
@@ -34,14 +25,9 @@ regional level depending on the choice of argument "aggregate" or a list of info
 if supplementary is set to TRUE.
 }
 \description{
-Get Harmonized Data
+Get harmonized data
 }
 \seealso{
-\itemize{
-\item \code{\link[=calcGDPPast]{calcGDPPast()}}, \code{\link[=calcGDPFuture]{calcGDPFuture()}}, \code{\link[=calcGDPpcPast]{calcGDPpcPast()}} and \code{\link[=calcGDPpcFuture]{calcGDPpcFuture()}} for the builiding blocks of
-the GDP and GDPpc scenarios.
-\item \code{\link[=calcPopulationPast]{calcPopulationPast()}}, \code{\link[=calcPopulationFuture]{calcPopulationFuture()}}, \code{\link[=calcLabourPast]{calcLabourPast()}}, \code{\link[=calcLabourFuture]{calcLabourFuture()}}, \code{\link[=calcUrbanPast]{calcUrbanPast()}}
-and \code{\link[=calcUrbanFuture]{calcUrbanFuture()}} for the builiding blocks of the Population, Labor and Urban scenarios.
-}
+\code{\link[=calcGDPPast]{calcGDPPast()}} for the scenario builiding blocks.
 }
 \keyword{internal}

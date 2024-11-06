@@ -2,19 +2,9 @@
 % Please edit documentation in R/calcDriver.R
 \name{calcScenarioConstructor}
 \alias{calcScenarioConstructor}
-\title{ScenarioConstructor}
+\title{Scenario construction}
 \usage{
-calcScenarioConstructor(
-  driver,
-  scenario,
-  pastData,
-  futureData,
-  harmonization,
-  extension2150,
-  naming,
-  popAsWeight,
-  ...
-)
+calcScenarioConstructor(driver, scenario, popAsWeight, naming, extension2150)
 }
 \arguments{
 \item{driver}{A string designating the driver. Available drivers are:
@@ -29,12 +19,16 @@ calcScenarioConstructor(
 \item{scenario}{A string (or vector of strings) designating the scenario(s) to be returned. Use
 \code{\link[=toolGetScenarioDefinition]{toolGetScenarioDefinition()}} to learn what scenarios are available.}
 
-\item{pastData}{A string passed to the calc'Driver'Past function, e.g. \code{\link[=calcGDPPast]{calcGDPPast()}} or \code{\link[=calcPopulationPast]{calcPopulationPast()}}.}
+\item{popAsWeight}{If TRUE, then population data of the same scenario is used as weight.}
 
-\item{futureData}{A string passed to the calc'Driver'Future function, e.g. \code{\link[=calcGDPFuture]{calcGDPFuture()}} or
-\code{\link[=calcPopulationFuture]{calcPopulationFuture()}}.}
-
-\item{harmonization}{A string designating the harmonization function.}
+\item{naming}{A string giving the naming scheme of the data dimension. Can be either:
+\itemize{
+\item "indicator_scenario" (default): Returns names of the type "gdp_SSP2", or "pop_SSP2".
+\item "indicator.scenario": (deprecated) Returns names of the type "gdp.SSP2", or "pop.SSP2".
+\item "scenario": Returns names of the type "SSP2".
+}
+Set naming to "scenario" when you want to operate on SSP2 gdp and population data for instance, and not have to
+worry about the conflicting names.}
 
 \item{extension2150}{A string specifying if/how the scenarios should be extended until 2150. Can be either:
 \itemize{
@@ -44,19 +38,6 @@ their last year.
 \item "constant": The last value of the scenarios is taken as constant until 2150.
 \item "none": No extension.
 }}
-
-\item{naming}{A string giving the naming scheme of the data dimension. Can be either:
-\itemize{
-\item "indicator_scenario" (default): Returns names of the type "gdp_SSP2", or "pop_SSP2".
-\item "indicator.scenario": Returns names of the type "gdp.SSP2", or "pop.SSP2".
-\item "scenario": Returns names of the type "SSP2".
-}
-Set naming to "scenario" when you want to operate on SSP2 gdp and population data for instance, and not have to
-worry about the conflicting names.}
-
-\item{popAsWeight}{If TRUE, then population data of the same scenario is used as weight.}
-
-\item{...}{Arguments passed on to the 'driver'Past, 'driver'Future and driver'Harmonization' functions.}
 }
 \value{
 magpie object with the requested output data either on country or on
@@ -64,7 +45,7 @@ regional level depending on the choice of argument "aggregate" or a list of info
 if supplementary is set to TRUE.
 }
 \description{
-ScenarioConstructor
+Scenario construction
 }
 \section{Combining data sources with "-"}{
 Data sources can be combined with "-" and passed to both the pastData and futureData arguments, i.e. "WDI-MI". This
@@ -72,11 +53,6 @@ signifies that WDI data will be taken first, but missing data will be then be fi
 }
 
 \seealso{
-\itemize{
-\item \code{\link[=calcGDPPast]{calcGDPPast()}}, \code{\link[=calcGDPFuture]{calcGDPFuture()}}, \code{\link[=calcGDPpcPast]{calcGDPpcPast()}} and \code{\link[=calcGDPpcFuture]{calcGDPpcFuture()}} for the builiding blocks of
-the GDP and GDPpc scenarios.
-\item \code{\link[=calcPopulationPast]{calcPopulationPast()}}, \code{\link[=calcPopulationFuture]{calcPopulationFuture()}}, \code{\link[=calcLabourPast]{calcLabourPast()}}, \code{\link[=calcLabourFuture]{calcLabourFuture()}}, \code{\link[=calcUrbanPast]{calcUrbanPast()}}
-and \code{\link[=calcUrbanFuture]{calcUrbanFuture()}} for the builiding blocks of the Population, Labor and Urban scenarios.
-}
+\code{\link[=calcGDPPast]{calcGDPPast()}} for the scenario builiding blocks.
 }
 \keyword{internal}

@@ -8,12 +8,14 @@
 \usage{
 downloadUN_PopDiv()
 
-readUN_PopDiv(subtype = "estimates")
+readUN_PopDiv(subtype, subset = "estimates")
 
 convertUN_PopDiv(x)
 }
 \arguments{
-\item{subtype}{String indicating version and sheet}
+\item{subtype}{Either "pop" or "lab".}
+
+\item{subset}{Either "estimates" or "medium".}
 
 \item{x}{MAgPIE object returned from readUN_PopDiv}
 }
@@ -24,7 +26,7 @@ should match the source data. The spatial dimension should either match the sour
 if the convert argument is set to TRUE, should be on ISO code country level.
 }
 \description{
-Read past UN population data.
+Read UN population data.
 }
 \seealso{
 \code{\link[madrat:readSource]{madrat::readSource()}} and \code{\link[madrat:downloadSource]{madrat::downloadSource()}}

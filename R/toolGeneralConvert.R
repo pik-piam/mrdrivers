@@ -3,8 +3,8 @@
 #' The most important and common "convert" operations are:
 #' \itemize{
 #'   \item removing undefined countries,
-#'   \item using default set names "iso3c", "year", and "variable",
 #'   \item substituting NAs, see the "substituteNAsWith" argument,
+#'   \item using default set names "iso3c", "year", and "variable",
 #'   \item fill in countries,
 #'   \item sort in chronological order.
 #' }
@@ -18,6 +18,11 @@
 #' @param ... Arguments passed on to [madrat::toolCountryFill()]
 #'
 #' @return A magpie object.
+#' @export
+#'
+#' @examples \dontrun{
+#' toolGeneralConvert(x)
+#' }
 toolGeneralConvert <- function(x,
                                useDefaultSetNames = TRUE,
                                countryFillWith = 0,
@@ -29,14 +34,14 @@ toolGeneralConvert <- function(x,
   # Remove any NA-countries
   x <- x[!is.na(getCells(x)), , ]
 
-  # Remove years which only contain NAs
-  x <- x[, !apply(x, 2, function(y) all(is.na(y))), ]
+  # Substitute NAs
+  x[is.na(x)] <- substituteNAsWith
+
+  # Remove years which only 0s or substituteNAsWith
+  x <- x[, purrr::map_lgl(getYears(x), ~!all(x[, .x, ] == substituteNAsWith) & !all(x[, .x, ] == 0)), ]
 
   # Use default setNames
   if (useDefaultSetNames) getSets(x) <- c("iso3c", "year", "variable")
-
-  # Substitute NAs
-  x[is.na(x)] <- substituteNAsWith
 
   # Check whether the country list agrees with the list of countries in the madrat library
   # and remove unrequired data, add missing data

@@ -1,6 +1,19 @@
+#' toolInterpolateAndExtrapolate
+#'
+#' Fill in years of partially missing countries through inter- and extrapolation.
+#'
+#' @param data A magpie object
+#' @param extrapolate TRUE or FALSE
+#' @keywords internal
+#' @return list
 toolInterpolateAndExtrapolate  <- function(data, extrapolate = TRUE) {
+  if (!is.magpie(data)) {
+    dataHelper <- data
+    data <- data$x
+  }
+
   # Get countries with partially missing values (exclude those that are still completely missing)
-  stillMissing <- where(setYears(dimSums(data, dim = 2), "y0000") == 0)$true$regions
+  stillMissing <- where(dimSums(data, dim = 2) == 0)$true$regions
   partiallyMissing <- setdiff(where(data == 0)$true$regions, stillMissing)
   # Interpolate and extrapolate
   for (i in partiallyMissing) {
@@ -15,5 +28,10 @@ toolInterpolateAndExtrapolate  <- function(data, extrapolate = TRUE) {
                                                 interpolated_year = missingyears,
                                                 extrapolation_type = "constant")
   }
-  data
+
+  if (!(exists("dataHelper", inherits = FALSE))) {
+    return(data)
+  }
+
+  list(x = data, weight = dataHelper$weight, unit = dataHelper$unit, description = dataHelper$description)
 }
