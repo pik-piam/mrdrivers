@@ -4,7 +4,6 @@ harmonization exercise between past data and future projections.
 By default the following scenarios are returned:
 the SSPs, i.e. SSP1-5
 the SDPs, i.e. SDP, SDP_EI, SDP_RC, and SDP_MC
-SSP2EU
 
 
 See the vignette: vignette("scenarios") for scenario options, definitions and references.'><meta property="og:description" content='Like all scenarios in mrdrivers, the Population, Labour and Urban population share scenarios are the result of a
@@ -12,7 +11,6 @@ harmonization exercise between past data and future projections.
 By default the following scenarios are returned:
 the SSPs, i.e. SSP1-5
 the SDPs, i.e. SDP, SDP_EI, SDP_RC, and SDP_MC
-SSP2EU
 
 
 See the vignette: vignette("scenarios") for scenario options, definitions and references.'></head><body>
@@ -23,7 +21,7 @@ See the vignette: vignette("scenarios") for scenario options, definitions and re
 
     <a class="navbar-brand me-2" href="../index.html">mrdrivers</a>
 
-    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">3.0.3</small>
+    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">4.0.0</small>
 
 
     <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbar" aria-controls="navbar" aria-expanded="false" aria-label="Toggle navigation">
@@ -48,7 +46,7 @@ See the vignette: vignette("scenarios") for scenario options, definitions and re
   <main id="main" class="col-md-9"><div class="page-header">
 
       <h1>Get population and labour scenarios</h1>
-      <small class="dont-index">Source: <a href="https://github.com/pik-piam/mrdrivers/blob/main/R/calcPopulation.R" class="external-link"><code>R/calcPopulation.R</code></a>, <a href="https://github.com/pik-piam/mrdrivers/blob/main/R/calcLabour.R" class="external-link"><code>R/calcLabour.R</code></a>, <a href="https://github.com/pik-piam/mrdrivers/blob/main/R/calcUrban.R" class="external-link"><code>R/calcUrban.R</code></a></small>
+      <small class="dont-index">Source: <a href="https://github.com/pik-piam/mrdrivers/blob/main/R/calcPopulation.R" class="external-link"><code>R/calcPopulation.R</code></a></small>
       <div class="d-none name"><code>calcPopulation.Rd</code></div>
     </div>
 
@@ -57,7 +55,6 @@ See the vignette: vignette("scenarios") for scenario options, definitions and re
 harmonization exercise between past data and future projections.</p>
 <p>By default the following scenarios are returned:</p><ul><li><p>the SSPs, i.e. SSP1-5</p></li>
 <li><p>the SDPs, i.e. SDP, SDP_EI, SDP_RC, and SDP_MC</p></li>
-<li><p>SSP2EU</p></li>
 </ul><p>See the vignette: <code><a href="../articles/scenarios.html">vignette("scenarios")</a></code> for scenario options, definitions and references.</p>
     </div>
 
@@ -111,8 +108,8 @@ if supplementary is set to TRUE.</p>
 <span class="r-in"><span><span class="co"># Return the default scenarios</span></span></span>
 <span class="r-in"><span><span class="fu">calcOutput</span><span class="op">(</span><span class="st">"Population"</span><span class="op">)</span></span></span>
 <span class="r-in"><span></span></span>
-<span class="r-in"><span><span class="co"># Return the SSP2EU scenario</span></span></span>
-<span class="r-in"><span><span class="fu">calcOutput</span><span class="op">(</span><span class="st">"Population"</span>, scenario <span class="op">=</span> <span class="st">"SSP2EU"</span><span class="op">)</span></span></span>
+<span class="r-in"><span><span class="co"># Return only the SSP2 scenario</span></span></span>
+<span class="r-in"><span><span class="fu">calcOutput</span><span class="op">(</span><span class="st">"Population"</span>, scenario <span class="op">=</span> <span class="st">"SSP2"</span><span class="op">)</span></span></span>
 <span class="r-in"><span></span></span>
 <span class="r-in"><span><span class="co"># Return the ISIMIP SSP scenarios</span></span></span>
 <span class="r-in"><span><span class="fu">calcOutput</span><span class="op">(</span><span class="st">"Population"</span>, scenario <span class="op">=</span> <span class="st">"ISIMIP"</span>, extension2150 <span class="op">=</span> <span class="st">"none"</span>, aggregate <span class="op">=</span> <span class="cn">FALSE</span><span class="op">)</span></span></span>

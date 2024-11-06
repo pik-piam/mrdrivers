@@ -21,7 +21,7 @@
 
     <a class="navbar-brand me-2" href="../index.html">mrdrivers</a>
 
-    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">3.0.3</small>
+    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">4.0.0</small>
 
 
     <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbar" aria-controls="navbar" aria-expanded="false" aria-label="Toggle navigation">
@@ -72,34 +72,36 @@
 used to see what driver/scenario options are available.</p>
 <div class="sourceCode" id="cb1"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="fu"><a href="../reference/toolGetScenarioDefinition.html">toolGetScenarioDefinition</a></span><span class="op">(</span><span class="op">)</span> <span class="op">%&gt;%</span> <span class="fu"><a href="https://rdrr.io/r/base/print.html" class="external-link">print</a></span><span class="op">(</span>n <span class="op">=</span> <span class="fl">200</span><span class="op">)</span></span>
-<span><span class="co">#&gt; <span style="color: #949494;"># A tibble: 23 × 5</span></span></span>
-<span><span class="co">#&gt;    driver     scenario pastData                  futureData        harmonization</span></span>
-<span><span class="co">#&gt;    <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span>      <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span>    <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span>                     <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span>             <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span>        </span></span>
-<span><span class="co">#&gt; <span style="color: #BCBCBC;"> 1</span> GDPpc      SSPs     WDI-MI                    SSPs-MI           calibSSPs    </span></span>
-<span><span class="co">#&gt; <span style="color: #BCBCBC;"> 2</span> GDPpc      SSP2     WDI-MI                    SSP2-MI           calibSSPs    </span></span>
-<span><span class="co">#&gt; <span style="color: #BCBCBC;"> 3</span> GDPpc      SDPs     -                         -                 calibSDPs    </span></span>
-<span><span class="co">#&gt; <span style="color: #BCBCBC;"> 4</span> GDPpc      SSP2EU   -                         -                 GDPoverPop   </span></span>
-<span><span class="co">#&gt; <span style="color: #BCBCBC;"> 5</span> GDPpc      ISIMIP   WDI-MI                    SSPs-MI           calibSSPs    </span></span>
-<span><span class="co">#&gt; <span style="color: #BCBCBC;"> 6</span> GDP        SSPs     -                         -                 GDPpcWithPop </span></span>
-<span><span class="co">#&gt; <span style="color: #BCBCBC;"> 7</span> GDP        SSP2     -                         -                 GDPpcWithPop </span></span>
-<span><span class="co">#&gt; <span style="color: #BCBCBC;"> 8</span> GDP        SDPs     -                         -                 GDPpcWithPop </span></span>
-<span><span class="co">#&gt; <span style="color: #BCBCBC;"> 9</span> GDP        ISIMIP   -                         -                 GDPpcWithPop </span></span>
-<span><span class="co">#&gt; <span style="color: #BCBCBC;">10</span> GDP        SSP2EU   Eurostat-WDI-MI           SSP2EU-MI         calibSSP2EU  </span></span>
-<span><span class="co">#&gt; <span style="color: #BCBCBC;">11</span> Population SSPs     WDI-UN_PopDiv-MI          SSPs-UN_PopDiv-MI withPEAPandF…</span></span>
-<span><span class="co">#&gt; <span style="color: #BCBCBC;">12</span> Population SSP2     WDI-UN_PopDiv-MI          SSP2-UN_PopDiv-MI withPEAPandF…</span></span>
-<span><span class="co">#&gt; <span style="color: #BCBCBC;">13</span> Population SDPs     WDI-UN_PopDiv-MI          SDPs-UN_PopDiv-MI withPEAPandF…</span></span>
-<span><span class="co">#&gt; <span style="color: #BCBCBC;">14</span> Population SSP2EU   Eurostat-WDI-UN_PopDiv-MI SSP2EU-UN_PopDiv… calibSSP2EU  </span></span>
-<span><span class="co">#&gt; <span style="color: #BCBCBC;">15</span> Population ISIMIP   UN_PopDiv-MI              SSPs-UN_PopDiv-MI calibISIMIP  </span></span>
-<span><span class="co">#&gt; <span style="color: #BCBCBC;">16</span> Labour     SSPs     WDI                       SSPs              pastAndLevel </span></span>
-<span><span class="co">#&gt; <span style="color: #BCBCBC;">17</span> Labour     SSP2     WDI                       SSP2              pastAndLevel </span></span>
-<span><span class="co">#&gt; <span style="color: #BCBCBC;">18</span> Labour     SDPs     WDI                       SDPs              pastAndLevel </span></span>
-<span><span class="co">#&gt; <span style="color: #BCBCBC;">19</span> Labour     SSP2EU   WDI                       SSP2EU            pastAndLevel </span></span>
-<span><span class="co">#&gt; <span style="color: #BCBCBC;">20</span> Urban      SSPs     WDI                       SSPs              pastAndGrowth</span></span>
-<span><span class="co">#&gt; <span style="color: #BCBCBC;">21</span> Urban      SSP2     WDI                       SSP2              pastAndGrowth</span></span>
-<span><span class="co">#&gt; <span style="color: #BCBCBC;">22</span> Urban      SDPs     WDI                       SDPs              pastAndGrowth</span></span>
-<span><span class="co">#&gt; <span style="color: #BCBCBC;">23</span> Urban      SSP2EU   WDI                       SSP2EU            pastAndGrowth</span></span></code></pre></div>
-<p>So for example, there are currently 4 GDPpc scenarios available: the
-SSPs, SSP2, the SDPs, and SSP2EU.</p>
+<span><span class="co">#&gt; <span style="color: #949494;"># A tibble: 27 × 5</span></span></span>
+<span><span class="co">#&gt;    driver     scenario pastData         futureData          harmonization</span></span>
+<span><span class="co">#&gt;    <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span>      <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span>    <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span>            <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span>               <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span>        </span></span>
+<span><span class="co">#&gt; <span style="color: #BCBCBC;"> 1</span> GDPpc      SSPs     WDI-MI-James     SSPs                GDPpcSSPs    </span></span>
+<span><span class="co">#&gt; <span style="color: #BCBCBC;"> 2</span> GDPpc      SSP2     WDI-MI-James     SSP2                GDPpcSSPs    </span></span>
+<span><span class="co">#&gt; <span style="color: #BCBCBC;"> 3</span> GDPpc      SSP2EU   WDI-MI-James     SSP2EU              GDPpcSSPs    </span></span>
+<span><span class="co">#&gt; <span style="color: #BCBCBC;"> 4</span> GDPpc      SDPs     -                -                   GDPpcSDPs    </span></span>
+<span><span class="co">#&gt; <span style="color: #BCBCBC;"> 5</span> GDPpc      ISIMIP   WDI-MI-James     SSPs                GDPpcSSPs    </span></span>
+<span><span class="co">#&gt; <span style="color: #BCBCBC;"> 6</span> GDPpc      ADBs     WDI-MI-James     ADBs-SSP2           GDPpcADBs    </span></span>
+<span><span class="co">#&gt; <span style="color: #BCBCBC;"> 7</span> GDP        SSPs     -                -                   GDPpcWithPop </span></span>
+<span><span class="co">#&gt; <span style="color: #BCBCBC;"> 8</span> GDP        SSP2     -                -                   GDPpcWithPop </span></span>
+<span><span class="co">#&gt; <span style="color: #BCBCBC;"> 9</span> GDP        SSP2EU   -                -                   GDPpcWithPop </span></span>
+<span><span class="co">#&gt; <span style="color: #BCBCBC;">10</span> GDP        SDPs     -                -                   GDPpcWithPop </span></span>
+<span><span class="co">#&gt; <span style="color: #BCBCBC;">11</span> GDP        ISIMIP   -                -                   GDPpcWithPop </span></span>
+<span><span class="co">#&gt; <span style="color: #BCBCBC;">12</span> GDP        ADBs     -                -                   GDPpcWithPop </span></span>
+<span><span class="co">#&gt; <span style="color: #BCBCBC;">13</span> Population SSPs     WDI-UN_PopDiv-MI SSPs-UN_PopDiv      PopSSPs      </span></span>
+<span><span class="co">#&gt; <span style="color: #BCBCBC;">14</span> Population SSP2     WDI-UN_PopDiv-MI SSP2-UN_PopDiv      PopSSPs      </span></span>
+<span><span class="co">#&gt; <span style="color: #BCBCBC;">15</span> Population SSP2EU   WDI-UN_PopDiv-MI SSP2EU-UN_PopDiv    PopSSPs      </span></span>
+<span><span class="co">#&gt; <span style="color: #BCBCBC;">16</span> Population SDPs     WDI-UN_PopDiv-MI SDPs-UN_PopDiv      PopSSPs      </span></span>
+<span><span class="co">#&gt; <span style="color: #BCBCBC;">17</span> Population ISIMIP   UN_PopDiv-MI     SSPs-UN_PopDiv      PopISIMIP    </span></span>
+<span><span class="co">#&gt; <span style="color: #BCBCBC;">18</span> Population ADBs     WDI-UN_PopDiv-MI ADBs-SSP2-UN_PopDiv PopSSPs      </span></span>
+<span><span class="co">#&gt; <span style="color: #BCBCBC;">19</span> Labour     SSPs     WDI-UN_PopDiv    SSPs-UN_PopDiv      pastAndLevel </span></span>
+<span><span class="co">#&gt; <span style="color: #BCBCBC;">20</span> Labour     SSP2     WDI-UN_PopDiv    SSP2-UN_PopDiv      pastAndLevel </span></span>
+<span><span class="co">#&gt; <span style="color: #BCBCBC;">21</span> Labour     SSP2EU   WDI-UN_PopDiv    SSP2EU-UN_PopDiv    pastAndLevel </span></span>
+<span><span class="co">#&gt; <span style="color: #BCBCBC;">22</span> Labour     SDPs     WDI-UN_PopDiv    SDPs-UN_PopDiv      pastAndLevel </span></span>
+<span><span class="co">#&gt; <span style="color: #BCBCBC;">23</span> Labour     ADBs     -                -                   LabourADBs   </span></span>
+<span><span class="co">#&gt; <span style="color: #BCBCBC;">24</span> Urban      SSPs     WDI              SSPs                pastAndGrowth</span></span>
+<span><span class="co">#&gt; <span style="color: #BCBCBC;">25</span> Urban      SSP2     WDI              SSP2                pastAndGrowth</span></span>
+<span><span class="co">#&gt; <span style="color: #BCBCBC;">26</span> Urban      SSP2EU   WDI              SSP2EU              pastAndGrowth</span></span>
+<span><span class="co">#&gt; <span style="color: #BCBCBC;">27</span> Urban      SDPs     WDI              SDPs                pastAndGrowth</span></span></code></pre></div>
 </div>
 <div class="section level2">
 <h2 id="user-defined-scenarios">User Defined Scenarios<a class="anchor" aria-label="anchor" href="#user-defined-scenarios"></a>
@@ -114,11 +116,11 @@ SSP scenarios, but without using the Missing Islands data-set. The
 following command executed in the global environment would make the
 “nomi” (no-missing islands) scenario available.</p>
 <div class="sourceCode" id="cb2"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span><span class="va">mrdrivers_scenarios</span> <span class="op">&lt;-</span> <span class="fu">tibble</span><span class="fu">::</span><span class="fu"><a href="https://tibble.tidyverse.org/reference/tribble.html" class="external-link">tribble</a></span><span class="op">(</span></span>
-<span>  <span class="op">~</span><span class="va">driver</span>,      <span class="op">~</span><span class="va">scenario</span>,      <span class="op">~</span><span class="va">pastData</span>,                    <span class="op">~</span><span class="va">futureData</span>,            <span class="op">~</span><span class="va">harmonization</span>,</span>
-<span>  <span class="st">"GDPpc"</span>,      <span class="st">"nomi"</span>,         <span class="st">"WDI"</span>,                        <span class="st">"SSPs"</span>,                 <span class="st">"calibSSPs"</span>,</span>
-<span>  <span class="st">"Population"</span>, <span class="st">"nomi"</span>,         <span class="st">"WDI"</span>,                        <span class="st">"SSPs"</span>,                 <span class="st">"withPEAPandFuture"</span>,</span>
-<span>  <span class="st">"GDP"</span>,        <span class="st">"nomi"</span>,         <span class="st">"-"</span>,                          <span class="st">"-"</span>,                    <span class="st">"GDPpcWithPop"</span></span>
+<code class="sourceCode R"><span><span class="va">mrdrivers_scenarios</span> <span class="op">&lt;-</span> <span class="fu">tibble</span><span class="fu">::</span><span class="fu"><a href="https://tibble.tidyverse.org/reference/tribble.html" class="external-link">tribble</a></span><span class="op">(</span> <span class="co"># nolint</span></span>
+<span>  <span class="op">~</span><span class="va">driver</span>,      <span class="op">~</span><span class="va">scenario</span>,      <span class="op">~</span><span class="va">pastData</span>,   <span class="op">~</span><span class="va">futureData</span>,  <span class="op">~</span><span class="va">harmonization</span>,</span>
+<span>  <span class="st">"GDPpc"</span>,      <span class="st">"nomi"</span>,         <span class="st">"WDI"</span>,       <span class="st">"SSPs"</span>,       <span class="st">"GDPpcSSPs"</span>,</span>
+<span>  <span class="st">"Population"</span>, <span class="st">"nomi"</span>,         <span class="st">"WDI"</span>,       <span class="st">"SSPs"</span>,       <span class="st">"PopSSPs"</span>,</span>
+<span>  <span class="st">"GDP"</span>,        <span class="st">"nomi"</span>,         <span class="st">"-"</span>,         <span class="st">"-"</span>,          <span class="st">"GDPpcWithPop"</span></span>
 <span><span class="op">)</span></span></code></pre></div>
 </div>
 <div class="section level2">
@@ -127,41 +129,45 @@ following command executed in the global environment would make the
 <p>By default, the following scenarios are returned for all drivers:</p>
 <ul>
 <li>the SSPs, i.e. SSP1-5</li>
-<li>the SDPs, i.e. SDP, SDP_EI, SDP_RC, and SDP_MC</li>
-<li>SSP2EU</li>
+<li>the SDPs, i.e. SDP, SDP_EI, SDP_MC and SDP_RC</li>
 </ul>
+<p>The scenarios span from 1960 to 2150, with yearly data until 2030,
+and data every 5 years thereafter.</p>
 </div>
 <div class="section level2">
 <h2 id="references">References<a class="anchor" aria-label="anchor" href="#references"></a>
 </h2>
 <div class="section level3">
-<h3 id="gdp-and-gdppc-scenarios">GDP and GDPpc scenarios<a class="anchor" aria-label="anchor" href="#gdp-and-gdppc-scenarios"></a>
+<h3 id="gdp-per-capita-and-gdp-scenarios">GDP per capita and GDP scenarios<a class="anchor" aria-label="anchor" href="#gdp-per-capita-and-gdp-scenarios"></a>
 </h3>
 <div class="section level4">
 <h4 id="ssps">SSPs<a class="anchor" aria-label="anchor" href="#ssps"></a>
 </h4>
-<p>Suggested overall reference: Koch and Leimbach 2023 (<a href="https://doi.org/10.1016/j.ecolecon.2023.107751" class="external-link">link</a>).</p>
-<p>Detailed references: the SSP GDP per capita scenarios are constructed
-using past WDI data (<a href="https://databank.worldbank.org/source/world-development-indicators" class="external-link">link</a>)
-(filled in with MI data (<a href="https://zenodo.org/record/4421504/files/MissingIslands.zip" class="external-link">link</a>),
-and growth rates from James2019-WB data (DOI of previous version of
-data: <a href="doi:10.1186/1478-7954-10-12" class="uri">doi:10.1186/1478-7954-10-12</a>)) and SSP GDP projections
-(filled in with MI projections (<a href="https://zenodo.org/record/4421504/files/MissingIslands.zip" class="external-link">link</a>)).
-The harmonization makes use of short term growth rates from IMF (<a href="https://www.imf.org/-/media/Files/Publications/WEO/WEO-Database/2022/WEOOct2022all.ashx" class="external-link">link</a>).
-For more details on the harmonization, see Koch and Leimbach 2023 (<a href="https://doi.org/10.1016/j.ecolecon.2023.107751" class="external-link">link</a>).</p>
+<p>Suggested overall reference for the scenario construction: Koch and
+Leimbach 2023 (<a href="https://doi.org/10.1016/j.ecolecon.2023.107751" class="external-link">link</a>).</p>
+<p>The SSP GDP per capita scenarios are constructed using past WDI data
+(<a href="https://databank.worldbank.org/source/world-development-indicators" class="external-link">link</a>)
+from 1990 to 2022 (missing country data filled in with MI data (<a href="https://doi.org/10.5281/zenodo.4421504" class="external-link">link</a>) and James data
+(<a href="https://pophealthmetrics.biomedcentral.com/articles/10.1186/1478-7954-10-12" class="external-link">link</a>,
+specifically the WB_ID series), extended backwards until 1960 using
+growth rates from MI and James), growth rates from IMF GDP per capita
+projections (<a href="https://www.imf.org/-/media/Files/Publications/WEO/WEO-Database/2022/WEOOct2022all.ashx" class="external-link">link</a>)
+until 2029, and SSP GDP per capita projections (SSP OECD projections <a href="https://data.ece.iiasa.ac.at/ssp/#/about" class="external-link">link</a>, release 3.0.1
+(March 2024)) until 2100. The scenarios are extended until 2150 using a
+bezier curve method that assumes that the slope in 2100 is flattened by
+half by 2150. For countries lacking projection data, the last historical
+data point is used in all future years. For more details on the
+harmonization, see Koch and Leimbach 2023 (<a href="https://doi.org/10.1016/j.ecolecon.2023.107751" class="external-link">link</a>).</p>
+<p>The SSP GDP scenarios are the product of the GDP per capita and
+population scenarios.</p>
 </div>
 <div class="section level4">
 <h4 id="sdps">SDPs<a class="anchor" aria-label="anchor" href="#sdps"></a>
 </h4>
 <p>The SDPs are all based off of SSP1, with different harmonization
-functions for the different SDPs. No citable reference available.</p>
-</div>
-<div class="section level4">
-<h4 id="ssp2eu">SSP2EU<a class="anchor" aria-label="anchor" href="#ssp2eu"></a>
-</h4>
-<p>SSP2EU is based off of SSP2, but for EUR-Region countries, Eurostat
-data and short-term projections (<a href="https://ec.europa.eu/eurostat" class="external-link">link</a>) are used instead of WDI
-and IMF data.</p>
+functions for the different SDPs. (Reference needed.) The SDP GDP
+scenarios are the product of the GDP per capita and population
+scenarios.</p>
 </div>
 </div>
 <div class="section level3">
@@ -170,30 +176,63 @@ and IMF data.</p>
 <div class="section level4">
 <h4 id="ssps-1">SSPs<a class="anchor" aria-label="anchor" href="#ssps-1"></a>
 </h4>
-<p>Suggested overall references: K. C., S, 2020 (<a href="https://pure.iiasa.ac.at/16710" class="external-link">link</a>) and Lutz et al., 2018
-(<a href="https://pure.iiasa.ac.at/id/eprint/15226/1/lutz_et_al_2018_demographic_and_human_capital.pdf" class="external-link">link</a>).</p>
-<p>Detailed references: the SSP population scenarios are constructed
-using past WDI data (<a href="https://databank.worldbank.org/source/world-development-indicators" class="external-link">link</a>)
-(filled in with UN_PopDiv data (<a href="https://population.un.org/wpp/Download/Files/1_Indicators%20(Standard)/EXCEL_FILES/2_Population/WPP2022_POP_F01_1_POPULATION_SINGLE_AGE_BOTH_SEXES.xlsx" class="external-link">link</a>)
-and MI data (<a href="https://zenodo.org/record/4421504/files/MissingIslands.zip" class="external-link">link</a>),
-and SSP population projections (filled in with UN_PopDiv data (<a href="https://population.un.org/wpp/Download/Files/1_Indicators%20(Standard)/EXCEL_FILES/2_Population/WPP2022_POP_F01_1_POPULATION_SINGLE_AGE_BOTH_SEXES.xlsx" class="external-link">link</a>)
-and MI data (<a href="https://zenodo.org/record/4421504/files/MissingIslands.zip" class="external-link">link</a>).
-The harmonization makes use of short term growth rates from the World
-Bank’s Population and Projections database (<a href="https://databank.worldbank.org/source/population-estimates-and-projections#" class="external-link">link</a>).
-For more details on the harmonization, see Koch and Leimbach 2023 (<a href="https://doi.org/10.1016/j.ecolecon.2023.107751" class="external-link">link</a>).</p>
+<p>The SSP population scenarios are constructed using past WDI data (<a href="https://databank.worldbank.org/source/world-development-indicators" class="external-link">link</a>)
+from 1960 to 2022 (missing country data filled in with UN_PopDiv data
+(<a href="https://population.un.org/wpp/" class="external-link">link</a>, 2022 revision)) and
+MI data (<a href="https://doi.org/10.5281/zenodo.4421504" class="external-link">link</a>)),
+growth rates from the World Bank’s Population and Projections database
+(<a href="https://databank.worldbank.org/source/population-estimates-and-projections#" class="external-link">link</a>)
+until 2029, and growth rates from from the SSP population projections
+(release 3.0.1 (March 2024) <a href="https://data.ece.iiasa.ac.at/ssp/#/about" class="external-link">link</a> and <a href="https://doi.org/10.5281/zenodo.10618931" class="external-link">link</a>), filled in with
+UN_PopDiv data (<a href="https://population.un.org/wpp/" class="external-link">link</a>, 2022
+revision)) until 2100. The scenarios are extended until 2150 using a
+bezier curve method that assumes that the slope in 2100 is flattened by
+half by 2150. For countries lacking projection data, the last historical
+data point is used in all future years. For more details on the
+harmonization, see Koch and Leimbach 2023 (<a href="https://doi.org/10.1016/j.ecolecon.2023.107751" class="external-link">link</a>).</p>
 </div>
 <div class="section level4">
 <h4 id="sdps-1">SDPs<a class="anchor" aria-label="anchor" href="#sdps-1"></a>
 </h4>
-<p>The SDPs are all based off of SSP1, with different harmonization
-functions for the different SDPs. No citable reference available.</p>
+<p>The SDP scenarios are all equal to the SSP1 scenario.</p>
+</div>
+</div>
+<div class="section level3">
+<h3 id="labour-scenarios">Labour scenarios<a class="anchor" aria-label="anchor" href="#labour-scenarios"></a>
+</h3>
+<div class="section level4">
+<h4 id="ssps-2">SSPs<a class="anchor" aria-label="anchor" href="#ssps-2"></a>
+</h4>
+<p>The SSPs labour scenarios are constructed using past WDI data (<a href="https://databank.worldbank.org/source/world-development-indicators" class="external-link">link</a>)
+from 1960 to 2022 (missing country data filled in with UN_PopDiv data
+(<a href="https://population.un.org/wpp/" class="external-link">link</a>, 2022 revision)), and
+SSP labour projections (<a href="https://doi.org/10.5281/zenodo.10618931" class="external-link">link</a>) until 2100. The
+labor projections are glued to the data, with no further
+harmonization.</p>
 </div>
 <div class="section level4">
-<h4 id="ssp2eu-1">SSP2EU<a class="anchor" aria-label="anchor" href="#ssp2eu-1"></a>
+<h4 id="sdps-2">SDPs<a class="anchor" aria-label="anchor" href="#sdps-2"></a>
 </h4>
-<p>SSP2EU is based off of SSP2, but for EUR-Region countries, Eurostat
-data and short-term projections (<a href="https://ec.europa.eu/eurostat" class="external-link">link</a>) are used instead of WDI
-and UN_PopDiv data.</p>
+<p>The SDP scenarios are all equal to the SSP1 scenario.</p>
+</div>
+</div>
+<div class="section level3">
+<h3 id="urban-population-share-scenarios">Urban population share scenarios<a class="anchor" aria-label="anchor" href="#urban-population-share-scenarios"></a>
+</h3>
+<div class="section level4">
+<h4 id="ssps-3">SSPs<a class="anchor" aria-label="anchor" href="#ssps-3"></a>
+</h4>
+<p>The SSPs urban population share scenarios are constructed using past
+WDI data starting in 1960 (<a href="https://databank.worldbank.org/source/world-development-indicators" class="external-link">link</a>),
+and SSP urban population share projections (2018 Release <a href="https://data.ece.iiasa.ac.at/ssp/#/about" class="external-link">link</a>). The
+harmonization uses the past levels, and future growth rates.</p>
+</div>
+<div class="section level4">
+<h4 id="sdps-3">SDPs<a class="anchor" aria-label="anchor" href="#sdps-3"></a>
+</h4>
+<p>The SDP, SDP_EI, and SDP_MC scenarios are all equal to the SSP1
+scenario. The SDP_RC is equal to the SSP3 for OECD countries, and SSP2
+for non-OECD countries.</p>
 </div>
 </div>
 </div>

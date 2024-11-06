@@ -5,7 +5,6 @@ between past data and future projections. Together with the corresponding popula
 By default the following scenarios are returned:
 the SSPs, i.e. SSP1-5
 the SDPs, i.e. SDP, SDP_EI, SDP_RC, and SDP_MC
-SSP2EU
 
 
 See the vignette: vignette("scenarios") for scenario options, definitions and references.'><meta property="og:description" content='Like all scenarios in mrdrivers, the GDP and GDP per capita scenarios are the result of a harmonization exercise
@@ -14,7 +13,6 @@ between past data and future projections. Together with the corresponding popula
 By default the following scenarios are returned:
 the SSPs, i.e. SSP1-5
 the SDPs, i.e. SDP, SDP_EI, SDP_RC, and SDP_MC
-SSP2EU
 
 
 See the vignette: vignette("scenarios") for scenario options, definitions and references.'></head><body>
@@ -25,7 +23,7 @@ See the vignette: vignette("scenarios") for scenario options, definitions and re
 
     <a class="navbar-brand me-2" href="../index.html">mrdrivers</a>
 
-    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">3.0.3</small>
+    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">4.0.0</small>
 
 
     <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbar" aria-controls="navbar" aria-expanded="false" aria-label="Toggle navigation">
@@ -50,7 +48,7 @@ See the vignette: vignette("scenarios") for scenario options, definitions and re
   <main id="main" class="col-md-9"><div class="page-header">
 
       <h1>Get GDP and GDP per capita scenarios</h1>
-      <small class="dont-index">Source: <a href="https://github.com/pik-piam/mrdrivers/blob/main/R/calcGDP.R" class="external-link"><code>R/calcGDP.R</code></a>, <a href="https://github.com/pik-piam/mrdrivers/blob/main/R/calcGDPpc.R" class="external-link"><code>R/calcGDPpc.R</code></a></small>
+      <small class="dont-index">Source: <a href="https://github.com/pik-piam/mrdrivers/blob/main/R/calcGDP.R" class="external-link"><code>R/calcGDP.R</code></a></small>
       <div class="d-none name"><code>calcGDP.Rd</code></div>
     </div>
 
@@ -60,7 +58,6 @@ between past data and future projections. Together with the corresponding popula
 (see <code><a href="calcPopulation.html">calcPopulation()</a></code>) they comprise a consistent set of scenarios.</p>
 <p>By default the following scenarios are returned:</p><ul><li><p>the SSPs, i.e. SSP1-5</p></li>
 <li><p>the SDPs, i.e. SDP, SDP_EI, SDP_RC, and SDP_MC</p></li>
-<li><p>SSP2EU</p></li>
 </ul><p>See the vignette: <code><a href="../articles/scenarios.html">vignette("scenarios")</a></code> for scenario options, definitions and references.</p>
     </div>
 
@@ -68,14 +65,14 @@ between past data and future projections. Together with the corresponding popula
     <h2 id="ref-usage">Usage<a class="anchor" aria-label="anchor" href="#ref-usage"></a></h2>
     <div class="sourceCode"><pre class="sourceCode r"><code><span><span class="fu">calcGDP</span><span class="op">(</span></span>
 <span>  scenario <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"SSPs"</span>, <span class="st">"SDPs"</span>, <span class="st">"SSP2EU"</span><span class="op">)</span>,</span>
-<span>  unit <span class="op">=</span> <span class="st">"constant 2017 Int$PPP"</span>,</span>
+<span>  unit <span class="op">=</span> <span class="fu"><a href="toolGetUnitDollar.html">toolGetUnitDollar</a></span><span class="op">(</span>inPPP <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span>,</span>
 <span>  average2020 <span class="op">=</span> <span class="cn">TRUE</span>,</span>
 <span>  <span class="va">...</span></span>
 <span><span class="op">)</span></span>
 <span></span>
 <span><span class="fu">calcGDPpc</span><span class="op">(</span></span>
 <span>  scenario <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"SSPs"</span>, <span class="st">"SDPs"</span>, <span class="st">"SSP2EU"</span><span class="op">)</span>,</span>
-<span>  unit <span class="op">=</span> <span class="st">"constant 2017 Int$PPP"</span>,</span>
+<span>  unit <span class="op">=</span> <span class="fu"><a href="toolGetUnitDollar.html">toolGetUnitDollar</a></span><span class="op">(</span>inPPP <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span>,</span>
 <span>  average2020 <span class="op">=</span> <span class="cn">TRUE</span>,</span>
 <span>  <span class="va">...</span></span>
 <span><span class="op">)</span></span></code></pre></div>
@@ -91,8 +88,9 @@ between past data and future projections. Together with the corresponding popula
 
 
 <dt id="arg-unit">unit<a class="anchor" aria-label="anchor" href="#arg-unit"></a></dt>
-<dd><p>A string specifying the unit of GDP. Can be either:</p><ul><li><p>"constant 2017 Int$PPP" (default): Scenarios are constructed in constant 2017 Int$PPP.</p></li>
-<li><p>"constant 2017 US$MER": Scenarios are constructed in constant 2017 Int$PPP and then converted with
+<dd><p>A string specifying the unit of GDP. Can be either:</p><ul><li><p>"constant 2017 Int$PPP" (default):
+Scenarios are constructed in constant 2017 Int$PPP.</p></li>
+<li><p>"constant 2017 US$MER": Scenarios are constructed in constant 2017 US$MER and then converted with
 <code><a href="https://pik-piam.github.io/GDPuc/reference/convertGDP.html" class="external-link">GDPuc::toolConvertGDP()</a></code>.</p></li>
 </ul><p>In all cases, GDP is returned in millions.</p></dd>
 
@@ -103,8 +101,7 @@ the yearly resolution is decreased to 5 year intervals.</p></dd>
 
 
 <dt id="arg--">...<a class="anchor" aria-label="anchor" href="#arg--"></a></dt>
-<dd><p>Arguments passed on to <code><a href="calcDriver.html">calcDriver()</a></code>, of which "extension2150" and "naming" are most often of interest.
-Other <code><a href="calcDriver.html">calcDriver()</a></code> arguments are used for scenario fine-tuning and by package developers.</p></dd>
+<dd><p>Arguments passed on to <code><a href="calcDriver.html">calcDriver()</a></code>, of which "extension2150" and "naming" are most often of interest.</p></dd>
 
 </dl></div>
     <div class="section level2">
@@ -130,8 +127,8 @@ if supplementary is set to TRUE.</p>
 <span class="r-in"><span><span class="fu">calcOutput</span><span class="op">(</span><span class="st">"GDP"</span><span class="op">)</span></span></span>
 <span class="r-in"><span><span class="fu">calcOutput</span><span class="op">(</span><span class="st">"GDPpc"</span><span class="op">)</span></span></span>
 <span class="r-in"><span></span></span>
-<span class="r-in"><span><span class="co"># Return only the SSP2EU GDP scenario</span></span></span>
-<span class="r-in"><span><span class="fu">calcOutput</span><span class="op">(</span><span class="st">"GDP"</span>, scenario <span class="op">=</span> <span class="st">"SSP2EU"</span><span class="op">)</span></span></span>
+<span class="r-in"><span><span class="co"># Return only the SSP2 GDP scenario</span></span></span>
+<span class="r-in"><span><span class="fu">calcOutput</span><span class="op">(</span><span class="st">"GDP"</span>, scenario <span class="op">=</span> <span class="st">"SSP2"</span><span class="op">)</span></span></span>
 <span class="r-in"><span><span class="op">}</span> <span class="co"># }</span></span></span>
 <span class="r-in"><span></span></span>
 <span class="r-in"><span><span class="kw">if</span> <span class="op">(</span><span class="cn">FALSE</span><span class="op">)</span> <span class="op">{</span> <span class="co"># \dontrun{</span></span></span>

@@ -9,7 +9,7 @@ be of interest to package developers."></head><body>
 
     <a class="navbar-brand me-2" href="../index.html">mrdrivers</a>
 
-    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">3.0.3</small>
+    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">4.0.0</small>
 
 
     <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbar" aria-controls="navbar" aria-expanded="false" aria-label="Toggle navigation">
@@ -50,8 +50,7 @@ be of interest to package developers.</p>
 <span>  <span class="va">scenario</span>,</span>
 <span>  popAsWeight <span class="op">=</span> <span class="cn">FALSE</span>,</span>
 <span>  naming <span class="op">=</span> <span class="st">"indicator_scenario"</span>,</span>
-<span>  extension2150 <span class="op">=</span> <span class="st">"bezier"</span>,</span>
-<span>  <span class="va">...</span></span>
+<span>  extension2150 <span class="op">=</span> <span class="st">"bezier"</span></span>
 <span><span class="op">)</span></span></code></pre></div>
     </div>
 
@@ -79,7 +78,7 @@ be of interest to package developers.</p>
 
 <dt id="arg-naming">naming<a class="anchor" aria-label="anchor" href="#arg-naming"></a></dt>
 <dd><p>A string giving the naming scheme of the data dimension. Can be either:</p><ul><li><p>"indicator_scenario" (default): Returns names of the type "gdp_SSP2", or "pop_SSP2".</p></li>
-<li><p>"indicator.scenario": Returns names of the type "gdp.SSP2", or "pop.SSP2".</p></li>
+<li><p>"indicator.scenario": (deprecated) Returns names of the type "gdp.SSP2", or "pop.SSP2".</p></li>
 <li><p>"scenario": Returns names of the type "SSP2".</p></li>
 </ul><p>Set naming to "scenario" when you want to operate on SSP2 gdp and population data for instance, and not have to
 worry about the conflicting names.</p></dd>
@@ -92,21 +91,6 @@ their last year.</p></li>
 <li><p>"constant": The last value of the scenarios is taken as constant until 2150.</p></li>
 <li><p>"none": No extension.</p></li>
 </ul></dd>
-
-
-<dt id="arg--">...<a class="anchor" aria-label="anchor" href="#arg--"></a></dt>
-<dd><p>Arguments passed on to <code><a href="calcScenarioConstructor.html">calcScenarioConstructor</a></code></p><dl><dt><code>harmonization</code></dt>
-<dd><p>A string designating the harmonization function.</p></dd>
-
-    <dt><code>pastData</code></dt>
-<dd><p>A string passed to the calc'Driver'Past function, e.g. <code><a href="calcGDPPast.html">calcGDPPast()</a></code> or <code><a href="calcPopulationPast.html">calcPopulationPast()</a></code>.</p></dd>
-
-    <dt><code>futureData</code></dt>
-<dd><p>A string passed to the calc'Driver'Future function, e.g. <code><a href="calcGDPPast.html">calcGDPFuture()</a></code> or
-<code><a href="calcPopulationPast.html">calcPopulationFuture()</a></code>.</p></dd>
-
-
-</dl></dd>
 
 </dl></div>
     <div class="section level2">
@@ -129,12 +113,7 @@ only one futuredata element is provided.</p>
     </div>
     <div class="section level2">
     <h2 id="see-also">See also<a class="anchor" aria-label="anchor" href="#see-also"></a></h2>
-    <div class="dont-index">
-<ul><li><p><code><a href="calcGDPPast.html">calcGDPPast()</a></code>, <code><a href="calcGDPPast.html">calcGDPFuture()</a></code>, <code><a href="calcGDPPast.html">calcGDPpcPast()</a></code> and <code><a href="calcGDPPast.html">calcGDPpcFuture()</a></code> for the builiding blocks of
-the GDP and GDPpc scenarios.</p></li>
-<li><p><code><a href="calcPopulationPast.html">calcPopulationPast()</a></code>, <code><a href="calcPopulationPast.html">calcPopulationFuture()</a></code>, <code><a href="calcPopulationPast.html">calcLabourPast()</a></code>, <code><a href="calcPopulationPast.html">calcLabourFuture()</a></code>, <code><a href="calcPopulationPast.html">calcUrbanPast()</a></code>
-and <code><a href="calcPopulationPast.html">calcUrbanFuture()</a></code> for the builiding blocks of the Population, Labor and Urban scenarios.</p></li>
-</ul></div>
+    <div class="dont-index"><p><code><a href="calcGDPPast.html">calcGDPPast()</a></code> for the scenario builiding blocks.</p></div>
     </div>
 
   </main><aside class="col-md-3"><nav id="toc" aria-label="Table of contents"><h2>On this page</h2>
