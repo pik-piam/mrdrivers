@@ -97,7 +97,7 @@ toolBuildGDPpcSDPs <- function() {
   combined <- purrr::map(c("SDP_EI", "SDP_MC", "SDP_RC"),
                          toolSHAPEgrowth,
                          gdppcapSSP1 = gdppcapSSP1,
-                         startFromYear = 2020) %>%
+                         startFromYear = 2025) %>%
     mbind()
   combined <- mbind(gdppcapSDP, combined)
 
@@ -265,9 +265,9 @@ toolSHAPEgrowth <- function(shapeGDPScenario, gdppcapSSP1, startFromYear) {
       # for service (SDP_MC) and society (SDP_RC) additionally add a smoothing for 2020 and 2025 timesteps
       # apply only 1/3 (2020-2024) and 2/3 (2025-2029) of the modification
       if (shapeGDPScenario %in% c("SDP_MC", "SDP_RC")) {
-        if (yr >= 2020 && yr < 2025) {
+        if (yr >= startFromYear && yr < startFromYear + 5) {
           modificationFactor[, yr, ] <- 1 / 3. * (modificationFactor[, yr, ] - 1) + 1
-        } else if (yr >= 2025 && yr < 2030) {
+        } else if (yr >= startFromYear + 5 && yr < startFromYear + 10) {
           modificationFactor[, yr, ] <- 2 / 3. * (modificationFactor[, yr, ] - 1) + 1
         }
       }
