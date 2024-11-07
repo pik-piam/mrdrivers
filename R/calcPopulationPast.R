@@ -4,9 +4,13 @@ calcPopulationPast <- function(pastData = "WDI-UN_PopDiv-MI") {
   toolCheckUserInput("PopulationPast", as.list(environment()))
   # Call calcInternalPopulationPast function the appropriate number of times (map) and combine (reduce)
   # !! Keep formula syntax for madrat caching to work
-  purrr::pmap(list("pastData" = unlist(strsplit(pastData, "-"))),
-              ~calcOutput("InternalPopulationPast", aggregate = FALSE, supplementary = TRUE, ...)) %>%
+  data <- purrr::pmap(list("pastData" = unlist(strsplit(pastData, "-"))),
+                      ~calcOutput("InternalPopulationPast", aggregate = FALSE, supplementary = TRUE, ...)) %>%
     toolListFillWith()
+
+  # Fill in trailing zeros with closest value
+  data$x <- toolInterpolateAndExtrapolate(data$x)
+  data
 }
 
 calcInternalPopulationPast <- function(pastData) {

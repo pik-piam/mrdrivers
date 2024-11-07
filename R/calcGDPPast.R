@@ -34,8 +34,10 @@ calcGDPPast <- function(pastData = "WDI-MI-James", extension1960 = "MI-James") {
                             aggregate = FALSE,
                             supplementary = TRUE)
     data <- toolHarmonizeFuture(past = data1960, future = data, method = "growth")
-    data$x <- toolInterpolateAndExtrapolate(data$x)
   }
+
+  # Fill in trailing zeros with closest value
+  data$x <- toolInterpolateAndExtrapolate(data$x)
 
   list(x = data$x,
        weight = NULL,
