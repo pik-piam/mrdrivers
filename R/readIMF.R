@@ -50,7 +50,7 @@ convertIMF <- function(x, subtype = "all") {
     h <- "Gross domestic product per capita, constant prices [Units Purchasing power parity; 2017 international dollar]"
     x <- x[, , h]
   }
-  if (subtype == "BCA") x <- x[, , "Current account balance [Billions U.S. dollars]"]
+  if (subtype == "BCA") x <- x[, , "Current account balance [Billions U_S_ dollars]"]
 
   toolGeneralConvert(x, no_remove_warning = c("UVK", "WBG"), note = FALSE)
 }
