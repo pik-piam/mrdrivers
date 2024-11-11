@@ -131,13 +131,13 @@ toolDivideGDPbyPop <- function(scenario) {
 toolHarmonizeGDPpcADBs <- function(past, future) {
   ssp2Data <- calcOutput("GDPpc", scenario = "SSP2", extension2150 = "none", average2020 = FALSE, aggregate = FALSE)
 
-  # For ADBs: transition IND from past to future by 2030
-  dataIND <- toolHarmonizePast(past, future, method = "transition", yEnd = 2030)
-
-  combined <- purrr::map(getNames(dataIND$x), function(x) {
+  # For both ADB scenarios, overwrite SSP2 IND data with ADB IND data
+  combined <- purrr::map(getNames(future$x), function(x) {
     y <- setNames(ssp2Data, x)
     y["IND", , ] <- 0
-    y["IND", getYears(dataIND$x), ] <- dataIND$x["IND", , x]
+    # Transition IND from past to future. Here keep future as is, and use growth rates from past.
+    dataIND <- toolHarmonizeFuture(past$x["IND", , ], future$x["IND", , x], method = "growth")
+    y["IND", getYears(dataIND), ] <- dataIND
     y
   }) %>%
     mbind()

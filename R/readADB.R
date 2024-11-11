@@ -36,6 +36,10 @@ readADB <- function() {
 #' @param x MAgPIE object returned from readADB
 #' @param subtype A string, either "all", "gdppc", "pop"
 convertADB <- function(x, subtype = "all") {
+  if (!subtype %in% c("all", "gdppc", "pop")) {
+    stop("Bad input for readADB. Invalid 'subtype' argument. Available subtypes are 'all', 'gdppc', and 'pop'.")
+  }
+
   # Filter for subtype in the convert Function to use common read cache
   if (subtype == "gdppc") {
     x <- mselect(x,

@@ -22,6 +22,26 @@ toolHarmonizeWithPEAPandFuture <- function(past, future) {
                           and growth rates from {future$description} thereafter."))
 }
 
+toolHarmonizePopulationADBs <- function(past, future) {
+  ssp2Data <- calcOutput("Population", scenario = "SSP2", extension2150 = "none", aggregate = FALSE)
+
+  # For both ADB scenarios, overwrite SSP2 IND data with ADB IND data
+  combined <- purrr::map(getNames(future$x), function(x) {
+    y <- setNames(ssp2Data, x)
+    y["IND", , ] <- 0
+    # Transition IND from past to future. Here keep future as is, and use growth rates from past.
+    dataIND <- toolHarmonizeFuture(past$x["IND", , ], future$x["IND", , x], method = "growth")
+    y["IND", getYears(dataIND), ] <- dataIND
+    y
+  }) %>%
+    mbind()
+
+  list(x = combined,
+       description = glue("equal to SSP2 in all countries except for IND. \\
+                          For IND use {past$description} until {max(getYears(past$x, as.integer = TRUE))}, \\
+                          and converge to {future$description} by 2030."))
+}
+
 toolHarmonizeLabourADBs <- function() {
   pop2 <- calcOutput("Population", scenario = "SSP2", naming = "scenario", extension2150 = "none", aggregate = FALSE)
   lab2 <- calcOutput("Labour", scenario = "SSP2", naming = "scenario", extension2150 = "none", aggregate = FALSE)
