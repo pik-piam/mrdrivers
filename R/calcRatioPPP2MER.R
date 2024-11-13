@@ -16,6 +16,9 @@ calcRatioPPP2MER <- function(when = 2017) {
   data <- readSource("WDI", "PA.NUS.PPPC.RF")[, when, ]
   # Replace 0s with 1s. This was done previously. Other solutions here should be taken into consideration.
   data[data == 0] <- 1
+  # Set names and years to NULL, for GAMS interface to work.
+  getNames(data) <- NULL
+  getYears(data) <- NULL
 
   weight <- calcOutput("GDPPast", aggregate = FALSE, years = when)
 
