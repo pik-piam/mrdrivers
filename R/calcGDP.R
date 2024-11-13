@@ -89,7 +89,7 @@ calcGDP <- function(scenario = c("SSPs", "SDPs", "SSP2EU"),
   }
 
   if (!grepl(toolGetUnitDollar(returnOnlyBase = TRUE), unit)) {
-    warning(glue("Shifting to non-default base-year prices, using only the US deflator for all countries, and \\
+    message(glue("Shifting to non-default base-year prices, using only the US deflator for all countries, and \\
                   neglecting any changes in PPPs or MERs. Standard conversion would not guarantee that the \\
                   relationships between countries (an important charateristic of the scenario design) remain the \\
                   same."))
@@ -164,7 +164,7 @@ calcGDPpc <- function(scenario = c("SSPs", "SDPs", "SSP2EU"),
   }
 
   if (!grepl(toolGetUnitDollar(returnOnlyBase = TRUE), unit)) {
-    warning(glue("Shifting to non-default base-year prices, using only the US deflator for all countries, and \\
+    message(glue("Shifting to non-default base-year prices, using only the US deflator for all countries, and \\
                   neglecting any changes in PPPs or MERs. Standard conversion would not guarantee that the \\
                   relationships between countries (an important charateristic of the scenario design) remain the \\
                   same."))
