@@ -179,6 +179,7 @@ calcHarmonizedData <- function(driver, scenario) {
     "pastAndGrowth"     = toolHarmonizePast(past, future, method = "growth"),
     "pastAndTransition" = toolHarmonizePast(past, future, method = "transition", yEnd = 2100),
     "PopSSPs"           = toolHarmonizeWithPEAPandFuture(past, future),
+    "PopADBs"           = toolHarmonizePopulationADBs(past, future),
     "PopISIMIP"         = toolHarmonizePast(past, future, method = "transition", yEnd = 2030),
     "GDPpcSSPs"         = toolHarmonizeGDPpcSSPs(past, future, yEnd = 2100),
     "GDPpcSDPs"         = toolBuildGDPpcSDPs(),

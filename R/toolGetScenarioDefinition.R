@@ -53,7 +53,7 @@ toolGetScenarioDefinition <- function(driver = NULL, scen = NULL, aslist = FALSE
     "Population", "SSP2EU",     "WDI-UN_PopDiv-MI",        "SSP2EU-UN_PopDiv",       "PopSSPs",
     "Population", "SDPs",       "WDI-UN_PopDiv-MI",        "SDPs-UN_PopDiv",         "PopSSPs",
     "Population", "ISIMIP",     "UN_PopDiv-MI",            "SSPs-UN_PopDiv",         "PopISIMIP",
-    "Population", "ADBs",       "WDI-UN_PopDiv-MI",        "ADBs-SSP2-UN_PopDiv",    "PopSSPs",
+    "Population", "ADBs",       "WDI-UN_PopDiv-MI",        "ADBs-SSP2-UN_PopDiv",    "PopADBs",
     # Labour Scenarios
     "Labour",     "SSPs",       "WDI-UN_PopDiv",           "SSPs-UN_PopDiv",         "pastAndLevel",
     "Labour",     "SSP2",       "WDI-UN_PopDiv",           "SSP2-UN_PopDiv",         "pastAndLevel",
