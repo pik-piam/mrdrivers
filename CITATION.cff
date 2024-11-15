@@ -2,8 +2,8 @@ cff-version: 1.2.0
 message: If you use this software, please cite it using the metadata from this file.
 type: software
 title: 'mrdrivers: Create GDP and Population Scenarios'
-version: 4.0.5
-date-released: '2024-11-14'
+version: 4.0.6
+date-released: '2024-11-15'
 abstract: Create GDP and population scenarios This package constructs the GDP and
   population scenarios used as drivers in both the REMIND and MAgPIE models.
 authors:
