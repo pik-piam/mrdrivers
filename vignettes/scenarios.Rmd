@@ -27,7 +27,7 @@ Suggested overall reference for the scenario construction: Koch and Leimbach 202
 
 The SSP GDP per capita scenarios are constructed using:
 
--   WDI data ([link](https://databank.worldbank.org/source/world-development-indicators)) from 1990 to 2022 (missing country data filled in with MI data ([link](https://doi.org/10.5281/zenodo.4421504)) and James data ([link](https://pophealthmetrics.biomedcentral.com/articles/10.1186/1478-7954-10-12), specifically the WB_ID series) extended backwards until 1960 using growth rates from MI and James,
+-   WDI data ([link](https://databank.worldbank.org/source/world-development-indicators)) from 1990 to 2022 (missing country data filled in with MI data ([link](https://doi.org/10.5281/zenodo.4421504)) and James data ([link](https://pophealthmetrics.biomedcentral.com/articles/10.1186/1478-7954-10-12), specifically the WB_ID series)) extended backwards until 1960 using growth rates from MI and James,
 
 -   growth rates from IMF GDP per capita projections ([link](https://www.imf.org/-/media/Files/Publications/WEO/WEO-Database/2022/WEOOct2022all.ashx)) until 2029,
 
