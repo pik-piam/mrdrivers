@@ -21,7 +21,7 @@
 
     <a class="navbar-brand me-2" href="../index.html">mrdrivers</a>
 
-    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">4.0.4</small>
+    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">4.0.5</small>
 
 
     <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbar" aria-controls="navbar" aria-expanded="false" aria-label="Toggle navigation">
@@ -65,6 +65,128 @@
 
     
     
+<div class="section level2">
+<h2 id="default-scenarios">Default scenarios<a class="anchor" aria-label="anchor" href="#default-scenarios"></a>
+</h2>
+<p>By default, the following scenarios are returned for all drivers:</p>
+<ul>
+<li>the SSPs, i.e. SSP1-5</li>
+<li>the SDPs, i.e. SDP, SDP_EI, SDP_MC and SDP_RC</li>
+<li>(SSP2EU - deprecated, but still returned as a placeholder. Identical
+to SSP2)</li>
+</ul>
+<p>The scenarios span from 1960 to 2150, with yearly data until 2030,
+and data every 5 years thereafter.</p>
+<div class="section level3">
+<h3 id="gdp-per-capita-and-gdp">GDP per capita and GDP<a class="anchor" aria-label="anchor" href="#gdp-per-capita-and-gdp"></a>
+</h3>
+<div class="section level4">
+<h4 id="ssps">SSPs<a class="anchor" aria-label="anchor" href="#ssps"></a>
+</h4>
+<p>Suggested overall reference for the scenario construction: Koch and
+Leimbach 2023 (<a href="https://doi.org/10.1016/j.ecolecon.2023.107751" class="external-link">link</a>).</p>
+<p>The SSP GDP per capita scenarios are constructed using:</p>
+<ul>
+<li><p>WDI data (<a href="https://databank.worldbank.org/source/world-development-indicators" class="external-link">link</a>)
+from 1990 to 2022 (missing country data filled in with MI data (<a href="https://doi.org/10.5281/zenodo.4421504" class="external-link">link</a>) and James data
+(<a href="https://pophealthmetrics.biomedcentral.com/articles/10.1186/1478-7954-10-12" class="external-link">link</a>,
+specifically the WB_ID series) extended backwards until 1960 using
+growth rates from MI and James,</p></li>
+<li><p>growth rates from IMF GDP per capita projections (<a href="https://www.imf.org/-/media/Files/Publications/WEO/WEO-Database/2022/WEOOct2022all.ashx" class="external-link">link</a>)
+until 2029,</p></li>
+<li><p>and SSP GDP per capita projections (SSP OECD projections <a href="https://data.ece.iiasa.ac.at/ssp/#/about" class="external-link">link</a>, release 3.0.1
+(March 2024)) until 2100.</p></li>
+</ul>
+<p>The scenarios are extended until 2150 using a bezier curve method
+that assumes that the slope in 2100 is flattened by half by 2150. For
+countries lacking projection data, the last historical data point is
+used in all future years. For more details on the harmonization, see
+Koch and Leimbach 2023 (<a href="https://doi.org/10.1016/j.ecolecon.2023.107751" class="external-link">link</a>).</p>
+<p>The SSP GDP scenarios are the product of the GDP per capita and
+population scenarios.</p>
+</div>
+<div class="section level4">
+<h4 id="sdps">SDPs<a class="anchor" aria-label="anchor" href="#sdps"></a>
+</h4>
+<p>Suggested overall reference for the SDP scenarios: Bjoern Soergel et
+al 2024 Environ. Res. Lett. 19 124009 (<a href="http://dx.doi.org/10.1088/1748-9326/ad80af" class="external-link">link</a>).</p>
+<p>The SDP GDP per capita scenarios are all based off of SSP1, with
+different harmonization functions for the different SDPs.</p>
+<p>The SDP GDP scenarios are the product of the GDP per capita and
+population scenarios.</p>
+</div>
+</div>
+<div class="section level3">
+<h3 id="population">Population<a class="anchor" aria-label="anchor" href="#population"></a>
+</h3>
+<div class="section level4">
+<h4 id="ssps-1">SSPs<a class="anchor" aria-label="anchor" href="#ssps-1"></a>
+</h4>
+<p>The SSP population scenarios are constructed using:</p>
+<ul>
+<li><p>WDI data (<a href="https://databank.worldbank.org/source/world-development-indicators" class="external-link">link</a>)
+from 1960 to 2022 (missing country data filled in with UN_PopDiv data
+(<a href="https://population.un.org/wpp/" class="external-link">link</a>, 2022 revision) and
+MI data (<a href="https://doi.org/10.5281/zenodo.4421504" class="external-link">link</a>)),</p></li>
+<li><p>growth rates from the World Bank’s Population and Projections
+database (<a href="https://databank.worldbank.org/source/population-estimates-and-projections#" class="external-link">link</a>)
+until 2029, and</p></li>
+<li><p>growth rates from from the SSP population projections (release
+3.0.1 (March 2024) <a href="https://data.ece.iiasa.ac.at/ssp/#/about" class="external-link">link</a> and <a href="https://doi.org/10.5281/zenodo.10618931" class="external-link">link</a>), filled in with
+UN_PopDiv data (<a href="https://population.un.org/wpp/" class="external-link">link</a>, 2022
+revision)) until 2100.</p></li>
+</ul>
+<p>The scenarios are extended until 2150 using a bezier curve method
+that assumes that the slope in 2100 is flattened by half by 2150. For
+countries lacking projection data, the last historical data point is
+used in all future years. For more details on the harmonization, see
+Koch and Leimbach 2023 (<a href="https://doi.org/10.1016/j.ecolecon.2023.107751" class="external-link">link</a>).</p>
+</div>
+<div class="section level4">
+<h4 id="sdps-1">SDPs<a class="anchor" aria-label="anchor" href="#sdps-1"></a>
+</h4>
+<p>The SDP scenarios are all equal to the SSP1 scenario.</p>
+</div>
+</div>
+<div class="section level3">
+<h3 id="labour">Labour<a class="anchor" aria-label="anchor" href="#labour"></a>
+</h3>
+<div class="section level4">
+<h4 id="ssps-2">SSPs<a class="anchor" aria-label="anchor" href="#ssps-2"></a>
+</h4>
+<p>The SSPs labour scenarios are constructed using past WDI data (<a href="https://databank.worldbank.org/source/world-development-indicators" class="external-link">link</a>)
+from 1960 to 2022 (missing country data filled in with UN_PopDiv data
+(<a href="https://population.un.org/wpp/" class="external-link">link</a>, 2022 revision)), and
+SSP labour projections (<a href="https://doi.org/10.5281/zenodo.10618931" class="external-link">link</a>) until 2100. The
+labor projections are glued to the data, with no further
+harmonization.</p>
+</div>
+<div class="section level4">
+<h4 id="sdps-2">SDPs<a class="anchor" aria-label="anchor" href="#sdps-2"></a>
+</h4>
+<p>The SDP scenarios are all equal to the SSP1 scenario.</p>
+</div>
+</div>
+<div class="section level3">
+<h3 id="urban-population-share">Urban population share<a class="anchor" aria-label="anchor" href="#urban-population-share"></a>
+</h3>
+<div class="section level4">
+<h4 id="ssps-3">SSPs<a class="anchor" aria-label="anchor" href="#ssps-3"></a>
+</h4>
+<p>The SSPs urban population share scenarios are constructed using past
+WDI data starting in 1960 (<a href="https://databank.worldbank.org/source/world-development-indicators" class="external-link">link</a>),
+and SSP urban population share projections (2018 Release <a href="https://data.ece.iiasa.ac.at/ssp/#/about" class="external-link">link</a>). The
+harmonization uses the past levels, and future growth rates.</p>
+</div>
+<div class="section level4">
+<h4 id="sdps-3">SDPs<a class="anchor" aria-label="anchor" href="#sdps-3"></a>
+</h4>
+<p>The SDP, SDP_EI, and SDP_MC scenarios are all equal to the SSP1
+scenario. The SDP_RC is equal to the SSP3 for OECD countries, and SSP2
+for non-OECD countries.</p>
+</div>
+</div>
+</div>
 <div class="section level2">
 <h2 id="available-scenarios">Available Scenarios<a class="anchor" aria-label="anchor" href="#available-scenarios"></a>
 </h2>
@@ -122,119 +244,6 @@ following command executed in the global environment would make the
 <span>  <span class="st">"Population"</span>, <span class="st">"nomi"</span>,         <span class="st">"WDI"</span>,       <span class="st">"SSPs"</span>,       <span class="st">"PopSSPs"</span>,</span>
 <span>  <span class="st">"GDP"</span>,        <span class="st">"nomi"</span>,         <span class="st">"-"</span>,         <span class="st">"-"</span>,          <span class="st">"GDPpcWithPop"</span></span>
 <span><span class="op">)</span></span></code></pre></div>
-</div>
-<div class="section level2">
-<h2 id="default-scenarios">Default Scenarios<a class="anchor" aria-label="anchor" href="#default-scenarios"></a>
-</h2>
-<p>By default, the following scenarios are returned for all drivers:</p>
-<ul>
-<li>the SSPs, i.e. SSP1-5</li>
-<li>the SDPs, i.e. SDP, SDP_EI, SDP_MC and SDP_RC</li>
-</ul>
-<p>The scenarios span from 1960 to 2150, with yearly data until 2030,
-and data every 5 years thereafter.</p>
-</div>
-<div class="section level2">
-<h2 id="references">References<a class="anchor" aria-label="anchor" href="#references"></a>
-</h2>
-<div class="section level3">
-<h3 id="gdp-per-capita-and-gdp-scenarios">GDP per capita and GDP scenarios<a class="anchor" aria-label="anchor" href="#gdp-per-capita-and-gdp-scenarios"></a>
-</h3>
-<div class="section level4">
-<h4 id="ssps">SSPs<a class="anchor" aria-label="anchor" href="#ssps"></a>
-</h4>
-<p>Suggested overall reference for the scenario construction: Koch and
-Leimbach 2023 (<a href="https://doi.org/10.1016/j.ecolecon.2023.107751" class="external-link">link</a>).</p>
-<p>The SSP GDP per capita scenarios are constructed using past WDI data
-(<a href="https://databank.worldbank.org/source/world-development-indicators" class="external-link">link</a>)
-from 1990 to 2022 (missing country data filled in with MI data (<a href="https://doi.org/10.5281/zenodo.4421504" class="external-link">link</a>) and James data
-(<a href="https://pophealthmetrics.biomedcentral.com/articles/10.1186/1478-7954-10-12" class="external-link">link</a>,
-specifically the WB_ID series), extended backwards until 1960 using
-growth rates from MI and James), growth rates from IMF GDP per capita
-projections (<a href="https://www.imf.org/-/media/Files/Publications/WEO/WEO-Database/2022/WEOOct2022all.ashx" class="external-link">link</a>)
-until 2029, and SSP GDP per capita projections (SSP OECD projections <a href="https://data.ece.iiasa.ac.at/ssp/#/about" class="external-link">link</a>, release 3.0.1
-(March 2024)) until 2100. The scenarios are extended until 2150 using a
-bezier curve method that assumes that the slope in 2100 is flattened by
-half by 2150. For countries lacking projection data, the last historical
-data point is used in all future years. For more details on the
-harmonization, see Koch and Leimbach 2023 (<a href="https://doi.org/10.1016/j.ecolecon.2023.107751" class="external-link">link</a>).</p>
-<p>The SSP GDP scenarios are the product of the GDP per capita and
-population scenarios.</p>
-</div>
-<div class="section level4">
-<h4 id="sdps">SDPs<a class="anchor" aria-label="anchor" href="#sdps"></a>
-</h4>
-<p>The SDPs are all based off of SSP1, with different harmonization
-functions for the different SDPs. (Reference needed.) The SDP GDP
-scenarios are the product of the GDP per capita and population
-scenarios.</p>
-</div>
-</div>
-<div class="section level3">
-<h3 id="population-scenarios">Population scenarios<a class="anchor" aria-label="anchor" href="#population-scenarios"></a>
-</h3>
-<div class="section level4">
-<h4 id="ssps-1">SSPs<a class="anchor" aria-label="anchor" href="#ssps-1"></a>
-</h4>
-<p>The SSP population scenarios are constructed using past WDI data (<a href="https://databank.worldbank.org/source/world-development-indicators" class="external-link">link</a>)
-from 1960 to 2022 (missing country data filled in with UN_PopDiv data
-(<a href="https://population.un.org/wpp/" class="external-link">link</a>, 2022 revision)) and
-MI data (<a href="https://doi.org/10.5281/zenodo.4421504" class="external-link">link</a>)),
-growth rates from the World Bank’s Population and Projections database
-(<a href="https://databank.worldbank.org/source/population-estimates-and-projections#" class="external-link">link</a>)
-until 2029, and growth rates from from the SSP population projections
-(release 3.0.1 (March 2024) <a href="https://data.ece.iiasa.ac.at/ssp/#/about" class="external-link">link</a> and <a href="https://doi.org/10.5281/zenodo.10618931" class="external-link">link</a>), filled in with
-UN_PopDiv data (<a href="https://population.un.org/wpp/" class="external-link">link</a>, 2022
-revision)) until 2100. The scenarios are extended until 2150 using a
-bezier curve method that assumes that the slope in 2100 is flattened by
-half by 2150. For countries lacking projection data, the last historical
-data point is used in all future years. For more details on the
-harmonization, see Koch and Leimbach 2023 (<a href="https://doi.org/10.1016/j.ecolecon.2023.107751" class="external-link">link</a>).</p>
-</div>
-<div class="section level4">
-<h4 id="sdps-1">SDPs<a class="anchor" aria-label="anchor" href="#sdps-1"></a>
-</h4>
-<p>The SDP scenarios are all equal to the SSP1 scenario.</p>
-</div>
-</div>
-<div class="section level3">
-<h3 id="labour-scenarios">Labour scenarios<a class="anchor" aria-label="anchor" href="#labour-scenarios"></a>
-</h3>
-<div class="section level4">
-<h4 id="ssps-2">SSPs<a class="anchor" aria-label="anchor" href="#ssps-2"></a>
-</h4>
-<p>The SSPs labour scenarios are constructed using past WDI data (<a href="https://databank.worldbank.org/source/world-development-indicators" class="external-link">link</a>)
-from 1960 to 2022 (missing country data filled in with UN_PopDiv data
-(<a href="https://population.un.org/wpp/" class="external-link">link</a>, 2022 revision)), and
-SSP labour projections (<a href="https://doi.org/10.5281/zenodo.10618931" class="external-link">link</a>) until 2100. The
-labor projections are glued to the data, with no further
-harmonization.</p>
-</div>
-<div class="section level4">
-<h4 id="sdps-2">SDPs<a class="anchor" aria-label="anchor" href="#sdps-2"></a>
-</h4>
-<p>The SDP scenarios are all equal to the SSP1 scenario.</p>
-</div>
-</div>
-<div class="section level3">
-<h3 id="urban-population-share-scenarios">Urban population share scenarios<a class="anchor" aria-label="anchor" href="#urban-population-share-scenarios"></a>
-</h3>
-<div class="section level4">
-<h4 id="ssps-3">SSPs<a class="anchor" aria-label="anchor" href="#ssps-3"></a>
-</h4>
-<p>The SSPs urban population share scenarios are constructed using past
-WDI data starting in 1960 (<a href="https://databank.worldbank.org/source/world-development-indicators" class="external-link">link</a>),
-and SSP urban population share projections (2018 Release <a href="https://data.ece.iiasa.ac.at/ssp/#/about" class="external-link">link</a>). The
-harmonization uses the past levels, and future growth rates.</p>
-</div>
-<div class="section level4">
-<h4 id="sdps-3">SDPs<a class="anchor" aria-label="anchor" href="#sdps-3"></a>
-</h4>
-<p>The SDP, SDP_EI, and SDP_MC scenarios are all equal to the SSP1
-scenario. The SDP_RC is equal to the SSP3 for OECD countries, and SSP2
-for non-OECD countries.</p>
-</div>
-</div>
 </div>
   </main><aside class="col-md-3"><nav id="toc" aria-label="Table of contents"><h2>On this page</h2>
     </nav></aside>
