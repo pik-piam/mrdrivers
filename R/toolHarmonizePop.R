@@ -45,7 +45,7 @@ toolHarmonizePopulationADBs <- function(past, future) {
 toolHarmonizeLabourADBs <- function() {
   pop2 <- calcOutput("Population", scenario = "SSP2", naming = "scenario", extension2150 = "none", aggregate = FALSE)
   lab2 <- calcOutput("Labour", scenario = "SSP2", naming = "scenario", extension2150 = "none", aggregate = FALSE)
-  pop  <- calcOutput("Population", scenario = "ADBs", extension2150 = "none", aggregate = FALSE)
+  pop  <- calcOutput("Population", scenario = "ADBs", naming = "scenario", extension2150 = "none", aggregate = FALSE)
 
   combined <- purrr::map(getNames(pop), function(x) {
     labShareSSP2 <- lab2 / pop2[, getYears(lab2), ]
