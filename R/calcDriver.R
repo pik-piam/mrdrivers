@@ -179,14 +179,14 @@ calcHarmonizedData <- function(driver, scenario) {
     "pastAndGrowth"     = toolHarmonizePast(past, future, method = "growth"),
     "pastAndTransition" = toolHarmonizePast(past, future, method = "transition", yEnd = 2100),
     "PopSSPs"           = toolHarmonizeWithPEAPandFuture(past, future),
-    "PopADBs"           = toolHarmonizePopulationADBs(past, future),
+    "PopIndiaDEAs"      = toolHarmonizePopulationIndiaDEAs(past, future),
     "PopISIMIP"         = toolHarmonizePast(past, future, method = "transition", yEnd = 2030),
     "GDPpcSSPs"         = toolHarmonizeGDPpcSSPs(past, future, yEnd = 2100),
     "GDPpcSDPs"         = toolBuildGDPpcSDPs(),
-    "GDPpcADBs"         = toolHarmonizeGDPpcADBs(past, future),
+    "GDPpcIndiaDEAs"    = toolHarmonizeGDPpcIndiaDEAs(past, future),
     "GDPoverPop"        = toolDivideGDPbyPop(scenario),
     "GDPpcWithPop"      = toolMultiplyGDPpcWithPop(scenario),
-    "LabourADBs"        = toolHarmonizeLabourADBs(),
+    "LabourIndiaDEAs"   = toolHarmonizeLabourIndiaDEAs(),
     stop(glue("Bad input for calcHarmonizedData Argument harmonization = '{harmonization}' is invalid."))
   ) %>% toolInterpolateAndExtrapolate()
 

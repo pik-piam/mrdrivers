@@ -22,10 +22,10 @@ toolHarmonizeWithPEAPandFuture <- function(past, future) {
                           and growth rates from {future$description} thereafter."))
 }
 
-toolHarmonizePopulationADBs <- function(past, future) {
+toolHarmonizePopulationIndiaDEAs <- function(past, future) {
   ssp2Data <- calcOutput("Population", scenario = "SSP2", extension2150 = "none", aggregate = FALSE)
 
-  # For both ADB scenarios, overwrite SSP2 IND data with ADB IND data
+  # For both IndiaDEAs scenarios, overwrite SSP2 IND data with DEA IND data
   combined <- purrr::map(getNames(future$x), function(x) {
     y <- setNames(ssp2Data, x)
     y["IND", , ] <- 0
@@ -42,10 +42,14 @@ toolHarmonizePopulationADBs <- function(past, future) {
                           and converge to {future$description} by 2030."))
 }
 
-toolHarmonizeLabourADBs <- function() {
+toolHarmonizeLabourIndiaDEAs <- function() {
   pop2 <- calcOutput("Population", scenario = "SSP2", naming = "scenario", extension2150 = "none", aggregate = FALSE)
   lab2 <- calcOutput("Labour", scenario = "SSP2", naming = "scenario", extension2150 = "none", aggregate = FALSE)
-  pop  <- calcOutput("Population", scenario = "ADBs", naming = "scenario", extension2150 = "none", aggregate = FALSE)
+  pop  <- calcOutput("Population",
+                     scenario = "IndiaDEAs",
+                     naming = "scenario",
+                     extension2150 = "none",
+                     aggregate = FALSE)
 
   combined <- purrr::map(getNames(pop), function(x) {
     labShareSSP2 <- lab2 / pop2[, getYears(lab2), ]

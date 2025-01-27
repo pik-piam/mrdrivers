@@ -128,10 +128,10 @@ toolDivideGDPbyPop <- function(scenario) {
                           {pop$description}"))
 }
 
-toolHarmonizeGDPpcADBs <- function(past, future) {
+toolHarmonizeGDPpcIndiaDEAs <- function(past, future) {
   ssp2Data <- calcOutput("GDPpc", scenario = "SSP2", extension2150 = "none", average2020 = FALSE, aggregate = FALSE)
 
-  # For both ADB scenarios, overwrite SSP2 IND data with ADB IND data
+  # For both IndiaDEAs scenarios, overwrite SSP2 IND data with DEA IND data
   combined <- purrr::map(getNames(future$x), function(x) {
     y <- setNames(ssp2Data, x)
     y["IND", , ] <- 0
@@ -264,7 +264,7 @@ toolSHAPEgrowth <- function(shapeGDPScenario, gdppcapSSP1, startFromYear) {
 
       # For service (SDP_MC) and society (SDP_RC) additionally add a smoothing for the first two 5-year timesteps
       # (2025 and 2030 with current default startFromYear = 2025)
-      # Apply only 1/3 of the modification for first 5 years, and 2/3 of the modification for another 5 years      
+      # Apply only 1/3 of the modification for first 5 years, and 2/3 of the modification for another 5 years
       if (shapeGDPScenario %in% c("SDP_MC", "SDP_RC")) {
         if (yr >= startFromYear && yr < startFromYear + 5) {
           modificationFactor[, yr, ] <- 1 / 3. * (modificationFactor[, yr, ] - 1) + 1
