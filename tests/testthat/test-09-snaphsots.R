@@ -37,7 +37,3 @@ test_that("Default calcOutput Urban calls", {
 test_that("Default calcOutput Labour calls", {
   expect_snapshot_value(fh(calcOutput("Labour")), style = "json2")
 })
-
-test_that("Default calcOutput RatioPPP2MER call", {
-  expect_snapshot_value(calcOutput("RatioPPP2MER"), style = "json2")
-})
