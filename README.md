@@ -1,6 +1,6 @@
 # Create GDP and Population Scenarios
 
-R package **mrdrivers**, version **6.0.0**
+R package **mrdrivers**, version **6.0.1**
 
 [![CRAN status](https://www.r-pkg.org/badges/version/mrdrivers)](https://cran.r-project.org/package=mrdrivers) [![R build status](https://pik-piam.github.io/mrdrivers/workflows/check/badge.svg)](https://pik-piam.github.io/mrdrivers/actions) [![codecov](https://codecov.io/gh/mrdrivers/branch/master/graph/badge.svg)](https://app.codecov.io/gh/mrdrivers) [![r-universe](https://pik-piam.r-universe.dev/badges/mrdrivers)](https://pik-piam.r-universe.dev/builds)
 
@@ -100,7 +100,7 @@ In case of questions / problems please contact Johannes Koch <jokoch@pik-potsdam
 
 To cite package **mrdrivers** in publications use:
 
-Koch J, Soergel B, Leip D, Benke F, Dietrich J (2025). "mrdrivers: Create GDP and Population Scenarios." Version: 6.0.0, <https://pik-piam.github.io/mrdrivershttps://github.com/pik-piam/mrdrivers>.
+Koch J, Soergel B, Leip D, Benke F, Dietrich J (2025). "mrdrivers: Create GDP and Population Scenarios." Version: 6.0.1, <https://pik-piam.github.io/mrdrivershttps://github.com/pik-piam/mrdrivers>.
 
 A BibTeX entry for LaTeX users is
 
@@ -112,6 +112,6 @@ A BibTeX entry for LaTeX users is
   year = {2025},
   url = {https://pik-piam.github.io/mrdrivers},
   url = {https://github.com/pik-piam/mrdrivers},
-  note = {Version: 6.0.0},
+  note = {Version: 6.0.1},
 }
 ```
