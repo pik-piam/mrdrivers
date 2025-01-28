@@ -1,11 +1,11 @@
-#' Read James et al. (2012) dataset
+#' Read-in data from the James et al. (2012) dataset
 #'
 #' Read-in GDP per-capita data from the publication James, Spencer L., Paul
 #' Gubbins, Christopher JL Murray, and Emmanuela Gakidou. 2012. "Developing a
 #' Comprehensive Time Series of GDP per Capita for 210 Countries from 1950 to
 #' 2015." Population Health Metrics 10 (1): 12. doi:10.1186/1478-7954-10-12.
 #'
-#' The data is in Annex 3
+#' The data is in Annex 3.
 #'
 #' @param subtype String indicating the data series
 #' @inherit madrat::readSource return

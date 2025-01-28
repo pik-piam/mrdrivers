@@ -1,7 +1,7 @@
-#' Read in the "Missing Islands" dataset
+#' Read-in the Missing Islands dataset
 #'
-#' @description Read in gdp or population data for minor islands (not included in big inventories) from a custom made
-#' data set that gets data from a variety of sources (e.g. CIA World Factbook, Insee, BEA, PRISM, and Woldometers).
+#' Read-in gdp or population data for minor islands (not included in big inventories) from a custom made
+#' dataset that gets data from a variety of sources (e.g. CIA World Factbook, Insee, BEA, PRISM, and Woldometers).
 #'
 #' @param subtype pop for population, or gdp for gdp
 #' @inherit madrat::readSource return

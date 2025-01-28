@@ -1,6 +1,6 @@
-#' Read WDI data
+#' Read-in data from the World Bank's World Development Indicator (WDI) database.
 #'
-#' Download, read and convert WDI (World development indicators) data.
+#' Download, read-in and convert WDI (World development indicators) data.
 #'
 #' @param subtype A string. Type of WDI data that should be read. Use the
 #' World Bank indicator abbreviation. Available subtypes are:

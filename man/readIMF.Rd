@@ -4,7 +4,7 @@
 \alias{downloadIMF}
 \alias{readIMF}
 \alias{convertIMF}
-\title{Read IMF}
+\title{Read-in data from the International Monetary Fund's (IMF) Economic Outlook}
 \usage{
 downloadIMF()
 

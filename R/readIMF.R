@@ -1,4 +1,4 @@
-#' Read IMF
+#' Read-in data from the International Monetary Fund's (IMF) Economic Outlook
 #'
 #' Read-in data from the IMF's World Economic Outlook.
 #' Currently reading GDP per capita and current account balance data.

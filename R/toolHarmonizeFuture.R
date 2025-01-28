@@ -1,4 +1,4 @@
-#' Harmonization tool Future
+#' Tool to harmonize future data to past data, without modifying the future data
 #'
 #' Like all harmonization tools in mrdrivers, toolHarmonizeFuture takes two magpie objects, 'past' and 'future',
 #' and returns a single magpie object, i.e. the harmonized time-series. In this case, the harmonized time-series is

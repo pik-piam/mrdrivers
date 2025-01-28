@@ -1,6 +1,6 @@
-#' Read data from India's Department of Economic Affairs (DEA)
+#' Read-in data from India's Department of Economic Affairs (DEA)
 #'
-#' Read-in an DEA data as magclass object
+#' Read-in DEA data as magclass object
 #'
 #' @inherit madrat::readSource return
 #' @seealso [madrat::readSource()]

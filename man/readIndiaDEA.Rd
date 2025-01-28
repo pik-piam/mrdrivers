@@ -4,7 +4,7 @@
 \alias{readIndiaDEA}
 \alias{convertIndiaDEA}
 \alias{downloadIndiaDEA}
-\title{Read data from India's Department of Economic Affairs (DEA)}
+\title{Read-in data from India's Department of Economic Affairs (DEA)}
 \usage{
 readIndiaDEA()
 
@@ -26,7 +26,7 @@ should match the source data. The spatial dimension should either match the sour
 if the convert argument is set to TRUE, should be on ISO code country level.
 }
 \description{
-Read-in an DEA data as magclass object
+Read-in DEA data as magclass object
 }
 \examples{
 \dontrun{

@@ -62,6 +62,12 @@ calcOutput:
 c("calcGDP", "calcGDPpc", "calcPopulation", "calcLabour", "calcUrban", "calcRatioPPP2MER")
 ```
 
+Then there are number of important and/or useful tool functions:
+
+-  The function `tooGetUnitDollar()` is where the default unit for all monetary units in REMIND and MAgPIE is defined. 
+-  The function `tooGetScenarioDefinition()` is where the scenarios are defined and can be helpful when searching for scenario information. 
+-  The functions `toolGeneralConvert()`, `toolHarmonizePast()` and `toolHarmonizeFuture()` handle common tasks and are potentially useful outside of mrdrivers.
+
 ## Scenarios
 
 The current default scenarios returned for all drivers (i.e. GDP, GDP per capita, Population, Labour, and Urban Population Share) are:

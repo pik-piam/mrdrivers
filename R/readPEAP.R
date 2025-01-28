@@ -1,6 +1,6 @@
-#' Read Population Estimates And Projections from the World Bank
+#' Read-in data from the World Bank's Population Estimates And Projections (PEAP)
 #'
-#' Read-in xlsx file from the World Bank's Population Estimates And Projections (PEAP)
+#' Read-in an xlsx file from the World Bank's Population Estimates And Projections (PEAP)
 #' The PEAP data can't seemed to be accessed by the WDI::WDI package nor the World Bank's API directly.
 #' Manual download required from https://databank.worldbank.org/source/population-estimates-and-projections#
 #'
