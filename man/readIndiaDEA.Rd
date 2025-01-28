@@ -8,7 +8,7 @@
 \usage{
 readIndiaDEA()
 
-convertIndiaDEA(x, subtype = "all", subset = c("IndiaMedium", "IndiaHigh"))
+convertIndiaDEA(x, subtype = "all", subset = c("baseline", "optimistic"))
 
 downloadIndiaDEA()
 }
@@ -17,7 +17,7 @@ downloadIndiaDEA()
 
 \item{subtype}{A string, either "all", "gdppc", "pop"}
 
-\item{subset}{A vector of strings designating the scenarios. Defaults to c("IndiaMedium", "IndiaHigh").}
+\item{subset}{A vector of strings designating the scenarios. Defaults to c("baseline", "optimistic").}
 }
 \value{
 The read-in data, usually a magpie object. If supplementary is TRUE a list including

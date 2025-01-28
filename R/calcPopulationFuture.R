@@ -12,13 +12,13 @@ calcPopulationFuture <- function(futureData = "SSPs-UN_PopDiv") {
 calcInternalPopulationFuture <- function(futureData) {
   data <- switch(
     futureData,
-    "SSPs"          = readSource("SSP", "pop"),
-    "SSP2"          = readSource("SSP", "pop", "SSP2"),
-    "SSP2EU"        = setNames(readSource("SSP", "pop", "SSP2"), "SSP2EU"),
-    "SDPs"          = toolPopulationFutureSDPs(),
-    "UN_PopDiv"     = readSource("UN_PopDiv", "pop", "medium"),
-    "IndiaDEAs"     = readSource("IndiaDEA", "pop"),
-    "IndiaHigh"     = readSource("IndiaDEA", "pop", "IndiaHigh"),
+    "SSPs"        = readSource("SSP", "pop"),
+    "SSP2"        = readSource("SSP", "pop", "SSP2"),
+    "SSP2EU"      = setNames(readSource("SSP", "pop", "SSP2"), "SSP2EU"),
+    "SDPs"        = toolPopulationFutureSDPs(),
+    "UN_PopDiv"   = readSource("UN_PopDiv", "pop", "medium"),
+    "IndiaDEAs"   = readSource("IndiaDEA", "pop"),
+    "IndiaDEAopt" = readSource("IndiaDEA", "pop", "optimistic"),
     stop("Bad input for calcPopulationFuture. Invalid 'futureData' argument.")
   )
 

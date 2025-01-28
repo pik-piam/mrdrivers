@@ -22,7 +22,7 @@ toolHarmonizeWithPEAPandFuture <- function(past, future) {
                           and growth rates from {future$description} thereafter."))
 }
 
-toolHarmonizePopulationIndiaDEAs <- function(past, future) {
+toolHarmonizePopulationSSP2IndiaDEAs <- function(past, future) {
   ssp2Data <- calcOutput("Population", scenario = "SSP2", extension2150 = "none", aggregate = FALSE)
 
   # For both IndiaDEAs scenarios, overwrite SSP2 IND data with DEA IND data
@@ -36,17 +36,22 @@ toolHarmonizePopulationIndiaDEAs <- function(past, future) {
   }) %>%
     mbind()
 
+  # Use "SSP2IndiaMedium" and "SSP2IndiaHigh" as IndiaDEA scenario names
+  newNames <- sub("baseline",   "SSP2IndiaMedium", getNames(combined))
+  newNames <- sub("optimistic", "SSP2IndiaHigh", newNames)
+  getNames(combined) <- newNames
+
   list(x = combined,
        description = glue("equal to SSP2 in all countries except for IND. \\
-                          For IND use {past$description} until {max(getYears(past$x, as.integer = TRUE))}, \\
-                          and converge to {future$description} by 2030."))
+                          For IND use {future$description} from {min(getYears(future$x, as.integer = TRUE))} \\
+                          onwards and growth rates from {past$description} for the years before."))
 }
 
-toolHarmonizeLabourIndiaDEAs <- function() {
+toolHarmonizeLabourSSP2IndiaDEAs <- function() {
   pop2 <- calcOutput("Population", scenario = "SSP2", naming = "scenario", extension2150 = "none", aggregate = FALSE)
   lab2 <- calcOutput("Labour", scenario = "SSP2", naming = "scenario", extension2150 = "none", aggregate = FALSE)
   pop  <- calcOutput("Population",
-                     scenario = "IndiaDEAs",
+                     scenario = "SSP2IndiaDEAs",
                      naming = "scenario",
                      extension2150 = "none",
                      aggregate = FALSE)

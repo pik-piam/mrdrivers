@@ -35,13 +35,11 @@ readIndiaDEA <- function() {
 #' @order 2
 #' @param x MAgPIE object returned from readIndiaDEA
 #' @param subtype A string, either "all", "gdppc", "pop"
-#' @param subset A vector of strings designating the scenarios. Defaults to c("IndiaMedium", "IndiaHigh").
-convertIndiaDEA <- function(x, subtype = "all", subset = c("IndiaMedium", "IndiaHigh")) {
+#' @param subset A vector of strings designating the scenarios. Defaults to c("baseline", "optimistic").
+convertIndiaDEA <- function(x, subtype = "all", subset = c("baseline", "optimistic")) {
   if (!subtype %in% c("all", "gdppc", "pop")) {
     stop("Bad input for readDEA. Invalid 'subtype' argument. Available subtypes are 'all', 'gdppc', and 'pop'.")
   }
-  # Rename scenarios to IndiaMedium and IndiaHigh
-  getNames(x, dim = "scenario") <- c("IndiaMedium", "IndiaHigh")
 
   # Filter scenario
   x <- mselect(x, scenario = subset)

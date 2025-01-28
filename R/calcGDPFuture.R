@@ -43,13 +43,13 @@ calcGDPpcFuture <- function(scenario = "SSPs") {
 
   data <- switch(
     scenario,
-    "IndiaDEAs" = toolFillWith(
+    "SSP2IndiaDEAs" = toolFillWith(
       readSource("IndiaDEA", "gdppc"),
       toolGDPpcFutureFromGDPAndPop(sub("IndiaDEAs-", "", gdpFutureData), popFutureData)
     ),
-    "IndiaHigh" = toolFillWith(
-      readSource("IndiaDEA", "gdppc", "IndiaHigh"),
-      toolGDPpcFutureFromGDPAndPop(sub("IndiaHigh-", "", gdpFutureData), popFutureData)
+    "SSP2IndiaHigh" = toolFillWith(
+      readSource("IndiaDEA", "gdppc", "optimistic"),
+      toolGDPpcFutureFromGDPAndPop(sub("IndiaDEAopt-", "", gdpFutureData), popFutureData)
     ),
     toolGDPpcFutureFromGDPAndPop(gdpFutureData, popFutureData)
   )
