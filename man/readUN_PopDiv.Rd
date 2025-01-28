@@ -4,7 +4,7 @@
 \alias{downloadUN_PopDiv}
 \alias{readUN_PopDiv}
 \alias{convertUN_PopDiv}
-\title{Read UN Population Division Data}
+\title{Read-in data from the United Nations Population Division (UN_PopDiv) database}
 \usage{
 downloadUN_PopDiv()
 
@@ -26,7 +26,7 @@ should match the source data. The spatial dimension should either match the sour
 if the convert argument is set to TRUE, should be on ISO code country level.
 }
 \description{
-Read UN population data.
+Read-in UN population data.
 }
 \seealso{
 \code{\link[madrat:readSource]{madrat::readSource()}} and \code{\link[madrat:downloadSource]{madrat::downloadSource()}}

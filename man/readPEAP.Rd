@@ -4,7 +4,7 @@
 \alias{downloadPEAP}
 \alias{readPEAP}
 \alias{convertPEAP}
-\title{Read Population Estimates And Projections from the World Bank}
+\title{Read-in data from the World Bank's Population Estimates And Projections (PEAP)}
 \usage{
 downloadPEAP()
 
@@ -22,7 +22,7 @@ should match the source data. The spatial dimension should either match the sour
 if the convert argument is set to TRUE, should be on ISO code country level.
 }
 \description{
-Read-in xlsx file from the World Bank's Population Estimates And Projections (PEAP)
+Read-in an xlsx file from the World Bank's Population Estimates And Projections (PEAP)
 The PEAP data can't seemed to be accessed by the WDI::WDI package nor the World Bank's API directly.
 Manual download required from https://databank.worldbank.org/source/population-estimates-and-projections#
 }

@@ -1,11 +1,11 @@
-#' Get monetary unit
+#' Get default monetary unit used in the rd3mod input data pipeline
 #'
-#' toolGetUnitDollar returns unit used for monetary values.
+#' toolGetUnitDollar returns default unit used for monetary values. Currently: `r toolGetUnitDollar()`.
 #'
 #' @param returnOnlyBase TRUE or FALSE (default). If true only the base year is returned (as string).
 #' @param inPPP TRUE or FALSE (default). If TRUE the the string ends in 'Int$PPP', instead of 'Int$MER'.
 #'
-#' @return A string with the monetary unit: `r toolGetUnitDollar()`.
+#' @return A string with the monetary unit, currently `r toolGetUnitDollar()`.
 #' @export
 #'
 #' @examples

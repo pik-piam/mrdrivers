@@ -1,6 +1,6 @@
-#' Read UN Population Division Data
+#' Read-in data from the United Nations Population Division (UN_PopDiv) database
 #'
-#' Read UN population data.
+#' Read-in UN population data.
 #'
 #' @param subtype Either "pop" or "lab".
 #' @param subset Either "estimates" or "medium".

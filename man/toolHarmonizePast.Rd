@@ -2,7 +2,7 @@
 % Please edit documentation in R/toolHarmonizePast.R
 \name{toolHarmonizePast}
 \alias{toolHarmonizePast}
-\title{Harmonization tool Past}
+\title{Tool to harmonize future data to past data, without modifying the past data}
 \usage{
 toolHarmonizePast(past, future, method = "level", yEnd = 2100)
 }

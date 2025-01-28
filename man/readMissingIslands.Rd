@@ -4,7 +4,7 @@
 \alias{downloadMissingIslands}
 \alias{readMissingIslands}
 \alias{convertMissingIslands}
-\title{Read in the "Missing Islands" dataset}
+\title{Read-in the Missing Islands dataset}
 \usage{
 downloadMissingIslands()
 
@@ -24,8 +24,8 @@ should match the source data. The spatial dimension should either match the sour
 if the convert argument is set to TRUE, should be on ISO code country level.
 }
 \description{
-Read in gdp or population data for minor islands (not included in big inventories) from a custom made
-data set that gets data from a variety of sources (e.g. CIA World Factbook, Insee, BEA, PRISM, and Woldometers).
+Read-in gdp or population data for minor islands (not included in big inventories) from a custom made
+dataset that gets data from a variety of sources (e.g. CIA World Factbook, Insee, BEA, PRISM, and Woldometers).
 }
 \examples{
 \dontrun{

@@ -4,7 +4,7 @@
 \alias{downloadWDI}
 \alias{readWDI}
 \alias{convertWDI}
-\title{Read WDI data}
+\title{Read-in data from the World Bank's World Development Indicator (WDI) database.}
 \usage{
 downloadWDI()
 
@@ -34,7 +34,7 @@ should match the source data. The spatial dimension should either match the sour
 if the convert argument is set to TRUE, should be on ISO code country level.
 }
 \description{
-Download, read and convert WDI (World development indicators) data.
+Download, read-in and convert WDI (World development indicators) data.
 }
 \details{
 The workflow to update the WDI data is the following: call the download function manually, and rename the new

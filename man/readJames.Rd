@@ -4,7 +4,7 @@
 \alias{downloadJames}
 \alias{readJames}
 \alias{convertJames}
-\title{Read James et al. (2012) dataset}
+\title{Read-in data from the James et al. (2012) dataset}
 \usage{
 downloadJames()
 
@@ -30,7 +30,7 @@ Comprehensive Time Series of GDP per Capita for 210 Countries from 1950 to
 2015." Population Health Metrics 10 (1): 12. doi:10.1186/1478-7954-10-12.
 }
 \details{
-The data is in Annex 3
+The data is in Annex 3.
 }
 \examples{
 \dontrun{

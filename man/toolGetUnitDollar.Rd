@@ -2,7 +2,7 @@
 % Please edit documentation in R/toolGetUnitDollar.R
 \name{toolGetUnitDollar}
 \alias{toolGetUnitDollar}
-\title{Get monetary unit}
+\title{Get default monetary unit used in the rd3mod input data pipeline}
 \usage{
 toolGetUnitDollar(returnOnlyBase = FALSE, inPPP = FALSE)
 }
@@ -12,10 +12,10 @@ toolGetUnitDollar(returnOnlyBase = FALSE, inPPP = FALSE)
 \item{inPPP}{TRUE or FALSE (default). If TRUE the the string ends in 'Int$PPP', instead of 'Int$MER'.}
 }
 \value{
-A string with the monetary unit: constant 2017 US$MER.
+A string with the monetary unit, currently constant 2017 US$MER.
 }
 \description{
-toolGetUnitDollar returns unit used for monetary values.
+toolGetUnitDollar returns default unit used for monetary values. Currently: constant 2017 US$MER.
 }
 \examples{
 toolGetUnitDollar()
