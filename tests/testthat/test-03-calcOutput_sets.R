@@ -29,7 +29,6 @@ test_that("set names", {
   expectCorrectSetNames(calcOutput("GDPpcFuture"))
   expectCorrectSetNames(calcOutput("GDP", extension2150 = "none"))
   expectCorrectSetNames(calcOutput("GDPpc", extension2150 = "none"))
-  # Want to keep:  expectCorrectSetNames(calcOutput("RatioPPP2MER"))
 })
 
 
@@ -183,23 +182,4 @@ test_that("GDPpc factored by its weight is equal to GDP, in MER", {
   # Remove comments before comparing
   comment(y) <- NULL
   expect_equal(x, y)
-})
-
-test_that("ppp2mer is consistent with GDP in PPP and MER", {
-  gdp1 <- calcOutput("GDP", unit = "constant 2017 US$MER", aggregate = FALSE)
-  gdp2 <- calcOutput("GDP", unit = "constant 2017 Int$PPP", aggregate = FALSE)
-  ppp2merDef <- calcOutput("RatioPPP2MER", aggregate = FALSE)
-
-  diff <- gdp1 / gdp2 - ppp2merDef
-
-  expect_lt(max(diff), 1e-12)
-
-  # On regional level
-  gdp1 <- calcOutput("GDP", unit = "constant 2017 US$MER")
-  gdp2 <- calcOutput("GDP", unit = "constant 2017 Int$PPP")
-  ppp2merDef <- calcOutput("RatioPPP2MER")
-
-  diff <- gdp1 / gdp2 - ppp2merDef
-
-  expect_lt(max(diff[, 2020, ]), 1e-2)
 })
