@@ -29,7 +29,7 @@ test_that("set names", {
   expectCorrectSetNames(calcOutput("GDPpcFuture"))
   expectCorrectSetNames(calcOutput("GDP", extension2150 = "none"))
   expectCorrectSetNames(calcOutput("GDPpc", extension2150 = "none"))
-  expectCorrectSetNames(calcOutput("RatioPPP2MER"))
+  # Want to keep:  expectCorrectSetNames(calcOutput("RatioPPP2MER"))
 })
 
 

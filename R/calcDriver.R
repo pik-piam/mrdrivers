@@ -175,18 +175,18 @@ calcHarmonizedData <- function(driver, scenario) {
   # Combine "past" and "future" time series.
   harmonizedData <- switch(
     harmonization,
-    "pastAndLevel"      = toolHarmonizePast(past, future, method = "level"),
-    "pastAndGrowth"     = toolHarmonizePast(past, future, method = "growth"),
-    "pastAndTransition" = toolHarmonizePast(past, future, method = "transition", yEnd = 2100),
-    "PopSSPs"           = toolHarmonizeWithPEAPandFuture(past, future),
-    "PopADBs"           = toolHarmonizePopulationADBs(past, future),
-    "PopISIMIP"         = toolHarmonizePast(past, future, method = "transition", yEnd = 2030),
-    "GDPpcSSPs"         = toolHarmonizeGDPpcSSPs(past, future, yEnd = 2100),
-    "GDPpcSDPs"         = toolBuildGDPpcSDPs(),
-    "GDPpcADBs"         = toolHarmonizeGDPpcADBs(past, future),
-    "GDPoverPop"        = toolDivideGDPbyPop(scenario),
-    "GDPpcWithPop"      = toolMultiplyGDPpcWithPop(scenario),
-    "LabourADBs"        = toolHarmonizeLabourADBs(),
+    "pastAndLevel"        = toolHarmonizePast(past, future, method = "level"),
+    "pastAndGrowth"       = toolHarmonizePast(past, future, method = "growth"),
+    "pastAndTransition"   = toolHarmonizePast(past, future, method = "transition", yEnd = 2100),
+    "PopSSPs"             = toolHarmonizeWithPEAPandFuture(past, future),
+    "PopSSP2IndiaDEAs"    = toolHarmonizePopulationSSP2IndiaDEAs(past, future),
+    "PopISIMIP"           = toolHarmonizePast(past, future, method = "transition", yEnd = 2030),
+    "GDPpcSSPs"           = toolHarmonizeGDPpcSSPs(past, future, yEnd = 2100),
+    "GDPpcSDPs"           = toolBuildGDPpcSDPs(),
+    "GDPpcSSP2IndiaDEAs"  = toolHarmonizeGDPpcSSP2IndiaDEAs(past, future),
+    "GDPoverPop"          = toolDivideGDPbyPop(scenario),
+    "GDPpcWithPop"        = toolMultiplyGDPpcWithPop(scenario),
+    "LabourSSP2IndiaDEAs" = toolHarmonizeLabourSSP2IndiaDEAs(),
     stop(glue("Bad input for calcHarmonizedData Argument harmonization = '{harmonization}' is invalid."))
   ) %>% toolInterpolateAndExtrapolate()
 

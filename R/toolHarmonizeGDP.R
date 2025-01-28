@@ -9,8 +9,7 @@ toolMultiplyGDPpcWithPop <- function(scenario) {
   # GDP is equal to GDPpc * population
   gdp <- gdppc$x * gdppc$weight
   list(x = gdp,
-       description = glue("use product of corresponding GDP per capita and population scenarios. \\
-                           {gdppc$description}"))
+       description = glue("use product of corresponding GDP per capita and population scenarios. {gdppc$description}"))
 }
 
 toolHarmonizeGDPpcSSPs <- function(past, future, yEnd) {
@@ -103,8 +102,7 @@ toolBuildGDPpcSDPs <- function() {
 
   combined[is.nan(combined) | combined == Inf] <- 0
 
-  list(x = combined,
-       description = glue("use SSP1 scenario and adapt growth rates."))
+  list(x = combined, description = glue("use SSP1 scenario and adapt growth rates."))
 }
 
 toolDivideGDPbyPop <- function(scenario) {
@@ -128,10 +126,10 @@ toolDivideGDPbyPop <- function(scenario) {
                           {pop$description}"))
 }
 
-toolHarmonizeGDPpcADBs <- function(past, future) {
+toolHarmonizeGDPpcSSP2IndiaDEAs <- function(past, future) {
   ssp2Data <- calcOutput("GDPpc", scenario = "SSP2", extension2150 = "none", average2020 = FALSE, aggregate = FALSE)
 
-  # For both ADB scenarios, overwrite SSP2 IND data with ADB IND data
+  # For both IndiaDEAs scenarios, overwrite SSP2 IND data with DEA IND data
   combined <- purrr::map(getNames(future$x), function(x) {
     y <- setNames(ssp2Data, x)
     y["IND", , ] <- 0
@@ -142,10 +140,15 @@ toolHarmonizeGDPpcADBs <- function(past, future) {
   }) %>%
     mbind()
 
+  # Use "SSP2IndiaMedium" and "SSP2IndiaHigh" as IndiaDEA scenario names
+  newNames <- sub("baseline",   "SSP2IndiaMedium", getNames(combined))
+  newNames <- sub("optimistic", "SSP2IndiaHigh", newNames)
+  getNames(combined) <- newNames
+
   list(x = combined,
        description = glue("equal to SSP2 in all countries except for IND. \\
-                          For IND use {past$description} until {max(getYears(past$x, as.integer = TRUE))}, \\
-                          and converge to {future$description} by 2030."))
+                          For IND use {future$description} from {min(getYears(future$x, as.integer = TRUE))} \\
+                          onwards and growth rates from {past$description} for the years before."))
 }
 
 
@@ -264,7 +267,7 @@ toolSHAPEgrowth <- function(shapeGDPScenario, gdppcapSSP1, startFromYear) {
 
       # For service (SDP_MC) and society (SDP_RC) additionally add a smoothing for the first two 5-year timesteps
       # (2025 and 2030 with current default startFromYear = 2025)
-      # Apply only 1/3 of the modification for first 5 years, and 2/3 of the modification for another 5 years      
+      # Apply only 1/3 of the modification for first 5 years, and 2/3 of the modification for another 5 years
       if (shapeGDPScenario %in% c("SDP_MC", "SDP_RC")) {
         if (yr >= startFromYear && yr < startFromYear + 5) {
           modificationFactor[, yr, ] <- 1 / 3. * (modificationFactor[, yr, ] - 1) + 1

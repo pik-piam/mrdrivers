@@ -6,7 +6,7 @@
 assign("compare_proxy.magpie", compare_proxy.magpie, envir = .GlobalEnv)
 
 # Madrat config
-madrat_mainfolder <- "/home/johannes/madrat_GDP_update" # nolint
+madrat_mainfolder <- "/home/johannes/madrat_home" # nolint
 
 if (dir.exists(madrat_mainfolder)) {
   oldCfg <- madrat::getConfig()
