@@ -23,7 +23,7 @@ See the vignette: vignette("scenarios") for scenario options, definitions and re
 
     <a class="navbar-brand me-2" href="../index.html">mrdrivers</a>
 
-    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">6.0.1</small>
+    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">6.0.2</small>
 
 
     <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbar" aria-controls="navbar" aria-expanded="false" aria-label="Toggle navigation">
@@ -90,7 +90,7 @@ between past data and future projections. Together with the corresponding popula
 <dt id="arg-unit">unit<a class="anchor" aria-label="anchor" href="#arg-unit"></a></dt>
 <dd><p>A string specifying the unit of GDP. Can be either:</p><ul><li><p>"constant 2017 Int$PPP" (default):
 Scenarios are constructed in constant 2017 Int$PPP.</p></li>
-<li><p>"constant 2017 US$MER": Scenarios are constructed in constant 2017 US$MER and then converted with
+<li><p>"constant 2017 US$MER": Scenarios are constructed in constant 2017 Int$PPP and then converted with
 <code><a href="https://pik-piam.github.io/GDPuc/reference/convertGDP.html" class="external-link">GDPuc::toolConvertGDP()</a></code>.</p></li>
 </ul><p>In all cases, GDP is returned in millions.</p></dd>
 
