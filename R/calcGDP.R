@@ -19,7 +19,7 @@
 #' \itemize{
 #'   \item "`r toolGetUnitDollar(inPPP = TRUE)`" (default):
 #'          Scenarios are constructed in `r toolGetUnitDollar(inPPP = TRUE)`.
-#'   \item "`r toolGetUnitDollar()`": Scenarios are constructed in `r toolGetUnitDollar()` and then converted with
+#'   \item "`r toolGetUnitDollar()`": Scenarios are constructed in `r toolGetUnitDollar(inPPP = TRUE)` and then converted with
 #'   [GDPuc::toolConvertGDP()].
 #' }
 #' In all cases, GDP is returned in millions.
