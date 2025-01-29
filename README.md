@@ -1,6 +1,6 @@
 # Create GDP and Population Scenarios
 
-R package **mrdrivers**, version **6.0.1**
+R package **mrdrivers**, version **6.0.2**
 
 [![CRAN status](https://www.r-pkg.org/badges/version/mrdrivers)](https://cran.r-project.org/package=mrdrivers) [![R build status](https://pik-piam.github.io/mrdrivers/workflows/check/badge.svg)](https://pik-piam.github.io/mrdrivers/actions) [![codecov](https://codecov.io/gh/mrdrivers/branch/master/graph/badge.svg)](https://app.codecov.io/gh/mrdrivers) [![r-universe](https://pik-piam.r-universe.dev/badges/mrdrivers)](https://pik-piam.r-universe.dev/builds)
 
@@ -51,6 +51,16 @@ calcOutput:
     #> [1] "calcGDP"          "calcGDPpc"        "calcPopulation"   "calcLabour"      
     #> [5] "calcUrban"        "calcRatioPPP2MER"
 
+Then there are number of important and/or useful tool functions:
+
+- The function `tooGetUnitDollar()` is where the default unit for all
+  monetary units in REMIND and MAgPIE is defined.
+- The function `tooGetScenarioDefinition()` is where the scenarios are
+  defined and can be helpful when searching for scenario information.
+- The functions `toolGeneralConvert()`, `toolHarmonizePast()` and
+  `toolHarmonizeFuture()` handle common tasks and are potentially useful
+  outside of mrdrivers.
+
 ## Scenarios
 
 The current default scenarios returned for all drivers (i.e. GDP, GDP
@@ -100,7 +110,7 @@ In case of questions / problems please contact Johannes Koch <jokoch@pik-potsdam
 
 To cite package **mrdrivers** in publications use:
 
-Koch J, Soergel B, Leip D, Benke F, Dietrich J (2025). "mrdrivers: Create GDP and Population Scenarios." Version: 6.0.1, <https://pik-piam.github.io/mrdrivershttps://github.com/pik-piam/mrdrivers>.
+Koch J, Soergel B, Leip D, Benke F, Dietrich J (2025). "mrdrivers: Create GDP and Population Scenarios." Version: 6.0.2, <https://pik-piam.github.io/mrdrivershttps://github.com/pik-piam/mrdrivers>.
 
 A BibTeX entry for LaTeX users is
 
@@ -108,10 +118,10 @@ A BibTeX entry for LaTeX users is
 @Misc{,
   title = {mrdrivers: Create GDP and Population Scenarios},
   author = {Johannes Koch and Bjoern Soergel and Deborra Leip and Falk Benke and Jan Philipp Dietrich},
-  date = {2025-01-28},
+  date = {2025-01-29},
   year = {2025},
   url = {https://pik-piam.github.io/mrdrivers},
   url = {https://github.com/pik-piam/mrdrivers},
-  note = {Version: 6.0.1},
+  note = {Version: 6.0.2},
 }
 ```
