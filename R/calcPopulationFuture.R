@@ -12,13 +12,18 @@ calcPopulationFuture <- function(futureData = "SSPs-UN_PopDiv") {
 calcInternalPopulationFuture <- function(futureData) {
   data <- switch(
     futureData,
-    "SSPs"        = readSource("SSP", "pop"),
-    "SSP2"        = readSource("SSP", "pop", "SSP2"),
-    "SSP2EU"      = setNames(readSource("SSP", "pop", "SSP2"), "SSP2EU"),
-    "SDPs"        = toolPopulationFutureSDPs(),
-    "UN_PopDiv"   = readSource("UN_PopDiv", "pop", "medium"),
-    "IndiaDEAs"   = readSource("IndiaDEA", "pop"),
-    "IndiaDEAopt" = readSource("IndiaDEA", "pop", "optimistic"),
+    "SSPs"         = readSource("SSP", "pop"),
+    "SSP1"         = readSource("SSP", "pop", "SSP1"),
+    "SSP2"         = readSource("SSP", "pop", "SSP2"),
+    "SSP3"         = readSource("SSP", "pop", "SSP3"),
+    "SSP4"         = readSource("SSP", "pop", "SSP4"),
+    "SSP5"         = readSource("SSP", "pop", "SSP5"),
+    "SSP2EU"       = setNames(readSource("SSP", "pop", "SSP2"), "SSP2EU"),
+    "SDPs"         = toolPopulationFutureSDPs(),
+    "UN_PopDiv"    = readSource("UN_PopDiv", "pop", "medium"),
+    "IndiaDEAs"    = readSource("IndiaDEA", "pop"),
+    "IndiaDEAbase" = readSource("IndiaDEA", "pop", "baseline"),
+    "IndiaDEAopt"  = readSource("IndiaDEA", "pop", "optimistic"),
     stop("Bad input for calcPopulationFuture. Invalid 'futureData' argument.")
   )
 
@@ -46,7 +51,11 @@ calcInternalLabourFuture <- function(futureData) {
   data <- switch(
     futureData,
     "SSPs"      = readSource("SSP", "lab"),
+    "SSP1"      = readSource("SSP", "lab", "SSP1"),
     "SSP2"      = readSource("SSP", "lab", "SSP2"),
+    "SSP3"      = readSource("SSP", "lab", "SSP3"),
+    "SSP4"      = readSource("SSP", "lab", "SSP4"),
+    "SSP5"      = readSource("SSP", "lab", "SSP5"),
     "SSP2EU"    = setNames(readSource("SSP", "lab", "SSP2"), "SSP2EU"),
     "SDPs"      = toolLabourFutureSDPs(),
     "UN_PopDiv" = readSource("UN_PopDiv", "lab", "medium"),
@@ -68,7 +77,11 @@ calcUrbanFuture <- function(futureData = "SSPs") {
   data <- switch(
     futureData,
     "SSPs"   = toolUrbanFutureSSPs(),
+    "SSP1"   = toolUrbanFutureSSPs("SSP1"),
     "SSP2"   = toolUrbanFutureSSPs("SSP2"),
+    "SSP3"   = toolUrbanFutureSSPs("SSP3"),
+    "SSP4"   = toolUrbanFutureSSPs("SSP4"),
+    "SSP5"   = toolUrbanFutureSSPs("SSP5"),
     "SSP2EU" = setNames(toolUrbanFutureSSPs("SSP2"), "SSP2EU"),
     "SDPs"   = toolUrbanFutureSDPs(),
     stop("Bad input for calcUrbanFuture. Invalid 'futureData' argument.")
