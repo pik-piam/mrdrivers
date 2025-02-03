@@ -1,6 +1,6 @@
 # Create GDP and Population Scenarios
 
-R package **mrdrivers**, version **6.1.0**
+R package **mrdrivers**, version **7.0.0**
 
 [![CRAN status](https://www.r-pkg.org/badges/version/mrdrivers)](https://cran.r-project.org/package=mrdrivers) [![R build status](https://pik-piam.github.io/mrdrivers/workflows/check/badge.svg)](https://pik-piam.github.io/mrdrivers/actions) [![codecov](https://codecov.io/gh/mrdrivers/branch/master/graph/badge.svg)](https://app.codecov.io/gh/mrdrivers) [![r-universe](https://pik-piam.r-universe.dev/badges/mrdrivers)](https://pik-piam.r-universe.dev/builds)
 
@@ -63,15 +63,8 @@ Then there are number of important and/or useful tool functions:
 
 ## Scenarios
 
-The current default scenarios returned for all drivers (i.e. GDP, GDP
-per capita, Population, Labour, and Urban Population Share) are:
-
-- the SSPs, i.e. SSP1-5
-
-- the SDPs, i.e. SDP, SDP_EI, SDP_MC and SDP_RC
-
-see `vignette("scenarios")` for more information on available scenarios
-and references of the default scenarios.
+See `vignette("scenarios")` for more information on - and references
+for - available scenarios.
 
 ## Installation
 
@@ -110,7 +103,7 @@ In case of questions / problems please contact Johannes Koch <jokoch@pik-potsdam
 
 To cite package **mrdrivers** in publications use:
 
-Koch J, Soergel B, Leip D, Benke F, Dietrich J (2025). "mrdrivers: Create GDP and Population Scenarios." Version: 6.1.0, <https://pik-piam.github.io/mrdrivershttps://github.com/pik-piam/mrdrivers>.
+Koch J, Soergel B, Leip D, Benke F, Dietrich J (2025). "mrdrivers: Create GDP and Population Scenarios." Version: 7.0.0, <https://pik-piam.github.io/mrdrivershttps://github.com/pik-piam/mrdrivers>.
 
 A BibTeX entry for LaTeX users is
 
@@ -118,10 +111,10 @@ A BibTeX entry for LaTeX users is
 @Misc{,
   title = {mrdrivers: Create GDP and Population Scenarios},
   author = {Johannes Koch and Bjoern Soergel and Deborra Leip and Falk Benke and Jan Philipp Dietrich},
-  date = {2025-01-31},
+  date = {2025-02-03},
   year = {2025},
   url = {https://pik-piam.github.io/mrdrivers},
   url = {https://github.com/pik-piam/mrdrivers},
-  note = {Version: 6.1.0},
+  note = {Version: 7.0.0},
 }
 ```

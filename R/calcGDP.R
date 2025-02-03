@@ -5,13 +5,9 @@
 #' between past data and future projections. Together with the corresponding population scenarios
 #' (see [calcPopulation()]) they comprise a consistent set of scenarios.
 #'
-#' By default the following scenarios are returned:
-#'  \itemize{
-#'    \item the SSPs, i.e. SSP1-5
-#'    \item the SDPs, i.e. SDP, SDP_EI, SDP_RC, and SDP_MC
-#'  }
-#'
-#' See the vignette: \code{vignette("scenarios")} for scenario options, definitions and references.
+#' The `scenario` argument is used to designate the scenario(s) to be returned. Currently available GDP scenarios are:
+#' `r toolGetScenarioDefinition(driver = "GDP")$scenario`. See the vignette: \code{vignette("scenarios")} and/or
+#' [toolGetScenarioDefinition()] for more information, scenario options, definitions and references.
 #'
 #' @inheritParams calcDriver
 #'
@@ -19,15 +15,15 @@
 #' \itemize{
 #'   \item "`r toolGetUnitDollar(inPPP = TRUE)`" (default):
 #'          Scenarios are constructed in `r toolGetUnitDollar(inPPP = TRUE)`.
-#'   \item "`r toolGetUnitDollar()`": Scenarios are constructed in `r toolGetUnitDollar(inPPP = TRUE)` and then converted with
-#'   [GDPuc::toolConvertGDP()].
+#'   \item "`r toolGetUnitDollar()`": Scenarios are constructed in `r toolGetUnitDollar(inPPP = TRUE)` and then
+#'   converted with [GDPuc::toolConvertGDP()].
 #' }
 #' In all cases, GDP is returned in millions.
 #'
 #' @param average2020 If TRUE (default), then the 2020 value is replaced by the 2018-2022 average. To be consistent,
 #' the yearly resolution is decreased to 5 year intervals.
 #'
-#' @param ... Arguments passed on to [calcDriver()], of which "extension2150" and "naming" are most often of interest.
+#' @inheritDotParams calcDriver extension2150
 #'
 #' @inherit madrat::calcOutput return
 #' @seealso  \itemize{
@@ -38,18 +34,17 @@
 #' }
 #'
 #' @examples \dontrun{
-#' # Return default scenarios
-#' calcOutput("GDP")
-#' calcOutput("GDPpc")
+#' # Return all SSP scenarios
+#' calcOutput("GDP", scenario = "SSPs")
 #'
 #' # Return only the SSP2 GDP scenario
 #' calcOutput("GDP", scenario = "SSP2")
+#'
+#' # Return the SSP and SDP GDPpc scenarios
+#' calcOutput("GDP", scenario = c("SSPs", "SDPs"))
 #' }
 #'
-calcGDP <- function(scenario = c("SSPs", "SDPs", "SSP2EU"),
-                    unit = toolGetUnitDollar(inPPP = TRUE),
-                    average2020 = TRUE,
-                    ...) {
+calcGDP <- function(scenario, unit = toolGetUnitDollar(inPPP = TRUE), average2020 = TRUE, ...) {
   # Check user input
   toolCheckUserInput(driver = "GDP", args = c(list(...), as.list(environment())))
 
@@ -105,10 +100,7 @@ calcGDP <- function(scenario = c("SSPs", "SDPs", "SSP2EU"),
 #' calcOutput("GDPpc")
 #' }
 #'
-calcGDPpc <- function(scenario = c("SSPs", "SDPs", "SSP2EU"),
-                      unit = toolGetUnitDollar(inPPP = TRUE),
-                      average2020 = TRUE,
-                      ...) {
+calcGDPpc <- function(scenario, unit = toolGetUnitDollar(inPPP = TRUE), average2020 = TRUE, ...) {
   # Check user input
   toolCheckUserInput(driver = "GDPpc", args = c(list(...), as.list(environment())))
 

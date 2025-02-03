@@ -17,84 +17,45 @@ test_that("set names", {
   }
 
   expectCorrectSetNames(calcOutput("PopulationPast"))
-  expectCorrectSetNames(calcOutput("PopulationFuture"))
-  expectCorrectSetNames(calcOutput("Population", extension2150 = "none"))
+  expectCorrectSetNames(calcOutput("PopulationFuture", futureData = "SSPs"))
+  expectCorrectSetNames(calcOutput("Population", scenario = "SSPs", extension2150 = "none"))
   expectCorrectSetNames(calcOutput("UrbanPast"))
-  expectCorrectSetNames(calcOutput("UrbanFuture"))
-  expectCorrectSetNames(calcOutput("Urban", extension2150 = "none"))
-  expectCorrectSetNames(calcOutput("Labour", extension2150 = "none"))
+  expectCorrectSetNames(calcOutput("UrbanFuture", futureData = "SSPs"))
+  expectCorrectSetNames(calcOutput("Urban", scenario = "SSPs", extension2150 = "none"))
+  expectCorrectSetNames(calcOutput("Labour", scenario = "SSPs", extension2150 = "none"))
   expectCorrectSetNames(calcOutput("GDPPast"))
   expectCorrectSetNames(calcOutput("GDPFuture", futureData = "SSPs"))
   expectCorrectSetNames(calcOutput("GDPpcPast"))
-  expectCorrectSetNames(calcOutput("GDPpcFuture"))
-  expectCorrectSetNames(calcOutput("GDP", extension2150 = "none"))
-  expectCorrectSetNames(calcOutput("GDPpc", extension2150 = "none"))
+  expectCorrectSetNames(calcOutput("GDPpcFuture", scenario = "SSPs"))
+  expectCorrectSetNames(calcOutput("GDP", scenario = "SSPs", extension2150 = "none"))
+  expectCorrectSetNames(calcOutput("GDPpc", scenario = "SSPs", extension2150 = "none"))
 })
 
 
 # Save all calcOutputs for later use
 calcs <- list(
-  "PopulationPast" = calcOutput("PopulationPast"),
-  "PopulationFuture" = calcOutput("PopulationFuture"),
-  "Population" = calcOutput("Population", extension2150 = "none"),
-  "UrbanPast" = calcOutput("UrbanPast"),
-  "UrbanFuture" = calcOutput("UrbanFuture"),
-  "Urban" = calcOutput("Urban", extension2150 = "none"),
-  "GDPpcPast" = calcOutput("GDPpcPast"),
-  "GDPpcFuture" = calcOutput("GDPpcFuture"),
-  "GDPpc" = calcOutput("GDPpc", extension2150 = "none"),
-  "GDPPast" = calcOutput("GDPPast"),
-  "GDPFuture" = calcOutput("GDPFuture", futureData = "SSPs"),
-  "GDP" = calcOutput("GDP", extension2150 = "none"),
-  "Labour" = calcOutput("Labour", extension2150 = "none")
+  "Population" = calcOutput("Population", scenario = "SSPs", extension2150 = "none"),
+  "Labour" = calcOutput("Labour", scenario = "SSPs", extension2150 = "none"),
+  "Urban" = calcOutput("Urban", scenario = "SSPs", extension2150 = "none"),
+  "GDPpc" = calcOutput("GDPpc", scenario = "SSPs", extension2150 = "none"),
+  "GDP" = calcOutput("GDP", scenario = "SSPs", extension2150 = "none")
 )
 
 calcs2 <- list(
-  "PopulationPast" = calcOutput("PopulationPast", aggregate = FALSE),
-  "PopulationFuture" = calcOutput("PopulationFuture", aggregate = FALSE),
-  "Population" = calcOutput("Population", extension2150 = "none", aggregate = FALSE),
-  "UrbanPast" = calcOutput("UrbanPast", aggregate = FALSE),
-  "UrbanFuture" = calcOutput("UrbanFuture", aggregate = FALSE),
-  "Urban" = calcOutput("Urban", extension2150 = "none", aggregate = FALSE),
-  "GDPpcPast" = calcOutput("GDPpcPast", aggregate = FALSE),
-  "GDPpcFuture" = calcOutput("GDPpcFuture", aggregate = FALSE),
-  "GDPpc" = calcOutput("GDPpc", extension2150 = "none", aggregate = FALSE),
-  "GDPPast" = calcOutput("GDPPast", aggregate = FALSE),
-  "GDPFuture" = calcOutput("GDPFuture", aggregate = FALSE),
-  "GDP" = calcOutput("GDP", extension2150 = "none", aggregate = FALSE),
-  "Labour" = calcOutput("Labour", extension2150 = "none", aggregate = FALSE)
+  "Population" = calcOutput("Population", scenario = "SSPs", extension2150 = "none", aggregate = FALSE),
+  "Labour" = calcOutput("Labour", scenario = "SSPs", extension2150 = "none", aggregate = FALSE),
+  "Urban" = calcOutput("Urban", scenario = "SSPs", extension2150 = "none", aggregate = FALSE),
+  "GDPpc" = calcOutput("GDPpc", scenario = "SSPs", extension2150 = "none", aggregate = FALSE),
+  "GDP" = calcOutput("GDP", scenario = "SSPs", extension2150 = "none", aggregate = FALSE)
 )
 
 calcs3 <- list(
-  "PopulationPast" = calcOutput("PopulationPast", supplementary = TRUE),
-  "PopulationFuture" = calcOutput("PopulationFuture", supplementary = TRUE),
-  "Population" = calcOutput("Population", extension2150 = "none", supplementary = TRUE),
-  "UrbanPast" = calcOutput("UrbanPast", supplementary = TRUE),
-  "UrbanFuture" = calcOutput("UrbanFuture", supplementary = TRUE),
-  "Urban" = calcOutput("Urban", extension2150 = "none", supplementary = TRUE),
-  "GDPpcPast" = calcOutput("GDPpcPast", supplementary = TRUE),
-  "GDPpcFuture" = calcOutput("GDPpcFuture",  supplementary = TRUE),
-  "GDPpc" = calcOutput("GDPpc", extension2150 = "none", supplementary = TRUE),
-  "GDPPast" = calcOutput("GDPPast", supplementary = TRUE),
-  "GDPFuture" = calcOutput("GDPFuture", supplementary = TRUE),
-  "GDP" = calcOutput("GDP", extension2150 = "none", supplementary = TRUE),
-  "Labour" = calcOutput("Labour", extension2150 = "none", supplementary = TRUE)
+  "Population" = calcOutput("Population", scenario = "SSPs", extension2150 = "none", supplementary = TRUE),
+  "Labour" = calcOutput("Labour", scenario = "SSPs", extension2150 = "none", supplementary = TRUE),
+  "Urban" = calcOutput("Urban", scenario = "SSPs", extension2150 = "none", supplementary = TRUE),
+  "GDPpc" = calcOutput("GDPpc", scenario = "SSPs", extension2150 = "none", supplementary = TRUE),
+  "GDP" = calcOutput("GDP", scenario = "SSPs", extension2150 = "none", supplementary = TRUE)
 )
-
-
-test_that("variable names", {
-  expectCorrectVariableNames <- function(x, y) {
-    correctNames <- paste0(y, "_",
-                           c("SSP1", "SSP2", "SSP3", "SSP4", "SSP5",
-                             "SDP", "SDP_EI", "SDP_MC", "SDP_RC", "SSP2EU"))
-    expect_equal(getNames(calcs[[x]]), correctNames)
-    expect_equal(getNames(calcs2[[x]]), correctNames)
-  }
-
-  purrr::map2(c("Population", "Urban", "GDPpc", "GDP", "Labour"),
-              c("pop", "urb", "gdppc", "gdp", "pop"),
-              expectCorrectVariableNames)
-})
 
 test_that("all positive", {
   purrr::map(calcs, ~ expect_equal(where(.x < 0)$summary[["TRUE"]], 0))
@@ -116,10 +77,10 @@ test_that("no newline in descriptions", {
 })
 
 test_that("GDPpc is equal to GDP divided by pop", {
-  x <- calcOutput("GDPpc", extension2150 = "none", naming = "scenario", aggregate = FALSE)
+  x <- calcOutput("GDPpc", scenario = "SSPs", extension2150 = "none", aggregate = FALSE)
   y <- {
-    calcOutput("GDP", extension2150 = "none", naming = "scenario", aggregate = FALSE) /
-      calcOutput("Population", extension2150 = "none", naming = "scenario", aggregate = FALSE, years = getYears(x))
+    calcOutput("GDP", scenario = "SSPs", extension2150 = "none", aggregate = FALSE) /
+      calcOutput("Population", scenario = "SSPs", extension2150 = "none", aggregate = FALSE, years = getYears(x))
   }
   # Remove comments before comparing
   comment(x) <- NULL
@@ -128,10 +89,10 @@ test_that("GDPpc is equal to GDP divided by pop", {
 
 
 test_that("GDPpc factored by its weight is equal to GDP", {
-  l <- calcOutput("GDPpc", extension2150 = "none", naming = "scenario", aggregate = FALSE, supplementary = TRUE)
+  l <- calcOutput("GDPpc", scenario = "SSPs", extension2150 = "none", aggregate = FALSE, supplementary = TRUE)
   x <- l$x * l$weight
 
-  y <- calcOutput("GDP", extension2150 = "none", naming = "scenario", aggregate = FALSE)
+  y <- calcOutput("GDP", scenario = "SSPs", extension2150 = "none", aggregate = FALSE)
 
   # Remove comments before comparing
   comment(x) <- NULL
@@ -139,8 +100,8 @@ test_that("GDPpc factored by its weight is equal to GDP", {
 })
 
 test_that("average2020 works", {
-  x <-  calcOutput("GDP", extension2150 = "none")
-  y <-  calcOutput("GDP", extension2150 = "none", average2020 = FALSE)
+  x <-  calcOutput("GDP", scenario = "SSPs", extension2150 = "none")
+  y <-  calcOutput("GDP", scenario = "SSPs", extension2150 = "none", average2020 = FALSE)
   yNew2020 <- (y[, 2018, ] + y[, 2019, ] + y[, 2020, ] + y[, 2021, ] + y[, 2022, ]) / 5
   getYears(yNew2020) <- 2020
   getSets(yNew2020) <- getSets(y)
@@ -150,12 +111,12 @@ test_that("average2020 works", {
 })
 
 test_that("average2020 is consistent", {
-  x <- calcOutput("GDPpc", extension2150 = "none", naming = "scenario", aggregate = FALSE)
+  x <- calcOutput("GDPpc", scenario = "SSPs", extension2150 = "none",  aggregate = FALSE)
   y <- {
-    calcOutput("GDP", extension2150 = "none", naming = "scenario", aggregate = FALSE) /
+    calcOutput("GDP", scenario = "SSPs", extension2150 = "none", aggregate = FALSE) /
       calcOutput("Population",
+                 scenario = "SSPs",
                  extension2150 = "none",
-                 naming = "scenario",
                  aggregate = FALSE,
                  years = seq(1965, 2100, 5))
   }
@@ -166,16 +127,16 @@ test_that("average2020 is consistent", {
 
 test_that("GDPpc factored by its weight is equal to GDP, in MER", {
   l <- calcOutput("GDPpc",
+                  scenario = "SSPs",
                   extension2150 = "none",
-                  naming = "scenario",
                   unit = "constant 2017 US$MER",
                   aggregate = FALSE,
                   supplementary = TRUE)
   x <- l$x * l$weight
 
   y <- calcOutput("GDP",
+                  scenario = "SSPs",
                   extension2150 = "none",
-                  naming = "scenario",
                   unit = "constant 2017 US$MER",
                   aggregate = FALSE)
 

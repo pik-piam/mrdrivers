@@ -1,5 +1,5 @@
 #' @rdname calcGDPPast
-calcPopulationFuture <- function(futureData = "SSPs-UN_PopDiv") {
+calcPopulationFuture <- function(futureData) {
   # Check user input
   toolCheckUserInput("PopulationFuture", as.list(environment()))
   # Call calcInternalPopulationFuture function the appropriate number of times (map) and combine (reduce)
@@ -18,7 +18,6 @@ calcInternalPopulationFuture <- function(futureData) {
     "SSP3"         = readSource("SSP", "pop", "SSP3"),
     "SSP4"         = readSource("SSP", "pop", "SSP4"),
     "SSP5"         = readSource("SSP", "pop", "SSP5"),
-    "SSP2EU"       = setNames(readSource("SSP", "pop", "SSP2"), "SSP2EU"),
     "SDPs"         = toolPopulationFutureSDPs(),
     "UN_PopDiv"    = readSource("UN_PopDiv", "pop", "medium"),
     "IndiaDEAs"    = readSource("IndiaDEA", "pop"),
@@ -37,7 +36,7 @@ toolPopulationFutureSDPs <- function(sdps = c("SDP", "SDP_EI", "SDP_MC", "SDP_RC
 
 
 #' @rdname calcGDPPast
-calcLabourFuture <- function(futureData = "SSPs") {
+calcLabourFuture <- function(futureData) {
   # Check user input
   toolCheckUserInput("LabourFuture", as.list(environment()))
   # Call calcInternalPopulationFuture function the appropriate number of times (map) and combine (reduce)
@@ -56,7 +55,6 @@ calcInternalLabourFuture <- function(futureData) {
     "SSP3"      = readSource("SSP", "lab", "SSP3"),
     "SSP4"      = readSource("SSP", "lab", "SSP4"),
     "SSP5"      = readSource("SSP", "lab", "SSP5"),
-    "SSP2EU"    = setNames(readSource("SSP", "lab", "SSP2"), "SSP2EU"),
     "SDPs"      = toolLabourFutureSDPs(),
     "UN_PopDiv" = readSource("UN_PopDiv", "lab", "medium"),
     stop("Bad input for calcLabour. Invalid 'futureData' argument.")
@@ -73,7 +71,7 @@ toolLabourFutureSDPs <- function(sdps = c("SDP", "SDP_EI", "SDP_MC", "SDP_RC")) 
 
 
 #' @rdname calcGDPPast
-calcUrbanFuture <- function(futureData = "SSPs") {
+calcUrbanFuture <- function(futureData) {
   data <- switch(
     futureData,
     "SSPs"   = toolUrbanFutureSSPs(),
@@ -82,7 +80,6 @@ calcUrbanFuture <- function(futureData = "SSPs") {
     "SSP3"   = toolUrbanFutureSSPs("SSP3"),
     "SSP4"   = toolUrbanFutureSSPs("SSP4"),
     "SSP5"   = toolUrbanFutureSSPs("SSP5"),
-    "SSP2EU" = setNames(toolUrbanFutureSSPs("SSP2"), "SSP2EU"),
     "SDPs"   = toolUrbanFutureSDPs(),
     stop("Bad input for calcUrbanFuture. Invalid 'futureData' argument.")
   )

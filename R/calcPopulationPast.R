@@ -1,5 +1,5 @@
 #' @rdname calcGDPPast
-calcPopulationPast <- function(pastData = "WDI-UN_PopDiv-MI") {
+calcPopulationPast <- function(pastData = toolGetScenarioDefinition("Population", "SSPs")$pastData) {
   # Check user input
   toolCheckUserInput("PopulationPast", as.list(environment()))
   # Call calcInternalPopulationPast function the appropriate number of times (map) and combine (reduce)
@@ -30,7 +30,7 @@ calcInternalPopulationPast <- function(pastData) {
 
 
 #' @rdname calcGDPPast
-calcLabourPast <- function(pastData = "WDI-UN_PopDiv") {
+calcLabourPast <- function(pastData = toolGetScenarioDefinition("Labour", "SSPs")$pastData) {
   # Check user input
   toolCheckUserInput("LabourPast", as.list(environment()))
   # Call calcInternalPopulationFuture function the appropriate number of times (map) and combine (reduce)
@@ -56,7 +56,7 @@ calcInternalLabourPast <- function(pastData) {
 
 
 #' @rdname calcGDPPast
-calcUrbanPast <- function(pastData = "WDI") {
+calcUrbanPast <- function(pastData = toolGetScenarioDefinition("Urban", "SSPs")$pastData) {
   data <- switch(
     pastData,
     "WDI" = readSource("WDI", "urb") / 100,

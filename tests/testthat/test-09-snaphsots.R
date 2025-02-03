@@ -19,21 +19,21 @@ fh <- function(x) {
 }
 
 test_that("Default calcOutput Population calls", {
-  expect_snapshot_value(fh(calcOutput("Population")), style = "json2")
+  expect_snapshot_value(fh(calcOutput("Population", scenario = "SSPs")), style = "json2")
 })
 
 test_that("Default calcOutput GDP calls", {
-  expect_snapshot_value(fh(calcOutput("GDP")), style = "json2")
+  expect_snapshot_value(fh(calcOutput("GDP", scenario = "SSPs")), style = "json2")
 })
 
 test_that("Default calcOutput GDPpc calls", {
-  expect_snapshot_value(fh(calcOutput("GDPpc")), style = "json2")
+  expect_snapshot_value(fh(calcOutput("GDPpc", scenario = "SSPs")), style = "json2")
 })
 
 test_that("Default calcOutput Urban calls", {
-  expect_snapshot_value(fh(calcOutput("Urban")), style = "json2")
+  expect_snapshot_value(fh(calcOutput("Urban", scenario = "SSPs")), style = "json2")
 })
 
 test_that("Default calcOutput Labour calls", {
-  expect_snapshot_value(fh(calcOutput("Labour")), style = "json2")
+  expect_snapshot_value(fh(calcOutput("Labour", scenario = "SSPs")), style = "json2")
 })

@@ -6,18 +6,28 @@
 \alias{calcUrban}
 \title{Get population and labour scenarios}
 \usage{
-calcPopulation(scenario = c("SSPs", "SDPs", "SSP2EU"), ...)
+calcPopulation(scenario, ...)
 
-calcLabour(scenario = c("SSPs", "SDPs", "SSP2EU"), ...)
+calcLabour(scenario, ...)
 
-calcUrban(scenario = c("SSPs", "SDPs", "SSP2EU"), asShare = TRUE, ...)
+calcUrban(scenario, asShare = TRUE, ...)
 }
 \arguments{
 \item{scenario}{A string (or vector of strings) designating the scenario(s) to be returned. Use
 \code{\link[=toolGetScenarioDefinition]{toolGetScenarioDefinition()}} to learn what scenarios are available.}
 
-\item{...}{Arguments passed on to \code{\link[=calcDriver]{calcDriver()}}, of which "extension2150" and "naming" are most often of interest.
-Other \code{\link[=calcDriver]{calcDriver()}} arguments are used for scenario fine-tuning and by package developers.}
+\item{...}{
+  Arguments passed on to \code{\link[=calcDriver]{calcDriver}}
+  \describe{
+    \item{\code{extension2150}}{A string specifying if/how the scenarios should be extended until 2150. Can be either:
+\itemize{
+\item "bezier" (default): A bezier curve extension that leads to a smooth flattening of the scenario: the
+slope in the last year of the scenario is halved by 2150. Currently only works for scenarios with 2100 as
+their last year.
+\item "constant": The last value of the scenarios is taken as constant until 2150.
+\item "none": No extension.
+}}
+  }}
 
 \item{asShare}{If TRUE (default) urban population shares are returned. If FALSE, then urban population in millions is
 returned.}
@@ -31,30 +41,27 @@ if supplementary is set to TRUE.
 Like all scenarios in mrdrivers, the Population, Labour and Urban population share scenarios are the result of a
 harmonization exercise between past data and future projections.
 
-By default the following scenarios are returned:
-\itemize{
-\item the SSPs, i.e. SSP1-5
-\item the SDPs, i.e. SDP, SDP_EI, SDP_RC, and SDP_MC
-}
-
-See the vignette: \code{vignette("scenarios")} for scenario options, definitions and references.
+The \code{scenario} argument is used to designate the scenario(s) to be returned. Currently available Population
+scenarios are: SSPs, SSP1, SSP2, SSP3, SSP4, SSP5, SDPs, ISIMIP, SSP2IndiaDEAs, SSP2IndiaMedium, SSP2IndiaHigh. See the vignette:
+\code{vignette("scenarios")} and/or \code{\link[=toolGetScenarioDefinition]{toolGetScenarioDefinition()}} for more information, scenario options,
+definitions and references.
 }
 \examples{
 \dontrun{
-# Return the default scenarios
-calcOutput("Population")
+# Return all SSP scenarios
+calcOutput("Population", scenario = "SSPs")
 
-# Return only the SSP2 scenario
+# Return only the SSP2 GDP scenario
 calcOutput("Population", scenario = "SSP2")
 
-# Return the ISIMIP SSP scenarios
-calcOutput("Population", scenario = "ISIMIP", extension2150 = "none", aggregate = FALSE)
+# Return the SSP and SDP Labour scenarios
+calcOutput("Population", scenario = c("SSPs", "SDPs"))
 }
 \dontrun{
-calcOutput("Labour")
+calcOutput("Labour", scenario = "SSPs")
 }
 \dontrun{
-calcOutput("Urban")
+calcOutput("Urban", scenario = "SSPs")
 }
 
 }

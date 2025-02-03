@@ -1,7 +1,7 @@
 #' @rdname calcGDPPast
 #' @param futureData A string specifying the sources for future projections.
 #' @order 3
-calcGDPFuture <- function(futureData = "SSPs") {
+calcGDPFuture <- function(futureData) {
   # Check user input
   toolCheckUserInput("GDPFuture", as.list(environment()))
   # Call calcInternalGDPFuture function the appropriate number of times (map) and combine (reduce)
@@ -20,7 +20,6 @@ calcInternalGDPFuture <- function(futureData) {
     "SSP3"   = readSource("SSP", "gdp", "SSP3"),
     "SSP4"   = readSource("SSP", "gdp", "SSP4"),
     "SSP5"   = readSource("SSP", "gdp", "SSP5"),
-    "SSP2EU" = setNames(readSource("SSP", "gdp", "SSP2"), "SSP2EU"),
     "SDPs"   = toolGDPFutureSDPs(),
     stop("Bad input for calcGDPFuture. Invalid 'futureData' argument.")
   )
@@ -38,7 +37,7 @@ toolGDPFutureSDPs <- function(sdps = c("SDP", "SDP_EI", "SDP_MC", "SDP_RC")) {
 
 #' @rdname calcGDPPast
 #' @order 4
-calcGDPpcFuture <- function(scenario = "SSPs") {
+calcGDPpcFuture <- function(scenario) {
   # We can not fill data sources as in GDP and Pop, as GDP and pop on their part are filled with MI, and the countries
   # which are filled in do not match. (WDI has pop data for some countries, but not GDP.) So to make sure that the
   # GDP per capita is consistent, we have to pass it on to the GDP and pop functions.
