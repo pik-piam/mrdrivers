@@ -21,11 +21,11 @@ calcScenarioConstructor(driver, scenario, popAsWeight, naming, extension2150)
 
 \item{popAsWeight}{If TRUE, then population data of the same scenario is used as weight.}
 
-\item{naming}{A string giving the naming scheme of the data dimension. Can be either:
+\item{naming}{DEPRECATED - will be removed in next release. A string giving the naming scheme of the data dimension.
+Can be either:
 \itemize{
-\item "indicator_scenario" (default): Returns names of the type "gdp_SSP2", or "pop_SSP2".
-\item "indicator.scenario": (deprecated) Returns names of the type "gdp.SSP2", or "pop.SSP2".
-\item "scenario": Returns names of the type "SSP2".
+\item "scenario" (default): Returns names of the type "SSP2".
+\item "indicator_scenario": Returns names of the type "gdp_SSP2", or "pop_SSP2".
 }
 Set naming to "scenario" when you want to operate on SSP2 gdp and population data for instance, and not have to
 worry about the conflicting names.}

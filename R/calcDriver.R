@@ -36,11 +36,11 @@
 #'   \item "none": No extension.
 #' }
 #'
-#' @param naming A string giving the naming scheme of the data dimension. Can be either:
+#' @param naming DEPRECATED - will be removed in next release. A string giving the naming scheme of the data dimension.
+#' Can be either:
 #' \itemize{
-#'   \item "indicator_scenario" (default): Returns names of the type "gdp_SSP2", or "pop_SSP2".
-#'   \item "indicator.scenario": (deprecated) Returns names of the type "gdp.SSP2", or "pop.SSP2".
-#'   \item "scenario": Returns names of the type "SSP2".
+#'   \item "scenario" (default): Returns names of the type "SSP2".
+#'   \item "indicator_scenario": Returns names of the type "gdp_SSP2", or "pop_SSP2".
 #' }
 #' Set naming to "scenario" when you want to operate on SSP2 gdp and population data for instance, and not have to
 #' worry about the conflicting names.
@@ -53,7 +53,7 @@
 calcDriver <- function(driver,
                        scenario,
                        popAsWeight = FALSE,
-                       naming = "indicator_scenario",
+                       naming = "scenario",
                        extension2150 = "bezier") {
   # Create a list of all the arguments
   l <- as.list(environment())
@@ -85,6 +85,7 @@ calcScenarioConstructor <- function(driver, scenario, popAsWeight, naming, exten
 
   # If required, add indicators (drivers) to names, or as additional dimension
   if (naming != "scenario") {
+    warning("The naming argument is deprecated and will be removed in the next release.")
     indicator <- switch(
       driver,
       "GDP"        = "gdp",
@@ -96,12 +97,6 @@ calcScenarioConstructor <- function(driver, scenario, popAsWeight, naming, exten
     )
     if (naming == "indicator_scenario") {
       getNames(data$x) <- paste0(indicator, "_", getNames(data$x))
-    }
-    if (naming == "indicator.scenario") {
-      warning(glue("The naming option = 'indicator.scenario' is deprecated and will be removed in the next release. \\
-                    Think of using the option 'scenario' instead."))
-      getNames(data$x) <- paste0(indicator, ".", getNames(data$x))
-      getSets(data$x) <- c(getSets(data$x)[1:2], "indicator", "scenario")
     }
   }
 
