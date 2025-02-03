@@ -15,7 +15,11 @@ calcInternalGDPFuture <- function(futureData) {
   data <- switch(
     futureData,
     "SSPs"   = readSource("SSP", "gdp"),
+    "SSP1"   = readSource("SSP", "gdp", "SSP1"),
     "SSP2"   = readSource("SSP", "gdp", "SSP2"),
+    "SSP3"   = readSource("SSP", "gdp", "SSP3"),
+    "SSP4"   = readSource("SSP", "gdp", "SSP4"),
+    "SSP5"   = readSource("SSP", "gdp", "SSP5"),
     "SSP2EU" = setNames(readSource("SSP", "gdp", "SSP2"), "SSP2EU"),
     "SDPs"   = toolGDPFutureSDPs(),
     stop("Bad input for calcGDPFuture. Invalid 'futureData' argument.")
@@ -46,6 +50,10 @@ calcGDPpcFuture <- function(scenario = "SSPs") {
     "SSP2IndiaDEAs" = toolFillWith(
       readSource("IndiaDEA", "gdppc"),
       toolGDPpcFutureFromGDPAndPop(sub("IndiaDEAs-", "", gdpFutureData), popFutureData)
+    ),
+    "SSP2IndiaMedium" = toolFillWith(
+      readSource("IndiaDEA", "gdppc", "baseline"),
+      toolGDPpcFutureFromGDPAndPop(sub("IndiaDEAbase-", "", gdpFutureData), popFutureData)
     ),
     "SSP2IndiaHigh" = toolFillWith(
       readSource("IndiaDEA", "gdppc", "optimistic"),
