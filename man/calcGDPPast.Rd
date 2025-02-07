@@ -14,25 +14,30 @@
 \alias{calcUrbanPast}
 \title{Get scenario building blocks}
 \usage{
-calcGDPPast(pastData = "WDI-MI-James", extension1960 = "MI-James")
+calcGDPPast(
+  pastData = toolGetScenarioDefinition("GDPpc", "SSPs")$pastData,
+  extension1960 = "MI-James"
+)
 
 calcGDPpcPast(scenario = "SSPs")
 
-calcGDPFuture(futureData = "SSPs")
+calcGDPFuture(futureData)
 
-calcGDPpcFuture(scenario = "SSPs")
+calcGDPpcFuture(scenario)
 
-calcPopulationFuture(futureData = "SSPs-UN_PopDiv")
+calcPopulationFuture(futureData)
 
-calcLabourFuture(futureData = "SSPs")
+calcLabourFuture(futureData)
 
-calcUrbanFuture(futureData = "SSPs")
+calcUrbanFuture(futureData)
 
-calcPopulationPast(pastData = "WDI-UN_PopDiv-MI")
+calcPopulationPast(
+  pastData = toolGetScenarioDefinition("Population", "SSPs")$pastData
+)
 
-calcLabourPast(pastData = "WDI-UN_PopDiv")
+calcLabourPast(pastData = toolGetScenarioDefinition("Labour", "SSPs")$pastData)
 
-calcUrbanPast(pastData = "WDI")
+calcUrbanPast(pastData = toolGetScenarioDefinition("Urban", "SSPs")$pastData)
 }
 \arguments{
 \item{pastData}{A string specifying the sources for historic data.}

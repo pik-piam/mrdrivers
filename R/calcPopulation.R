@@ -4,32 +4,28 @@
 #' Like all scenarios in mrdrivers, the Population, Labour and Urban population share scenarios are the result of a
 #' harmonization exercise between past data and future projections.
 #'
-#' By default the following scenarios are returned:
-#'  \itemize{
-#'    \item the SSPs, i.e. SSP1-5
-#'    \item the SDPs, i.e. SDP, SDP_EI, SDP_RC, and SDP_MC
-#'  }
-#'
-#' See the vignette: \code{vignette("scenarios")} for scenario options, definitions and references.
+#' The `scenario` argument is used to designate the scenario(s) to be returned. Currently available Population
+#' scenarios are: `r toolGetScenarioDefinition(driver = "Population")$scenario`. See the vignette:
+#' \code{vignette("scenarios")} and/or [toolGetScenarioDefinition()] for more information, scenario options,
+#' definitions and references.
 #'
 #' @inheritParams calcDriver
-#' @param ... Arguments passed on to [calcDriver()], of which "extension2150" and "naming" are most often of interest.
-#' Other [calcDriver()] arguments are used for scenario fine-tuning and by package developers.
+#' @inheritDotParams calcDriver extension2150
 #' @inherit calcGDP return
 #' @inherit calcGDP seealso
 #'
 #' @examples \dontrun{
-#' # Return the default scenarios
-#' calcOutput("Population")
+#' # Return all SSP scenarios
+#' calcOutput("Population", scenario = "SSPs")
 #'
-#' # Return only the SSP2 scenario
+#' # Return only the SSP2 GDP scenario
 #' calcOutput("Population", scenario = "SSP2")
 #'
-#' # Return the ISIMIP SSP scenarios
-#' calcOutput("Population", scenario = "ISIMIP", extension2150 = "none", aggregate = FALSE)
+#' # Return the SSP and SDP Labour scenarios
+#' calcOutput("Population", scenario = c("SSPs", "SDPs"))
 #' }
 #' @order 1
-calcPopulation <- function(scenario = c("SSPs", "SDPs", "SSP2EU"), ...) {
+calcPopulation <- function(scenario, ...) {
   toolCheckUserInput(driver = "Population", args = c(list(...), as.list(environment())))
   calcOutput("Driver", driver = "Population", scenario = scenario, aggregate = FALSE, supplementary = TRUE, ...)
 }
@@ -37,9 +33,9 @@ calcPopulation <- function(scenario = c("SSPs", "SDPs", "SSP2EU"), ...) {
 #' @rdname calcPopulation
 #' @order 2
 #' @examples \dontrun{
-#' calcOutput("Labour")
+#' calcOutput("Labour", scenario = "SSPs")
 #' }
-calcLabour <- function(scenario = c("SSPs", "SDPs", "SSP2EU"), ...) {
+calcLabour <- function(scenario, ...) {
   toolCheckUserInput(driver = "Labour", args = c(list(...), as.list(environment())))
   calcOutput("Driver", driver = "Labour", scenario = scenario, aggregate = FALSE, supplementary = TRUE, ...)
 }
@@ -49,10 +45,10 @@ calcLabour <- function(scenario = c("SSPs", "SDPs", "SSP2EU"), ...) {
 #' @param asShare If TRUE (default) urban population shares are returned. If FALSE, then urban population in millions is
 #' returned.
 #' @examples \dontrun{
-#' calcOutput("Urban")
+#' calcOutput("Urban", scenario = "SSPs")
 #' }
 #'
-calcUrban <- function(scenario = c("SSPs", "SDPs", "SSP2EU"), asShare = TRUE, ...) {
+calcUrban <- function(scenario, asShare = TRUE, ...) {
   toolCheckUserInput(driver = "Urban", args = c(list(...), as.list(environment())))
 
   urb <- calcOutput("Driver",

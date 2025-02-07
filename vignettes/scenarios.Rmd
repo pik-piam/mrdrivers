@@ -9,15 +9,14 @@ editor_options:
   chunk_output_type: console
 ---
 
-# Default scenarios
+# Key scenarios
 
-By default, the following scenarios are returned for all drivers:
+Key scenarios include:
 
 -   the SSPs, i.e. SSP1-5
 -   the SDPs, i.e. SDP, SDP_EI, SDP_MC and SDP_RC
--   (SSP2EU - deprecated, but still returned as a placeholder. Identical to SSP2)
 
-The scenarios span from 1960 to 2150, with yearly data until 2030, and data every 5 years thereafter.
+All scenarios span from 1960 to 2150, with yearly data until 2030, and data every 5 years thereafter.
 
 ## GDP per capita and GDP
 

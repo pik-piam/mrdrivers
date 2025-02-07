@@ -16,7 +16,7 @@
 #' @inheritSection calcScenarioConstructor Combining data sources with "-"
 #' @keywords internal
 #' @order 1
-calcGDPPast <- function(pastData = "WDI-MI-James", extension1960 = "MI-James") {
+calcGDPPast <- function(pastData = toolGetScenarioDefinition("GDPpc", "SSPs")$pastData, extension1960 = "MI-James") {
   # Check user input
   toolCheckUserInput("GDPPast", as.list(environment()))
 
