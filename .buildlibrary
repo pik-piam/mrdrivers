@@ -5,7 +5,7 @@ AcceptedWarnings:
 - 'Warning: namespace ''.*'' is not available and has been replaced'
 - ‘qpdf’ is needed for checks on size reduction of PDFs
 AcceptedNotes: ~
-allowLinterWarnings: yes
+allowLinterWarnings: no
 AddInReadme: inst/README.md
 enforceVersionUpdate: no
 skipCoverage: no

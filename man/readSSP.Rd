@@ -31,8 +31,8 @@ should match the source data. The spatial dimension should either match the sour
 if the convert argument is set to TRUE, should be on ISO code country level.
 }
 \description{
-Read-in SSP data and store as magclass object. Filter for subtype and subset in the convert function to use common read
-cache (speeds up the computations).
+Read-in SSP data and store as magclass object. Filter for subtype and subset in the convert function to use common
+read cache (speeds up the computations).
 }
 \examples{
 \dontrun{

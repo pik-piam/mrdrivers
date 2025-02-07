@@ -1,7 +1,7 @@
 #' Read-in data from the Shared Socioeconomic Pathways (SSP)
 #'
-#' Read-in SSP data and store as magclass object. Filter for subtype and subset in the convert function to use common read
-#' cache (speeds up the computations).
+#' Read-in SSP data and store as magclass object. Filter for subtype and subset in the convert function to use common
+#' read cache (speeds up the computations).
 #'
 #' @inherit madrat::readSource return
 #' @seealso [madrat::readSource()]
