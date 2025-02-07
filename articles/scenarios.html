@@ -21,7 +21,7 @@
 
     <a class="navbar-brand me-2" href="../index.html">mrdrivers</a>
 
-    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">6.1.0</small>
+    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">7.0.0</small>
 
 
     <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbar" aria-controls="navbar" aria-expanded="false" aria-label="Toggle navigation">
@@ -66,16 +66,14 @@
     
     
 <div class="section level2">
-<h2 id="default-scenarios">Default scenarios<a class="anchor" aria-label="anchor" href="#default-scenarios"></a>
+<h2 id="key-scenarios">Key scenarios<a class="anchor" aria-label="anchor" href="#key-scenarios"></a>
 </h2>
-<p>By default, the following scenarios are returned for all drivers:</p>
+<p>Key scenarios include:</p>
 <ul>
 <li>the SSPs, i.e. SSP1-5</li>
 <li>the SDPs, i.e. SDP, SDP_EI, SDP_MC and SDP_RC</li>
-<li>(SSP2EU - deprecated, but still returned as a placeholder. Identical
-to SSP2)</li>
 </ul>
-<p>The scenarios span from 1960 to 2150, with yearly data until 2030,
+<p>All scenarios span from 1960 to 2150, with yearly data until 2030,
 and data every 5 years thereafter.</p>
 <div class="section level3">
 <h3 id="gdp-per-capita-and-gdp">GDP per capita and GDP<a class="anchor" aria-label="anchor" href="#gdp-per-capita-and-gdp"></a>
@@ -194,7 +192,7 @@ for non-OECD countries.</p>
 used to see what driver/scenario options are available.</p>
 <div class="sourceCode" id="cb1"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="fu"><a href="../reference/toolGetScenarioDefinition.html">toolGetScenarioDefinition</a></span><span class="op">(</span><span class="op">)</span> <span class="op">%&gt;%</span> <span class="fu"><a href="https://rdrr.io/r/base/print.html" class="external-link">print</a></span><span class="op">(</span>n <span class="op">=</span> <span class="fl">200</span><span class="op">)</span></span>
-<span><span class="co">#&gt; <span style="color: #949494;"># A tibble: 55 × 5</span></span></span>
+<span><span class="co">#&gt; <span style="color: #949494;"># A tibble: 50 × 5</span></span></span>
 <span><span class="co">#&gt;    driver     scenario        pastData         futureData          harmonization</span></span>
 <span><span class="co">#&gt;    <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span>      <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span>           <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span>            <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span>               <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span>        </span></span>
 <span><span class="co">#&gt; <span style="color: #BCBCBC;"> 1</span> GDPpc      SSPs            WDI-MI-James     SSPs                GDPpcSSPs    </span></span>
@@ -203,55 +201,50 @@ used to see what driver/scenario options are available.</p>
 <span><span class="co">#&gt; <span style="color: #BCBCBC;"> 4</span> GDPpc      SSP3            WDI-MI-James     SSP3                GDPpcSSPs    </span></span>
 <span><span class="co">#&gt; <span style="color: #BCBCBC;"> 5</span> GDPpc      SSP4            WDI-MI-James     SSP4                GDPpcSSPs    </span></span>
 <span><span class="co">#&gt; <span style="color: #BCBCBC;"> 6</span> GDPpc      SSP5            WDI-MI-James     SSP5                GDPpcSSPs    </span></span>
-<span><span class="co">#&gt; <span style="color: #BCBCBC;"> 7</span> GDPpc      SSP2EU          WDI-MI-James     SSP2EU              GDPpcSSPs    </span></span>
-<span><span class="co">#&gt; <span style="color: #BCBCBC;"> 8</span> GDPpc      SDPs            -                -                   GDPpcSDPs    </span></span>
-<span><span class="co">#&gt; <span style="color: #BCBCBC;"> 9</span> GDPpc      ISIMIP          WDI-MI-James     SSPs                GDPpcSSPs    </span></span>
-<span><span class="co">#&gt; <span style="color: #BCBCBC;">10</span> GDPpc      SSP2IndiaDEAs   WDI-MI-James     IndiaDEAs-SSP2      GDPpcSSP2Ind…</span></span>
-<span><span class="co">#&gt; <span style="color: #BCBCBC;">11</span> GDPpc      SSP2IndiaMedium WDI-MI-James     IndiaDEAbase-SSP2   GDPpcSSP2Ind…</span></span>
-<span><span class="co">#&gt; <span style="color: #BCBCBC;">12</span> GDPpc      SSP2IndiaHigh   WDI-MI-James     IndiaDEAopt-SSP2    GDPpcSSP2Ind…</span></span>
-<span><span class="co">#&gt; <span style="color: #BCBCBC;">13</span> GDP        SSPs            -                -                   GDPpcWithPop </span></span>
-<span><span class="co">#&gt; <span style="color: #BCBCBC;">14</span> GDP        SSP1            -                -                   GDPpcWithPop </span></span>
-<span><span class="co">#&gt; <span style="color: #BCBCBC;">15</span> GDP        SSP2            -                -                   GDPpcWithPop </span></span>
-<span><span class="co">#&gt; <span style="color: #BCBCBC;">16</span> GDP        SSP3            -                -                   GDPpcWithPop </span></span>
-<span><span class="co">#&gt; <span style="color: #BCBCBC;">17</span> GDP        SSP4            -                -                   GDPpcWithPop </span></span>
-<span><span class="co">#&gt; <span style="color: #BCBCBC;">18</span> GDP        SSP5            -                -                   GDPpcWithPop </span></span>
-<span><span class="co">#&gt; <span style="color: #BCBCBC;">19</span> GDP        SSP2EU          -                -                   GDPpcWithPop </span></span>
-<span><span class="co">#&gt; <span style="color: #BCBCBC;">20</span> GDP        SDPs            -                -                   GDPpcWithPop </span></span>
-<span><span class="co">#&gt; <span style="color: #BCBCBC;">21</span> GDP        ISIMIP          -                -                   GDPpcWithPop </span></span>
-<span><span class="co">#&gt; <span style="color: #BCBCBC;">22</span> GDP        SSP2IndiaDEAs   -                -                   GDPpcWithPop </span></span>
-<span><span class="co">#&gt; <span style="color: #BCBCBC;">23</span> GDP        SSP2IndiaMedium -                -                   GDPpcWithPop </span></span>
-<span><span class="co">#&gt; <span style="color: #BCBCBC;">24</span> GDP        SSP2IndiaHigh   -                -                   GDPpcWithPop </span></span>
-<span><span class="co">#&gt; <span style="color: #BCBCBC;">25</span> Population SSPs            WDI-UN_PopDiv-MI SSPs-UN_PopDiv      PopSSPs      </span></span>
-<span><span class="co">#&gt; <span style="color: #BCBCBC;">26</span> Population SSP1            WDI-UN_PopDiv-MI SSP1-UN_PopDiv      PopSSPs      </span></span>
-<span><span class="co">#&gt; <span style="color: #BCBCBC;">27</span> Population SSP2            WDI-UN_PopDiv-MI SSP2-UN_PopDiv      PopSSPs      </span></span>
-<span><span class="co">#&gt; <span style="color: #BCBCBC;">28</span> Population SSP3            WDI-UN_PopDiv-MI SSP3-UN_PopDiv      PopSSPs      </span></span>
-<span><span class="co">#&gt; <span style="color: #BCBCBC;">29</span> Population SSP4            WDI-UN_PopDiv-MI SSP4-UN_PopDiv      PopSSPs      </span></span>
-<span><span class="co">#&gt; <span style="color: #BCBCBC;">30</span> Population SSP5            WDI-UN_PopDiv-MI SSP5-UN_PopDiv      PopSSPs      </span></span>
-<span><span class="co">#&gt; <span style="color: #BCBCBC;">31</span> Population SSP2EU          WDI-UN_PopDiv-MI SSP2EU-UN_PopDiv    PopSSPs      </span></span>
-<span><span class="co">#&gt; <span style="color: #BCBCBC;">32</span> Population SDPs            WDI-UN_PopDiv-MI SDPs-UN_PopDiv      PopSSPs      </span></span>
-<span><span class="co">#&gt; <span style="color: #BCBCBC;">33</span> Population ISIMIP          UN_PopDiv-MI     SSPs-UN_PopDiv      PopISIMIP    </span></span>
-<span><span class="co">#&gt; <span style="color: #BCBCBC;">34</span> Population SSP2IndiaDEAs   WDI-UN_PopDiv-MI IndiaDEAs-SSP2-UN_… PopSSP2India…</span></span>
-<span><span class="co">#&gt; <span style="color: #BCBCBC;">35</span> Population SSP2IndiaMedium WDI-UN_PopDiv-MI IndiaDEAbase-SSP2-… PopSSP2India…</span></span>
-<span><span class="co">#&gt; <span style="color: #BCBCBC;">36</span> Population SSP2IndiaHigh   WDI-UN_PopDiv-MI IndiaDEAopt-SSP2-U… PopSSP2India…</span></span>
-<span><span class="co">#&gt; <span style="color: #BCBCBC;">37</span> Labour     SSPs            WDI-UN_PopDiv    SSPs-UN_PopDiv      pastAndLevel </span></span>
-<span><span class="co">#&gt; <span style="color: #BCBCBC;">38</span> Labour     SSP1            WDI-UN_PopDiv    SSP1-UN_PopDiv      pastAndLevel </span></span>
-<span><span class="co">#&gt; <span style="color: #BCBCBC;">39</span> Labour     SSP2            WDI-UN_PopDiv    SSP2-UN_PopDiv      pastAndLevel </span></span>
-<span><span class="co">#&gt; <span style="color: #BCBCBC;">40</span> Labour     SSP3            WDI-UN_PopDiv    SSP3-UN_PopDiv      pastAndLevel </span></span>
-<span><span class="co">#&gt; <span style="color: #BCBCBC;">41</span> Labour     SSP4            WDI-UN_PopDiv    SSP4-UN_PopDiv      pastAndLevel </span></span>
-<span><span class="co">#&gt; <span style="color: #BCBCBC;">42</span> Labour     SSP5            WDI-UN_PopDiv    SSP5-UN_PopDiv      pastAndLevel </span></span>
-<span><span class="co">#&gt; <span style="color: #BCBCBC;">43</span> Labour     SSP2EU          WDI-UN_PopDiv    SSP2EU-UN_PopDiv    pastAndLevel </span></span>
-<span><span class="co">#&gt; <span style="color: #BCBCBC;">44</span> Labour     SDPs            WDI-UN_PopDiv    SDPs-UN_PopDiv      pastAndLevel </span></span>
-<span><span class="co">#&gt; <span style="color: #BCBCBC;">45</span> Labour     SSP2IndiaDEAs   -                -                   LabourSSP2In…</span></span>
-<span><span class="co">#&gt; <span style="color: #BCBCBC;">46</span> Labour     SSP2IndiaMedium -                -                   LabourSSP2In…</span></span>
-<span><span class="co">#&gt; <span style="color: #BCBCBC;">47</span> Labour     SSP2IndiaHigh   -                -                   LabourSSP2In…</span></span>
-<span><span class="co">#&gt; <span style="color: #BCBCBC;">48</span> Urban      SSPs            WDI              SSPs                pastAndGrowth</span></span>
-<span><span class="co">#&gt; <span style="color: #BCBCBC;">49</span> Urban      SSP1            WDI              SSP1                pastAndGrowth</span></span>
-<span><span class="co">#&gt; <span style="color: #BCBCBC;">50</span> Urban      SSP2            WDI              SSP2                pastAndGrowth</span></span>
-<span><span class="co">#&gt; <span style="color: #BCBCBC;">51</span> Urban      SSP3            WDI              SSP3                pastAndGrowth</span></span>
-<span><span class="co">#&gt; <span style="color: #BCBCBC;">52</span> Urban      SSP4            WDI              SSP4                pastAndGrowth</span></span>
-<span><span class="co">#&gt; <span style="color: #BCBCBC;">53</span> Urban      SSP5            WDI              SSP5                pastAndGrowth</span></span>
-<span><span class="co">#&gt; <span style="color: #BCBCBC;">54</span> Urban      SSP2EU          WDI              SSP2EU              pastAndGrowth</span></span>
-<span><span class="co">#&gt; <span style="color: #BCBCBC;">55</span> Urban      SDPs            WDI              SDPs                pastAndGrowth</span></span></code></pre></div>
+<span><span class="co">#&gt; <span style="color: #BCBCBC;"> 7</span> GDPpc      SDPs            -                -                   GDPpcSDPs    </span></span>
+<span><span class="co">#&gt; <span style="color: #BCBCBC;"> 8</span> GDPpc      ISIMIP          WDI-MI-James     SSPs                GDPpcSSPs    </span></span>
+<span><span class="co">#&gt; <span style="color: #BCBCBC;"> 9</span> GDPpc      SSP2IndiaDEAs   WDI-MI-James     IndiaDEAs-SSP2      GDPpcSSP2Ind…</span></span>
+<span><span class="co">#&gt; <span style="color: #BCBCBC;">10</span> GDPpc      SSP2IndiaMedium WDI-MI-James     IndiaDEAbase-SSP2   GDPpcSSP2Ind…</span></span>
+<span><span class="co">#&gt; <span style="color: #BCBCBC;">11</span> GDPpc      SSP2IndiaHigh   WDI-MI-James     IndiaDEAopt-SSP2    GDPpcSSP2Ind…</span></span>
+<span><span class="co">#&gt; <span style="color: #BCBCBC;">12</span> GDP        SSPs            -                -                   GDPpcWithPop </span></span>
+<span><span class="co">#&gt; <span style="color: #BCBCBC;">13</span> GDP        SSP1            -                -                   GDPpcWithPop </span></span>
+<span><span class="co">#&gt; <span style="color: #BCBCBC;">14</span> GDP        SSP2            -                -                   GDPpcWithPop </span></span>
+<span><span class="co">#&gt; <span style="color: #BCBCBC;">15</span> GDP        SSP3            -                -                   GDPpcWithPop </span></span>
+<span><span class="co">#&gt; <span style="color: #BCBCBC;">16</span> GDP        SSP4            -                -                   GDPpcWithPop </span></span>
+<span><span class="co">#&gt; <span style="color: #BCBCBC;">17</span> GDP        SSP5            -                -                   GDPpcWithPop </span></span>
+<span><span class="co">#&gt; <span style="color: #BCBCBC;">18</span> GDP        SDPs            -                -                   GDPpcWithPop </span></span>
+<span><span class="co">#&gt; <span style="color: #BCBCBC;">19</span> GDP        ISIMIP          -                -                   GDPpcWithPop </span></span>
+<span><span class="co">#&gt; <span style="color: #BCBCBC;">20</span> GDP        SSP2IndiaDEAs   -                -                   GDPpcWithPop </span></span>
+<span><span class="co">#&gt; <span style="color: #BCBCBC;">21</span> GDP        SSP2IndiaMedium -                -                   GDPpcWithPop </span></span>
+<span><span class="co">#&gt; <span style="color: #BCBCBC;">22</span> GDP        SSP2IndiaHigh   -                -                   GDPpcWithPop </span></span>
+<span><span class="co">#&gt; <span style="color: #BCBCBC;">23</span> Population SSPs            WDI-UN_PopDiv-MI SSPs-UN_PopDiv      PopSSPs      </span></span>
+<span><span class="co">#&gt; <span style="color: #BCBCBC;">24</span> Population SSP1            WDI-UN_PopDiv-MI SSP1-UN_PopDiv      PopSSPs      </span></span>
+<span><span class="co">#&gt; <span style="color: #BCBCBC;">25</span> Population SSP2            WDI-UN_PopDiv-MI SSP2-UN_PopDiv      PopSSPs      </span></span>
+<span><span class="co">#&gt; <span style="color: #BCBCBC;">26</span> Population SSP3            WDI-UN_PopDiv-MI SSP3-UN_PopDiv      PopSSPs      </span></span>
+<span><span class="co">#&gt; <span style="color: #BCBCBC;">27</span> Population SSP4            WDI-UN_PopDiv-MI SSP4-UN_PopDiv      PopSSPs      </span></span>
+<span><span class="co">#&gt; <span style="color: #BCBCBC;">28</span> Population SSP5            WDI-UN_PopDiv-MI SSP5-UN_PopDiv      PopSSPs      </span></span>
+<span><span class="co">#&gt; <span style="color: #BCBCBC;">29</span> Population SDPs            WDI-UN_PopDiv-MI SDPs-UN_PopDiv      PopSSPs      </span></span>
+<span><span class="co">#&gt; <span style="color: #BCBCBC;">30</span> Population ISIMIP          UN_PopDiv-MI     SSPs-UN_PopDiv      PopISIMIP    </span></span>
+<span><span class="co">#&gt; <span style="color: #BCBCBC;">31</span> Population SSP2IndiaDEAs   WDI-UN_PopDiv-MI IndiaDEAs-SSP2-UN_… PopSSP2India…</span></span>
+<span><span class="co">#&gt; <span style="color: #BCBCBC;">32</span> Population SSP2IndiaMedium WDI-UN_PopDiv-MI IndiaDEAbase-SSP2-… PopSSP2India…</span></span>
+<span><span class="co">#&gt; <span style="color: #BCBCBC;">33</span> Population SSP2IndiaHigh   WDI-UN_PopDiv-MI IndiaDEAopt-SSP2-U… PopSSP2India…</span></span>
+<span><span class="co">#&gt; <span style="color: #BCBCBC;">34</span> Labour     SSPs            WDI-UN_PopDiv    SSPs-UN_PopDiv      pastAndLevel </span></span>
+<span><span class="co">#&gt; <span style="color: #BCBCBC;">35</span> Labour     SSP1            WDI-UN_PopDiv    SSP1-UN_PopDiv      pastAndLevel </span></span>
+<span><span class="co">#&gt; <span style="color: #BCBCBC;">36</span> Labour     SSP2            WDI-UN_PopDiv    SSP2-UN_PopDiv      pastAndLevel </span></span>
+<span><span class="co">#&gt; <span style="color: #BCBCBC;">37</span> Labour     SSP3            WDI-UN_PopDiv    SSP3-UN_PopDiv      pastAndLevel </span></span>
+<span><span class="co">#&gt; <span style="color: #BCBCBC;">38</span> Labour     SSP4            WDI-UN_PopDiv    SSP4-UN_PopDiv      pastAndLevel </span></span>
+<span><span class="co">#&gt; <span style="color: #BCBCBC;">39</span> Labour     SSP5            WDI-UN_PopDiv    SSP5-UN_PopDiv      pastAndLevel </span></span>
+<span><span class="co">#&gt; <span style="color: #BCBCBC;">40</span> Labour     SDPs            WDI-UN_PopDiv    SDPs-UN_PopDiv      pastAndLevel </span></span>
+<span><span class="co">#&gt; <span style="color: #BCBCBC;">41</span> Labour     SSP2IndiaDEAs   -                -                   LabourSSP2In…</span></span>
+<span><span class="co">#&gt; <span style="color: #BCBCBC;">42</span> Labour     SSP2IndiaMedium -                -                   LabourSSP2In…</span></span>
+<span><span class="co">#&gt; <span style="color: #BCBCBC;">43</span> Labour     SSP2IndiaHigh   -                -                   LabourSSP2In…</span></span>
+<span><span class="co">#&gt; <span style="color: #BCBCBC;">44</span> Urban      SSPs            WDI              SSPs                pastAndGrowth</span></span>
+<span><span class="co">#&gt; <span style="color: #BCBCBC;">45</span> Urban      SSP1            WDI              SSP1                pastAndGrowth</span></span>
+<span><span class="co">#&gt; <span style="color: #BCBCBC;">46</span> Urban      SSP2            WDI              SSP2                pastAndGrowth</span></span>
+<span><span class="co">#&gt; <span style="color: #BCBCBC;">47</span> Urban      SSP3            WDI              SSP3                pastAndGrowth</span></span>
+<span><span class="co">#&gt; <span style="color: #BCBCBC;">48</span> Urban      SSP4            WDI              SSP4                pastAndGrowth</span></span>
+<span><span class="co">#&gt; <span style="color: #BCBCBC;">49</span> Urban      SSP5            WDI              SSP5                pastAndGrowth</span></span>
+<span><span class="co">#&gt; <span style="color: #BCBCBC;">50</span> Urban      SDPs            WDI              SDPs                pastAndGrowth</span></span></code></pre></div>
 </div>
 <div class="section level2">
 <h2 id="user-defined-scenarios">User Defined Scenarios<a class="anchor" aria-label="anchor" href="#user-defined-scenarios"></a>
