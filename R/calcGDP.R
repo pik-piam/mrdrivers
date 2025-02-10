@@ -118,8 +118,8 @@ calcGDPpc <- function(scenario, unit = toolGetUnitDollar(inPPP = TRUE), average2
     # reasoning being that REMIND uses 5-year time steps, and that the year-in-itself should represent the 2,5 years
     # before and after.)
     # The dampening is supposed to take place on GDP. So for GDP per capita in 2020 to be consistent with the dampened
-    # GDP, it has to calculated from GDP and population. (In other words we can't just use the same formula as for GDP,
-    # since it would lead to inconsistency at the end.) This is a bit hacky...
+    # GDP, it has to calculated from GDP and population. (In other words we cannot just use the same formula as for
+    # GDP, since it would lead to inconsistency at the end.) This is a bit hacky...
     gdp2020 <- calcOutput("GDP",
                           scenario = scenario,
                           naming = "scenario",

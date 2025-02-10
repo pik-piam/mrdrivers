@@ -17,7 +17,7 @@
 #' @details
 #'  The workflow to update the WDI data is the following: call the download function manually, and rename the new
 #'  WDI.rds file including the download date. Then change the file_name that is read by readWDI. This ensures, that
-#'  the past data isn't changed between users.
+#'  the past data is not changed between users.
 #'
 #'
 #' @inherit madrat::readSource return

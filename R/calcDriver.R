@@ -55,6 +55,10 @@ calcDriver <- function(driver,
                        popAsWeight = FALSE,
                        naming = "scenario",
                        extension2150 = "bezier") {
+  # Manipulate scenario to avoid returning duplicates. So for example, drop SSP2 if SSPs is also selected.
+  if ("SSPs" %in% scenario) scenario <- unique(scenario[!grepl("SSP[1-5]", scenario)])
+  if ("SSP2IndiaDEAs" %in% scenario) scenario <- unique(scenario[!grepl("SSP2India(Medium|High)", scenario)])
+
   # Create a list of all the arguments
   l <- as.list(environment())
 
@@ -107,7 +111,7 @@ calcScenarioConstructor <- function(driver, scenario, popAsWeight, naming, exten
                          extension2150 = extension2150,
                          aggregate = FALSE,
                          supplementary = TRUE)
-    # Give weight same names as data, so that aggregate doesn't mess up data dim
+    # Give weight same names as data, so that aggregate does not mess up data dim
     getNames(weight$x) <- getNames(data$x)
     # Make sure weight and data have the same yearly resolution.
     ## Sometimes weght has more years than x, thus the intersect operation.
