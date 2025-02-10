@@ -64,7 +64,7 @@ calcInternalGDPPast <- function(pastData) {
 }
 
 toolGDPPastJames <- function() {
-  gdppc <- readSource("James", "gdp")
+  gdppc <- readSource("James", "gdppc")
   pop <- calcOutput("PopulationPast", aggregate = FALSE)
   years <- intersect(getYears(gdppc), getYears(pop))
   gdppc[, years, ] * pop[, years, ]
