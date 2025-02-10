@@ -34,7 +34,9 @@ The data is in Annex 3.
 }
 \examples{
 \dontrun{
-readSource("James", subtype = "gdp")
+readSource("James", subtype = "gdppc")
+# Or more explicitly:
+readSource("James", subtype = "WB_USD05_PPP_pc")
 }
 }
 \seealso{

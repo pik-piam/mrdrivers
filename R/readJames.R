@@ -11,12 +11,14 @@
 #' @inherit madrat::readSource return
 #' @seealso [madrat::readSource()] and [madrat::downloadSource()]
 #' @examples \dontrun{
-#' readSource("James", subtype = "gdp")
+#' readSource("James", subtype = "gdppc")
+#' # Or more explicitly:
+#' readSource("James", subtype = "WB_USD05_PPP_pc")
 #' }
 #' @order 2
 readJames <- function(subtype) {
   # Add alias for easy referencing
-  if (subtype == "gdp") subtype <- "WB_USD05_PPP_pc"
+  if (subtype == "gdppc") subtype <- "WB_USD05_PPP_pc"
 
   utils::read.csv("james.csv", sep = ";", dec = ",") %>%
     `[`(, c("ISO3", "Year", subtype)) %>%
@@ -28,7 +30,7 @@ readJames <- function(subtype) {
 #' @order 3
 convertJames <- function(x, subtype) {
   # Add alias for easy referencing
-  if (subtype == "gdp") subtype <- "WB_USD05_PPP_pc"
+  if (subtype == "gdppc") subtype <- "WB_USD05_PPP_pc"
   if (subtype == "WB_USD05_PPP_pc") {
     x <- GDPuc::toolConvertGDP(x,
                                unit_in = "constant 2005 Int$PPP",
