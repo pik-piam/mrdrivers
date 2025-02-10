@@ -26,11 +26,12 @@ toolHarmonizePopulationSSP2IndiaDEAs <- function(past, future) {
   ssp2Data <- calcOutput("Population", scenario = "SSP2", extension2150 = "none", aggregate = FALSE)
 
   # For both IndiaDEAs scenarios, overwrite SSP2 IND data with DEA IND data
+  yEnd <- 2030
   combined <- purrr::map(getNames(future$x), function(x) {
     y <- setNames(ssp2Data, x)
     y["IND", , ] <- 0
-    # Transition IND from past to future. Here keep future as is, and use growth rates from past.
-    dataIND <- toolHarmonizeFuture(past$x["IND", , ], future$x["IND", , x], method = "growth")
+    # Transition IND from past to future. Here just transition to future, not using short term growth rates from PEAP.
+    dataIND <- toolHarmonizePast(past$x["IND", , ], future$x["IND", , x], method = "transition", yEnd = yEnd)
     y["IND", getYears(dataIND), ] <- dataIND
     y
   }) %>%
@@ -43,8 +44,8 @@ toolHarmonizePopulationSSP2IndiaDEAs <- function(past, future) {
 
   list(x = combined,
        description = glue("equal to SSP2 in all countries except for IND. \\
-                          For IND use {future$description} from {min(getYears(future$x, as.integer = TRUE))} \\
-                          onwards and growth rates from {past$description} for the years before."))
+                           For IND use {past$description} until {max(getYears(past$x, as.integer = TRUE))} \\
+                           and transition to {future$description} by {yEnd}."))
 }
 
 toolHarmonizeLabourSSP2IndiaDEAs <- function() {
