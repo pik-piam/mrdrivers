@@ -1,7 +1,7 @@
 #' Read-in data from the World Bank's Population Estimates And Projections (PEAP)
 #'
 #' Read-in an xlsx file from the World Bank's Population Estimates And Projections (PEAP)
-#' The PEAP data can't seemed to be accessed by the WDI::WDI package nor the World Bank's API directly.
+#' The PEAP data cannot seemed to be accessed by the WDI::WDI package nor the World Bank's API directly.
 #' Manual download required from https://databank.worldbank.org/source/population-estimates-and-projections#
 #'
 #' @inherit madrat::readSource return
@@ -16,7 +16,7 @@ readPEAP <- function() {
                             "Series Code" = "_")
   readr::read_csv(file, col_types = myColTypes) %>%
     suppressWarnings() %>%
-    # The warnings that are being suppressed above, come from character strings that can't be converted to numeric, and
+    # The warnings that are being suppressed above, come from character strings that cannot be converted to numeric, and
     # are thus returned as NA.
     dplyr::filter(!is.na(.data$`Country Code`)) %>%
     tidyr::pivot_longer(cols = tidyselect::starts_with(c("1", "2")), names_to = "year") %>%
