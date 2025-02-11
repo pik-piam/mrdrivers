@@ -1,7 +1,7 @@
 Package: mrdrivers
 Type: Package
 Title: Create GDP and Population Scenarios
-Version: 7.0.2
+Version: 7.0.3
 Authors@R: c(person(given = "Johannes", 
                     family = "Koch", 
                     email = "jokoch@pik-potsdam.de", 
@@ -44,6 +44,6 @@ Suggests:
 Encoding: UTF-8
 Roxygen: list(markdown = TRUE)
 RoxygenNote: 7.3.2
-Date: 2025-02-10
+Date: 2025-02-11
 Config/testthat/edition: 3
 VignetteBuilder: knitr
