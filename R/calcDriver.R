@@ -56,7 +56,7 @@ calcDriver <- function(driver,
                        naming = "scenario",
                        extension2150 = "bezier") {
   # Manipulate scenario to avoid returning duplicates. So for example, drop SSP2 if SSPs is also selected.
-  if ("SSPs" %in% scenario) scenario <- unique(scenario[!grepl("SSP[1-5]", scenario)])
+  if ("SSPs" %in% scenario) scenario <- unique(scenario[!grepl("SSP[1-5]$", scenario)])
   if ("SSP2IndiaDEAs" %in% scenario) scenario <- unique(scenario[!grepl("SSP2India(Medium|High)", scenario)])
 
   # Create a list of all the arguments
