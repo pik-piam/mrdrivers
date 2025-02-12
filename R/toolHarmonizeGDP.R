@@ -3,7 +3,6 @@ toolMultiplyGDPpcWithPop <- function(scenario) {
                       scenario = scenario,
                       extension2150 = "none",
                       average2020 = FALSE,
-                      naming = "scenario",
                       aggregate = FALSE,
                       supplementary = TRUE)
   # GDP is equal to GDPpc * population
@@ -84,11 +83,10 @@ toolHarmonizeGDPpcSSPs <- function(past, future, yEnd) {
 
 toolBuildGDPpcSDPs <- function() {
   gdppcapSSP1 <- calcOutput("GDPpc",
-                            scenario = "SSPs",
+                            scenario = "SSP1",
                             average2020 = FALSE,
                             extension2150 = "none",
-                            naming = "scenario",
-                            aggregate = FALSE)[, , "SSP1"]
+                            aggregate = FALSE)
 
   # Standard SDP inherits SSP1 GDP
   gdppcapSDP <- setNames(gdppcapSSP1, "SDP")
@@ -110,13 +108,11 @@ toolDivideGDPbyPop <- function(scenario) {
                     scenario = scenario,
                     extension2150 = "none",
                     average2020 = FALSE,
-                    naming = "scenario",
                     aggregate = FALSE,
                     supplementary = TRUE)
   pop <- calcOutput("Population",
                     scenario = scenario,
                     extension2150 = "none",
-                    naming = "scenario",
                     aggregate = FALSE,
                     supplementary = TRUE,
                     years = getYears(gdp$x))

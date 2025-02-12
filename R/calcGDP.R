@@ -122,13 +122,11 @@ calcGDPpc <- function(scenario, unit = toolGetUnitDollar(inPPP = TRUE), average2
     # GDP, since it would lead to inconsistency at the end.) This is a bit hacky...
     gdp2020 <- calcOutput("GDP",
                           scenario = scenario,
-                          naming = "scenario",
                           extension2150 = "none",
                           aggregate = FALSE,
                           years = 2020)
     pop2020 <- calcOutput("Population",
                           scenario = scenario,
-                          naming = "scenario",
                           extension2150 = "none",
                           aggregate = FALSE,
                           years = 2020)

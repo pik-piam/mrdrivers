@@ -49,13 +49,9 @@ toolHarmonizePopulationSSP2IndiaDEAs <- function(past, future) {
 }
 
 toolHarmonizeLabourSSP2IndiaDEAs <- function() {
-  pop2 <- calcOutput("Population", scenario = "SSP2", naming = "scenario", extension2150 = "none", aggregate = FALSE)
-  lab2 <- calcOutput("Labour", scenario = "SSP2", naming = "scenario", extension2150 = "none", aggregate = FALSE)
-  pop  <- calcOutput("Population",
-                     scenario = "SSP2IndiaDEAs",
-                     naming = "scenario",
-                     extension2150 = "none",
-                     aggregate = FALSE)
+  pop2 <- calcOutput("Population", scenario = "SSP2", extension2150 = "none", aggregate = FALSE)
+  lab2 <- calcOutput("Labour", scenario = "SSP2", extension2150 = "none", aggregate = FALSE)
+  pop  <- calcOutput("Population", scenario = "SSP2IndiaDEAs", extension2150 = "none", aggregate = FALSE)
 
   combined <- purrr::map(getNames(pop), function(x) {
     labShareSSP2 <- lab2 / pop2[, getYears(lab2), ]

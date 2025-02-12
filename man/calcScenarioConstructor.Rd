@@ -4,7 +4,7 @@
 \alias{calcScenarioConstructor}
 \title{Scenario construction}
 \usage{
-calcScenarioConstructor(driver, scenario, popAsWeight, naming, extension2150)
+calcScenarioConstructor(driver, scenario, popAsWeight, extension2150)
 }
 \arguments{
 \item{driver}{A string designating the driver. Available drivers are:
@@ -20,15 +20,6 @@ calcScenarioConstructor(driver, scenario, popAsWeight, naming, extension2150)
 \code{\link[=toolGetScenarioDefinition]{toolGetScenarioDefinition()}} to learn what scenarios are available.}
 
 \item{popAsWeight}{If TRUE, then population data of the same scenario is used as weight.}
-
-\item{naming}{DEPRECATED - will be removed in next release. A string giving the naming scheme of the data dimension.
-Can be either:
-\itemize{
-\item "scenario" (default): Returns names of the type "SSP2".
-\item "indicator_scenario": Returns names of the type "gdp_SSP2", or "pop_SSP2".
-}
-Set naming to "scenario" when you want to operate on SSP2 gdp and population data for instance, and not have to
-worry about the conflicting names.}
 
 \item{extension2150}{A string specifying if/how the scenarios should be extended until 2150. Can be either:
 \itemize{
