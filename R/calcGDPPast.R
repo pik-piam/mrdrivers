@@ -85,7 +85,7 @@ calcGDPpcPast <- function(scenario = "SSPs") {
   years <- intersect(getYears(gdp), getYears(pop))
   data <- gdp[, years, ] / pop[, years, ]
   data[is.nan(data) | data == Inf] <- 0
-  getNames(data) <- paste(gdpPastData, "gdp data", "over", popPastData, "pop data")
+  getNames(data) <- paste(gdpPastData, "GDP data", "over", popPastData, "population data")
 
   # The weight does not go into the weight of the final scenario. So exact matching with GDPpc not necessary...
   weight <- pop

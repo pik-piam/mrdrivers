@@ -36,31 +36,20 @@
 #'   \item "none": No extension.
 #' }
 #'
-#' @param naming DEPRECATED - will be removed in next release. A string giving the naming scheme of the data dimension.
-#' Can be either:
-#' \itemize{
-#'   \item "scenario" (default): Returns names of the type "SSP2".
-#'   \item "indicator_scenario": Returns names of the type "gdp_SSP2", or "pop_SSP2".
-#' }
-#' Set naming to "scenario" when you want to operate on SSP2 gdp and population data for instance, and not have to
-#' worry about the conflicting names.
-#'
 #' @param popAsWeight If TRUE, then population data of the same scenario is used as weight.
+#'
+#' @param naming DEPRECATED - will be removed in next release.
 #'
 #' @inherit madrat::calcOutput return
 #' @inherit calcHarmonizedData seealso
 #' @keywords internal
-calcDriver <- function(driver,
-                       scenario,
-                       popAsWeight = FALSE,
-                       naming = "scenario",
-                       extension2150 = "bezier") {
+calcDriver <- function(driver, scenario, popAsWeight = FALSE, naming = "scenario", extension2150 = "bezier") {
   # Manipulate scenario to avoid returning duplicates. So for example, drop SSP2 if SSPs is also selected.
   if ("SSPs" %in% scenario) scenario <- unique(scenario[!grepl("SSP[1-5]$", scenario)])
   if ("SSP2IndiaDEAs" %in% scenario) scenario <- unique(scenario[!grepl("SSP2India(Medium|High)", scenario)])
 
   # Create a list of all the arguments
-  l <- as.list(environment())
+  l <- as.list(environment()) %>% purrr::discard_at("naming")
 
   # Call ScenarioConstructor function the appropriate number of times (map) and combine (reduce)
   # !! Keep formula syntax for madrat caching to work
@@ -81,28 +70,11 @@ calcDriver <- function(driver,
 #' @inherit calcHarmonizedData seealso
 #' @inherit madrat::calcOutput return
 #' @keywords internal
-calcScenarioConstructor <- function(driver, scenario, popAsWeight, naming, extension2150) {
+calcScenarioConstructor <- function(driver, scenario, popAsWeight, extension2150) {
 
   data <- calcOutput("HarmonizedData", driver = driver, scenario = scenario, aggregate = FALSE, supplementary = TRUE)
 
   if (extension2150 != "none") data <- toolExtend2150(data, extension2150)
-
-  # If required, add indicators (drivers) to names, or as additional dimension
-  if (naming != "scenario") {
-    warning("The naming argument is deprecated and will be removed in the next release.")
-    indicator <- switch(
-      driver,
-      "GDP"        = "gdp",
-      "GDPpc"      = "gdppc",
-      "Population" = "pop",
-      "Urban"      = "urb",
-      # Label labour scenarios with "pop". Currently required for REMIND to work.
-      "Labour"     = "pop"
-    )
-    if (naming == "indicator_scenario") {
-      getNames(data$x) <- paste0(indicator, "_", getNames(data$x))
-    }
-  }
 
   # If required, get population as weight
   if (popAsWeight) {
@@ -114,7 +86,7 @@ calcScenarioConstructor <- function(driver, scenario, popAsWeight, naming, exten
     # Give weight same names as data, so that aggregate does not mess up data dim
     getNames(weight$x) <- getNames(data$x)
     # Make sure weight and data have the same yearly resolution.
-    ## Sometimes weght has more years than x, thus the intersect operation.
+    ## Sometimes weight has more years than x, thus the intersect operation.
     weight$x <- weight$x[, intersect(getYears(data$x), getYears(weight$x)), ]
     ## If x has more years than weight, add these years and interpolate
     missingYears <- getYears(data$x)[! getYears(data$x) %in% getYears(weight$x)]
@@ -122,7 +94,7 @@ calcScenarioConstructor <- function(driver, scenario, popAsWeight, naming, exten
     weight$x <- weight$x[, sort(getYears(weight$x)), ]
     weight$x <- toolInterpolateAndExtrapolate(weight$x)
 
-    data$description <- glue("{data$description} Associated {weight$description}")
+    data$description <- glue("{data$description} The associated weights are the {weight$description}")
   } else {
     weight <- NULL
   }

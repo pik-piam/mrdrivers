@@ -27,14 +27,7 @@ calcDriver(
 
 \item{popAsWeight}{If TRUE, then population data of the same scenario is used as weight.}
 
-\item{naming}{DEPRECATED - will be removed in next release. A string giving the naming scheme of the data dimension.
-Can be either:
-\itemize{
-\item "scenario" (default): Returns names of the type "SSP2".
-\item "indicator_scenario": Returns names of the type "gdp_SSP2", or "pop_SSP2".
-}
-Set naming to "scenario" when you want to operate on SSP2 gdp and population data for instance, and not have to
-worry about the conflicting names.}
+\item{naming}{DEPRECATED - will be removed in next release.}
 
 \item{extension2150}{A string specifying if/how the scenarios should be extended until 2150. Can be either:
 \itemize{
