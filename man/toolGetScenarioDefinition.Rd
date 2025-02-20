@@ -4,7 +4,12 @@
 \alias{toolGetScenarioDefinition}
 \title{Get information on available scenarios}
 \usage{
-toolGetScenarioDefinition(driver = NULL, scen = NULL, aslist = FALSE)
+toolGetScenarioDefinition(
+  driver = NULL,
+  scen = NULL,
+  aslist = FALSE,
+  getGroupShortcuts = FALSE
+)
 }
 \arguments{
 \item{driver}{NULL or a character vector designating the driver for which information is to be returned. If NULL,
@@ -22,6 +27,8 @@ information for all scenarios is returned.}
 
 \item{aslist}{TRUE or FALSE (default). If TRUE then the pastData, futureData and harmonization strings are returned
 as a list.}
+
+\item{getGroupShortcuts}{TRUE or FALSE (default). If TRUE then return list of scenario group shortcuts.}
 }
 \value{
 A tibble with the driver and scenario information.

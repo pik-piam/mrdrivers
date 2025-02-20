@@ -10,6 +10,7 @@ test_that("toolGetScenarioDefinition works", {
   expect_length(toolGetScenarioDefinition("GDP", "SSPs", aslist = TRUE), 5)
   expect_named(toolGetScenarioDefinition("GDP", "SSPs", aslist = TRUE),
                c("driver", "scenario", "pastData", "futureData", "harmonization"))
+  expect_type(toolGetScenarioDefinition(getGroupShortcuts = TRUE), "list")
 
   expect_type(toolGetScenarioDefinition(c("GDP", "Population"), c("SDPs", "SSPs"), aslist = TRUE), "list")
   expect_length(toolGetScenarioDefinition(c("GDP", "Population"), c("SSPs", "SDPs"), aslist = TRUE), 5)
@@ -30,4 +31,8 @@ test_that("toolGetScenarioDefinition works", {
 
   expect_false(identical(toolGetScenarioDefinition("GDP", c("SSPs", "SDPs"), aslist = TRUE),
                          toolGetScenarioDefinition("GDP", c("SDPs", "SSPs"), aslist = TRUE)))
+})
+
+test_that("toolReplaceShortcuts works", {
+  expect_length(toolReplaceShortcuts("SSPs"), 5)
 })
