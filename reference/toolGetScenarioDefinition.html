@@ -9,7 +9,7 @@ are constructed, i.e. what past data, future data and harmonization methods are 
 
     <a class="navbar-brand me-2" href="../index.html">mrdrivers</a>
 
-    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">7.0.4</small>
+    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">7.1.0</small>
 
 
     <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbar" aria-controls="navbar" aria-expanded="false" aria-label="Toggle navigation">
@@ -45,7 +45,12 @@ are constructed, i.e. what past data, future data and harmonization methods are 
 
     <div class="section level2">
     <h2 id="ref-usage">Usage<a class="anchor" aria-label="anchor" href="#ref-usage"></a></h2>
-    <div class="sourceCode"><pre class="sourceCode r"><code><span><span class="fu">toolGetScenarioDefinition</span><span class="op">(</span>driver <span class="op">=</span> <span class="cn">NULL</span>, scen <span class="op">=</span> <span class="cn">NULL</span>, aslist <span class="op">=</span> <span class="cn">FALSE</span><span class="op">)</span></span></code></pre></div>
+    <div class="sourceCode"><pre class="sourceCode r"><code><span><span class="fu">toolGetScenarioDefinition</span><span class="op">(</span></span>
+<span>  driver <span class="op">=</span> <span class="cn">NULL</span>,</span>
+<span>  scen <span class="op">=</span> <span class="cn">NULL</span>,</span>
+<span>  aslist <span class="op">=</span> <span class="cn">FALSE</span>,</span>
+<span>  getGroupShortcuts <span class="op">=</span> <span class="cn">FALSE</span></span>
+<span><span class="op">)</span></span></code></pre></div>
     </div>
 
     <div class="section level2">
@@ -70,6 +75,10 @@ information for all scenarios is returned.</p></dd>
 <dt id="arg-aslist">aslist<a class="anchor" aria-label="anchor" href="#arg-aslist"></a></dt>
 <dd><p>TRUE or FALSE (default). If TRUE then the pastData, futureData and harmonization strings are returned
 as a list.</p></dd>
+
+
+<dt id="arg-getgroupshortcuts">getGroupShortcuts<a class="anchor" aria-label="anchor" href="#arg-getgroupshortcuts"></a></dt>
+<dd><p>TRUE or FALSE (default). If TRUE then return list of scenario group shortcuts.</p></dd>
 
 </dl></div>
     <div class="section level2">
