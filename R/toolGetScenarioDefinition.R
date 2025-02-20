@@ -19,6 +19,8 @@
 #' @param aslist TRUE or FALSE (default). If TRUE then the pastData, futureData and harmonization strings are returned
 #' as a list.
 #'
+#' @param getGroupShortcuts TRUE or FALSE (default). If TRUE then return list of scenario group shortcuts.
+#'
 #' @return A tibble with the driver and scenario information.
 #' @export
 #'
@@ -28,7 +30,7 @@
 #' toolGetScenarioDefinition(scen = "SSP2")
 #' toolGetScenarioDefinition(driver = "Population", scen = "SSPs", aslist = TRUE)
 #'
-toolGetScenarioDefinition <- function(driver = NULL, scen = NULL, aslist = FALSE) {
+toolGetScenarioDefinition <- function(driver = NULL, scen = NULL, aslist = FALSE, getGroupShortcuts = FALSE) {
 
   # Start of scenario-design section: Developers can modify this section!
   scenarios <- tibble::tribble(
@@ -89,7 +91,15 @@ toolGetScenarioDefinition <- function(driver = NULL, scen = NULL, aslist = FALSE
     "Urban",      "SSP5",            "WDI",                 "SSP5",                   "pastAndGrowth",
     "Urban",      "SDPs",            "WDI",                 "SDPs",                   "pastAndGrowth",
   )
+
+  shortcuts <- list("SSPs" = c("SSP1", "SSP2", "SSP3", "SSP4", "SSP5"),
+                    "SSP2IndiaDEAs" = c("SSP2IndiaMedium", "SSP2IndiaHigh"))
   # End of scenario-design section
+
+
+  if (getGroupShortcuts) {
+    return(shortcuts)
+  }
 
   s <- scenarios
   if (exists("mrdrivers_scenarios")) {
@@ -119,4 +129,30 @@ toolGetScenarioDefinition <- function(driver = NULL, scen = NULL, aslist = FALSE
   }
 
   s
+}
+
+
+#' Replace group shortcuts with individual scenarios
+#'
+#' @description
+#' Some scenarios can be referred to as a group, e.g. as "SSPs". In some cases however the individual scenarios of that
+#' group are wanted explicitly. This function replaces the group-shortcuts with the names of the scenarios in that
+#' group.
+#'
+#' Current available groups are: `r paste(names(toolGetScenarioDefinition(getGroupShortcuts = TRUE)), collapse = ", ")`
+#'
+#' @inheritParams calcDriver
+#'
+#' @return The modified scenario argument, with the group-names replaced.
+#' @export
+#' @seealso [toolGetScenarioDefinition()] for scenario options and definitions. Set `getGroupShortcuts` to `TRUE` to
+#' return the available shortcuts: `toolGetScenarioDefinition(getGroupShortcuts = TRUE)`.
+#'
+#' @examples
+#' toolReplaceShortcuts("SSPs")
+#'
+toolReplaceShortcuts <- function(scenario) {
+  shortcuts <- toolGetScenarioDefinition(getGroupShortcuts = TRUE)
+  c(scenario[! scenario %in% names(shortcuts)],
+    unlist(shortcuts[names(shortcuts) %in% scenario], use.names = FALSE))
 }
