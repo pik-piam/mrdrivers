@@ -117,8 +117,9 @@ toolGetScenarioDefinition <- function(driver = NULL, scen = NULL, aslist = FALSE
 
   if (!is.null(scen)) {
     availableScen <- dplyr::pull(s, .data$scenario) %>% unique()
-    if (!all(scen %in% availableScen)) {
-      stop(glue::glue("Unknown scenario. Available scenarios are: {paste(availableScen, collapse = ', ')}"))
+    if (0 != length(missingScen <- setdiff(scen, availableScen))) {
+      stop(cli::pluralize("Unknown scenario{?s}: {missingScen}. "),
+           cli::pluralize("Available scenarios are: {availableScen}."))
     }
     s <- dplyr::filter(s, .data$scenario %in% scen)
     s <- dplyr::arrange(s, order(match(s$scenario, scen)))
