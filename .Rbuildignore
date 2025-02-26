@@ -18,3 +18,4 @@
 ^doc$
 ^Meta$
 ^.*CITATION.cff$
+^.git$
