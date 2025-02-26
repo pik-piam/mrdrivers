@@ -117,7 +117,7 @@ toolGetScenarioDefinition <- function(driver = NULL, scen = NULL, aslist = FALSE
 
   if (!is.null(scen)) {
     availableScen <- dplyr::pull(s, .data$scenario) %>% unique()
-    if (0 != length(missingScen <- setdiff(scen, availableScen))) {
+    if (0 != length(missingScen <- setdiff(scen, availableScen))) { # nolint: object_usage_linter
       stop(cli::pluralize("Unknown scenario{?s}: {missingScen}. "),
            cli::pluralize("Available scenarios are: {availableScen}."))
     }
