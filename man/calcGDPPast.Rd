@@ -51,7 +51,7 @@ calcUrbanPast(pastData = toolGetScenarioDefinition("Urban", "SSPs")$pastData)
 \description{
 Get the past and future scenario building blocks.
 If scenario data is required, even if just for a single year, always use the calc call to the final scenario, e.g.
-\code{\link[=calcGDP]{calcGDP()}} or \code{\link[=calcPopulation]{calcPopulation()}}, as what is returned by the calc...Past and calc...Future functions may not end up
+\code{\link[=calcGDP]{calcGDP()}} or \code{\link[=calcPopulation]{calcPopulation()}}, as what is returned by the calcXPast and calcXFuture functions may not end up
 as is in the scenario, depending on the harmonization function.
 These functions are only still exported for compatibility with existing code in the PIAM input data pipeline.
 

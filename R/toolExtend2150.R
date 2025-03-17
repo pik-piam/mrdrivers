@@ -20,7 +20,7 @@ toolExtend2150 <- function(data, extension2150) {
                                seq(2005, 2150, 5),
                                extrapolation_type = "constant",
                                integrate_interpolated_years = TRUE)
-    # Time_interpolate destroys the setNames for some reason...
+    # Time_interpolate destroys the setNames for some reason.
     getSets(data$x) <- helper
     data$description <- glue("{data$description} Extended from 2100 to 2150 using the constant 2100 value.")
   }

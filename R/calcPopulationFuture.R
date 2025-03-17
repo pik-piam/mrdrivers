@@ -1,11 +1,9 @@
 #' @rdname calcGDPPast
 calcPopulationFuture <- function(futureData) {
-  # Check user input
   toolCheckUserInput("PopulationFuture", as.list(environment()))
-  # Call calcInternalPopulationFuture function the appropriate number of times (map) and combine (reduce)
-  # !! Keep formula syntax for madrat caching to work
-  purrr::pmap(list("futureData" = unlist(strsplit(futureData, "-"))),
-              ~calcOutput("InternalPopulationFuture", aggregate = FALSE, supplementary = TRUE, ...)) %>%
+  # Map over components of futureData.
+  purrr::map(unlist(strsplit(futureData, "-")),
+             ~calcOutput("InternalPopulationFuture", futureData = .x, aggregate = FALSE, supplementary = TRUE)) %>%
     toolListFillWith()
 }
 
@@ -37,12 +35,10 @@ toolPopulationFutureSDPs <- function(sdps = c("SDP", "SDP_EI", "SDP_MC", "SDP_RC
 
 #' @rdname calcGDPPast
 calcLabourFuture <- function(futureData) {
-  # Check user input
   toolCheckUserInput("LabourFuture", as.list(environment()))
-  # Call calcInternalPopulationFuture function the appropriate number of times (map) and combine (reduce)
-  # !! Keep formula syntax for madrat caching to work
-  purrr::pmap(list("futureData" = unlist(strsplit(futureData, "-"))),
-              ~calcOutput("InternalLabourFuture", aggregate = FALSE, supplementary = TRUE, ...)) %>%
+  # Map over components of futureData.
+  purrr::map(unlist(strsplit(futureData, "-")),
+             ~calcOutput("InternalLabourFuture", futureData = .x, aggregate = FALSE, supplementary = TRUE)) %>%
     toolListFillWith()
 }
 

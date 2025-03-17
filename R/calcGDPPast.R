@@ -3,7 +3,7 @@
 #' @description
 #' Get the past and future scenario building blocks.
 #' If scenario data is required, even if just for a single year, always use the calc call to the final scenario, e.g.
-#' [calcGDP()] or [calcPopulation()], as what is returned by the calc...Past and calc...Future functions may not end up
+#' [calcGDP()] or [calcPopulation()], as what is returned by the calcXPast and calcXFuture functions may not end up
 #' as is in the scenario, depending on the harmonization function.
 #' These functions are only still exported for compatibility with existing code in the PIAM input data pipeline.
 #'
@@ -17,13 +17,11 @@
 #' @keywords internal
 #' @order 1
 calcGDPPast <- function(pastData = toolGetScenarioDefinition("GDPpc", "SSPs")$pastData, extension1960 = "MI-James") {
-  # Check user input
   toolCheckUserInput("GDPPast", as.list(environment()))
 
-  # Call calcInternalGDPPast function the appropriate number of times (map) and combine (reduce)
-  # !! Keep formula syntax for madrat caching to work
-  data <- purrr::pmap(list("pastData" = unlist(strsplit(pastData, "-"))),
-                      ~calcOutput("InternalGDPPast", aggregate = FALSE, supplementary = TRUE, ...)) %>%
+  # Map over components of pastData.
+  data <- purrr::map(unlist(strsplit(pastData, "-")),
+                     ~calcOutput("InternalGDPPast", pastData = .x, aggregate = FALSE, supplementary = TRUE)) %>%
     toolListFillWith()
 
   # If required, project GDP series back to 1960 using growth rates from the extension1960 data set.
@@ -87,7 +85,7 @@ calcGDPpcPast <- function(scenario = "SSPs") {
   data[is.nan(data) | data == Inf] <- 0
   getNames(data) <- paste(gdpPastData, "GDP data", "over", popPastData, "population data")
 
-  # The weight does not go into the weight of the final scenario. So exact matching with GDPpc not necessary...
+  # The weight does not go into the weight of the final scenario. So exact matching with GDPpc not necessary.
   weight <- pop
   getNames(weight) <- getNames(data)
   # Make sure weight and data have the same yearly resolution.

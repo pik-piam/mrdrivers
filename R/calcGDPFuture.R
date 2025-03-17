@@ -2,12 +2,10 @@
 #' @param futureData A string specifying the sources for future projections.
 #' @order 3
 calcGDPFuture <- function(futureData) {
-  # Check user input
   toolCheckUserInput("GDPFuture", as.list(environment()))
-  # Call calcInternalGDPFuture function the appropriate number of times (map) and combine (reduce)
-  # !! Keep formula syntax for madrat caching to work
-  purrr::pmap(list("futureData" = unlist(strsplit(futureData, "-"))),
-              ~calcOutput("InternalGDPFuture", aggregate = FALSE, supplementary = TRUE, ...)) %>%
+  # Map over components of futureData.
+  purrr::map(unlist(strsplit(futureData, "-")),
+             ~calcOutput("InternalGDPFuture", futureData = .x, aggregate = FALSE, supplementary = TRUE)) %>%
     toolListFillWith()
 }
 
@@ -61,7 +59,7 @@ calcGDPpcFuture <- function(scenario) {
     toolGDPpcFutureFromGDPAndPop(gdpFutureData, popFutureData)
   )
 
-  # The weight does go into the weight of the final scenario. So exact matching with GDPpc not necessary...
+  # The weight does not go into the weight of the final scenario. So exact matching with GDPpc not necessary.
   weight <- calcOutput("PopulationFuture", futureData = popFutureData, aggregate = FALSE)
   getNames(weight) <- getNames(data)
 
@@ -80,7 +78,7 @@ toolGDPpcFutureFromGDPAndPop <- function(gdpFutureData, popFutureData) {
 
 
 
-# Legacy...
+# Legacy.
 toolGDPFutureOtherUnit <- function(data, baseYear, baseYearDef = 2017, convergeBy = 2100) {
   if (baseYear == baseYearDef) {
     return(data)
