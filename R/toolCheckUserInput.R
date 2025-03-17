@@ -41,7 +41,7 @@ toolCheckUserInput <- function(driver, args) { # nolint: cyclocomp_linter.
     if (args$naming != "scenario") {
       stop(glue("Bad argument to calc{driver}. 'naming' has to be 'scenario', not '{args$naming}'."))
     }
-    message("The 'naming' argument is deprecated. Please drop 'naming = \"scenario\"' from the function call.")
+    warning("The 'naming' argument is deprecated. Please drop 'naming = \"scenario\"' from the function call.")
   }
 
   # Check 'unit' argument. Only constant dollars are allowed.
