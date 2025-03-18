@@ -1,11 +1,9 @@
 #' @rdname calcGDPPast
 calcPopulationFuture <- function(futureData) {
-  # Check user input
   toolCheckUserInput("PopulationFuture", as.list(environment()))
-  # Call calcInternalPopulationFuture function the appropriate number of times (map) and combine (reduce)
-  # !! Keep formula syntax for madrat caching to work
-  purrr::pmap(list("futureData" = unlist(strsplit(futureData, "-"))),
-              ~calcOutput("InternalPopulationFuture", aggregate = FALSE, supplementary = TRUE, ...)) %>%
+  # Map over components of futureData.
+  purrr::map(unlist(strsplit(futureData, "-")),
+             ~calcOutput("InternalPopulationFuture", futureData = .x, aggregate = FALSE, supplementary = TRUE)) %>%
     toolListFillWith()
 }
 
@@ -37,12 +35,10 @@ toolPopulationFutureSDPs <- function(sdps = c("SDP", "SDP_EI", "SDP_MC", "SDP_RC
 
 #' @rdname calcGDPPast
 calcLabourFuture <- function(futureData) {
-  # Check user input
   toolCheckUserInput("LabourFuture", as.list(environment()))
-  # Call calcInternalPopulationFuture function the appropriate number of times (map) and combine (reduce)
-  # !! Keep formula syntax for madrat caching to work
-  purrr::pmap(list("futureData" = unlist(strsplit(futureData, "-"))),
-              ~calcOutput("InternalLabourFuture", aggregate = FALSE, supplementary = TRUE, ...)) %>%
+  # Map over components of futureData.
+  purrr::map(unlist(strsplit(futureData, "-")),
+             ~calcOutput("InternalLabourFuture", futureData = .x, aggregate = FALSE, supplementary = TRUE)) %>%
     toolListFillWith()
 }
 
@@ -104,7 +100,7 @@ toolUrbanFutureSSPs <- function(ssps = c("SSP1", "SSP2", "SSP3", "SSP4", "SSP5")
 # The alternative scenario combinations SDP_LS and SDP_GS are not coded explicitly here.
 # They will re-use urban population share settings: SDP_LS = SDP_MC (Green cities), SDP_GS = SDP_EI (Tech cities).
 toolUrbanFutureSDPs <- function() {
-  urbSSPs <- toolUrbanFutureSSPs()
+  urbSSPs <- toolUrbanFutureSSPs(c("SSP1", "SSP2", "SSP3"))
   # SSP1 for the first 3 SDP scenarios
   urbSDPs <- purrr::map(c("SDP", "SDP_EI", "SDP_MC"), ~setNames(urbSSPs[, , "SSP1"], .x)) %>% mbind()
   # SSP2 and SSP3 for SDP_RC

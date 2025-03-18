@@ -27,6 +27,10 @@
 #' @param scenario A string (or vector of strings) designating the scenario(s) to be returned. Use
 #' [toolGetScenarioDefinition()] to learn what scenarios are available.
 #'
+#' @param popAsWeight If TRUE, then population data of the same scenario is used as weight.
+#'
+#' @param naming DEPRECATED - will be removed in next release.
+#'
 #' @param extension2150 A string specifying if/how the scenarios should be extended until 2150. Can be either:
 #' \itemize{
 #'   \item "bezier" (default): A bezier curve extension that leads to a smooth flattening of the scenario: the
@@ -36,10 +40,6 @@
 #'   \item "none": No extension.
 #' }
 #'
-#' @param popAsWeight If TRUE, then population data of the same scenario is used as weight.
-#'
-#' @param naming DEPRECATED - will be removed in next release.
-#'
 #' @inherit madrat::calcOutput return
 #' @inherit calcHarmonizedData seealso
 #' @keywords internal
@@ -48,12 +48,15 @@ calcDriver <- function(driver, scenario, popAsWeight = FALSE, naming = "scenario
   if ("SSPs" %in% scenario) scenario <- unique(scenario[!grepl("SSP[1-5]$", scenario)])
   if ("SSP2IndiaDEAs" %in% scenario) scenario <- unique(scenario[!grepl("SSP2India(Medium|High)", scenario)])
 
-  # Create a list of all the arguments
-  l <- as.list(environment()) %>% purrr::discard_at("naming")
-
-  # Call ScenarioConstructor function the appropriate number of times (map) and combine (reduce)
-  # !! Keep formula syntax for madrat caching to work
-  purrr::pmap(l, ~calcOutput("ScenarioConstructor", aggregate = FALSE, supplementary = TRUE, ...)) %>%
+  # Map over scenarios.
+  purrr::map(scenario,
+             ~calcOutput("ScenarioConstructor",
+                         driver = driver,
+                         scenario = .x,
+                         popAsWeight = popAsWeight,
+                         extension2150 = extension2150,
+                         aggregate = FALSE,
+                         supplementary = TRUE)) %>%
     purrr::reduce(~list(x = mbind(.x$x, .y$x),
                         weight = mbind(.x$weight, .y$weight),
                         unit = .x$unit,

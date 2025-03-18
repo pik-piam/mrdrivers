@@ -89,7 +89,7 @@ toolGetScenarioDefinition <- function(driver = NULL, scen = NULL, aslist = FALSE
     "Urban",      "SSP3",            "WDI",                 "SSP3",                   "pastAndGrowth",
     "Urban",      "SSP4",            "WDI",                 "SSP4",                   "pastAndGrowth",
     "Urban",      "SSP5",            "WDI",                 "SSP5",                   "pastAndGrowth",
-    "Urban",      "SDPs",            "WDI",                 "SDPs",                   "pastAndGrowth",
+    "Urban",      "SDPs",            "WDI",                 "SDPs",                   "pastAndGrowth"
   )
 
   shortcuts <- list("SSPs" = c("SSP1", "SSP2", "SSP3", "SSP4", "SSP5"),
@@ -152,7 +152,13 @@ toolGetScenarioDefinition <- function(driver = NULL, scen = NULL, aslist = FALSE
 #' toolReplaceShortcuts("SSPs")
 #'
 toolReplaceShortcuts <- function(scenario) {
+  if (!is.character(scenario)) {
+    stop("Scenario argument must be a string or vector of strings.")
+  }
   shortcuts <- toolGetScenarioDefinition(getGroupShortcuts = TRUE)
-  c(scenario[! scenario %in% names(shortcuts)],
-    unlist(shortcuts[names(shortcuts) %in% scenario], use.names = FALSE))
+  x <- as.list(scenario)
+  for (s in seq_along(x)) {
+    if (x[[s]] %in% names(shortcuts)) x[[s]] <-  unlist(shortcuts[names(shortcuts) %in% scenario], use.names = FALSE)
+  }
+  unlist(x)
 }

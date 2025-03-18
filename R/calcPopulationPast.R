@@ -1,11 +1,10 @@
 #' @rdname calcGDPPast
 calcPopulationPast <- function(pastData = toolGetScenarioDefinition("Population", "SSPs")$pastData) {
-  # Check user input
   toolCheckUserInput("PopulationPast", as.list(environment()))
-  # Call calcInternalPopulationPast function the appropriate number of times (map) and combine (reduce)
-  # !! Keep formula syntax for madrat caching to work
-  data <- purrr::pmap(list("pastData" = unlist(strsplit(pastData, "-"))),
-                      ~calcOutput("InternalPopulationPast", aggregate = FALSE, supplementary = TRUE, ...)) %>%
+
+  # Map over components of pastData.
+  data <- purrr::map(unlist(strsplit(pastData, "-")),
+                     ~calcOutput("InternalPopulationPast", pastData = .x, aggregate = FALSE, supplementary = TRUE)) %>%
     toolListFillWith()
 
   # Fill in trailing zeros with closest value
@@ -31,12 +30,10 @@ calcInternalPopulationPast <- function(pastData) {
 
 #' @rdname calcGDPPast
 calcLabourPast <- function(pastData = toolGetScenarioDefinition("Labour", "SSPs")$pastData) {
-  # Check user input
   toolCheckUserInput("LabourPast", as.list(environment()))
-  # Call calcInternalPopulationFuture function the appropriate number of times (map) and combine (reduce)
-  # !! Keep formula syntax for madrat caching to work
-  purrr::pmap(list("pastData" = unlist(strsplit(pastData, "-"))),
-              ~calcOutput("InternalLabourPast", aggregate = FALSE, supplementary = TRUE, ...)) %>%
+  # Map over components of pastData.
+  purrr::map(unlist(strsplit(pastData, "-")),
+             ~calcOutput("InternalLabourPast", pastData = .x, aggregate = FALSE, supplementary = TRUE)) %>%
     toolListFillWith()
 }
 

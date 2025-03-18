@@ -19,7 +19,8 @@ toolCheckUserInput <- function(driver, args) { # nolint: cyclocomp_linter.
   }
 
   # Check 'extension2150' argument
-  if ("extension2150" %in% names(args) && !args$extension2150 %in% c("none", "bezier", "constant")) {
+  if ("extension2150" %in% names(args) &&
+        (!args$extension2150 %in% c("none", "bezier", "constant") || length(args$extension2150) != 1)) {
     stop(glue("Bad argument to calc{driver}. 'extension2150' has to be either 'none', 'bezier' or 'constant', \\
                not '{args$extension2150}'."))
   }
@@ -30,12 +31,17 @@ toolCheckUserInput <- function(driver, args) { # nolint: cyclocomp_linter.
               combination of both, e.g. 'MI-James', not '{args$extension2150}'."))
   }
 
+  # Check 'popAsWeight' argument
+  if ("popAsWeight" %in% names(args) && (!is.logical(args$popAsWeight) || length(args$popAsWeight) != 1)) {
+    stop(glue("Bad argument to calc{driver}. 'popAsWeight' has to be either TRUE or FALSE"))
+  }
+
   # Check 'naming' argument
   if ("naming" %in% names(args)) {
     if (args$naming != "scenario") {
       stop(glue("Bad argument to calc{driver}. 'naming' has to be 'scenario', not '{args$naming}'."))
     }
-    message("The 'naming' argument is deprecated. Please drop 'naming = \"scenario\"' from the function call.")
+    warning("The 'naming' argument is deprecated. Please drop 'naming = \"scenario\"' from the function call.")
   }
 
   # Check 'unit' argument. Only constant dollars are allowed.

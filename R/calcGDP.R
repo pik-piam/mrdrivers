@@ -119,7 +119,7 @@ calcGDPpc <- function(scenario, unit = toolGetUnitDollar(inPPP = TRUE), average2
     # before and after.)
     # The dampening is supposed to take place on GDP. So for GDP per capita in 2020 to be consistent with the dampened
     # GDP, it has to calculated from GDP and population. (In other words we cannot just use the same formula as for
-    # GDP, since it would lead to inconsistency at the end.) This is a bit hacky...
+    # GDP, since it would lead to inconsistency at the end.) This is hacky.
     gdp2020 <- calcOutput("GDP",
                           scenario = scenario,
                           extension2150 = "none",
