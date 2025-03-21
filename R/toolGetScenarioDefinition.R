@@ -158,7 +158,7 @@ toolReplaceShortcuts <- function(scenario) {
   shortcuts <- toolGetScenarioDefinition(getGroupShortcuts = TRUE)
   x <- as.list(scenario)
   for (s in seq_along(x)) {
-    if (x[[s]] %in% names(shortcuts)) x[[s]] <-  unlist(shortcuts[names(shortcuts) %in% scenario], use.names = FALSE)
+    if (x[[s]] %in% names(shortcuts)) x[[s]] <-  unlist(shortcuts[x[[s]]], use.names = FALSE)
   }
   unlist(x)
 }
