@@ -35,4 +35,6 @@ test_that("toolGetScenarioDefinition works", {
 
 test_that("toolReplaceShortcuts works", {
   expect_length(toolReplaceShortcuts("SSPs"), 5)
+  expect_length(toolReplaceShortcuts(c("SSPs", "SSP2")), 6)
+  expect_length(toolReplaceShortcuts(c("SSPs", "SSP2IndiaDEAs")), 7)
 })
