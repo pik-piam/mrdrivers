@@ -46,10 +46,11 @@ readWDI <- function(subtype) {
     stop(glue("Bad subtype. Possible subtypes are: \n{paste0(possibleSubtypes, collapse = '\n')}."))
   }
 
-  x[, c("iso2c", "year", subtype)] %>%
+  y <- x[, c("iso2c", "year", subtype)] %>%
     # Replace "." with "_" otherwise readSource messes up the data dim
-    dplyr::rename_with(~ gsub(".", "_", .x, fixed = TRUE)) %>%
-    as.magpie(spatial = "iso2c", temporal = "year", tidy = TRUE, replacement = ".")
+    dplyr::rename_with(~ gsub(".", "_", .x, fixed = TRUE))
+
+  as.magpie(y, spatial = "iso2c", temporal = "year", tidy = TRUE, replacement = ".")
 }
 
 
@@ -124,7 +125,45 @@ downloadWDI <- function() {
     "AG.SRF.TOTL.K2"     # For mredgebuildings: surface area [square kms]
   )
   endYear <- as.numeric(strsplit(as.character(Sys.Date()), "-")[[1]][1]) - 1
-  wdi <- WDI::WDI(indicator = indicator, start = 1960, end = endYear)
+  wdi <- WDI::WDI(indicator = indicator, start = 1960, end = endYear, extra=FALSE)
+
+  # remove rows where country is in the regions list
+  # lead to (relevant yet ignored) duplication warnings otherwise
+  regions <- c("Africa Eastern and Southern", "Africa Western and Central", "Arab World", "Caribbean small states",
+               "Central Europe and the Baltics", "Early-demographic dividend", "East Asia & Pacific",
+               "East Asia & Pacific (excluding high income)", "East Asia & Pacific (IDA & IBRD countries)", "Euro area",
+               "Europe & Central Asia", "Europe & Central Asia (excluding high income)",
+               "Europe & Central Asia (IDA & IBRD countries)", "European Union",
+               "Fragile and conflict affected situations", "Global Partnership for Education",
+               "Heavily indebted poor countries (HIPC)", "High income", "IBRD only",
+               "IDA & IBRD total", "IDA blend", "IDA only", "IDA total", "Late-demographic dividend",
+               "Latin America & Caribbean", "Latin America & Caribbean (excluding high income)",
+               "Latin America & the Caribbean (IDA & IBRD countries)", "Least developed countries: UN classification",
+               "Lending category not classified", "Low & middle income",
+               "Low income", "Lower middle income", "Micronesia, Fed. Sts.",
+               "Middle East & North Africa", "Middle East & North Africa (excluding high income)",
+               "Middle East & North Africa (IDA & IBRD countries)", "Middle income", "North America",
+               "Not classified", "OECD members", "Other small states", "Pacific island small states",
+               "Post-demographic dividend", "Pre-demographic dividend", "Small states", "South Asia",
+               "South Asia (IDA & IBRD)", "Sub-Saharan Africa", "Sub-Saharan Africa (excluding high income)",
+               "Sub-Saharan Africa (IDA & IBRD countries)",
+               "Upper middle income", "World")
+
+  wdi <- dplyr::filter(wdi, !(country %in% regions))
+
+  # add ISO3 codes for countries that don't have them
+  iso3Mapping <- c("Anguilla" = "AIA",
+                   "Cook Islands" = "COK",
+                   "Tokelau" = "TKL",
+                   "Niue" = "NIU",
+                   "Netherlands Antilles" = "ANT",
+                   "Montserrat" = "MSR",
+                   "Mayotte" = "MYT"
+  )
+  wdi <- dplyr::mutate(wdi, iso3c = ifelse(country %in% names(iso3Mapping),
+                                    iso3_lookup[match(country, names(iso3Mapping))],
+                                    iso3c))
+
   readr::write_rds(wdi, "WDI.Rds")
 
   # Compose meta data
@@ -138,3 +177,5 @@ downloadWDI <- function() {
        license       = "-",
        comment       = "see also https://databank.worldbank.org/source/world-development-indicators")
 }
+
+
