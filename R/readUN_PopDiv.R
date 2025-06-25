@@ -12,8 +12,17 @@ readUN_PopDiv <- function(subtype, subset = "estimates") { # nolint: object_name
   if (!subtype %in% c("pop", "lab")) {
     stop("Bad input for readUN_PopDiv. Invalid 'subtype' argument.")
   }
-  if (!subset %in% c("estimates", "medium")) {
+  if (!subset %in% c("estimates", "medium", "1900-2150")) {
     stop("Bad input for readUN_PopDiv. Invalid 'subset' argument.")
+  }
+  
+  if (subtype=="pop" && subset == "1900-2150") {
+    file <- "UN_World_Population_1900-2150.csv"
+    x <- read.csv(file)
+    x <- as.magpie(x)
+    x <- x * 1e6 # Convert from millions to individuals
+    getItems(x,dim=3)<-'value'
+    return(x)
   }
 
   file <- "WPP2022_POP_F01_1_POPULATION_SINGLE_AGE_BOTH_SEXES.xlsx"
@@ -37,7 +46,7 @@ readUN_PopDiv <- function(subtype, subset = "estimates") { # nolint: object_name
 #' @rdname readUN_PopDiv
 #' @order 3
 #' @param x MAgPIE object returned from readUN_PopDiv
-convertUN_PopDiv <- function(x) { # nolint: object_name_linter.
+convertUN_PopDiv <- function(x, subtype="pop", subset="estimates") { # nolint: object_name_linter.
   # Convert from thousands to millions
   x <- x * 1e-3
   toolGeneralConvert(x, no_remove_warning = "XKX")
