@@ -15,12 +15,6 @@ convertPEAP(x)
 \arguments{
 \item{x}{MAgPIE object returned by readPEAP}
 }
-\value{
-The read-in data, usually a magpie object. If supplementary is TRUE a list including
-the data and metadata is returned instead. The temporal and data dimensionality
-should match the source data. The spatial dimension should either match the source data or,
-if the convert argument is set to TRUE, should be on ISO code country level.
-}
 \description{
 Read-in an xlsx file from the World Bank's Population Estimates And Projections (PEAP)
 The PEAP data cannot seemed to be accessed by the WDI::WDI package nor the World Bank's API directly.

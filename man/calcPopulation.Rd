@@ -32,11 +32,6 @@ their last year.
 \item{asShare}{If TRUE (default) urban population shares are returned. If FALSE, then urban population in millions is
 returned.}
 }
-\value{
-magpie object with the requested output data either on country or on
-regional level depending on the choice of argument "aggregate" or a list of information
-if supplementary is set to TRUE.
-}
 \description{
 Like all scenarios in mrdrivers, the Population, Labour and Urban population share scenarios are the result of a
 harmonization exercise between past data and future projections.

@@ -17,12 +17,6 @@ convertJames(x, subtype)
 
 \item{x}{MAgPIE object returned by readJames}
 }
-\value{
-The read-in data, usually a magpie object. If supplementary is TRUE a list including
-the data and metadata is returned instead. The temporal and data dimensionality
-should match the source data. The spatial dimension should either match the source data or,
-if the convert argument is set to TRUE, should be on ISO code country level.
-}
 \description{
 Read-in GDP per-capita data from the publication James, Spencer L., Paul
 Gubbins, Christopher JL Murray, and Emmanuela Gakidou. 2012. "Developing a

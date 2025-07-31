@@ -38,11 +38,6 @@ their last year.
 \item "none": No extension.
 }}
 }
-\value{
-magpie object with the requested output data either on country or on
-regional level depending on the choice of argument "aggregate" or a list of information
-if supplementary is set to TRUE.
-}
 \description{
 Internal function called by the main mrdrivers calc functions, that maps over any vectorised arguments. Should only
 be of interest to package developers.

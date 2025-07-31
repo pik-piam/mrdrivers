@@ -17,12 +17,6 @@ convertIMF(x, subtype = "all")
 
 \item{subtype}{Use to filter the IMF data}
 }
-\value{
-The read-in data, usually a magpie object. If supplementary is TRUE a list including
-the data and metadata is returned instead. The temporal and data dimensionality
-should match the source data. The spatial dimension should either match the source data or,
-if the convert argument is set to TRUE, should be on ISO code country level.
-}
 \description{
 Read-in data from the IMF's World Economic Outlook.
 Currently reading GDP per capita and current account balance data.

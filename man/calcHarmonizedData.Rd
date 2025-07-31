@@ -19,11 +19,6 @@ calcHarmonizedData(driver, scenario)
 \item{scenario}{A string (or vector of strings) designating the scenario(s) to be returned. Use
 \code{\link[=toolGetScenarioDefinition]{toolGetScenarioDefinition()}} to learn what scenarios are available.}
 }
-\value{
-magpie object with the requested output data either on country or on
-regional level depending on the choice of argument "aggregate" or a list of information
-if supplementary is set to TRUE.
-}
 \description{
 Get harmonized data
 }

@@ -3,9 +3,11 @@
 #' Read-in UN population data.
 #'
 #' @param subtype Either "pop" or "lab".
-#' @param subset Either "estimates" or "medium".
+#' @param subset Either "estimates" or "medium", 
+#' otherwise "1900-2150" for historic total data.
 #' @inherit madrat::readSource return
 #' @seealso [madrat::readSource()] and [madrat::downloadSource()]
+#' @author Johannes Koch (& Merlin Jo Hosak for 1900-2150 subset)
 #' @order 2
 readUN_PopDiv <- function(subtype, subset = "estimates") { # nolint: object_name_linter.
   # Check function input

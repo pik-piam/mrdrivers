@@ -48,11 +48,6 @@ their last year.
 }}
   }}
 }
-\value{
-magpie object with the requested output data either on country or on
-regional level depending on the choice of argument "aggregate" or a list of information
-if supplementary is set to TRUE.
-}
 \description{
 Like all scenarios in mrdrivers, the GDP and GDP per capita scenarios are the result of a harmonization exercise
 between past data and future projections. Together with the corresponding population scenarios

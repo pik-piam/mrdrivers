@@ -91,7 +91,7 @@ convertWDI <- function(x, subtype) {
                                replace_NAs = c("linear", "no_conversion"))
   }
 
-  x
+  return(x)
 }
 
 
