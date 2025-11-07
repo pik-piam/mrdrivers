@@ -3,8 +3,7 @@
 #' Read-in UN population data.
 #'
 #' @param subtype Either "pop" or "lab".
-#' @param subset Either "estimates" or "medium", 
-#' otherwise "1900-2150" for historic total data.
+#' @param subset Either "estimates", "medium" or "1900-2150" for full time range.
 #' @inherit madrat::readSource return
 #' @seealso [madrat::readSource()] and [madrat::downloadSource()]
 #' @author Johannes Koch (& Merlin Jo Hosak for 1900-2150 subset)
@@ -22,8 +21,8 @@ readUN_PopDiv <- function(subtype, subset = "estimates") { # nolint: object_name
     file <- "UN_World_Population_1900-2150.csv"
     x <- read.csv(file)
     x <- as.magpie(x)
-    x <- x * 1e6 # Convert from millions to individuals
-    getItems(x,dim=3)<-'value'
+    x <- x * 1e9 # Convert from billions to individuals
+    getItems(x, dim=3) <- 'value'
     return(x)
   }
 
@@ -48,7 +47,7 @@ readUN_PopDiv <- function(subtype, subset = "estimates") { # nolint: object_name
 #' @rdname readUN_PopDiv
 #' @order 3
 #' @param x MAgPIE object returned from readUN_PopDiv
-convertUN_PopDiv <- function(x, subtype="pop", subset="estimates") { # nolint: object_name_linter.
+convertUN_PopDiv <- function(x) { # nolint: object_name_linter.
   # Convert from thousands to millions
   x <- x * 1e-3
   toolGeneralConvert(x, no_remove_warning = "XKX")
