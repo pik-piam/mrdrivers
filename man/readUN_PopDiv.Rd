@@ -10,15 +10,20 @@ downloadUN_PopDiv()
 
 readUN_PopDiv(subtype, subset = "estimates")
 
-convertUN_PopDiv(x, subtype = "pop", subset = "estimates")
+convertUN_PopDiv(x)
 }
 \arguments{
 \item{subtype}{Either "pop" or "lab".}
 
-\item{subset}{Either "estimates" or "medium",
-otherwise "1900-2150" for historic total data.}
+\item{subset}{Either "estimates", "medium" or "1900-2150" for full time range.}
 
 \item{x}{MAgPIE object returned from readUN_PopDiv}
+}
+\value{
+The read-in data, usually a magpie object. If supplementary is TRUE a list including
+the data and metadata is returned instead. The temporal and data dimensionality
+should match the source data. The spatial dimension should either match the source data or,
+if the convert argument is set to TRUE, should be on ISO code country level.
 }
 \description{
 Read-in UN population data.

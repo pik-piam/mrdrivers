@@ -48,13 +48,18 @@ their last year.
 }}
   }}
 }
+\value{
+magpie object with the requested output data either on country or on
+regional level depending on the choice of argument "aggregate" or a list of information
+if supplementary is set to TRUE.
+}
 \description{
 Like all scenarios in mrdrivers, the GDP and GDP per capita scenarios are the result of a harmonization exercise
 between past data and future projections. Together with the corresponding population scenarios
 (see \code{\link[=calcPopulation]{calcPopulation()}}) they comprise a consistent set of scenarios.
 
 The \code{scenario} argument is used to designate the scenario(s) to be returned. Currently available GDP scenarios are:
-SSPs, SSP1, SSP2, SSP3, SSP4, SSP5, SDPs, ISIMIP, SSP2IndiaDEAs, SSP2IndiaMedium, SSP2IndiaHigh. See the vignette: \code{vignette("scenarios")} and/or
+SSPs, SSP1, SSP2, SSP3, SSP4, SSP5, SDPs, ISIMIP, SSP2IndiaDEAs, SSP2IndiaMedium, SSP2IndiaHigh, nomi. See the vignette: \code{vignette("scenarios")} and/or
 \code{\link[=toolGetScenarioDefinition]{toolGetScenarioDefinition()}} for more information, scenario options, definitions and references.
 }
 \examples{

@@ -24,6 +24,12 @@ downloadSSP()
 \item{subset}{A vector of strings designating the scenarios. Defaults to c("SSP1", "SSP2", "SSP3", "SSP4", "SSP5").
 "Historical Reference" is also available as a scenario.}
 }
+\value{
+The read-in data, usually a magpie object. If supplementary is TRUE a list including
+the data and metadata is returned instead. The temporal and data dimensionality
+should match the source data. The spatial dimension should either match the source data or,
+if the convert argument is set to TRUE, should be on ISO code country level.
+}
 \description{
 Read-in SSP data and store as magclass object. Filter for subtype and subset in the convert function to use common
 read cache (speeds up the computations).

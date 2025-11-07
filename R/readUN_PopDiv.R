@@ -16,13 +16,13 @@ readUN_PopDiv <- function(subtype, subset = "estimates") { # nolint: object_name
   if (!subset %in% c("estimates", "medium", "1900-2150")) {
     stop("Bad input for readUN_PopDiv. Invalid 'subset' argument.")
   }
-  
-  if (subtype=="pop" && subset == "1900-2150") {
+
+  if (subtype == "pop" && subset == "1900-2150") {
     file <- "UN_World_Population_1900-2150.csv"
-    x <- read.csv(file)
+    x <- utils::read.csv(file)
     x <- as.magpie(x)
     x <- x * 1e9 # Convert from billions to individuals
-    getItems(x, dim=3) <- 'value'
+    getItems(x, dim = 3) <- "value"
     return(x)
   }
 
@@ -34,9 +34,11 @@ readUN_PopDiv <- function(subtype, subset = "estimates") { # nolint: object_name
   readxl::read_xlsx(file, sheet = sheet, skip = 16, col_types = "text", progress = FALSE) %>%
     dplyr::select("Variant", "ISO3 Alpha-code", "year" = "Year", dplyr::matches("^[0-9]")) %>%
     dplyr::filter(!is.na(.data$`ISO3 Alpha-code`)) %>%
-    tidyr::pivot_longer(cols = dplyr::matches("^[0-9]"),
-                        names_to = "age",
-                        values_transform = c("value" = as.numeric)) %>%
+    tidyr::pivot_longer(
+      cols = dplyr::matches("^[0-9]"),
+      names_to = "age",
+      values_transform = c("value" = as.numeric)
+    ) %>%
     dplyr::filter(.data$age %in% ageRange) %>%
     dplyr::summarise(value = sum(.data$value), .by = c("Variant", "ISO3 Alpha-code", "year")) %>%
     as.magpie(spatial = "ISO3 Alpha-code", temporal = "year", tidy = TRUE)
@@ -60,13 +62,15 @@ downloadUN_PopDiv <- function() { # nolint: object_name_linter.
   utils::download.file(url, basename(url), quiet = TRUE)
 
   # Compose meta data
-  list(url           = url,
-       doi           = "-",
-       title         = "World Population Prospects",
-       description   = "World Population Prospects from the United Nations Deparment on Economic and Social Affairs",
-       unit          = "Population in thousands",
-       author        = "United Nations Deparment on Economic and Social Affairs",
-       release_date  = "2022",
-       license       = "-",
-       comment       = "-")
+  list(
+    url = url,
+    doi = "-",
+    title = "World Population Prospects",
+    description = "World Population Prospects from the United Nations Deparment on Economic and Social Affairs",
+    unit = "Population in thousands",
+    author = "United Nations Deparment on Economic and Social Affairs",
+    release_date = "2022",
+    license = "-",
+    comment = "-"
+  )
 }

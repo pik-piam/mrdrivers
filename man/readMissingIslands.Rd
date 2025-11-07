@@ -17,6 +17,12 @@ convertMissingIslands(x, subtype)
 
 \item{x}{MAgPIE object returned by readMissingIslands}
 }
+\value{
+The read-in data, usually a magpie object. If supplementary is TRUE a list including
+the data and metadata is returned instead. The temporal and data dimensionality
+should match the source data. The spatial dimension should either match the source data or,
+if the convert argument is set to TRUE, should be on ISO code country level.
+}
 \description{
 Read-in gdp or population data for minor islands (not included in big inventories) from a custom made
 dataset that gets data from a variety of sources (e.g. CIA World Factbook, Insee, BEA, PRISM, and Woldometers).

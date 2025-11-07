@@ -30,6 +30,11 @@ their last year.
 \item "none": No extension.
 }}
 }
+\value{
+magpie object with the requested output data either on country or on
+regional level depending on the choice of argument "aggregate" or a list of information
+if supplementary is set to TRUE.
+}
 \description{
 Scenario construction
 }
