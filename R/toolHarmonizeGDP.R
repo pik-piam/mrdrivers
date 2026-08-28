@@ -14,7 +14,7 @@ toolMultiplyGDPpcWithPop <- function(scenario) {
 toolHarmonizeGDPpcSSPs <- function(past, future, yEnd) {
   # Get IMF short-term income projections and fill missing with SSP2 (the SSP2 values need to be extrapolated until
   # the last year of the IMF data. Constant extrapolation assumed.)
-  shortTerm <- readSource("IMF", "GDPpc") %>%
+  shortTerm <- readSource("IMF", "gdppc") %>%
     toolFillWith(calcOutput("GDPpcFuture", scenario = "SSP2", aggregate = FALSE)) %>%
     toolInterpolateAndExtrapolate()
 

@@ -22,6 +22,7 @@ Useful links:
 
 Authors:
 \itemize{
+  \item Johannes Koch \email{jokoch@pik-potsdam.de}
   \item Bjoern Soergel
   \item Deborra Leip
   \item Falk Benke

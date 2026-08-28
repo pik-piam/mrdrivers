@@ -14,6 +14,7 @@ toolListFillWith <- function(x) {
   closer <- c(rep("", length(sep) - 1), ")")
   helper <- purrr::map2(sep, closer, c)
 
+  # Here the ..3 argument refers to the helper vector.
   purrr::reduce2(x, helper,
                  ~ list(x = toolFillWith(.x$x, .y$x, .x$description, .y$description, verbose = TRUE),
                         weight = if (!is.null(.x$weight)) toolFillWith(.x$weight, .y$weight),
@@ -42,6 +43,7 @@ toolFillWith <- function(data, fill, dataName = "data", fillName = "fill", verbo
   replace <- intersect(missing, withData)
 
   if (verbose) {
+    if (grepl("\\(completed with", dataName)) dataName <- paste0(dataName, ")")
     message(glue("Data for the following countries is missing in {dataName}, and is taken instead from {fillName}: \\
                  {paste0(replace, collapse = ', ')}."))
   }

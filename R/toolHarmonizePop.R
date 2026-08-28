@@ -5,7 +5,7 @@ toolHarmonizeWithPEAPandFuture <- function(past, future) {
   shortTerm <- readSource("PEAP") %>%
     toolFillWith(readSource("UN_PopDiv", "pop", "medium")) %>%
     toolInterpolateAndExtrapolate()
-  lastYearIMF <- max(getYears(readSource("IMF", "GDPpc"), as.integer = TRUE))
+  lastYearIMF <- max(getYears(readSource("IMF", "gdppc"), as.integer = TRUE))
   shortTerm <- shortTerm[, getYears(shortTerm, as.integer = TRUE) <= lastYearIMF, ]
 
   # Use PEAP growth rates until last year of IMF WEO data, and future growth rates after that
@@ -18,13 +18,13 @@ toolHarmonizeWithPEAPandFuture <- function(past, future) {
   lastPastYear <- max(getYears(past$x, as.integer = TRUE))
   list(x = x,
        description = glue("use {past$description} until {lastPastYear}, \\
-                          growth rates from the Wolrld Bank's PEAP until {lastYearIMF}, \\
+                          growth rates from the World Bank's PEAP until {lastYearIMF}, \\
                           and growth rates from {future$description} thereafter."))
 }
 
 toolHarmonizeLabourSSPs <- function(past, future) {
   ssp2Pop <- calcOutput("Population", scenario = "SSP2", extension2150 = "none", aggregate = FALSE)
-  lastYearIMF <- max(getYears(readSource("IMF", "GDPpc"), as.integer = TRUE))
+  lastYearIMF <- max(getYears(readSource("IMF", "gdppc"), as.integer = TRUE))
   shortTerm <- ssp2Pop[, getYears(ssp2Pop, as.integer = TRUE) <= lastYearIMF]
 
   x <- past$x %>%
@@ -37,7 +37,7 @@ toolHarmonizeLabourSSPs <- function(past, future) {
 
   list(x = x,
        description = glue("use {past$description} until {lastPastYear}, \\
-                          growth rates from the Wolrld Bank's PEAP until {lastYearIMF}, \\
+                          growth rates from the World Bank's PEAP until {lastYearIMF}, \\
                           and growth rates from {future$description} thereafter."))
 }
 

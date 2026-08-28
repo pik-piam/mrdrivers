@@ -10,4 +10,4 @@ AddInReadme: inst/README.md
 enforceVersionUpdate: no
 skipCoverage: no
 AutocreateCITATION: yes
-UsePkgDown: no
+UsePkgDown: yes

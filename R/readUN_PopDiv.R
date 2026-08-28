@@ -16,7 +16,7 @@ readUN_PopDiv <- function(subtype, subset = "estimates") { # nolint: object_name
     stop("Bad input for readUN_PopDiv. Invalid 'subset' argument.")
   }
 
-  file <- "WPP2022_POP_F01_1_POPULATION_SINGLE_AGE_BOTH_SEXES.xlsx"
+  file <- "WPP2024_POP_F01_1_POPULATION_SINGLE_AGE_BOTH_SEXES.xlsx"
   sheet <- if (subset == "estimates") "Estimates" else "Medium variant"
 
   ageRange <- if (subtype == "pop") c(0:99, "100+") else 15:64
@@ -40,13 +40,18 @@ readUN_PopDiv <- function(subtype, subset = "estimates") { # nolint: object_name
 convertUN_PopDiv <- function(x) { # nolint: object_name_linter.
   # Convert from thousands to millions
   x <- x * 1e-3
-  toolGeneralConvert(x, no_remove_warning = "XKX")
+
+  # Add Kosovo to Serbia
+  x["XKX", , ] <- dimSums(x[c("SRB", "XKX"), , ], dim = 1, na.rm = TRUE)
+  x <- x[getItems(x, dim = 1) != "XKX", , ]
+
+  toolGeneralConvert(x)
 }
 
 #' @rdname readUN_PopDiv
 #' @order 1
 downloadUN_PopDiv <- function() { # nolint: object_name_linter.
-  url <- "https://population.un.org/wpp/Download/Files/1_Indicators%20(Standard)/EXCEL_FILES/2_Population/WPP2022_POP_F01_1_POPULATION_SINGLE_AGE_BOTH_SEXES.xlsx" # nolint: line_length_linter.
+  url <- "https://population.un.org/wpp/assets/Excel%20Files/1_Indicator%20(Standard)/EXCEL_FILES/2_Population/WPP2024_POP_F01_1_POPULATION_SINGLE_AGE_BOTH_SEXES.xlsx" # nolint: line_length_linter.
   utils::download.file(url, basename(url), quiet = TRUE)
 
   # Compose meta data
@@ -56,7 +61,7 @@ downloadUN_PopDiv <- function() { # nolint: object_name_linter.
        description   = "World Population Prospects from the United Nations Deparment on Economic and Social Affairs",
        unit          = "Population in thousands",
        author        = "United Nations Deparment on Economic and Social Affairs",
-       release_date  = "2022",
+       release_date  = "2024",
        license       = "-",
        comment       = "-")
 }

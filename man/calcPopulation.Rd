@@ -17,7 +17,7 @@ calcUrban(scenario, asShare = TRUE, ...)
 \code{\link[=toolGetScenarioDefinition]{toolGetScenarioDefinition()}} to learn what scenarios are available.}
 
 \item{...}{
-  Arguments passed on to \code{\link[=calcDriver]{calcDriver}}
+  Arguments passed on to \code{\link{calcDriver}}
   \describe{
     \item{\code{extension2150}}{A string specifying if/how the scenarios should be extended until 2150. Can be either:
 \itemize{

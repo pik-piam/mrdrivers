@@ -8,9 +8,8 @@
 #' \item "pop" or "SP.POP.TOTL": Population, total
 #' \item "lab" or "SP.POP.1564.TO": Working age population (15-64 years old)
 #' \item "urb" or "SP.URB.TOTL.IN.ZS": Urban Population (% of total)
-#' \item "gdp" or "NY.GDP.MKTP.PP.KD": GDP, PPP (constant 2017 international Dollar)
-#' \item "NV.AGR.TOTL.KD": Ag GDP, MER, (2010 US$)
-#' \item "PA.NUS.PPPC.RF": Price level ratio of PPP conversion factor (GDP) to market exchange rate
+#' \item "gdp" or "NY.GDP.MKTP.PP.KD": GDP, PPP (constant 2021 international Dollar)
+#' \item "NV.AGR.TOTL.KD": Ag GDP, MER, (2015 US$)
 #' \item "AG.SRF.TOTL.K2": Surface area (in square kms)
 #' }
 #'
@@ -38,7 +37,7 @@ readWDI <- function(subtype) {
     subtype
   )
 
-  x <- readr::read_rds("WDI_02_06_2025.Rds")
+  x <- readr::read_rds("WDI_17_07_2026.Rds")
 
   possibleSubtypes <- colnames(x)[!colnames(x) %in% c("iso3c", "iso2c", "country", "year")]
 
@@ -87,8 +86,8 @@ convertWDI <- function(x, subtype) {
   if (subtype == "NY.GDP.MKTP.PP.KD") {
     x <- GDPuc::toolConvertGDP(x,
                                unit_in = "constant 2021 Int$PPP",
-                               unit_out = "constant 2017 Int$PPP",
-                               replace_NAs = c("linear", "no_conversion"))
+                               unit_out = toolGetUnitDollar(inPPP = TRUE),
+                               replace_NAs = "no_conversion")
   }
 
   x
@@ -105,8 +104,7 @@ downloadWDI <- function() {
     "SP.POP.TOTL",       # Total population
     "SP.POP.1564.TO",    # Working age population (15-64 years old)
     "SP.URB.TOTL.IN.ZS", # Urban Population (% of total)
-    "PA.NUS.PPPC.RF",    # Price Level Ration (PPP/MER)
-    "NY.GDP.MKTP.PP.KD", # GDP [constant 2017 Int$PPP]
+    "NY.GDP.MKTP.PP.KD", # GDP [constant 2021 Int$PPP]
     "NV.AGR.TOTL.KD",    # For mrvalidation: AgFF value added [constant 2015 US$MER]
     "AG.SRF.TOTL.K2"     # For mredgebuildings: surface area [square kms]
   )

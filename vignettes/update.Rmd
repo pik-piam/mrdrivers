@@ -1,0 +1,36 @@
+---
+title: "How to update the scenarios"
+output: rmarkdown::html_vignette
+vignette: >
+  %\VignetteIndexEntry{How to update the scenarios}
+  %\VignetteEncoding{UTF-8}
+  %\VignetteEngine{knitr::rmarkdown}
+editor_options: 
+  chunk_output_type: console
+---
+
+```{r, include = FALSE}
+knitr::opts_chunk$set(
+  collapse = TRUE,
+  comment = "#>"
+)
+```
+
+```{r setup}
+library(mrdrivers)
+```
+
+# SSP scenarios
+
+Every 1-2 years the SSP scenarios are updated with the most recent historic data and short-term projections. These concern the following data sources specifically:
+
+- The World Bank's WDI, (which itself is updated quarterly),
+- The IMF's Economic Outlook, (which itself is updated biannually),
+- The United Nations' World Population Projections, (which itself is updated every 2-3 years),
+- The World Bank's Population Estimates And Projections (PEAP) database, (which itself is updated biannually).
+
+When such an update is due, data from these 4 sources needs to be downloaded and uploaded to the PIK cluster. The corresponding download functions can be used to download the most recent data, or when that isn't possible, provide information on how to do so manually. The readSource functions need to be adjusted to take the new file names (and potential changes in the file formats) into account. The units of constant GDP series need to be checked as well, and if necessary, conversions adjusted. 
+
+
+
+

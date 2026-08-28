@@ -18,3 +18,5 @@
 ^doc$
 ^Meta$
 ^.*CITATION.cff$
+^playground.R$
+^compare_versions$
