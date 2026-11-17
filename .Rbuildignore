@@ -20,3 +20,8 @@
 ^.*CITATION.cff$
 ^playground.R$
 ^compare_versions$
+^CODE_STYLE\.md$
+^\.claude$
+^CLAUDE.md$
+^AGENTS.md$
+^CONTRIBUTING\.md$
