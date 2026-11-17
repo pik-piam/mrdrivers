@@ -9,6 +9,19 @@ editor_options:
   chunk_output_type: console
 ---
 
+```{r, include = FALSE}
+knitr::opts_chunk$set(
+  collapse = TRUE,
+  comment = "#>"
+)
+```
+
+```{r setup, echo=FALSE, message=FALSE}
+library(mrdrivers) # nolint
+library(magrittr) # nolint
+```
+
+
 # Key scenarios
 
 Key scenarios include:
@@ -16,7 +29,7 @@ Key scenarios include:
 -   the SSPs, i.e. SSP1-5
 -   the SDPs, i.e. SDP, SDP_EI, SDP_MC and SDP_RC
 
-All scenarios span from 1960 to 2150, with yearly data until 2030, and data every 5 years thereafter.
+All scenarios span from 1960 to 2150, with yearly data until 2031, and data every 5 years from 2035 onwards.
 
 ## GDP per capita and GDP
 
@@ -87,18 +100,6 @@ The SDP, SDP_EI, and SDP_MC scenarios are all equal to the SSP1 scenario. The SD
 # Available Scenarios
 
 The tool function `toolGetScenarioDefinition()` can be used to see what driver/scenario options are available.
-
-```{r, include = FALSE}
-knitr::opts_chunk$set(
-  collapse = TRUE,
-  comment = "#>"
-)
-```
-
-```{r setup, echo=FALSE, message=FALSE}
-library(mrdrivers) # nolint
-library(magrittr) # nolint
-```
 
 ```{r}
 toolGetScenarioDefinition() %>% print(n = 200)

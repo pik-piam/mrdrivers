@@ -25,7 +25,7 @@ if the convert argument is set to TRUE, should be on ISO code country level.
 }
 \description{
 Read-in data from the IMF's World Economic Outlook.
-Currently reading GDP per capita and current account balance data.
+Currently reading GDP per capita (in constant 2021 Int$PPP), current account balance data and population.
 }
 \examples{
 \dontrun{

@@ -38,7 +38,7 @@ convertJames <- function(x, subtype) {
     x <- GDPuc::toolConvertGDP(x,
                                unit_in = "constant 2005 Int$PPP",
                                unit_out = toolGetUnitDollar(inPPP = TRUE),
-                               replace_NAs = c("linear", "no_conversion"))
+                               replace_NAs = "no_conversion")
   }
   # Ignore warning: Data for following unknown country codes removed: ANT, USSR_FRMR
   toolGeneralConvert(x, warn = FALSE)

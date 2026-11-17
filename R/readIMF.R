@@ -1,7 +1,7 @@
 #' Read-in data from the International Monetary Fund's (IMF) Economic Outlook
 #'
 #' Read-in data from the IMF's World Economic Outlook.
-#' Currently reading GDP per capita and current account balance data.
+#' Currently reading GDP per capita (in constant 2021 Int$PPP), current account balance data and population.
 #'
 #' @inherit madrat::readSource return
 #' @seealso [madrat::readSource()] and [madrat::downloadSource()]
@@ -11,29 +11,23 @@
 #' }
 #' @order 2
 readIMF <- function() {
-  # Define what data, i.e.which "WEO subject codes", to keep: here GDPpc and current account balance
-  myWEOCodes <- c("NGDPRPPPPC", "BCA")
+  # Define what data ("INDICATOR.ID") to keep: here GDPpc in PPP (NGDPRPPPPC), current account balance (BCA) and
+  # population (LP)
+  myIndicatorIDs <- c("NGDPRPPPPC", "BCA", "LP")
 
-  myLocale <- readr::default_locale()
-  myLocale$encoding <- "UTF-16LE"
-
-  readr::read_tsv("WEOApr2024all.ashx",
-                  col_types = c(.default = "c"),
-                  locale = myLocale,
-                  na = c("", "n/a", "--"),
-                  progress = FALSE) %>%
-    dplyr::filter(.data$`WEO Subject Code` %in% myWEOCodes) %>%
-    tidyr::unite("tmp", c("Scale", "Units"), sep = " ") %>%
-    dplyr::mutate(tmp = sub("NA ", "", .data$tmp),
-                  tmp = paste0("[", .data$tmp, "]")) %>%
-    tidyr::unite("Subject Descriptor", c("Subject Descriptor", "tmp"), sep = " ") %>%
-    dplyr::select("ISO", "Subject Descriptor", tidyselect::starts_with(c("1", "2"))) %>%
+  readxl::read_xlsx("WEOApr2026all.xlsx", sheet = "Countries", progress = FALSE) %>%
+    suppressWarnings() %>%
+    dplyr::filter(.data$INDICATOR.ID %in% myIndicatorIDs, !is.na(.data$SCALE)) %>%
+    tidyr::unite("tmp", c("SCALE", "UNIT"), sep = " ") %>%
+    dplyr::mutate(tmp = paste0("[", .data$tmp, "]")) %>%
+    tidyr::unite("INDICATOR", c("INDICATOR", "tmp"), sep = " ") %>%
+    dplyr::select("iso3c" = "COUNTRY.ID", "INDICATOR", tidyselect::starts_with(c("1", "2"))) %>%
     tidyr::pivot_longer(tidyselect::starts_with(c("1", "2")),
                         names_to = "year",
                         names_transform = as.numeric,
                         values_transform = as.numeric) %>%
     tidyr::replace_na(list(value = 0)) %>%
-    as.magpie(spatial = "ISO", temporal = "year", tidy = TRUE)
+    as.magpie(spatial = "iso3c", temporal = "year", tidy = TRUE)
 }
 
 #' @rdname readIMF
@@ -41,25 +35,48 @@ readIMF <- function() {
 #' @param subtype Use to filter the IMF data
 #' @order 3
 convertIMF <- function(x, subtype = "all") {
-  if (!subtype %in% c("all", "GDPpc", "BCA")) {
-    stop("Bad input for readIMF. Invalid 'subtype' argument. Available subtypes are 'all', 'GDPpc', and 'BCA'.")
+  if (!subtype %in% c("all", "gdppc", "gdp", "BCA")) {
+    stop("Bad input for readIMF. Invalid 'subtype' argument. Available subtypes are 'all', 'gdppc', 'gdp', and 'BCA'.")
   }
+
+  # Add Kosovo to Serbia
+  x["SRB", , ] <- dimSums(x[c("SRB", "KOS"), , ], dim = 1, na.rm = TRUE)
+  x <- x[getItems(x, dim = 1) != "KOS", , ]
+  # Attribute WBG (west bank and gaza) to PSE (Palestine, State of)
+  x <- add_columns(x, addnm = "PSE", dim = 1)
+  x["PSE", , ] <- x["WBG", , ]
+  x <- x[getItems(x, dim = 1) != "WBG", , ]
 
   # Use convert function to filter
-  if (subtype == "GDPpc") {
-    h <- "Gross domestic product per capita, constant prices [Units Purchasing power parity; 2017 international dollar]"
+  if (subtype == "gdppc") {
+    h <- "Gross domestic product (GDP), Constant prices, Per capita, purchasing power parity (PPP) international dollar, ICP benchmark 2021 [Units NA]" # nolint: line_length_linter.
     x <- x[, , h]
   }
-  if (subtype == "BCA") x <- x[, , "Current account balance [Billions U_S_ dollars]"]
+  if (subtype == "gdp") {
+    h <- "Gross domestic product (GDP), Constant prices, Per capita, purchasing power parity (PPP) international dollar, ICP benchmark 2021 [Units NA]" # nolint: line_length_linter.
+    h2 <- "Population, Persons for countries / Index for country groups [Millions NA]"
+    x <- x[, , h] * x[, , h2]
+  }
+  if (subtype == "BCA") x <- x[, , "Current account balance (credit less debit), US dollar [Billions US dollar]"]
 
-  toolGeneralConvert(x, no_remove_warning = c("UVK", "WBG"), note = FALSE)
+  x <- toolGeneralConvert(x)
+
+  if (subtype %in% c("gdppc", "gdp")) {
+    x <- GDPuc::toolConvertGDP(x,
+                               unit_in = "constant 2021 Int$PPP",
+                               unit_out = toolGetUnitDollar(inPPP = TRUE),
+                               replace_NAs = "no_conversion")
+  }
+
+  x
 }
 
 
 #' @rdname readIMF
 #' @order 1
 downloadIMF <- function() {
-  url <- "https://www.imf.org/-/media/Files/Publications/WEO/WEO-Database/2024/April/WEOApr2024all.ashx"
+  stop("Manual download of IMF data required!")
+  url <- "https://data.imf.org/-/media/iData/External-Storage/Documents/2F78EE59F79143A7921E5E203D3AAA80/en/WEOApr2026all.xlsx"
   utils::download.file(url, basename(url), quiet = TRUE)
 
   # Compose meta data
@@ -69,7 +86,7 @@ downloadIMF <- function() {
        description   = "World Economic Outlook database of the International Monetary Fund",
        unit          = "-",
        author        = "International Monetary Fund",
-       release_date  = "April 2024",
+       release_date  = "April 2026",
        license       = "-",
        comment       = "-")
 }

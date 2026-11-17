@@ -28,7 +28,7 @@ calcGDPpc(
 \item "constant 2017 Int$PPP" (default):
 Scenarios are constructed in constant 2017 Int$PPP.
 \item "constant 2017 US$MER": Scenarios are constructed in constant 2017 Int$PPP and then
-converted with \code{\link[GDPuc:convertGDP]{GDPuc::toolConvertGDP()}}.
+converted with \code{\link[GDPuc:toolConvertGDP]{GDPuc::toolConvertGDP()}}.
 }
 In all cases, GDP is returned in millions.}
 
@@ -36,7 +36,7 @@ In all cases, GDP is returned in millions.}
 the yearly resolution is decreased to 5 year intervals.}
 
 \item{...}{
-  Arguments passed on to \code{\link[=calcDriver]{calcDriver}}
+  Arguments passed on to \code{\link{calcDriver}}
   \describe{
     \item{\code{extension2150}}{A string specifying if/how the scenarios should be extended until 2150. Can be either:
 \itemize{

@@ -1,6 +1,6 @@
 #' Read-in data from the World Bank's Population Estimates And Projections (PEAP)
 #'
-#' Read-in an xlsx file from the World Bank's Population Estimates And Projections (PEAP)
+#' Read-in an csv file from the World Bank's Population Estimates And Projections (PEAP)
 #' The PEAP data cannot seemed to be accessed by the WDI::WDI package nor the World Bank's API directly.
 #' Manual download required from https://databank.worldbank.org/source/population-estimates-and-projections#
 #'
@@ -8,7 +8,7 @@
 #' @seealso [madrat::readSource()] and [madrat::downloadSource()]
 #' @order 2
 readPEAP <- function() {
-  file <- "Data_Extract_From_Population_estimates_and_projections_15_04_2024.csv"
+  file <- "Data_Extract_From_Population_estimates_and_projections_13_05_2026.csv"
   myColTypes <- readr::cols(.default = "d",
                             "Country Name" = "_",
                             "Country Code" = "c",
@@ -30,6 +30,10 @@ readPEAP <- function() {
 #' @param x MAgPIE object returned by readPEAP
 #' @order 3
 convertPEAP <- function(x) {
+  # Add Kosovo to Serbia
+  x["XKX", , ] <- dimSums(x[c("SRB", "XKX"), , ], dim = 1, na.rm = TRUE)
+  x <- x[getItems(x, dim = 1) != "XKX", , ]
+
   toolGeneralConvert(x, warn = FALSE, note = FALSE)
 }
 

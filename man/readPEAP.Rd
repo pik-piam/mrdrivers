@@ -22,7 +22,7 @@ should match the source data. The spatial dimension should either match the sour
 if the convert argument is set to TRUE, should be on ISO code country level.
 }
 \description{
-Read-in an xlsx file from the World Bank's Population Estimates And Projections (PEAP)
+Read-in an csv file from the World Bank's Population Estimates And Projections (PEAP)
 The PEAP data cannot seemed to be accessed by the WDI::WDI package nor the World Bank's API directly.
 Manual download required from https://databank.worldbank.org/source/population-estimates-and-projections#
 }
