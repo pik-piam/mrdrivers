@@ -1,8 +1,8 @@
 # Create GDP and Population Scenarios
 
-R package **mrdrivers**, version **7.2.1**
+R package **mrdrivers**, version **7.3.0**
 
-[![CRAN status](https://www.r-pkg.org/badges/version/mrdrivers)](https://cran.r-project.org/package=mrdrivers) [![R build status](https://pik-piam.github.io/mrdrivers/workflows/check/badge.svg)](https://pik-piam.github.io/mrdrivers/actions) [![codecov](https://codecov.io/gh/mrdrivers/branch/master/graph/badge.svg)](https://app.codecov.io/gh/mrdrivers) [![r-universe](https://pik-piam.r-universe.dev/badges/mrdrivers)](https://pik-piam.r-universe.dev/builds)
+   [![R build status](https://pik-piam.github.io/mrdrivers/workflows/check/badge.svg)](https://pik-piam.github.io/mrdrivers/actions) [![codecov](https://codecov.io/gh/mrdrivers/branch/master/graph/badge.svg)](https://app.codecov.io/gh/mrdrivers) [![r-universe](https://pik-piam.r-universe.dev/badges/mrdrivers)](https://pik-piam.r-universe.dev/builds)
 
 ## Purpose and Functionality
 
@@ -77,22 +77,23 @@ The additional repository can be made available permanently by adding the line a
 
 After that the most recent version of the package can be installed using `install.packages`:
 
-```r 
+```r
 install.packages("mrdrivers")
 ```
 
 Package updates can be installed using `update.packages` (make sure that the additional repository has been added before running that command):
 
-```r 
+```r
 update.packages()
 ```
 
 ## Tutorial
 
-The package comes with a vignette describing the basic functionality of the package and how to use it. You can load it with the following command (the package needs to be installed):
+The package comes with vignettes describing the basic functionality of the package and how to use it. You can load them with the following command (the package needs to be installed):
 
 ```r
 vignette("scenarios") # Scenarios
+vignette("update")    # How to update the scenarios
 ```
 
 ## Questions / Problems
@@ -103,7 +104,7 @@ In case of questions / problems please contact Johannes Koch <jokoch@pik-potsdam
 
 To cite package **mrdrivers** in publications use:
 
-Koch J, Soergel B, Leip D, Benke F, Dietrich J (2026). "mrdrivers: Create GDP and Population Scenarios." Version: 7.2.1, <https://pik-piam.github.io/mrdrivershttps://github.com/pik-piam/mrdrivers>.
+Koch J, Soergel B, Leip D, Benke F, Dietrich J (2026). "mrdrivers: Create GDP and Population Scenarios." Version: 7.3.0, <https://github.com/pik-piam/mrdrivers>.
 
 A BibTeX entry for LaTeX users is
 
@@ -111,10 +112,9 @@ A BibTeX entry for LaTeX users is
 @Misc{,
   title = {mrdrivers: Create GDP and Population Scenarios},
   author = {Johannes Koch and Bjoern Soergel and Deborra Leip and Falk Benke and Jan Philipp Dietrich},
-  date = {2026-03-10},
+  date = {2026-11-17},
   year = {2026},
-  url = {https://pik-piam.github.io/mrdrivers},
   url = {https://github.com/pik-piam/mrdrivers},
-  note = {Version: 7.2.1},
+  note = {Version: 7.3.0},
 }
 ```
