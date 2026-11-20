@@ -1,14 +1,18 @@
 toolMultiplyGDPpcWithPop <- function(scenario) {
-  gdppc <- calcOutput("GDPpc",
-                      scenario = scenario,
-                      extension2150 = "none",
-                      average2020 = FALSE,
-                      aggregate = FALSE,
-                      supplementary = TRUE)
+  gdppc <- calcOutput(
+    "GDPpc",
+    scenario = scenario,
+    extension2150 = "none",
+    average2020 = FALSE,
+    aggregate = FALSE,
+    supplementary = TRUE
+  )
   # GDP is equal to GDPpc * population
   gdp <- gdppc$x * gdppc$weight
-  list(x = gdp,
-       description = glue("use product of corresponding GDP per capita and population scenarios. {gdppc$description}"))
+  list(
+    x = gdp,
+    description = glue("use product of corresponding GDP per capita and population scenarios. {gdppc$description}")
+  )
 }
 
 toolHarmonizeGDPpcSSPs <- function(past, future, yEnd) {
@@ -68,7 +72,7 @@ toolHarmonizeGDPpcSSPs <- function(past, future, yEnd) {
   # Placeholder
   x <- toolHarmonizePast(tmpGDPpc, future$x, method = "level")
   # Split countries with and without projection data
-  cWithProj    <- where(future$x[, lastYearIMF, ] != 0)$true$regions
+  cWithProj <- where(future$x[, lastYearIMF, ] != 0)$true$regions
   cWithoutProj <- where(future$x[, lastYearIMF, ] == 0)$true$regions
   x <- toolFastConvergeSSP(x[cWithProj, , ], delta, lastYearIMF, y1, y2, 2100) %>%
     mbind(x[cWithoutProj, , ]) %>%
@@ -76,25 +80,27 @@ toolHarmonizeGDPpcSSPs <- function(past, future, yEnd) {
 
   x <- toolInterpolateAndExtrapolate(x)
   lastPastYear <- max(getYears(past$x, as.integer = TRUE))
-  list(x = x,
-       description = glue("use {past$description} until {lastPastYear}, short term growth rates from IMF until \\
-                           {lastYearIMF}, and transition to {future$description} by {yEnd}."))
+  list(
+    x = x,
+    description = glue(
+      "use {past$description} until {lastPastYear}, short term growth rates from IMF until \\
+                           {lastYearIMF}, and transition to {future$description} by {yEnd}."
+    )
+  )
 }
 
 toolBuildGDPpcSDPs <- function() {
-  gdppcapSSP1 <- calcOutput("GDPpc",
-                            scenario = "SSP1",
-                            average2020 = FALSE,
-                            extension2150 = "none",
-                            aggregate = FALSE)
+  gdppcapSSP1 <- calcOutput("GDPpc", scenario = "SSP1", average2020 = FALSE, extension2150 = "none", aggregate = FALSE)
 
   # Standard SDP inherits SSP1 GDP
   gdppcapSDP <- setNames(gdppcapSSP1, "SDP")
   # SHAPE SDP_XX variants are calculated as modifications of SSP1 GDP/cap growth rates
-  combined <- purrr::map(c("SDP_EI", "SDP_MC", "SDP_RC"),
-                         toolSHAPEgrowth,
-                         gdppcapSSP1 = gdppcapSSP1,
-                         startFromYear = 2025) %>%
+  combined <- purrr::map(
+    c("SDP_EI", "SDP_MC", "SDP_RC"),
+    toolSHAPEgrowth,
+    gdppcapSSP1 = gdppcapSSP1,
+    startFromYear = 2025
+  ) %>%
     mbind()
   combined <- mbind(gdppcapSDP, combined)
 
@@ -104,22 +110,30 @@ toolBuildGDPpcSDPs <- function() {
 }
 
 toolDivideGDPbyPop <- function(scenario) {
-  gdp <- calcOutput("GDP",
-                    scenario = scenario,
-                    extension2150 = "none",
-                    average2020 = FALSE,
-                    aggregate = FALSE,
-                    supplementary = TRUE)
-  pop <- calcOutput("Population",
-                    scenario = scenario,
-                    extension2150 = "none",
-                    aggregate = FALSE,
-                    supplementary = TRUE,
-                    years = getYears(gdp$x))
+  gdp <- calcOutput(
+    "GDP",
+    scenario = scenario,
+    extension2150 = "none",
+    average2020 = FALSE,
+    aggregate = FALSE,
+    supplementary = TRUE
+  )
+  pop <- calcOutput(
+    "Population",
+    scenario = scenario,
+    extension2150 = "none",
+    aggregate = FALSE,
+    supplementary = TRUE,
+    years = getYears(gdp$x)
+  )
   gdppc <- gdp$x / pop$x
-  list(x = gdppc,
-       description = glue("use ratio of corresponding GDP and population scenarios. {gdp$description} \\
-                          {pop$description}"))
+  list(
+    x = gdppc,
+    description = glue(
+      "use ratio of corresponding GDP and population scenarios. {gdp$description} \\
+                          {pop$description}"
+    )
+  )
 }
 
 toolHarmonizeGDPpcSSPsISIMIP <- function(past, future, yEnd) {
@@ -144,62 +158,68 @@ toolHarmonizeGDPpcSSP2IndiaDEAs <- function(past, future) {
     mbind()
 
   # Use "SSP2IndiaMedium" and "SSP2IndiaHigh" as IndiaDEA scenario names
-  newNames <- sub("baseline",   "SSP2IndiaMedium", getNames(combined))
+  newNames <- sub("baseline", "SSP2IndiaMedium", getNames(combined))
   newNames <- sub("optimistic", "SSP2IndiaHigh", newNames)
   getNames(combined) <- newNames
 
-  list(x = combined,
-       description = glue("equal to SSP2 in all countries except for IND. \\
-                           For IND use {past$description} until {max(getYears(past$x, as.integer = TRUE))} \\
-                           and transition to {future$description} by {yEnd}."))
+  list(
+    x = combined,
+    description = glue(
+      "equal to SSP2 in all countries except for IND. \\
+      For IND use {past$description} until {max(getYears(past$x, as.integer = TRUE))} \\
+      and transition to {future$description} by {yEnd}."
+    )
+  )
 }
 
 
 toolFastConvergeSSP <- function(x, delta, yearStart, y1, y2, yearEnd) {
   x <- x %>% tibble::as_tibble() %>% dplyr::rename("SSP" = "variable")
-  delta <- delta %>% tibble::as_tibble() %>%  dplyr::select("iso3c", "SSP" = "d3", "d" = "value")
+  delta <- delta %>% tibble::as_tibble() %>% dplyr::select("iso3c", "SSP" = "d3", "d" = "value")
 
   x <- x %>%
     dplyr::left_join(delta, by = c("iso3c", "SSP")) %>%
     dplyr::mutate(
       # Medium convergence
-      value = dplyr::if_else(.data$year > yearStart & .data$SSP == "SSP2",
-                             dplyr::if_else( # nolint: indentation_linter.
-                               .data$year <= y1,
-                               .data$value + .data$d,
-                               dplyr::if_else(
-                                 .data$year <= yearEnd,
-                                 .data$value + .data$d * (yearEnd - .data$year) / (yearEnd - y1),
-                                 .data$value
-                               )
-                             ),
-                             .data$value
+      value = dplyr::if_else(
+        .data$year > yearStart & .data$SSP == "SSP2",
+        dplyr::if_else(
+          # nolint: indentation_linter.
+          .data$year <= y1,
+          .data$value + .data$d,
+          dplyr::if_else(
+            .data$year <= yearEnd,
+            .data$value + .data$d * (yearEnd - .data$year) / (yearEnd - y1),
+            .data$value
+          )
+        ),
+        .data$value
       ),
       # Fast convergence
-      value = dplyr::if_else(.data$year > yearStart &
-                               ((.data$SSP %in% c("SSP1", "SSP5") & .data$d < 0) | # nolint: indentation_linter.
-                                  (.data$SSP %in% c("SSP3", "SSP4") & .data$d >= 0)),
-                             dplyr::if_else( # nolint: indentation_linter.
-                               .data$year <= yearEnd,
-                               .data$value + .data$d * (yearEnd - .data$year) / (yearEnd - yearStart),
-                               .data$value
-                             ),
-                             .data$value
+      value = dplyr::if_else(
+        .data$year > yearStart &
+          ((.data$SSP %in% c("SSP1", "SSP5") & .data$d < 0) | (.data$SSP %in% c("SSP3", "SSP4") & .data$d >= 0)),
+        dplyr::if_else(
+          .data$year <= yearEnd,
+          .data$value + .data$d * (yearEnd - .data$year) / (yearEnd - yearStart),
+          .data$value
+        ),
+        .data$value
       ),
       # Slow convergence
-      value = dplyr::if_else(.data$year > yearStart &
-                               ((.data$SSP %in% c("SSP3", "SSP4") & .data$d < 0) | # nolint: indentation_linter.
-                                  (.data$SSP %in% c("SSP1", "SSP5") & .data$d >= 0)),
-                             dplyr::if_else( # nolint: indentation_linter.
-                               .data$year <= y2,
-                               .data$value + .data$d,
-                               dplyr::if_else(
-                                 .data$year <= yearEnd,
-                                 .data$value + .data$d * (yearEnd - .data$year) / (yearEnd - y2),
-                                 .data$value
-                               )
-                             ),
-                             .data$value
+      value = dplyr::if_else(
+        .data$year > yearStart &
+          ((.data$SSP %in% c("SSP3", "SSP4") & .data$d < 0) | (.data$SSP %in% c("SSP1", "SSP5") & .data$d >= 0)),
+        dplyr::if_else(
+          .data$year <= y2,
+          .data$value + .data$d,
+          dplyr::if_else(
+            .data$year <= yearEnd,
+            .data$value + .data$d * (yearEnd - .data$year) / (yearEnd - y2),
+            .data$value
+          )
+        ),
+        .data$value
       ),
       # Add a minimum value for value here. This can occur when the delta computed in yearStart is
       # so large relative to the original GDPpc value in yearStart, that a further decrease in the
@@ -207,9 +227,7 @@ toolFastConvergeSSP <- function(x, delta, yearStart, y1, y2, yearEnd) {
       value = pmax(.data$value, 0.01)
     ) %>%
     dplyr::select(-"d")
-  x %>%
-    dplyr::rename("variable" = "SSP") %>%
-    as.magpie(spatial = "iso3c", temporal = "year", tidy = TRUE)
+  x %>% dplyr::rename("variable" = "SSP") %>% as.magpie(spatial = "iso3c", temporal = "year", tidy = TRUE)
 }
 
 # Note that here we label the GDP scenarios with their scenario abbreviations, and not with the name of the SHAPE
@@ -222,20 +240,18 @@ toolFastConvergeSSP <- function(x, delta, yearStart, y1, y2, yearEnd) {
 # - Green and Social market economy (SDP_GS) <-> service-driven economy (same as SDP_MC)
 # Calculate modified growth rates and resulting gdp/capita in forward simulation
 toolSHAPEgrowth <- function(shapeGDPScenario, gdppcapSSP1, startFromYear) {
-
   # calculation of growth rates
   yrs <- getYears(gdppcapSSP1, as.integer = TRUE)
   # flexible timestep
   # LONGTERM would be better to always use yearly timesteps in this computation, and select years afterwards
   timestep <- new.magpie(years = yrs)
-  timestep[, , ] <- dplyr::lead(yrs) - yrs
+  timestep[,,] <- dplyr::lead(yrs) - yrs
   # assign average growth rate g_t of period t -> t+ timestep
   # this means modifications of growth rate t will affect GDP in t+timestep
   yrsShifted <- yrs[2:length(yrs)]
   yrsBase <- yrs[1:(length(yrs) - 1)]
   growthrateSSP1 <- 100 *
-    ((setYears(gdppcapSSP1[, yrsShifted, ], yrsBase) / gdppcapSSP1[, yrsBase, ]) ^
-       (1. / timestep[, yrsBase, ]) - 1)
+    ((setYears(gdppcapSSP1[, yrsShifted, ], yrsBase) / gdppcapSSP1[, yrsBase, ])^(1. / timestep[, yrsBase, ]) - 1)
 
   # modified growth rates and gdp/cap
   growthrate <- setNames(as.magpie(growthrateSSP1), shapeGDPScenario)
@@ -247,9 +263,7 @@ toolSHAPEgrowth <- function(shapeGDPScenario, gdppcapSSP1, startFromYear) {
     if (yr >= startFromYear) {
       # innovation-driven (SDP_EI): enhance growth rates for low-income countries by up to 15%
       if (shapeGDPScenario == "SDP_EI") {
-        modificationFactor <- logisticTransition(
-          gdppcap[, yr, ], l0 = 1.15, l = 1, k = 20, x0 = 15e3, useLog10 = TRUE
-        )
+        modificationFactor <- logisticTransition(gdppcap[, yr, ], l0 = 1.15, l = 1, k = 20, x0 = 15e3, useLog10 = TRUE)
         # service-driven (SDP_MC): growth rate reduced based on relative distance to technology frontier
         # (given by the US)
       } else if (shapeGDPScenario == "SDP_MC") {
@@ -259,7 +273,12 @@ toolSHAPEgrowth <- function(shapeGDPScenario, gdppcapSSP1, startFromYear) {
         # countries with gdp/cap above US are treated the same as the US -> set diff = 0
         reldiff2frontier <- pmax((frontier[, yr, ] - gdppcap[, yr, ]) / frontier[, yr, ], 0)
         modificationFactor <- logisticTransition(
-          reldiff2frontier[, yr, ], l0 = 1, l = 0.5, k = -30, x0 = 0.2, useLog10 = FALSE
+          reldiff2frontier[, yr, ],
+          l0 = 1,
+          l = 0.5,
+          k = -30,
+          x0 = 0.2,
+          useLog10 = FALSE
         )
         # society-driven (SDP_RC): gradual transition to zero growth for high-income countries
       } else if (shapeGDPScenario == "SDP_RC") {

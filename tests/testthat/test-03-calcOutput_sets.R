@@ -1,10 +1,14 @@
 skip_on_ci()
 skip_on_covr()
 skip_on_cran()
-skip_if_not(dir.exists(madrat_mainfolder),
-            glue("Skipped, because the madrat mainfolder {madrat_mainfolder} \\
+skip_if_not(
+  dir.exists(madrat_mainfolder),
+  glue(
+    "Skipped, because the madrat mainfolder {madrat_mainfolder} \\
                   defined in 'tests/setup_madrat_config.R' could not be found.
-                  If you wish to run this test please configure the file appropriately."))
+                  If you wish to run this test please configure the file appropriately."
+  )
+)
 
 # Suppress messages for all tests
 withr::local_file("tmp_messages.txt")
@@ -100,8 +104,8 @@ test_that("GDPpc factored by its weight is equal to GDP", {
 })
 
 test_that("average2020 works", {
-  x <-  calcOutput("GDP", scenario = "SSPs", extension2150 = "none")
-  y <-  calcOutput("GDP", scenario = "SSPs", extension2150 = "none", average2020 = FALSE)
+  x <- calcOutput("GDP", scenario = "SSPs", extension2150 = "none")
+  y <- calcOutput("GDP", scenario = "SSPs", extension2150 = "none", average2020 = FALSE)
   yNew2020 <- (y[, 2018, ] + y[, 2019, ] + y[, 2020, ] + y[, 2021, ] + y[, 2022, ]) / 5
   getYears(yNew2020) <- 2020
   getSets(yNew2020) <- getSets(y)
@@ -111,14 +115,10 @@ test_that("average2020 works", {
 })
 
 test_that("average2020 is consistent", {
-  x <- calcOutput("GDPpc", scenario = "SSPs", extension2150 = "none",  aggregate = FALSE)
+  x <- calcOutput("GDPpc", scenario = "SSPs", extension2150 = "none", aggregate = FALSE)
   y <- {
     calcOutput("GDP", scenario = "SSPs", extension2150 = "none", aggregate = FALSE) /
-      calcOutput("Population",
-                 scenario = "SSPs",
-                 extension2150 = "none",
-                 aggregate = FALSE,
-                 years = seq(1965, 2100, 5))
+      calcOutput("Population", scenario = "SSPs", extension2150 = "none", aggregate = FALSE, years = seq(1965, 2100, 5))
   }
   # Remove comments before comparing
   comment(x) <- NULL
@@ -126,19 +126,17 @@ test_that("average2020 is consistent", {
 })
 
 test_that("GDPpc factored by its weight is equal to GDP, in MER", {
-  l <- calcOutput("GDPpc",
-                  scenario = "SSPs",
-                  extension2150 = "none",
-                  unit = "constant 2017 US$MER",
-                  aggregate = FALSE,
-                  supplementary = TRUE)
+  l <- calcOutput(
+    "GDPpc",
+    scenario = "SSPs",
+    extension2150 = "none",
+    unit = "constant 2017 US$MER",
+    aggregate = FALSE,
+    supplementary = TRUE
+  )
   x <- l$x * l$weight
 
-  y <- calcOutput("GDP",
-                  scenario = "SSPs",
-                  extension2150 = "none",
-                  unit = "constant 2017 US$MER",
-                  aggregate = FALSE)
+  y <- calcOutput("GDP", scenario = "SSPs", extension2150 = "none", unit = "constant 2017 US$MER", aggregate = FALSE)
 
   # Remove comments before comparing
   comment(y) <- NULL

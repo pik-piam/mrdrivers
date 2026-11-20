@@ -6,9 +6,21 @@
 #' @inheritParams calcDriver
 #' @keywords internal
 #' @return TRUE
-toolCheckUserInput <- function(driver, args) { # nolint: cyclocomp_linter.
-  permittedArgs <- c("scenario", "unit", "extension2150", "extension1960", "average2020", "naming", "popAsWeight",
-                     "asShare", "pastData", "futureData", "harmonization")
+# nolint next: cyclocomp_linter.
+toolCheckUserInput <- function(driver, args) {
+  permittedArgs <- c(
+    "scenario",
+    "unit",
+    "extension2150",
+    "extension1960",
+    "average2020",
+    "naming",
+    "popAsWeight",
+    "asShare",
+    "pastData",
+    "futureData",
+    "harmonization"
+  )
   if (!all(names(args) %in% permittedArgs)) {
     stop(glue("Bad argument to calc{driver}: '{names(args)[! names(args) %in% permittedArgs]}'."))
   }
@@ -19,16 +31,23 @@ toolCheckUserInput <- function(driver, args) { # nolint: cyclocomp_linter.
   }
 
   # Check 'extension2150' argument
-  if ("extension2150" %in% names(args) &&
-        (!args$extension2150 %in% c("none", "bezier", "constant") || length(args$extension2150) != 1)) {
-    stop(glue("Bad argument to calc{driver}. 'extension2150' has to be either 'none', 'bezier' or 'constant', \\
-               not '{args$extension2150}'."))
+  if (
+    "extension2150" %in%
+      names(args) &&
+      (!args$extension2150 %in% c("none", "bezier", "constant") || length(args$extension2150) != 1)
+  ) {
+    stop(glue(
+      "Bad argument to calc{driver}. 'extension2150' has to be either 'none', 'bezier' or 'constant', \\
+               not '{args$extension2150}'."
+    ))
   }
 
   # Check 'extension1960' argument
   if ("extension1960" %in% names(args) && !args$extension1960 %in% c("none", "MI-James", "MI", "James")) {
-    stop(glue("Bad argument to calc{driver}. 'extension1960' has to be either 'none', 'MI', 'James', or a \\
-              combination of both, e.g. 'MI-James', not '{args$extension2150}'."))
+    stop(glue(
+      "Bad argument to calc{driver}. 'extension1960' has to be either 'none', 'MI', 'James', or a \\
+              combination of both, e.g. 'MI-James', not '{args$extension2150}'."
+    ))
   }
 
   # Check 'popAsWeight' argument
@@ -55,10 +74,7 @@ toolCheckUserInput <- function(driver, args) { # nolint: cyclocomp_linter.
   }
 
   # Check parallel map-reduce compatibility
-  if (any(purrr::map_lgl(args,
-                         ~ !is.null(.x) &&
-                           length(.x) != 1 &&
-                           length(.x) != max(purrr::map_dbl(args, length))))) {
+  if (any(purrr::map_lgl(args, ~ !is.null(.x) && length(.x) != 1 && length(.x) != max(purrr::map_dbl(args, length))))) {
     stop(glue("Arguments to calc{driver} need to be either length 1 or equal to the length of the longest argument."))
   }
   invisible(TRUE)

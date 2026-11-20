@@ -31,71 +31,71 @@
 #' toolGetScenarioDefinition(driver = "Population", scen = "SSPs", aslist = TRUE)
 #'
 toolGetScenarioDefinition <- function(driver = NULL, scen = NULL, aslist = FALSE, getGroupShortcuts = FALSE) {
-
   # Start of scenario-design section: Developers can modify this section!
   scenarios <- tibble::tribble(
-    ~driver,      ~scenario,         ~pastData,             ~futureData,              ~harmonization,
+    ~driver      , ~scenario         , ~pastData          , ~futureData                   , ~harmonization        ,
     # GDPpc scenarios
-    "GDPpc",      "SSPs",            "WDI-IMF-MI-James",    "SSPs",                   "GDPpcSSPs",
-    "GDPpc",      "SSP1",            "WDI-IMF-MI-James",    "SSP1",                   "GDPpcSSPs",
-    "GDPpc",      "SSP2",            "WDI-IMF-MI-James",    "SSP2",                   "GDPpcSSPs",
-    "GDPpc",      "SSP3",            "WDI-IMF-MI-James",    "SSP3",                   "GDPpcSSPs",
-    "GDPpc",      "SSP4",            "WDI-IMF-MI-James",    "SSP4",                   "GDPpcSSPs",
-    "GDPpc",      "SSP5",            "WDI-IMF-MI-James",    "SSP5",                   "GDPpcSSPs",
-    "GDPpc",      "SDPs",            "-",                   "-",                      "GDPpcSDPs",
-    "GDPpc",      "ISIMIP",          "WDI-IMF-MI-James",    "SSPs",                   "GDPpcSSPsISIMIP",
-    "GDPpc",      "SSP2IndiaDEAs",   "WDI-MI-James",        "IndiaDEAs-SSP2",         "GDPpcSSP2IndiaDEAs",
-    "GDPpc",      "SSP2IndiaMedium", "WDI-MI-James",        "IndiaDEAbase-SSP2",      "GDPpcSSP2IndiaDEAs",
-    "GDPpc",      "SSP2IndiaHigh",   "WDI-MI-James",        "IndiaDEAopt-SSP2",       "GDPpcSSP2IndiaDEAs",
+    "GDPpc"      , "SSPs"            , "WDI-IMF-MI-James" , "SSPs"                        , "GDPpcSSPs"           ,
+    "GDPpc"      , "SSP1"            , "WDI-IMF-MI-James" , "SSP1"                        , "GDPpcSSPs"           ,
+    "GDPpc"      , "SSP2"            , "WDI-IMF-MI-James" , "SSP2"                        , "GDPpcSSPs"           ,
+    "GDPpc"      , "SSP3"            , "WDI-IMF-MI-James" , "SSP3"                        , "GDPpcSSPs"           ,
+    "GDPpc"      , "SSP4"            , "WDI-IMF-MI-James" , "SSP4"                        , "GDPpcSSPs"           ,
+    "GDPpc"      , "SSP5"            , "WDI-IMF-MI-James" , "SSP5"                        , "GDPpcSSPs"           ,
+    "GDPpc"      , "SDPs"            , "-"                , "-"                           , "GDPpcSDPs"           ,
+    "GDPpc"      , "ISIMIP"          , "WDI-IMF-MI-James" , "SSPs"                        , "GDPpcSSPsISIMIP"     ,
+    "GDPpc"      , "SSP2IndiaDEAs"   , "WDI-MI-James"     , "IndiaDEAs-SSP2"              , "GDPpcSSP2IndiaDEAs"  ,
+    "GDPpc"      , "SSP2IndiaMedium" , "WDI-MI-James"     , "IndiaDEAbase-SSP2"           , "GDPpcSSP2IndiaDEAs"  ,
+    "GDPpc"      , "SSP2IndiaHigh"   , "WDI-MI-James"     , "IndiaDEAopt-SSP2"            , "GDPpcSSP2IndiaDEAs"  ,
     # GDP scenarios
-    "GDP",        "SSPs",            "-",                   "-",                      "GDPpcWithPop",
-    "GDP",        "SSP1",            "-",                   "-",                      "GDPpcWithPop",
-    "GDP",        "SSP2",            "-",                   "-",                      "GDPpcWithPop",
-    "GDP",        "SSP3",            "-",                   "-",                      "GDPpcWithPop",
-    "GDP",        "SSP4",            "-",                   "-",                      "GDPpcWithPop",
-    "GDP",        "SSP5",            "-",                   "-",                      "GDPpcWithPop",
-    "GDP",        "SDPs",            "-",                   "-",                      "GDPpcWithPop",
-    "GDP",        "ISIMIP",          "-",                   "-",                      "GDPpcWithPop",
-    "GDP",        "SSP2IndiaDEAs",   "-",                   "-",                      "GDPpcWithPop",
-    "GDP",        "SSP2IndiaMedium", "-",                   "-",                      "GDPpcWithPop",
-    "GDP",        "SSP2IndiaHigh",   "-",                   "-",                      "GDPpcWithPop",
+    "GDP"        , "SSPs"            , "-"                , "-"                           , "GDPpcWithPop"        ,
+    "GDP"        , "SSP1"            , "-"                , "-"                           , "GDPpcWithPop"        ,
+    "GDP"        , "SSP2"            , "-"                , "-"                           , "GDPpcWithPop"        ,
+    "GDP"        , "SSP3"            , "-"                , "-"                           , "GDPpcWithPop"        ,
+    "GDP"        , "SSP4"            , "-"                , "-"                           , "GDPpcWithPop"        ,
+    "GDP"        , "SSP5"            , "-"                , "-"                           , "GDPpcWithPop"        ,
+    "GDP"        , "SDPs"            , "-"                , "-"                           , "GDPpcWithPop"        ,
+    "GDP"        , "ISIMIP"          , "-"                , "-"                           , "GDPpcWithPop"        ,
+    "GDP"        , "SSP2IndiaDEAs"   , "-"                , "-"                           , "GDPpcWithPop"        ,
+    "GDP"        , "SSP2IndiaMedium" , "-"                , "-"                           , "GDPpcWithPop"        ,
+    "GDP"        , "SSP2IndiaHigh"   , "-"                , "-"                           , "GDPpcWithPop"        ,
     # Population Scenarios
-    "Population", "SSPs",            "WDI-UN_PopDiv-MI",    "SSPs-UN_PopDiv",              "PopSSPs",
-    "Population", "SSP1",            "WDI-UN_PopDiv-MI",    "SSP1-UN_PopDiv",              "PopSSPs",
-    "Population", "SSP2",            "WDI-UN_PopDiv-MI",    "SSP2-UN_PopDiv",              "PopSSPs",
-    "Population", "SSP3",            "WDI-UN_PopDiv-MI",    "SSP3-UN_PopDiv",              "PopSSPs",
-    "Population", "SSP4",            "WDI-UN_PopDiv-MI",    "SSP4-UN_PopDiv",              "PopSSPs",
-    "Population", "SSP5",            "WDI-UN_PopDiv-MI",    "SSP5-UN_PopDiv",              "PopSSPs",
-    "Population", "SDPs",            "WDI-UN_PopDiv-MI",    "SDPs-UN_PopDiv",              "PopSSPs",
-    "Population", "ISIMIP",          "UN_PopDiv-MI",        "SSPs-UN_PopDiv",              "PopISIMIP",
-    "Population", "SSP2IndiaDEAs",   "WDI-UN_PopDiv-MI",    "IndiaDEAs-SSP2-UN_PopDiv",    "PopSSP2IndiaDEAs",
-    "Population", "SSP2IndiaMedium", "WDI-UN_PopDiv-MI",    "IndiaDEAbase-SSP2-UN_PopDiv", "PopSSP2IndiaDEAs",
-    "Population", "SSP2IndiaHigh",   "WDI-UN_PopDiv-MI",    "IndiaDEAopt-SSP2-UN_PopDiv",  "PopSSP2IndiaDEAs",
+    "Population" , "SSPs"            , "WDI-UN_PopDiv-MI" , "SSPs-UN_PopDiv"              , "PopSSPs"             ,
+    "Population" , "SSP1"            , "WDI-UN_PopDiv-MI" , "SSP1-UN_PopDiv"              , "PopSSPs"             ,
+    "Population" , "SSP2"            , "WDI-UN_PopDiv-MI" , "SSP2-UN_PopDiv"              , "PopSSPs"             ,
+    "Population" , "SSP3"            , "WDI-UN_PopDiv-MI" , "SSP3-UN_PopDiv"              , "PopSSPs"             ,
+    "Population" , "SSP4"            , "WDI-UN_PopDiv-MI" , "SSP4-UN_PopDiv"              , "PopSSPs"             ,
+    "Population" , "SSP5"            , "WDI-UN_PopDiv-MI" , "SSP5-UN_PopDiv"              , "PopSSPs"             ,
+    "Population" , "SDPs"            , "WDI-UN_PopDiv-MI" , "SDPs-UN_PopDiv"              , "PopSSPs"             ,
+    "Population" , "ISIMIP"          , "UN_PopDiv-MI"     , "SSPs-UN_PopDiv"              , "PopISIMIP"           ,
+    "Population" , "SSP2IndiaDEAs"   , "WDI-UN_PopDiv-MI" , "IndiaDEAs-SSP2-UN_PopDiv"    , "PopSSP2IndiaDEAs"    ,
+    "Population" , "SSP2IndiaMedium" , "WDI-UN_PopDiv-MI" , "IndiaDEAbase-SSP2-UN_PopDiv" , "PopSSP2IndiaDEAs"    ,
+    "Population" , "SSP2IndiaHigh"   , "WDI-UN_PopDiv-MI" , "IndiaDEAopt-SSP2-UN_PopDiv"  , "PopSSP2IndiaDEAs"    ,
     # Labour Scenarios
-    "Labour",     "SSPs",            "WDI-UN_PopDiv",       "SSPs-UN_PopDiv",         "LabSSPs",
-    "Labour",     "SSP1",            "WDI-UN_PopDiv",       "SSP1-UN_PopDiv",         "LabSSPs",
-    "Labour",     "SSP2",            "WDI-UN_PopDiv",       "SSP2-UN_PopDiv",         "LabSSPs",
-    "Labour",     "SSP3",            "WDI-UN_PopDiv",       "SSP3-UN_PopDiv",         "LabSSPs",
-    "Labour",     "SSP4",            "WDI-UN_PopDiv",       "SSP4-UN_PopDiv",         "LabSSPs",
-    "Labour",     "SSP5",            "WDI-UN_PopDiv",       "SSP5-UN_PopDiv",         "LabSSPs",
-    "Labour",     "SDPs",            "WDI-UN_PopDiv",       "SDPs-UN_PopDiv",         "pastAndLevelX",
-    "Labour",     "SSP2IndiaDEAs",   "-",                   "-",                      "LabourSSP2IndiaDEAs",
-    "Labour",     "SSP2IndiaMedium", "-",                   "-",                      "LabourSSP2IndiaDEAs",
-    "Labour",     "SSP2IndiaHigh",   "-",                   "-",                      "LabourSSP2IndiaDEAs",
+    "Labour"     , "SSPs"            , "WDI-UN_PopDiv"    , "SSPs-UN_PopDiv"              , "LabSSPs"             ,
+    "Labour"     , "SSP1"            , "WDI-UN_PopDiv"    , "SSP1-UN_PopDiv"              , "LabSSPs"             ,
+    "Labour"     , "SSP2"            , "WDI-UN_PopDiv"    , "SSP2-UN_PopDiv"              , "LabSSPs"             ,
+    "Labour"     , "SSP3"            , "WDI-UN_PopDiv"    , "SSP3-UN_PopDiv"              , "LabSSPs"             ,
+    "Labour"     , "SSP4"            , "WDI-UN_PopDiv"    , "SSP4-UN_PopDiv"              , "LabSSPs"             ,
+    "Labour"     , "SSP5"            , "WDI-UN_PopDiv"    , "SSP5-UN_PopDiv"              , "LabSSPs"             ,
+    "Labour"     , "SDPs"            , "WDI-UN_PopDiv"    , "SDPs-UN_PopDiv"              , "pastAndLevelX"       ,
+    "Labour"     , "SSP2IndiaDEAs"   , "-"                , "-"                           , "LabourSSP2IndiaDEAs" ,
+    "Labour"     , "SSP2IndiaMedium" , "-"                , "-"                           , "LabourSSP2IndiaDEAs" ,
+    "Labour"     , "SSP2IndiaHigh"   , "-"                , "-"                           , "LabourSSP2IndiaDEAs" ,
     # Urban population scenarios
-    "Urban",      "SSPs",            "WDI",                 "SSPs",                   "pastAndGrowthX",
-    "Urban",      "SSP1",            "WDI",                 "SSP1",                   "pastAndGrowthX",
-    "Urban",      "SSP2",            "WDI",                 "SSP2",                   "pastAndGrowthX",
-    "Urban",      "SSP3",            "WDI",                 "SSP3",                   "pastAndGrowthX",
-    "Urban",      "SSP4",            "WDI",                 "SSP4",                   "pastAndGrowthX",
-    "Urban",      "SSP5",            "WDI",                 "SSP5",                   "pastAndGrowthX",
-    "Urban",      "SDPs",            "WDI",                 "SDPs",                   "pastAndGrowthX"
+    "Urban"      , "SSPs"            , "WDI"              , "SSPs"                        , "pastAndGrowthX"      ,
+    "Urban"      , "SSP1"            , "WDI"              , "SSP1"                        , "pastAndGrowthX"      ,
+    "Urban"      , "SSP2"            , "WDI"              , "SSP2"                        , "pastAndGrowthX"      ,
+    "Urban"      , "SSP3"            , "WDI"              , "SSP3"                        , "pastAndGrowthX"      ,
+    "Urban"      , "SSP4"            , "WDI"              , "SSP4"                        , "pastAndGrowthX"      ,
+    "Urban"      , "SSP5"            , "WDI"              , "SSP5"                        , "pastAndGrowthX"      ,
+    "Urban"      , "SDPs"            , "WDI"              , "SDPs"                        , "pastAndGrowthX"
   )
 
-  shortcuts <- list("SSPs" = c("SSP1", "SSP2", "SSP3", "SSP4", "SSP5"),
-                    "SSP2IndiaDEAs" = c("SSP2IndiaMedium", "SSP2IndiaHigh"))
+  shortcuts <- list(
+    "SSPs" = c("SSP1", "SSP2", "SSP3", "SSP4", "SSP5"),
+    "SSP2IndiaDEAs" = c("SSP2IndiaMedium", "SSP2IndiaHigh")
+  )
   # End of scenario-design section
-
 
   if (getGroupShortcuts) {
     return(shortcuts)
@@ -158,7 +158,7 @@ toolReplaceShortcuts <- function(scenario) {
   shortcuts <- toolGetScenarioDefinition(getGroupShortcuts = TRUE)
   x <- as.list(scenario)
   for (s in seq_along(x)) {
-    if (x[[s]] %in% names(shortcuts)) x[[s]] <-  unlist(shortcuts[x[[s]]], use.names = FALSE)
+    if (x[[s]] %in% names(shortcuts)) x[[s]] <- unlist(shortcuts[x[[s]]], use.names = FALSE)
   }
   unlist(x)
 }

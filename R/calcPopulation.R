@@ -51,13 +51,15 @@ calcLabour <- function(scenario, ...) {
 calcUrban <- function(scenario, asShare = TRUE, ...) {
   toolCheckUserInput(driver = "Urban", args = c(list(...), as.list(environment())))
 
-  urb <- calcOutput("Driver",
-                    driver = "Urban",
-                    scenario = scenario,
-                    popAsWeight = TRUE,
-                    aggregate = FALSE,
-                    supplementary = TRUE,
-                    ...)
+  urb <- calcOutput(
+    "Driver",
+    driver = "Urban",
+    scenario = scenario,
+    popAsWeight = TRUE,
+    aggregate = FALSE,
+    supplementary = TRUE,
+    ...
+  )
 
   # Cap urban share at 99%.
   urb$x[urb$x > 0.99] <- 0.99

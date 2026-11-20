@@ -2,25 +2,27 @@
 calcPopulationFuture <- function(futureData) {
   toolCheckUserInput("PopulationFuture", as.list(environment()))
   # Map over components of futureData.
-  purrr::map(unlist(strsplit(futureData, "-")),
-             ~calcOutput("InternalPopulationFuture", futureData = .x, aggregate = FALSE, supplementary = TRUE)) %>%
+  purrr::map(
+    unlist(strsplit(futureData, "-")),
+    ~ calcOutput("InternalPopulationFuture", futureData = .x, aggregate = FALSE, supplementary = TRUE)
+  ) %>%
     toolListFillWith()
 }
 
 calcInternalPopulationFuture <- function(futureData) {
   data <- switch(
     futureData,
-    "SSPs"         = readSource("SSP", "pop"),
-    "SSP1"         = readSource("SSP", "pop", "SSP1"),
-    "SSP2"         = readSource("SSP", "pop", "SSP2"),
-    "SSP3"         = readSource("SSP", "pop", "SSP3"),
-    "SSP4"         = readSource("SSP", "pop", "SSP4"),
-    "SSP5"         = readSource("SSP", "pop", "SSP5"),
-    "SDPs"         = toolPopulationFutureSDPs(),
-    "UN_PopDiv"    = readSource("UN_PopDiv", "pop", "medium"),
-    "IndiaDEAs"    = readSource("IndiaDEA", "pop"),
+    "SSPs" = readSource("SSP", "pop"),
+    "SSP1" = readSource("SSP", "pop", "SSP1"),
+    "SSP2" = readSource("SSP", "pop", "SSP2"),
+    "SSP3" = readSource("SSP", "pop", "SSP3"),
+    "SSP4" = readSource("SSP", "pop", "SSP4"),
+    "SSP5" = readSource("SSP", "pop", "SSP5"),
+    "SDPs" = toolPopulationFutureSDPs(),
+    "UN_PopDiv" = readSource("UN_PopDiv", "pop", "medium"),
+    "IndiaDEAs" = readSource("IndiaDEA", "pop"),
     "IndiaDEAbase" = readSource("IndiaDEA", "pop", "baseline"),
-    "IndiaDEAopt"  = readSource("IndiaDEA", "pop", "optimistic"),
+    "IndiaDEAopt" = readSource("IndiaDEA", "pop", "optimistic"),
     stop("Bad input for calcPopulationFuture. Invalid 'futureData' argument.")
   )
 
@@ -29,7 +31,7 @@ calcInternalPopulationFuture <- function(futureData) {
 
 toolPopulationFutureSDPs <- function(sdps = c("SDP", "SDP_EI", "SDP_MC", "SDP_RC")) {
   popSSP1 <- readSource("SSP", "pop", "SSP1") # nolint: object_usage_linter.
-  purrr::map(sdps, ~setNames(popSSP1, .x)) %>% mbind()
+  purrr::map(sdps, ~ setNames(popSSP1, .x)) %>% mbind()
 }
 
 
@@ -37,21 +39,23 @@ toolPopulationFutureSDPs <- function(sdps = c("SDP", "SDP_EI", "SDP_MC", "SDP_RC
 calcLabourFuture <- function(futureData) {
   toolCheckUserInput("LabourFuture", as.list(environment()))
   # Map over components of futureData.
-  purrr::map(unlist(strsplit(futureData, "-")),
-             ~calcOutput("InternalLabourFuture", futureData = .x, aggregate = FALSE, supplementary = TRUE)) %>%
+  purrr::map(
+    unlist(strsplit(futureData, "-")),
+    ~ calcOutput("InternalLabourFuture", futureData = .x, aggregate = FALSE, supplementary = TRUE)
+  ) %>%
     toolListFillWith()
 }
 
 calcInternalLabourFuture <- function(futureData) {
   data <- switch(
     futureData,
-    "SSPs"      = readSource("SSP", "lab"),
-    "SSP1"      = readSource("SSP", "lab", "SSP1"),
-    "SSP2"      = readSource("SSP", "lab", "SSP2"),
-    "SSP3"      = readSource("SSP", "lab", "SSP3"),
-    "SSP4"      = readSource("SSP", "lab", "SSP4"),
-    "SSP5"      = readSource("SSP", "lab", "SSP5"),
-    "SDPs"      = toolLabourFutureSDPs(),
+    "SSPs" = readSource("SSP", "lab"),
+    "SSP1" = readSource("SSP", "lab", "SSP1"),
+    "SSP2" = readSource("SSP", "lab", "SSP2"),
+    "SSP3" = readSource("SSP", "lab", "SSP3"),
+    "SSP4" = readSource("SSP", "lab", "SSP4"),
+    "SSP5" = readSource("SSP", "lab", "SSP5"),
+    "SDPs" = toolLabourFutureSDPs(),
     "UN_PopDiv" = readSource("UN_PopDiv", "lab", "medium"),
     stop("Bad input for calcLabour. Invalid 'futureData' argument.")
   )
@@ -61,22 +65,21 @@ calcInternalLabourFuture <- function(futureData) {
 
 toolLabourFutureSDPs <- function(sdps = c("SDP", "SDP_EI", "SDP_MC", "SDP_RC")) {
   labSSP1 <- readSource("SSP", "lab", "SSP1") # nolint: object_usage_linter.
-  purrr::map(sdps, ~setNames(labSSP1, .x)) %>% mbind()
+  purrr::map(sdps, ~ setNames(labSSP1, .x)) %>% mbind()
 }
-
 
 
 #' @rdname calcGDPPast
 calcUrbanFuture <- function(futureData) {
   data <- switch(
     futureData,
-    "SSPs"   = toolUrbanFutureSSPs(),
-    "SSP1"   = toolUrbanFutureSSPs("SSP1"),
-    "SSP2"   = toolUrbanFutureSSPs("SSP2"),
-    "SSP3"   = toolUrbanFutureSSPs("SSP3"),
-    "SSP4"   = toolUrbanFutureSSPs("SSP4"),
-    "SSP5"   = toolUrbanFutureSSPs("SSP5"),
-    "SDPs"   = toolUrbanFutureSDPs(),
+    "SSPs" = toolUrbanFutureSSPs(),
+    "SSP1" = toolUrbanFutureSSPs("SSP1"),
+    "SSP2" = toolUrbanFutureSSPs("SSP2"),
+    "SSP3" = toolUrbanFutureSSPs("SSP3"),
+    "SSP4" = toolUrbanFutureSSPs("SSP4"),
+    "SSP5" = toolUrbanFutureSSPs("SSP5"),
+    "SDPs" = toolUrbanFutureSDPs(),
     stop("Bad input for calcUrbanFuture. Invalid 'futureData' argument.")
   )
 
@@ -102,9 +105,9 @@ toolUrbanFutureSSPs <- function(ssps = c("SSP1", "SSP2", "SSP3", "SSP4", "SSP5")
 toolUrbanFutureSDPs <- function() {
   urbSSPs <- toolUrbanFutureSSPs(c("SSP1", "SSP2", "SSP3"))
   # SSP1 for the first 3 SDP scenarios
-  urbSDPs <- purrr::map(c("SDP", "SDP_EI", "SDP_MC"), ~setNames(urbSSPs[, , "SSP1"], .x)) %>% mbind()
+  urbSDPs <- purrr::map(c("SDP", "SDP_EI", "SDP_MC"), ~ setNames(urbSSPs[,, "SSP1"], .x)) %>% mbind()
   # SSP2 and SSP3 for SDP_RC
-  urbSDPrc <- setNames(urbSSPs[, , "SSP2"], "SDP_RC")
+  urbSDPrc <- setNames(urbSSPs[,, "SSP2"], "SDP_RC")
   oecdMapping <- toolGetMapping("regionmappingOECD.csv", type = "regional", where = "mappingfolder")
   oecdCountries <- oecdMapping[oecdMapping$RegionCode == "OECD", "CountryCode"]
   urbSDPrc[oecdCountries, , ] <- urbSSPs[oecdCountries, , "SSP3"]

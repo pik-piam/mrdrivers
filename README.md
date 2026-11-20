@@ -1,6 +1,6 @@
 # Create GDP and Population Scenarios
 
-R package **mrdrivers**, version **7.3.0**
+R package **mrdrivers**, version **7.3.1**
 
    [![R build status](https://pik-piam.github.io/mrdrivers/workflows/check/badge.svg)](https://pik-piam.github.io/mrdrivers/actions) [![codecov](https://codecov.io/gh/mrdrivers/branch/master/graph/badge.svg)](https://app.codecov.io/gh/mrdrivers) [![r-universe](https://pik-piam.r-universe.dev/badges/mrdrivers)](https://pik-piam.r-universe.dev/builds)
 
@@ -104,7 +104,7 @@ In case of questions / problems please contact Johannes Koch <jokoch@pik-potsdam
 
 To cite package **mrdrivers** in publications use:
 
-Koch J, Soergel B, Leip D, Benke F, Dietrich J (2026). "mrdrivers: Create GDP and Population Scenarios." Version: 7.3.0, <https://github.com/pik-piam/mrdrivers>.
+Koch J, Soergel B, Leip D, Benke F, Dietrich J (2026). "mrdrivers: Create GDP and Population Scenarios." Version: 7.3.1, <https://github.com/pik-piam/mrdrivers>.
 
 A BibTeX entry for LaTeX users is
 
@@ -112,9 +112,9 @@ A BibTeX entry for LaTeX users is
 @Misc{,
   title = {mrdrivers: Create GDP and Population Scenarios},
   author = {Johannes Koch and Bjoern Soergel and Deborra Leip and Falk Benke and Jan Philipp Dietrich},
-  date = {2026-11-17},
+  date = {2026-11-20},
   year = {2026},
   url = {https://github.com/pik-piam/mrdrivers},
-  note = {Version: 7.3.0},
+  note = {Version: 7.3.1},
 }
 ```

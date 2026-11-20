@@ -22,10 +22,12 @@ readIMF <- function() {
     dplyr::mutate(tmp = paste0("[", .data$tmp, "]")) %>%
     tidyr::unite("INDICATOR", c("INDICATOR", "tmp"), sep = " ") %>%
     dplyr::select("iso3c" = "COUNTRY.ID", "INDICATOR", tidyselect::starts_with(c("1", "2"))) %>%
-    tidyr::pivot_longer(tidyselect::starts_with(c("1", "2")),
-                        names_to = "year",
-                        names_transform = as.numeric,
-                        values_transform = as.numeric) %>%
+    tidyr::pivot_longer(
+      tidyselect::starts_with(c("1", "2")),
+      names_to = "year",
+      names_transform = as.numeric,
+      values_transform = as.numeric
+    ) %>%
     tidyr::replace_na(list(value = 0)) %>%
     as.magpie(spatial = "iso3c", temporal = "year", tidy = TRUE)
 }
@@ -50,22 +52,26 @@ convertIMF <- function(x, subtype = "all") {
   # Use convert function to filter
   if (subtype == "gdppc") {
     h <- "Gross domestic product (GDP), Constant prices, Per capita, purchasing power parity (PPP) international dollar, ICP benchmark 2021 [Units NA]" # nolint: line_length_linter.
-    x <- x[, , h]
+    x <- x[,, h]
   }
   if (subtype == "gdp") {
     h <- "Gross domestic product (GDP), Constant prices, Per capita, purchasing power parity (PPP) international dollar, ICP benchmark 2021 [Units NA]" # nolint: line_length_linter.
     h2 <- "Population, Persons for countries / Index for country groups [Millions NA]"
-    x <- x[, , h] * x[, , h2]
+    x <- x[,, h] * x[,, h2]
   }
-  if (subtype == "BCA") x <- x[, , "Current account balance (credit less debit), US dollar [Billions US dollar]"]
+  if (subtype == "BCA") {
+    x <- x[,, "Current account balance (credit less debit), US dollar [Billions US dollar]"]
+  }
 
   x <- toolGeneralConvert(x)
 
   if (subtype %in% c("gdppc", "gdp")) {
-    x <- GDPuc::toolConvertGDP(x,
-                               unit_in = "constant 2021 Int$PPP",
-                               unit_out = toolGetUnitDollar(inPPP = TRUE),
-                               replace_NAs = "no_conversion")
+    x <- GDPuc::toolConvertGDP(
+      x,
+      unit_in = "constant 2021 Int$PPP",
+      unit_out = toolGetUnitDollar(inPPP = TRUE),
+      replace_NAs = "no_conversion"
+    )
   }
 
   x
@@ -76,17 +82,20 @@ convertIMF <- function(x, subtype = "all") {
 #' @order 1
 downloadIMF <- function() {
   stop("Manual download of IMF data required!")
+  # nolint next: line_length_linter
   url <- "https://data.imf.org/-/media/iData/External-Storage/Documents/2F78EE59F79143A7921E5E203D3AAA80/en/WEOApr2026all.xlsx"
   utils::download.file(url, basename(url), quiet = TRUE)
 
   # Compose meta data
-  list(url           = url,
-       doi           = "-",
-       title         = "World Economic Outlook database of the IMF",
-       description   = "World Economic Outlook database of the International Monetary Fund",
-       unit          = "-",
-       author        = "International Monetary Fund",
-       release_date  = "April 2026",
-       license       = "-",
-       comment       = "-")
+  list(
+    url = url,
+    doi = "-",
+    title = "World Economic Outlook database of the IMF",
+    description = "World Economic Outlook database of the International Monetary Fund",
+    unit = "-",
+    author = "International Monetary Fund",
+    release_date = "April 2026",
+    license = "-",
+    comment = "-"
+  )
 }

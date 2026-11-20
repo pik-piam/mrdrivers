@@ -3,8 +3,10 @@ calcPopulationPast <- function(pastData = toolGetScenarioDefinition("Population"
   toolCheckUserInput("PopulationPast", as.list(environment()))
 
   # Map over components of pastData.
-  data <- purrr::map(unlist(strsplit(pastData, "-")),
-                     ~calcOutput("InternalPopulationPast", pastData = .x, aggregate = FALSE, supplementary = TRUE)) %>%
+  data <- purrr::map(
+    unlist(strsplit(pastData, "-")),
+    ~ calcOutput("InternalPopulationPast", pastData = .x, aggregate = FALSE, supplementary = TRUE)
+  ) %>%
     toolListFillWith()
 
   # Fill in trailing zeros with closest value
@@ -15,10 +17,10 @@ calcPopulationPast <- function(pastData = toolGetScenarioDefinition("Population"
 calcInternalPopulationPast <- function(pastData) {
   data <- switch(
     pastData,
-    "WDI"       = readSource("WDI", "pop"),
+    "WDI" = readSource("WDI", "pop"),
     "UN_PopDiv" = readSource("UN_PopDiv", "pop", "estimates"),
-    "MI"        = readSource("MissingIslands", "pop"),
-    "SSPs"      = readSource("SSP", "pop", "Historical Reference"),
+    "MI" = readSource("MissingIslands", "pop"),
+    "SSPs" = readSource("SSP", "pop", "Historical Reference"),
     stop("Bad input for calcPopulationPast. Invalid 'pastData' argument.")
   )
 
@@ -28,22 +30,23 @@ calcInternalPopulationPast <- function(pastData) {
 }
 
 
-
 #' @rdname calcGDPPast
 calcLabourPast <- function(pastData = toolGetScenarioDefinition("Labour", "SSPs")$pastData) {
   toolCheckUserInput("LabourPast", as.list(environment()))
   # Map over components of pastData.
-  purrr::map(unlist(strsplit(pastData, "-")),
-             ~calcOutput("InternalLabourPast", pastData = .x, aggregate = FALSE, supplementary = TRUE)) %>%
+  purrr::map(
+    unlist(strsplit(pastData, "-")),
+    ~ calcOutput("InternalLabourPast", pastData = .x, aggregate = FALSE, supplementary = TRUE)
+  ) %>%
     toolListFillWith()
 }
 
 calcInternalLabourPast <- function(pastData) {
   data <- switch(
     pastData,
-    "WDI"       = readSource("WDI", "lab"),
+    "WDI" = readSource("WDI", "lab"),
     "UN_PopDiv" = readSource("UN_PopDiv", "lab", "estimates"),
-    "SSPs"      = readSource("SSP", "lab", "Historical Reference"),
+    "SSPs" = readSource("SSP", "lab", "Historical Reference"),
     stop("Bad input for calcLabourPast. Invalid 'pastData' argument.")
   )
 
@@ -71,8 +74,10 @@ calcUrbanPast <- function(pastData = toolGetScenarioDefinition("Urban", "SSPs")$
   weight <- calcOutput("PopulationPast", pastData = pastData, aggregate = FALSE)
   getNames(weight) <- getNames(data)
 
-  list(x = data,
-       weight = weight,
-       unit = "share of population",
-       description = glue("{pastData} data (with missing TWN values set to that of HKG)"))
+  list(
+    x = data,
+    weight = weight,
+    unit = "share of population",
+    description = glue("{pastData} data (with missing TWN values set to that of HKG)")
+  )
 }

@@ -39,7 +39,9 @@ toolGetAllDrivers <- function(version = "current", scenario = "SSPs") {
 #' @returns A list of magpie objects
 #' @keywords internal
 toolSaveAllDrivers <- function(version, scenario = "SSPs") {
-  x <- readr::write_rds(toolGetAllDrivers(version = "current", scenario = scenario),
-                        glue::glue("compare_versions/scenarios/{tolower(scenario)}_v{version}.Rds"))
+  x <- readr::write_rds(
+    toolGetAllDrivers(version = "current", scenario = scenario),
+    glue::glue("compare_versions/scenarios/{tolower(scenario)}_v{version}.Rds")
+  )
   invisible(x)
 }

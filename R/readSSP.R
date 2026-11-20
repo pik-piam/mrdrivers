@@ -11,10 +11,12 @@
 #' @order 1
 readSSP <- function() {
   myColTypes <- c(rep.int("text", 5), rep.int("numeric", 31))
-  x <- readxl::read_xlsx("ssp_basic_drivers_release_3.2.beta_full.xlsx",
-                         sheet = "data",
-                         col_types = myColTypes,
-                         progress = FALSE) %>%
+  x <- readxl::read_xlsx(
+    "ssp_basic_drivers_release_3.2.beta_full.xlsx",
+    sheet = "data",
+    col_types = myColTypes,
+    progress = FALSE
+  ) %>%
     tidyr::unite("Model.Scenario.Variable.Unit", c("Model", "Scenario", "Variable", "Unit"), sep = ".") %>%
     tidyr::pivot_longer(cols = tidyselect::where(is.numeric), names_to = "year")
 
@@ -22,29 +24,34 @@ readSSP <- function() {
   myColTypes <- paste(c(rep.int("c", 5), rep.int("d", 41)), collapse = "")
   xUrb <- readr::read_csv("SspDb_country_data_2013-06-12.csv.zip", col_types = myColTypes, progress = FALSE) %>%
     dplyr::filter(.data$MODEL == "NCAR", .data$VARIABLE == "Population|Urban|Share") %>%
-    tidyr::unite("Model.Scenario.Variable.Unit",  c("MODEL", "SCENARIO", "VARIABLE", "UNIT"), sep = ".") %>%
+    tidyr::unite("Model.Scenario.Variable.Unit", c("MODEL", "SCENARIO", "VARIABLE", "UNIT"), sep = ".") %>%
     # Drop columns (years) with only NAs
     dplyr::select(tidyselect::vars_select_helpers$where(~ !all(is.na(.x)))) %>%
     tidyr::pivot_longer(cols = tidyselect::where(is.numeric), names_to = "year") %>%
     # Convert Region codes now (normally only done in convert) to harmonize with region codes in x. Use custom match
     # with the country.names in x to make sure that when the country.names are converted to iso3c in convert,
     # no duplicates appear.
-    dplyr::mutate("Region" = countrycode::countrycode(.data$REGION,
-                                                      "iso3c",
-                                                      "country.name",
-                                                      custom_match = c("BIH" = "Bosnia and Herzegovina",
-                                                                       "COG" = "Congo",
-                                                                       "COD" = "Democratic Republic of the Congo",
-                                                                       "CIV" = "C\u00f4te d'Ivoire",
-                                                                       "MMR" = "Myanmar",
-                                                                       "PSE" = "Palestine",
-                                                                       "RUS" = "Russian Federation",
-                                                                       "TTO" = "Trinidad and Tobago",
-                                                                       "VNM" = "Viet Nam")),
-                  .keep = "unused")
+    dplyr::mutate(
+      "Region" = countrycode::countrycode(
+        .data$REGION,
+        "iso3c",
+        "country.name",
+        custom_match = c(
+          "BIH" = "Bosnia and Herzegovina",
+          "COG" = "Congo",
+          "COD" = "Democratic Republic of the Congo",
+          "CIV" = "C\u00f4te d'Ivoire",
+          "MMR" = "Myanmar",
+          "PSE" = "Palestine",
+          "RUS" = "Russian Federation",
+          "TTO" = "Trinidad and Tobago",
+          "VNM" = "Viet Nam"
+        )
+      ),
+      .keep = "unused"
+    )
 
-  dplyr::bind_rows(x, xUrb) %>%
-    as.magpie(spatial = "Region", temporal = "year", tidy = TRUE, filter = FALSE)
+  dplyr::bind_rows(x, xUrb) %>% as.magpie(spatial = "Region", temporal = "year", tidy = TRUE, filter = FALSE)
 }
 
 #' @rdname readSSP
@@ -55,16 +62,20 @@ readSSP <- function() {
 #'   "Historical Reference" is also available as a scenario.
 convertSSP <- function(x, subtype = "all", subset = c("SSP1", "SSP2", "SSP3", "SSP4", "SSP5")) {
   if (!subtype %in% c("all", "gdp", "pop", "lab", "urb")) {
-    stop(glue("Bad input for readSSP. Invalid 'subtype' argument. Available subtypes are 'all', 'gdp', 'pop', 'lab' \\
-              and 'urb'."))
+    stop(glue(
+      "Bad input for readSSP. Invalid 'subtype' argument. Available subtypes are 'all', 'gdp', 'pop', 'lab' \\
+              and 'urb'."
+    ))
   }
 
   if (subtype == "gdp") {
-    x <- mselect(x,
-                 Model = "OECD ENV-Growth 2025",
-                 Scenario = subset,
-                 Variable = "GDP|PPP",
-                 Unit = "billion USD_2017/yr")
+    x <- mselect(
+      x,
+      Model = "OECD ENV-Growth 2025",
+      Scenario = subset,
+      Variable = "GDP|PPP",
+      Unit = "billion USD_2017/yr"
+    )
     # Convert from billions to millions
     x <- x * 1e3
   }
@@ -73,8 +84,10 @@ convertSSP <- function(x, subtype = "all", subset = c("SSP1", "SSP2", "SSP3", "S
   }
   if (subtype == "lab") {
     # Choose only age groups between 15 and 64
-    agegrps <- getNames(x, dim = "Variable")[grepl("^Population(.*)(19|24|29|34|39|44|49|54|59|64)$",
-                                                   getNames(x, dim = "Variable"))]
+    agegrps <- getNames(x, dim = "Variable")[grepl(
+      "^Population(.*)(19|24|29|34|39|44|49|54|59|64)$",
+      getNames(x, dim = "Variable")
+    )]
     x <- mselect(x, Model = "IIASA-WiC POP 2025", Scenario = subset, Variable = agegrps, Unit = "million")
   }
   if (subtype == "urb") {
@@ -87,7 +100,9 @@ convertSSP <- function(x, subtype = "all", subset = c("SSP1", "SSP2", "SSP3", "S
   }
 
   # Reduce dimension by summation when possible
-  if (subtype != "all") x <- dimSums(x, dim = c("Model", "Variable", "Unit"))
+  if (subtype != "all") {
+    x <- dimSums(x, dim = c("Model", "Variable", "Unit"))
+  }
 
   # Drop regions (anything with brackets, or called "World")
   x <- x[!grepl("\\(|World", getCells(x)), , ]
@@ -97,7 +112,6 @@ convertSSP <- function(x, subtype = "all", subset = c("SSP1", "SSP2", "SSP3", "S
   # Convert to iso3c. Use custom match for the Federal States of Micronesia (= FSM)
   getCells(x) <- countrycode::countrycode(getCells(x), "country.name", "iso3c", custom_match = c("Micronesia" = "FSM"))
 
-
   toolGeneralConvert(x, useDefaultSetNames = subtype != "all")
 }
 
@@ -106,13 +120,15 @@ convertSSP <- function(x, subtype = "all", subset = c("SSP1", "SSP2", "SSP3", "S
 downloadSSP <- function() {
   stop("Manual download of SSP data required!")
   # Compose meta data
-  list(url           = "https://data.ece.iiasa.ac.at/ssp/#/downloads",
-       doi           = "-",
-       title         = "SSP projections",
-       description   = "SSP projections Release 3.0.1, March2024",
-       unit          = "-",
-       author        = "IIASA, OECD, Wittgenstein Center",
-       release_date  = "2024",
-       license       = "-",
-       comment       = "Manual download required! Accessed on the 15.04.2024.")
+  list(
+    url = "https://data.ece.iiasa.ac.at/ssp/#/downloads",
+    doi = "-",
+    title = "SSP projections",
+    description = "SSP projections Release 3.0.1, March2024",
+    unit = "-",
+    author = "IIASA, OECD, Wittgenstein Center",
+    release_date = "2024",
+    license = "-",
+    comment = "Manual download required! Accessed on the 15.04.2024."
+  )
 }

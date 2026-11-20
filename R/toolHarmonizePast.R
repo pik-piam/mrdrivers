@@ -54,9 +54,11 @@ toolHarmonizePast <- function(past, future, method = "level", yEnd = 2100, requi
     if (requireTimeOverlap) {
       stop("The past and future data need to have some overlap.")
     } else {
-      future <- time_interpolate(future,
-                                 interpolated_year = lastPastYear:(firstFutureYear - 1),
-                                 integrate_interpolated_years = TRUE)
+      future <- time_interpolate(
+        future,
+        interpolated_year = lastPastYear:(firstFutureYear - 1),
+        integrate_interpolated_years = TRUE
+      )
     }
   }
 
@@ -67,7 +69,7 @@ toolHarmonizePast <- function(past, future, method = "level", yEnd = 2100, requi
   }
 
   # Create past data for all future scenarios
-  tmpPast <- past[, , rep(1, ndata(future))]
+  tmpPast <- past[,, rep(1, ndata(future))]
   tmpPast <- setNames(tmpPast, getNames(future))
   tmpPast[is.nan(tmpPast)] <- 0
 
@@ -76,14 +78,14 @@ toolHarmonizePast <- function(past, future, method = "level", yEnd = 2100, requi
   tmpFuture <- new.magpie(getItems(future, 1), yearsFuture, getNames(future), fill = 0)
 
   if (method == "level") {
-    tmpFuture[, , ] <- future[, yearsFuture, ]
+    tmpFuture[,,] <- future[, yearsFuture, ]
   }
   if (method == "growth") {
-    tmpFuture[, , ] <- tmpPast[, lastPastYear, ] * future[, yearsFuture, ] / future[, lastPastYear, ]
+    tmpFuture[,,] <- tmpPast[, lastPastYear, ] * future[, yearsFuture, ] / future[, lastPastYear, ]
     tmpFuture[is.nan(tmpFuture)] <- 0
   }
   if (method == "parallel") {
-    tmpFuture[, , ] <- future[, yearsFuture, ] + (tmpPast[, lastPastYear, ] - future[, lastPastYear, ])
+    tmpFuture[,,] <- future[, yearsFuture, ] + (tmpPast[, lastPastYear, ] - future[, lastPastYear, ])
   }
   if (method == "transition") {
     yearsTrans <- yearsFuture[which(yearsFuture <= yEnd)]
@@ -109,12 +111,18 @@ toolHarmonizePast <- function(past, future, method = "level", yEnd = 2100, requi
 
   description <- switch(
     method,
-    "level" = glue("use {pastDescription} until {max(getYears(past, as.integer = TRUE))} and then switch directly \\
-                   to {futureDescription}."),
-    "growth" = glue("use {pastDescription} until {max(getYears(past, as.integer = TRUE))} and then follow the \\
-                    growth of {futureDescription}."),
-    "transition" = glue("use {pastDescription} until {max(getYears(past, as.integer = TRUE))} and converge towards \\
-                         {futureDescription} by {yEnd}."),
+    "level" = glue(
+      "use {pastDescription} until {max(getYears(past, as.integer = TRUE))} and then switch directly \\
+      to {futureDescription}."
+    ),
+    "growth" = glue(
+      "use {pastDescription} until {max(getYears(past, as.integer = TRUE))} and then follow the \\
+      growth of {futureDescription}."
+    ),
+    "transition" = glue(
+      "use {pastDescription} until {max(getYears(past, as.integer = TRUE))} and converge towards \\
+      {futureDescription} by {yEnd}."
+    ),
     stop("Unkwown method.")
   )
 

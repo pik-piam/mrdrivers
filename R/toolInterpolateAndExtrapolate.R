@@ -6,7 +6,7 @@
 #' @param extrapolate TRUE or FALSE
 #' @keywords internal
 #' @return list
-toolInterpolateAndExtrapolate  <- function(data, extrapolate = TRUE) {
+toolInterpolateAndExtrapolate <- function(data, extrapolate = TRUE) {
   if (!is.magpie(data)) {
     dataHelper <- data
     data <- data$x
@@ -20,13 +20,16 @@ toolInterpolateAndExtrapolate  <- function(data, extrapolate = TRUE) {
     missingyears <- where(data[i, , ] == 0)$true$years
     if (!extrapolate) {
       # If not extrapolating, then confine the years to those between years with non 0 values
-      missingyears <- missingyears[missingyears > min(where(data[i, , ] != 0)$true$years) &
-                                     missingyears < max(where(data[i, , ] != 0)$true$years)]
+      missingyears <- missingyears[
+        missingyears > min(where(data[i, , ] != 0)$true$years) & missingyears < max(where(data[i, , ] != 0)$true$years)
+      ]
       if (rlang::is_empty(missingyears)) next
     }
-    data[i, missingyears, ] <- time_interpolate(dataset = data[i, , ][, missingyears, , invert = TRUE],
-                                                interpolated_year = missingyears,
-                                                extrapolation_type = "constant")
+    data[i, missingyears, ] <- time_interpolate(
+      dataset = data[i, , ][, missingyears, , invert = TRUE],
+      interpolated_year = missingyears,
+      extrapolation_type = "constant"
+    )
   }
 
   if (!(exists("dataHelper", inherits = FALSE))) {

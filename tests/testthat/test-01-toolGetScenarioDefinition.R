@@ -8,14 +8,18 @@ test_that("toolGetScenarioDefinition works", {
   expect_s3_class(toolGetScenarioDefinition("GDP", "SSPs"), "tbl")
   expect_type(toolGetScenarioDefinition("GDP", "SSPs", aslist = TRUE), "list")
   expect_length(toolGetScenarioDefinition("GDP", "SSPs", aslist = TRUE), 5)
-  expect_named(toolGetScenarioDefinition("GDP", "SSPs", aslist = TRUE),
-               c("driver", "scenario", "pastData", "futureData", "harmonization"))
+  expect_named(
+    toolGetScenarioDefinition("GDP", "SSPs", aslist = TRUE),
+    c("driver", "scenario", "pastData", "futureData", "harmonization")
+  )
   expect_type(toolGetScenarioDefinition(getGroupShortcuts = TRUE), "list")
 
   expect_type(toolGetScenarioDefinition(c("GDP", "Population"), c("SDPs", "SSPs"), aslist = TRUE), "list")
   expect_length(toolGetScenarioDefinition(c("GDP", "Population"), c("SSPs", "SDPs"), aslist = TRUE), 5)
-  expect_named(toolGetScenarioDefinition(c("GDP", "Population"), c("SSPs", "SDPs"), aslist = TRUE),
-               c("driver", "scenario", "pastData", "futureData", "harmonization"))
+  expect_named(
+    toolGetScenarioDefinition(c("GDP", "Population"), c("SSPs", "SDPs"), aslist = TRUE),
+    c("driver", "scenario", "pastData", "futureData", "harmonization")
+  )
   expect_s3_class(toolGetScenarioDefinition(scen = "ISIMIP"), "tbl")
 
   x <- toolGetScenarioDefinition("GDP", c("SSPs", "SDPs"))
@@ -29,8 +33,10 @@ test_that("toolGetScenarioDefinition works", {
   expect_type(x[[3]], "character")
   expect_length(x[[3]], 2)
 
-  expect_false(identical(toolGetScenarioDefinition("GDP", c("SSPs", "SDPs"), aslist = TRUE),
-                         toolGetScenarioDefinition("GDP", c("SDPs", "SSPs"), aslist = TRUE)))
+  expect_false(identical(
+    toolGetScenarioDefinition("GDP", c("SSPs", "SDPs"), aslist = TRUE),
+    toolGetScenarioDefinition("GDP", c("SDPs", "SSPs"), aslist = TRUE)
+  ))
 })
 
 test_that("toolReplaceShortcuts works", {

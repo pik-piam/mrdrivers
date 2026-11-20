@@ -45,22 +45,34 @@
 #' @keywords internal
 calcDriver <- function(driver, scenario, popAsWeight = FALSE, naming = "scenario", extension2150 = "bezier") {
   # Manipulate scenario to avoid returning duplicates. So for example, drop SSP2 if SSPs is also selected.
-  if ("SSPs" %in% scenario) scenario <- unique(scenario[!grepl("SSP[1-5]$", scenario)])
-  if ("SSP2IndiaDEAs" %in% scenario) scenario <- unique(scenario[!grepl("SSP2India(Medium|High)", scenario)])
+  if ("SSPs" %in% scenario) {
+    scenario <- unique(scenario[!grepl("SSP[1-5]$", scenario)])
+  }
+  if ("SSP2IndiaDEAs" %in% scenario) {
+    scenario <- unique(scenario[!grepl("SSP2India(Medium|High)", scenario)])
+  }
 
   # Map over scenarios.
-  purrr::map(scenario,
-             ~calcOutput("ScenarioConstructor",
-                         driver = driver,
-                         scenario = .x,
-                         popAsWeight = popAsWeight,
-                         extension2150 = extension2150,
-                         aggregate = FALSE,
-                         supplementary = TRUE)) %>%
-    purrr::reduce(~list(x = toolMbindAddMissingYears(.x$x, .y$x),
-                        weight = toolMbindAddMissingYears(.x$weight, .y$weight),
-                        unit = .x$unit,
-                        description = glue("{.x$description} || {.y$description}")))
+  purrr::map(
+    scenario,
+    ~ calcOutput(
+      "ScenarioConstructor",
+      driver = driver,
+      scenario = .x,
+      popAsWeight = popAsWeight,
+      extension2150 = extension2150,
+      aggregate = FALSE,
+      supplementary = TRUE
+    )
+  ) %>%
+    purrr::reduce(
+      ~ list(
+        x = toolMbindAddMissingYears(.x$x, .y$x),
+        weight = toolMbindAddMissingYears(.x$weight, .y$weight),
+        unit = .x$unit,
+        description = glue("{.x$description} || {.y$description}")
+      )
+    )
 }
 
 #' Scenario construction
@@ -74,25 +86,28 @@ calcDriver <- function(driver, scenario, popAsWeight = FALSE, naming = "scenario
 #' @inherit madrat::calcOutput return
 #' @keywords internal
 calcScenarioConstructor <- function(driver, scenario, popAsWeight, extension2150) {
-
   data <- calcOutput("HarmonizedData", driver = driver, scenario = scenario, aggregate = FALSE, supplementary = TRUE)
 
-  if (extension2150 != "none") data <- toolExtend2150(data, extension2150)
+  if (extension2150 != "none") {
+    data <- toolExtend2150(data, extension2150)
+  }
 
   # If required, get population as weight
   if (popAsWeight) {
-    weight <- calcOutput("Population",
-                         scenario = scenario,
-                         extension2150 = extension2150,
-                         aggregate = FALSE,
-                         supplementary = TRUE)
+    weight <- calcOutput(
+      "Population",
+      scenario = scenario,
+      extension2150 = extension2150,
+      aggregate = FALSE,
+      supplementary = TRUE
+    )
     # Give weight same names as data, so that aggregate does not mess up data dim
     getNames(weight$x) <- getNames(data$x)
     # Make sure weight and data have the same yearly resolution.
     ## Sometimes weight has more years than x, thus the intersect operation.
     weight$x <- weight$x[, intersect(getYears(data$x), getYears(weight$x)), ]
     ## If x has more years than weight, add these years and interpolate
-    missingYears <- getYears(data$x)[! getYears(data$x) %in% getYears(weight$x)]
+    missingYears <- getYears(data$x)[!getYears(data$x) %in% getYears(weight$x)]
     weight$x <- add_columns(weight$x, missingYears, dim = 2, fill = 0)
     weight$x <- weight$x[, sort(getYears(weight$x)), ]
     weight$x <- toolInterpolateAndExtrapolate(weight$x)
@@ -102,10 +117,12 @@ calcScenarioConstructor <- function(driver, scenario, popAsWeight, extension2150
     weight <- NULL
   }
 
-  list(x = data$x,
-       weight = weight$x,
-       unit = data$unit,
-       description = glue("{driver} {scenario} scenarios: {data$description}"))
+  list(
+    x = data$x,
+    weight = weight$x,
+    unit = data$unit,
+    description = glue("{driver} {scenario} scenarios: {data$description}")
+  )
 }
 
 
@@ -118,8 +135,8 @@ calcScenarioConstructor <- function(driver, scenario, popAsWeight, extension2150
 calcHarmonizedData <- function(driver, scenario) {
   # Query the pastData, futureData and harmonization arguments of the "scenario".
   l <- toolGetScenarioDefinition(driver, scenario, aslist = TRUE)
-  pastData      <- l$pastData
-  futureData    <- l$futureData
+  pastData <- l$pastData
+  futureData <- l$futureData
   harmonization <- l$harmonization
 
   # Depending on the setup, the scenario construction either requires 'past' and 'future' data, or not!
@@ -128,53 +145,56 @@ calcHarmonizedData <- function(driver, scenario) {
   past <- if (pastData != "-") {
     switch(
       driver,
-      "GDP"        = calcOutput("GDPPast", pastData = pastData, aggregate = FALSE, supplementary = TRUE),
-      "GDPpc"      = calcOutput("GDPpcPast", scenario = scenario, aggregate = FALSE, supplementary = TRUE),
+      "GDP" = calcOutput("GDPPast", pastData = pastData, aggregate = FALSE, supplementary = TRUE),
+      "GDPpc" = calcOutput("GDPpcPast", scenario = scenario, aggregate = FALSE, supplementary = TRUE),
       "Population" = calcOutput("PopulationPast", pastData = pastData, aggregate = FALSE, supplementary = TRUE),
-      "Urban"      = calcOutput("UrbanPast", pastData = pastData, aggregate = FALSE, supplementary = TRUE),
-      "Labour"     = calcOutput("LabourPast", pastData = pastData, aggregate = FALSE, supplementary = TRUE)
-    ) %>% toolInterpolateAndExtrapolate()
+      "Urban" = calcOutput("UrbanPast", pastData = pastData, aggregate = FALSE, supplementary = TRUE),
+      "Labour" = calcOutput("LabourPast", pastData = pastData, aggregate = FALSE, supplementary = TRUE)
+    ) %>%
+      toolInterpolateAndExtrapolate()
   }
   future <- if (futureData != "-") {
     switch(
       driver,
-      "GDP"        = calcOutput("GDPFuture", futureData = futureData, aggregate = FALSE, supplementary = TRUE),
-      "GDPpc"      = calcOutput("GDPpcFuture", scenario = scenario, aggregate = FALSE, supplementary = TRUE),
+      "GDP" = calcOutput("GDPFuture", futureData = futureData, aggregate = FALSE, supplementary = TRUE),
+      "GDPpc" = calcOutput("GDPpcFuture", scenario = scenario, aggregate = FALSE, supplementary = TRUE),
       "Population" = calcOutput("PopulationFuture", futureData = futureData, aggregate = FALSE, supplementary = TRUE),
-      "Labour"     = calcOutput("LabourFuture", futureData = futureData, aggregate = FALSE, supplementary = TRUE),
-      "Urban"      = calcOutput("UrbanFuture", futureData = futureData, aggregate = FALSE, supplementary = TRUE),
-    ) %>% toolInterpolateAndExtrapolate()
+      "Labour" = calcOutput("LabourFuture", futureData = futureData, aggregate = FALSE, supplementary = TRUE),
+      "Urban" = calcOutput("UrbanFuture", futureData = futureData, aggregate = FALSE, supplementary = TRUE),
+    ) %>%
+      toolInterpolateAndExtrapolate()
   }
 
   # Combine "past" and "future" time series.
   harmonizedData <- switch(
     harmonization,
-    "pastAndLevel"        = toolHarmonizePast(past, future, method = "level"),
-    "pastAndLevelX"       = toolHarmonizePast(past, future, method = "level", requireTimeOverlap = FALSE),
-    "pastAndGrowth"       = toolHarmonizePast(past, future, method = "growth"),
-    "pastAndGrowthX"      = toolHarmonizePast(past, future, method = "growth", requireTimeOverlap = FALSE),
-    "pastAndTransition"   = toolHarmonizePast(past, future, method = "transition", yEnd = 2100),
-    "PopSSPs"             = toolHarmonizeWithPEAPandFuture(past, future),
-    "LabSSPs"             = toolHarmonizeLabourSSPs(past, future),
-    "PopSSP2IndiaDEAs"    = toolHarmonizePopulationSSP2IndiaDEAs(past, future),
-    "PopISIMIP"           = toolHarmonizePopulationSSPsISIMIP(past, future),
-    "GDPpcSSPs"           = toolHarmonizeGDPpcSSPs(past, future, yEnd = 2100),
-    "GDPpcSDPs"           = toolBuildGDPpcSDPs(),
-    "GDPpcSSPsISIMIP"     = toolHarmonizeGDPpcSSPsISIMIP(past, future, yEnd = 2100),
-    "GDPpcSSP2IndiaDEAs"  = toolHarmonizeGDPpcSSP2IndiaDEAs(past, future),
-    "GDPoverPop"          = toolDivideGDPbyPop(scenario),
-    "GDPpcWithPop"        = toolMultiplyGDPpcWithPop(scenario),
+    "pastAndLevel" = toolHarmonizePast(past, future, method = "level"),
+    "pastAndLevelX" = toolHarmonizePast(past, future, method = "level", requireTimeOverlap = FALSE),
+    "pastAndGrowth" = toolHarmonizePast(past, future, method = "growth"),
+    "pastAndGrowthX" = toolHarmonizePast(past, future, method = "growth", requireTimeOverlap = FALSE),
+    "pastAndTransition" = toolHarmonizePast(past, future, method = "transition", yEnd = 2100),
+    "PopSSPs" = toolHarmonizeWithPEAPandFuture(past, future),
+    "LabSSPs" = toolHarmonizeLabourSSPs(past, future),
+    "PopSSP2IndiaDEAs" = toolHarmonizePopulationSSP2IndiaDEAs(past, future),
+    "PopISIMIP" = toolHarmonizePopulationSSPsISIMIP(past, future),
+    "GDPpcSSPs" = toolHarmonizeGDPpcSSPs(past, future, yEnd = 2100),
+    "GDPpcSDPs" = toolBuildGDPpcSDPs(),
+    "GDPpcSSPsISIMIP" = toolHarmonizeGDPpcSSPsISIMIP(past, future, yEnd = 2100),
+    "GDPpcSSP2IndiaDEAs" = toolHarmonizeGDPpcSSP2IndiaDEAs(past, future),
+    "GDPoverPop" = toolDivideGDPbyPop(scenario),
+    "GDPpcWithPop" = toolMultiplyGDPpcWithPop(scenario),
     "LabourSSP2IndiaDEAs" = toolHarmonizeLabourSSP2IndiaDEAs(),
     stop(glue("Bad input for calcHarmonizedData Argument harmonization = '{harmonization}' is invalid."))
-  ) %>% toolInterpolateAndExtrapolate()
+  ) %>%
+    toolInterpolateAndExtrapolate()
 
   unit <- switch(
     driver,
-    "GDP"        = glue("mil. {toolGetUnitDollar(inPPP = TRUE)}"),
-    "GDPpc"      = toolGetUnitDollar(inPPP = TRUE),
+    "GDP" = glue("mil. {toolGetUnitDollar(inPPP = TRUE)}"),
+    "GDPpc" = toolGetUnitDollar(inPPP = TRUE),
     "Population" = "million",
-    "Urban"      = "share of population",
-    "Labour"     = "million"
+    "Urban" = "share of population",
+    "Labour" = "million"
   )
 
   list(x = harmonizedData$x, weight = NULL, unit = unit, description = harmonizedData$description)

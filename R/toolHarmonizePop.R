@@ -16,10 +16,14 @@ toolHarmonizeWithPEAPandFuture <- function(past, future) {
     toolInterpolateAndExtrapolate()
 
   lastPastYear <- max(getYears(past$x, as.integer = TRUE))
-  list(x = x,
-       description = glue("use {past$description} until {lastPastYear}, \\
-                          growth rates from the World Bank's PEAP until {lastYearIMF}, \\
-                          and growth rates from {future$description} thereafter."))
+  list(
+    x = x,
+    description = glue(
+      "use {past$description} until {lastPastYear}, \\
+      growth rates from the World Bank's PEAP until {lastYearIMF}, \\
+      and growth rates from {future$description} thereafter."
+    )
+  )
 }
 
 toolHarmonizeLabourSSPs <- function(past, future) {
@@ -35,18 +39,18 @@ toolHarmonizeLabourSSPs <- function(past, future) {
 
   lastPastYear <- max(getYears(past$x, as.integer = TRUE))
 
-  list(x = x,
-       description = glue("use {past$description} until {lastPastYear}, \\
-                          growth rates from the World Bank's PEAP until {lastYearIMF}, \\
-                          and growth rates from {future$description} thereafter."))
+  list(
+    x = x,
+    description = glue(
+      "use {past$description} until {lastPastYear}, \\
+      growth rates from the World Bank's PEAP until {lastYearIMF}, \\
+      and growth rates from {future$description} thereafter."
+    )
+  )
 }
 
 toolHarmonizePopulationSSPsISIMIP <- function(past, future) {
-  pop <- toolHarmonizePast(past,
-                           future,
-                           method = "transition",
-                           yEnd = 2030,
-                           requireTimeOverlap = FALSE)
+  pop <- toolHarmonizePast(past, future, method = "transition", yEnd = 2030, requireTimeOverlap = FALSE)
   pop$x <- setNames(pop$x, paste0(getNames(pop$x), "ISIMIP"))
   list(x = pop$x, description = pop$description)
 }
@@ -67,20 +71,24 @@ toolHarmonizePopulationSSP2IndiaDEAs <- function(past, future) {
     mbind()
 
   # Use "SSP2IndiaMedium" and "SSP2IndiaHigh" as IndiaDEA scenario names
-  newNames <- sub("baseline",   "SSP2IndiaMedium", getNames(combined))
+  newNames <- sub("baseline", "SSP2IndiaMedium", getNames(combined))
   newNames <- sub("optimistic", "SSP2IndiaHigh", newNames)
   getNames(combined) <- newNames
 
-  list(x = combined,
-       description = glue("equal to SSP2 in all countries except for IND. \\
-                           For IND use {past$description} until {max(getYears(past$x, as.integer = TRUE))} \\
-                           and transition to {future$description} by {yEnd}."))
+  list(
+    x = combined,
+    description = glue(
+      "equal to SSP2 in all countries except for IND. \\
+      For IND use {past$description} until {max(getYears(past$x, as.integer = TRUE))} \\
+      and transition to {future$description} by {yEnd}."
+    )
+  )
 }
 
 toolHarmonizeLabourSSP2IndiaDEAs <- function() {
   pop2 <- calcOutput("Population", scenario = "SSP2", extension2150 = "none", aggregate = FALSE)
   lab2 <- calcOutput("Labour", scenario = "SSP2", extension2150 = "none", aggregate = FALSE)
-  pop  <- calcOutput("Population", scenario = "SSP2IndiaDEAs", extension2150 = "none", aggregate = FALSE)
+  pop <- calcOutput("Population", scenario = "SSP2IndiaDEAs", extension2150 = "none", aggregate = FALSE)
 
   combined <- purrr::map(getNames(pop), function(x) {
     labShareSSP2 <- lab2 / pop2[, getYears(lab2), ]
