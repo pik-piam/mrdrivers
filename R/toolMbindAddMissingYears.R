@@ -14,7 +14,7 @@ toolMbindAddMissingYears <- function(x, y) {
   }
 
   cy <- commonYears(x, y)
-  xnew <- add_columns(x, dim = 2, addnm = getYears(y)[! getYears(y) %in% cy]) %>% magpiesort()
-  ynew <- add_columns(y, dim = 2, addnm = getYears(x)[! getYears(x) %in% cy]) %>% magpiesort()
+  xnew <- add_columns(x, dim = 2, addnm = getYears(y)[!getYears(y) %in% cy]) %>% magpiesort()
+  ynew <- add_columns(y, dim = 2, addnm = getYears(x)[!getYears(x) %in% cy]) %>% magpiesort()
   mbind(xnew, ynew)
 }

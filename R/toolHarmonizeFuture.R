@@ -53,7 +53,7 @@ toolHarmonizeFuture <- function(past, future, method = "level") {
   }
 
   # Create future data for all past scenarios
-  tmpFuture <- future[, , 1:ndata(past)]
+  tmpFuture <- future[,, 1:ndata(past)]
   tmpFuture <- setNames(tmpFuture, getNames(past))
   tmpFuture[is.nan(tmpFuture)] <- 0
 
@@ -62,10 +62,10 @@ toolHarmonizeFuture <- function(past, future, method = "level") {
   tmpPast <- new.magpie(getItems(past, 1), yearsPast, getNames(past), fill = 0)
 
   if (method == "level") {
-    tmpPast[, , ] <- past[, yearsPast, ]
+    tmpPast[,,] <- past[, yearsPast, ]
   }
   if (method == "growth") {
-    tmpPast[, , ] <- tmpFuture[, firstFutureYear, ] * past[, yearsPast, ] / past[, firstFutureYear, ]
+    tmpPast[,,] <- tmpFuture[, firstFutureYear, ] * past[, yearsPast, ] / past[, firstFutureYear, ]
     tmpPast[is.nan(tmpPast)] <- 0
   }
 
@@ -78,10 +78,14 @@ toolHarmonizeFuture <- function(past, future, method = "level") {
 
   description <- switch(
     method,
-    "level" = glue("use {futureDescription} after {min(getYears(future, as.integer = TRUE))} and {pastDescription} \\
-                    before then."),
-    "growth" = glue("use {futureDescription} after {min(getYears(future, as.integer = TRUE))} and follow the growth \\
-                    of {pastDescription} before then."),
+    "level" = glue(
+      "use {futureDescription} after {min(getYears(future, as.integer = TRUE))} and {pastDescription} \\
+      before then."
+    ),
+    "growth" = glue(
+      "use {futureDescription} after {min(getYears(future, as.integer = TRUE))} and follow the growth \\
+      of {pastDescription} before then."
+    ),
     stop("Unkwown method.")
   )
 

@@ -15,11 +15,16 @@ toolListFillWith <- function(x) {
   helper <- purrr::map2(sep, closer, c)
 
   # Here the ..3 argument refers to the helper vector.
-  purrr::reduce2(x, helper,
-                 ~ list(x = toolFillWith(.x$x, .y$x, .x$description, .y$description, verbose = TRUE),
-                        weight = if (!is.null(.x$weight)) toolFillWith(.x$weight, .y$weight),
-                        unit = glue("{.x$unit}"),
-                        description = glue("{.x$description}{..3[1]} {.y$description}{..3[2]}")))
+  purrr::reduce2(
+    x,
+    helper,
+    ~ list(
+      x = toolFillWith(.x$x, .y$x, .x$description, .y$description, verbose = TRUE),
+      weight = if (!is.null(.x$weight)) toolFillWith(.x$weight, .y$weight),
+      unit = glue("{.x$unit}"),
+      description = glue("{.x$description}{..3[1]} {.y$description}{..3[2]}")
+    )
+  )
 }
 
 
@@ -33,7 +38,6 @@ toolListFillWith <- function(x) {
 #' @keywords internal
 #' @return The completed magpie object
 toolFillWith <- function(data, fill, dataName = "data", fillName = "fill", verbose = FALSE) {
-
   # Get countries with missing data (only zeros)
   missing <- where(dimSums(data, dim = 2) == 0)$true$regions
 
@@ -43,9 +47,13 @@ toolFillWith <- function(data, fill, dataName = "data", fillName = "fill", verbo
   replace <- intersect(missing, withData)
 
   if (verbose) {
-    if (grepl("\\(completed with", dataName)) dataName <- paste0(dataName, ")")
-    message(glue("Data for the following countries is missing in {dataName}, and is taken instead from {fillName}: \\
-                 {paste0(replace, collapse = ', ')}."))
+    if (grepl("\\(completed with", dataName)) {
+      dataName <- paste0(dataName, ")")
+    }
+    message(glue(
+      "Data for the following countries is missing in {dataName}, and is taken instead from {fillName}: \\
+      {paste0(replace, collapse = ', ')}."
+    ))
   }
 
   # Use fill for countries with only zeros

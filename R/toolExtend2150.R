@@ -11,15 +11,19 @@ toolExtend2150 <- function(data, extension2150) {
   # It extends the time series in such a way as for the slope in 2105 to be half of that in 2100.
   if (extension2150 == "bezier" && "y2100" %in% getYears(data$x)) {
     data$x <- toolBezierExtension(data$x, seq(2105, 2150, 5))
-    data$description <- glue("{data$description} Extended from 2100 to 2150 using bezier curves, resulting in a \\
+    data$description <- glue(
+      "{data$description} Extended from 2100 to 2150 using bezier curves, resulting in a \\
                                smooth flattening of the scenario (the slope in 2150 is equal to half of that in \\
-                               2100).")
+                               2100)."
+    )
   } else {
     helper <- getSets(data$x)
-    data$x <- time_interpolate(data$x,
-                               seq(2005, 2150, 5),
-                               extrapolation_type = "constant",
-                               integrate_interpolated_years = TRUE)
+    data$x <- time_interpolate(
+      data$x,
+      seq(2005, 2150, 5),
+      extrapolation_type = "constant",
+      integrate_interpolated_years = TRUE
+    )
     # Time_interpolate destroys the setNames for some reason.
     getSets(data$x) <- helper
     data$description <- glue("{data$description} Extended from 2100 to 2150 using the constant 2100 value.")
@@ -50,14 +54,16 @@ toolBezierExtension <- function(data, timeExtend) {
   bc <- bc %>%
     tibble::as_tibble() %>%
     tidyr::pivot_wider(names_from = "year", names_prefix = "y") %>%
-    dplyr::mutate(dplyr::across(tidyselect::starts_with("y"),
-                                ~dplyr::if_else(.data$y2150 < 0 | .data$y2100 == 0, .data$y2100, .x))) %>%
-    tidyr::pivot_longer(tidyselect::starts_with("y"), names_to = "year", names_transform = ~sub("y", "", .x)) %>%
+    dplyr::mutate(dplyr::across(
+      tidyselect::starts_with("y"),
+      ~ dplyr::if_else(.data$y2150 < 0 | .data$y2100 == 0, .data$y2100, .x)
+    )) %>%
+    tidyr::pivot_longer(tidyselect::starts_with("y"), names_to = "year", names_transform = ~ sub("y", "", .x)) %>%
     as.magpie(spatial = "region", temporal = "year", tidy = TRUE)
 
   x <- rep(c(2100, 2110, 2140, 2150), nr * nd)
-  y <- purrr::reduce(purrr::map(1:nd, ~purrr::reduce(purrr::map(1:nr, function(y) bc[y, , .x]), c)), c)
-  z <- purrr::reduce(purrr::map(1:(nr * nd), ~rep(.x, 4)), c)
+  y <- purrr::reduce(purrr::map(1:nd, ~ purrr::reduce(purrr::map(1:nr, function(y) bc[y, , .x]), c)), c)
+  z <- purrr::reduce(purrr::map(1:(nr * nd), ~ rep(.x, 4)), c)
 
   # grid:: operations are super fast. Set the graphics device manually so that grid::bezierPoints returns the same
   # number of points on different devices, with potentially different default graphics devices.
@@ -67,16 +73,11 @@ toolBezierExtension <- function(data, timeExtend) {
     purrr::map(~ list("x" = as.numeric(.x$x), "y" = as.numeric(.x$y)))
   grDevices::dev.off()
 
-  id <- paste(purrr::reduce(purrr::map(getNames(data), ~rep(.x, nr)), c),
-              rep(getItems(data, 1), nd),
-              sep = "-")
+  id <- paste(purrr::reduce(purrr::map(getNames(data), ~ rep(.x, nr)), c), rep(getItems(data, 1), nd), sep = "-")
 
-  closestYear <- function(x) purrr::map_int(x, ~timeExtend[which.min(abs(.x - timeExtend))])
+  closestYear <- function(x) purrr::map_int(x, ~ timeExtend[which.min(abs(.x - timeExtend))])
 
-  extension <- purrr::map2(bezierPoints, id,
-                           ~.x %>%
-                             tibble::as_tibble() %>%
-                             dplyr::mutate(id = .y)) %>%
+  extension <- purrr::map2(bezierPoints, id, ~ .x %>% tibble::as_tibble() %>% dplyr::mutate(id = .y)) %>%
     purrr::list_rbind() %>%
     # Complicated / elegant use of function factories to get closest points to timeExtend coordinates
     # First create columns with distance to timeExtend points

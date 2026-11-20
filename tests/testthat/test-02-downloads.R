@@ -2,10 +2,14 @@ skip(message = "Skipped for time. Comment out line 1 in test-downloads.R to run 
 skip_on_ci()
 skip_on_covr()
 skip_on_cran()
-skip_if_not(dir.exists(madrat_mainfolder),
-            glue("Skipped, because the madrat mainfolder {madrat_mainfolder} \\
+skip_if_not(
+  dir.exists(madrat_mainfolder),
+  glue(
+    "Skipped, because the madrat mainfolder {madrat_mainfolder} \\
                   defined in 'tests/setup_madrat_config.R' could not be found.
-                  If you wish to run this test please configure the file appropriately."))
+                  If you wish to run this test please configure the file appropriately."
+  )
+)
 
 localMadratCfg <- getOption("madrat_cfg")
 localMadratCfg$sourcefolder <- paste0(localMadratCfg$mainfolder, "/tmp_test_download")
@@ -42,9 +46,9 @@ test_that("Download MissingIslands", {
 test_that("Download UN_PopDiv", {
   withr::local_options(madrat_cfg = localMadratCfg)
   downloadSource("UN_PopDiv")
-  expect_true(file.exists(
-    glue("{localMadratCfg$sourcefolder}/UN_PopDiv/WPP2019_POP_F01_1_TOTAL_POPULATION_BOTH_SEXES.xlsx")
-  ))
+  expect_true(file.exists(glue(
+    "{localMadratCfg$sourcefolder}/UN_PopDiv/WPP2019_POP_F01_1_TOTAL_POPULATION_BOTH_SEXES.xlsx"
+  )))
 })
 
 unlink(localMadratCfg$sourcefolder, recursive = TRUE)

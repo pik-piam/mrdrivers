@@ -75,19 +75,17 @@ convertWDI <- function(x, subtype) {
     vcat("Warning: Kosovo left out of conversion and has differing population values from FAO", verbosity = 2)
   }
 
-  getCells(x) <- countrycode::countrycode(getCells(x),
-                                          "iso2c",
-                                          "iso3c",
-                                          custom_match = c("JG" = "JEY"),
-                                          warn = FALSE)
+  getCells(x) <- countrycode::countrycode(getCells(x), "iso2c", "iso3c", custom_match = c("JG" = "JEY"), warn = FALSE)
 
   x <- toolGeneralConvert(x)
 
   if (subtype == "NY.GDP.MKTP.PP.KD") {
-    x <- GDPuc::toolConvertGDP(x,
-                               unit_in = "constant 2021 Int$PPP",
-                               unit_out = toolGetUnitDollar(inPPP = TRUE),
-                               replace_NAs = "no_conversion")
+    x <- GDPuc::toolConvertGDP(
+      x,
+      unit_in = "constant 2021 Int$PPP",
+      unit_out = toolGetUnitDollar(inPPP = TRUE),
+      replace_NAs = "no_conversion"
+    )
   }
 
   x
@@ -101,25 +99,27 @@ downloadWDI <- function() {
   # The WDI data is updated with the function "WDISearch(cache = WDIcache())"
   WDI::WDIsearch(cache = WDI::WDIcache())
   indicator <- c(
-    "SP.POP.TOTL",       # Total population
-    "SP.POP.1564.TO",    # Working age population (15-64 years old)
+    "SP.POP.TOTL", # Total population
+    "SP.POP.1564.TO", # Working age population (15-64 years old)
     "SP.URB.TOTL.IN.ZS", # Urban Population (% of total)
     "NY.GDP.MKTP.PP.KD", # GDP [constant 2021 Int$PPP]
-    "NV.AGR.TOTL.KD",    # For mrvalidation: AgFF value added [constant 2015 US$MER]
-    "AG.SRF.TOTL.K2"     # For mredgebuildings: surface area [square kms]
+    "NV.AGR.TOTL.KD", # For mrvalidation: AgFF value added [constant 2015 US$MER]
+    "AG.SRF.TOTL.K2" # For mredgebuildings: surface area [square kms]
   )
   endYear <- as.numeric(strsplit(as.character(Sys.Date()), "-")[[1]][1]) - 1
   wdi <- WDI::WDI(indicator = indicator, start = 1960, end = endYear)
   readr::write_rds(wdi, "WDI.Rds")
 
   # Compose meta data
-  list(url           = "-",
-       doi           = "-",
-       title         = "Select indicators from the WDI",
-       description   = "Select indicators from the World Development Indicators database from the World Bank",
-       unit          = "-",
-       author        = "World Bank",
-       release_date  = "-",
-       license       = "-",
-       comment       = "see also https://databank.worldbank.org/source/world-development-indicators")
+  list(
+    url = "-",
+    doi = "-",
+    title = "Select indicators from the WDI",
+    description = "Select indicators from the World Development Indicators database from the World Bank",
+    unit = "-",
+    author = "World Bank",
+    release_date = "-",
+    license = "-",
+    comment = "see also https://databank.worldbank.org/source/world-development-indicators"
+  )
 }

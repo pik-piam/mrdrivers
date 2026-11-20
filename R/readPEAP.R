@@ -9,11 +9,13 @@
 #' @order 2
 readPEAP <- function() {
   file <- "Data_Extract_From_Population_estimates_and_projections_13_05_2026.csv"
-  myColTypes <- readr::cols(.default = "d",
-                            "Country Name" = "_",
-                            "Country Code" = "c",
-                            "Series Name" = "_",
-                            "Series Code" = "_")
+  myColTypes <- readr::cols(
+    .default = "d",
+    "Country Name" = "_",
+    "Country Code" = "c",
+    "Series Name" = "_",
+    "Series Code" = "_"
+  )
   readr::read_csv(file, col_types = myColTypes) %>%
     suppressWarnings() %>%
     # The warnings that are being suppressed above, come from character strings that cannot be converted to numeric, and
@@ -39,16 +41,18 @@ convertPEAP <- function(x) {
 
 #' @rdname readPEAP
 #' @order 1
-downloadPEAP  <- function() {
+downloadPEAP <- function() {
   stop("Manual download of PEAP data required!")
   # Compose meta data
-  list(url           = "https://databank.worldbank.org/source/population-estimates-and-projections#",
-       doi           = "-",
-       title         = "Population Estimates and Projections",
-       description   = "Population Estimates and Projections by the World Bank 1960-2050",
-       unit          = "-",
-       author        = "World Bank",
-       release_date  = "2024",
-       license       = "-",
-       comment       = "Manual download required! Accessed on the 15.04.2024.")
+  list(
+    url = "https://databank.worldbank.org/source/population-estimates-and-projections#",
+    doi = "-",
+    title = "Population Estimates and Projections",
+    description = "Population Estimates and Projections by the World Bank 1960-2050",
+    unit = "-",
+    author = "World Bank",
+    release_date = "2024",
+    license = "-",
+    comment = "Manual download required! Accessed on the 15.04.2024."
+  )
 }

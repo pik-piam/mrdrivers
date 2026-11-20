@@ -9,20 +9,24 @@
 #' }
 #' @order 1
 readIndiaDEA <- function() {
-  baselineCase <- readxl::read_xlsx("GDP growth projections.xlsx",
-                                    sheet = "Summary Sheet",
-                                    range = "G3:J20",
-                                    col_types = rep.int("numeric", 4),
-                                    progress = FALSE) %>%
+  baselineCase <- readxl::read_xlsx(
+    "GDP growth projections.xlsx",
+    sheet = "Summary Sheet",
+    range = "G3:J20",
+    col_types = rep.int("numeric", 4),
+    progress = FALSE
+  ) %>%
     dplyr::select(3:4) %>%
     dplyr::mutate("scenario" = "baseline", "year" = seq(2020, 2100, 5), "iso3c" = "IND") %>%
     tidyr::pivot_longer(1:2, names_to = "variable")
 
-  optimisticCase <- readxl::read_xlsx("GDP growth projections.xlsx",
-                                      sheet = "Summary Sheet",
-                                      range = "K3:N20",
-                                      col_types = rep.int("numeric", 4),
-                                      progress = FALSE) %>%
+  optimisticCase <- readxl::read_xlsx(
+    "GDP growth projections.xlsx",
+    sheet = "Summary Sheet",
+    range = "K3:N20",
+    col_types = rep.int("numeric", 4),
+    progress = FALSE
+  ) %>%
     dplyr::select(3:4) %>%
     dplyr::mutate("scenario" = "optimistic", "year" = seq(2020, 2100, 5), "iso3c" = "IND") %>%
     tidyr::pivot_longer(1:2, names_to = "variable")
@@ -50,10 +54,14 @@ convertIndiaDEA <- function(x, subtype = "all", subset = c("baseline", "optimist
     # Convert from thousands to $
     x <- x * 1e3
   }
-  if (subtype == "pop") x <- mselect(x, variable = "Population (in million)")
+  if (subtype == "pop") {
+    x <- mselect(x, variable = "Population (in million)")
+  }
 
   # Reduce dimension by summation when possible
-  if (subtype != "all") x <- dimSums(x, dim = c("variable"))
+  if (subtype != "all") {
+    x <- dimSums(x, dim = c("variable"))
+  }
 
   toolGeneralConvert(x, useDefaultSetNames = subtype != "all", note = FALSE)
 }
@@ -63,13 +71,15 @@ convertIndiaDEA <- function(x, subtype = "all", subset = c("baseline", "optimist
 downloadIndiaDEA <- function() {
   stop("Manual download of DEA data required!")
   # Compose meta data
-  list(url           = "",
-       doi           = "-",
-       title         = "DEA projections",
-       description   = "DEA projections",
-       unit          = "-",
-       author        = "DEA",
-       release_date  = "2024",
-       license       = "-",
-       comment       = "Manual download required! Accessed on the 11.09.2024.")
+  list(
+    url = "",
+    doi = "-",
+    title = "DEA projections",
+    description = "DEA projections",
+    unit = "-",
+    author = "DEA",
+    release_date = "2024",
+    license = "-",
+    comment = "Manual download required! Accessed on the 11.09.2024."
+  )
 }

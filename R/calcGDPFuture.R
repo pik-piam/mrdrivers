@@ -4,33 +4,37 @@
 calcGDPFuture <- function(futureData) {
   toolCheckUserInput("GDPFuture", as.list(environment()))
   # Map over components of futureData.
-  purrr::map(unlist(strsplit(futureData, "-")),
-             ~calcOutput("InternalGDPFuture", futureData = .x, aggregate = FALSE, supplementary = TRUE)) %>%
+  purrr::map(
+    unlist(strsplit(futureData, "-")),
+    ~ calcOutput("InternalGDPFuture", futureData = .x, aggregate = FALSE, supplementary = TRUE)
+  ) %>%
     toolListFillWith()
 }
 
 calcInternalGDPFuture <- function(futureData) {
   data <- switch(
     futureData,
-    "SSPs"   = readSource("SSP", "gdp"),
-    "SSP1"   = readSource("SSP", "gdp", "SSP1"),
-    "SSP2"   = readSource("SSP", "gdp", "SSP2"),
-    "SSP3"   = readSource("SSP", "gdp", "SSP3"),
-    "SSP4"   = readSource("SSP", "gdp", "SSP4"),
-    "SSP5"   = readSource("SSP", "gdp", "SSP5"),
-    "SDPs"   = toolGDPFutureSDPs(),
+    "SSPs" = readSource("SSP", "gdp"),
+    "SSP1" = readSource("SSP", "gdp", "SSP1"),
+    "SSP2" = readSource("SSP", "gdp", "SSP2"),
+    "SSP3" = readSource("SSP", "gdp", "SSP3"),
+    "SSP4" = readSource("SSP", "gdp", "SSP4"),
+    "SSP5" = readSource("SSP", "gdp", "SSP5"),
+    "SDPs" = toolGDPFutureSDPs(),
     stop("Bad input for calcGDPFuture. Invalid 'futureData' argument.")
   )
 
-  list(x = data,
-       weight = NULL,
-       unit = glue("mil. {toolGetUnitDollar(inPPP = TRUE)}"),
-       description = glue("{futureData} projections"))
+  list(
+    x = data,
+    weight = NULL,
+    unit = glue("mil. {toolGetUnitDollar(inPPP = TRUE)}"),
+    description = glue("{futureData} projections")
+  )
 }
 
 toolGDPFutureSDPs <- function(sdps = c("SDP", "SDP_EI", "SDP_MC", "SDP_RC")) {
   gdpSSP1 <- readSource("SSP", "gdp", "SSP1") # nolint: object_usage_linter.
-  purrr::map(sdps, ~setNames(gdpSSP1, .x)) %>% mbind()
+  purrr::map(sdps, ~ setNames(gdpSSP1, .x)) %>% mbind()
 }
 
 #' @rdname calcGDPPast
@@ -75,4 +79,3 @@ toolGDPpcFutureFromGDPAndPop <- function(gdpFutureData, popFutureData) {
   data[is.nan(data) | data == Inf] <- 0
   data
 }
-

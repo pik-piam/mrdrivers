@@ -23,14 +23,15 @@
 #' @examples \dontrun{
 #' toolGeneralConvert(x)
 #' }
-toolGeneralConvert <- function(x,
-                               useDefaultSetNames = TRUE,
-                               countryFillWith = 0,
-                               substituteNAsWith = 0,
-                               warn = TRUE,
-                               note = TRUE,
-                               ...) {
-
+toolGeneralConvert <- function(
+  x,
+  useDefaultSetNames = TRUE,
+  countryFillWith = 0,
+  substituteNAsWith = 0,
+  warn = TRUE,
+  note = TRUE,
+  ...
+) {
   # Remove any NA-countries
   x <- x[!is.na(getCells(x)), , ]
 
@@ -38,25 +39,23 @@ toolGeneralConvert <- function(x,
   x[is.na(x)] <- substituteNAsWith
 
   # Remove years which only 0s or substituteNAsWith
-  x <- x[, purrr::map_lgl(getYears(x), ~!all(x[, .x, ] == substituteNAsWith) & !all(x[, .x, ] == 0)), ]
+  x <- x[, purrr::map_lgl(getYears(x), ~ !all(x[, .x, ] == substituteNAsWith) & !all(x[, .x, ] == 0)), ]
 
   # Use default setNames
-  if (useDefaultSetNames) getSets(x) <- c("iso3c", "year", "variable")
+  if (useDefaultSetNames) {
+    getSets(x) <- c("iso3c", "year", "variable")
+  }
 
   # Check whether the country list agrees with the list of countries in the madrat library
   # and remove unrequired data, add missing data
   if (warn && note) {
     x <- toolCountryFill(x, fill = countryFillWith, ...)
   } else if (!warn && note) {
-    x <- toolCountryFill(x, fill = countryFillWith, ...) %>%
-      suppressWarnings()
+    x <- toolCountryFill(x, fill = countryFillWith, ...) %>% suppressWarnings()
   } else if (warn && !note) {
-    x <- toolCountryFill(x, fill = countryFillWith, ...) %>%
-      suppressMessages()
+    x <- toolCountryFill(x, fill = countryFillWith, ...) %>% suppressMessages()
   } else {
-    x <- toolCountryFill(x, fill = countryFillWith, ...) %>%
-      suppressWarnings() %>%
-      suppressMessages()
+    x <- toolCountryFill(x, fill = countryFillWith, ...) %>% suppressWarnings() %>% suppressMessages()
   }
 
   # Sort by year

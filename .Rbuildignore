@@ -25,3 +25,5 @@
 ^CLAUDE.md$
 ^AGENTS.md$
 ^CONTRIBUTING\.md$
+^[.]?air[.]toml$
+^\.vscode$

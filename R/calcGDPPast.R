@@ -20,47 +20,50 @@ calcGDPPast <- function(pastData = toolGetScenarioDefinition("GDPpc", "SSPs")$pa
   toolCheckUserInput("GDPPast", as.list(environment()))
 
   # Map over components of pastData.
-  data <- purrr::map(unlist(strsplit(pastData, "-")),
-                     ~calcOutput("InternalGDPPast", pastData = .x, aggregate = FALSE, supplementary = TRUE)) %>%
+  data <- purrr::map(
+    unlist(strsplit(pastData, "-")),
+    ~ calcOutput("InternalGDPPast", pastData = .x, aggregate = FALSE, supplementary = TRUE)
+  ) %>%
     toolListFillWith()
 
   # If required, project GDP series back to 1960 using growth rates from the extension1960 data set.
   if (extension1960 != "none") {
-    data1960 <-  calcOutput("GDPPast",
-                            pastData = extension1960,
-                            extension1960 = "none",
-                            aggregate = FALSE,
-                            supplementary = TRUE)
+    data1960 <- calcOutput(
+      "GDPPast",
+      pastData = extension1960,
+      extension1960 = "none",
+      aggregate = FALSE,
+      supplementary = TRUE
+    )
     data <- toolHarmonizeFuture(past = data1960, future = data, method = "growth")
   }
 
   # Fill in trailing zeros with closest value
   data$x <- toolInterpolateAndExtrapolate(data$x)
 
-  list(x = data$x,
-       weight = NULL,
-       unit = glue("mil. {toolGetUnitDollar(inPPP = TRUE)}"),
-       description = data$description)
+  list(x = data$x, weight = NULL, unit = glue("mil. {toolGetUnitDollar(inPPP = TRUE)}"), description = data$description)
 }
 
 calcInternalGDPPast <- function(pastData) {
   # Call appropriate calcInternalGDPPast function.
   data <- switch(
     pastData,
-    "WDI"   = readSource("WDI", "gdp"),
-    "IMF"   = readSource("IMF", "gdp"),
-    "MI"    = readSource("MissingIslands", "gdp"),
+    "WDI" = readSource("WDI", "gdp"),
+    "IMF" = readSource("IMF", "gdp"),
+    "MI" = readSource("MissingIslands", "gdp"),
     "James" = toolGDPPastJames(),
-    "SSPs"  = readSource("SSP", "gdp", "Historical Reference"),
+    "SSPs" = readSource("SSP", "gdp", "Historical Reference"),
     stop("Bad input for calcGDPPast. Invalid 'pastData' argument.")
   )
 
   getNames(data) <- pastData
 
-  list(x = data,
-       weight = NULL,
-       unit = glue("mil. {toolGetUnitDollar(inPPP = TRUE)}"),
-       description = glue("{pastData} data"))
+  list(
+    x = data,
+    weight = NULL,
+    unit = glue("mil. {toolGetUnitDollar(inPPP = TRUE)}"),
+    description = glue("{pastData} data")
+  )
 }
 
 toolGDPPastJames <- function() {
@@ -94,7 +97,7 @@ calcGDPpcPast <- function(scenario = "SSPs") {
   ## Sometimes weight has more years than x, thus the intersect operation.
   weight <- weight[, intersect(getYears(data), getYears(weight)), ]
   ## If x has more years than weight, add these years and interpolate
-  missingYears <- getYears(data)[! getYears(data) %in% getYears(weight)]
+  missingYears <- getYears(data)[!getYears(data) %in% getYears(weight)]
   weight <- add_columns(weight, missingYears, dim = 2, fill = 0)
   weight <- weight[, sort(getYears(weight)), ]
   weight <- toolInterpolateAndExtrapolate(weight)
