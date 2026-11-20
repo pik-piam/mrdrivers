@@ -198,10 +198,8 @@ toolFastConvergeSSP <- function(x, delta, yearStart, y1, y2, yearEnd) {
       # Fast convergence
       value = dplyr::if_else(
         .data$year > yearStart &
-          ((.data$SSP %in% c("SSP1", "SSP5") & .data$d < 0) | # nolint: indentation_linter.
-            (.data$SSP %in% c("SSP3", "SSP4") & .data$d >= 0)),
+          ((.data$SSP %in% c("SSP1", "SSP5") & .data$d < 0) | (.data$SSP %in% c("SSP3", "SSP4") & .data$d >= 0)),
         dplyr::if_else(
-          # nolint: indentation_linter.
           .data$year <= yearEnd,
           .data$value + .data$d * (yearEnd - .data$year) / (yearEnd - yearStart),
           .data$value
@@ -211,10 +209,8 @@ toolFastConvergeSSP <- function(x, delta, yearStart, y1, y2, yearEnd) {
       # Slow convergence
       value = dplyr::if_else(
         .data$year > yearStart &
-          ((.data$SSP %in% c("SSP3", "SSP4") & .data$d < 0) | # nolint: indentation_linter.
-            (.data$SSP %in% c("SSP1", "SSP5") & .data$d >= 0)),
+          ((.data$SSP %in% c("SSP3", "SSP4") & .data$d < 0) | (.data$SSP %in% c("SSP1", "SSP5") & .data$d >= 0)),
         dplyr::if_else(
-          # nolint: indentation_linter.
           .data$year <= y2,
           .data$value + .data$d,
           dplyr::if_else(

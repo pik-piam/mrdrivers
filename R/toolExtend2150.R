@@ -77,7 +77,7 @@ toolBezierExtension <- function(data, timeExtend) {
 
   closestYear <- function(x) purrr::map_int(x, ~ timeExtend[which.min(abs(.x - timeExtend))])
 
-  extension <- purrr::map2(bezierPoints, id, ~ .x %>% tibble::as_tibble() %>% dplyr::mutate(id = .y)) %>%
+  extension <- purrr::map2(bezierPoints, id, ~ dplyr::mutate(tibble::as_tibble(.x), id = .y)) %>%
     purrr::list_rbind() %>%
     # Complicated / elegant use of function factories to get closest points to timeExtend coordinates
     # First create columns with distance to timeExtend points

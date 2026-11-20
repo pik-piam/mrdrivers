@@ -6,8 +6,8 @@
 #' @inheritParams calcDriver
 #' @keywords internal
 #' @return TRUE
+# nolint next: cyclocomp_linter.
 toolCheckUserInput <- function(driver, args) {
-  # nolint: cyclocomp_linter.
   permittedArgs <- c(
     "scenario",
     "unit",

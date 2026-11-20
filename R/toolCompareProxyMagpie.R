@@ -6,8 +6,8 @@
 #' @param path "x"
 #' @keywords internal
 #' @return list
+# nolint next: object_name_linter
 compare_proxy.magpie <- function(x, path = "x") {
-  # nolint: object_name_linter.
   if (any(grepl("^ (origin:|creation date:)", comment(x)))) {
     comment(x) <- comment(x)[!grepl("^ (origin:|creation date:)", comment(x))]
   }

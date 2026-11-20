@@ -7,8 +7,8 @@
 #' @inherit madrat::readSource return
 #' @seealso [madrat::readSource()] and [madrat::downloadSource()]
 #' @order 2
+# nolint next: object_name_linter
 readUN_PopDiv <- function(subtype, subset = "estimates") {
-  # nolint: object_name_linter.
   # Check function input
   if (!subtype %in% c("pop", "lab")) {
     stop("Bad input for readUN_PopDiv. Invalid 'subtype' argument.")
@@ -39,8 +39,8 @@ readUN_PopDiv <- function(subtype, subset = "estimates") {
 #' @rdname readUN_PopDiv
 #' @order 3
 #' @param x MAgPIE object returned from readUN_PopDiv
+# nolint next: object_name_linter
 convertUN_PopDiv <- function(x) {
-  # nolint: object_name_linter.
   # Convert from thousands to millions
   x <- x * 1e-3
 
@@ -53,8 +53,8 @@ convertUN_PopDiv <- function(x) {
 
 #' @rdname readUN_PopDiv
 #' @order 1
+# nolint next: object_name_linter
 downloadUN_PopDiv <- function() {
-  # nolint: object_name_linter.
   url <- "https://population.un.org/wpp/assets/Excel%20Files/1_Indicator%20(Standard)/EXCEL_FILES/2_Population/WPP2024_POP_F01_1_POPULATION_SINGLE_AGE_BOTH_SEXES.xlsx" # nolint: line_length_linter.
   utils::download.file(url, basename(url), quiet = TRUE)
 

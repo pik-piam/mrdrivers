@@ -82,6 +82,7 @@ convertIMF <- function(x, subtype = "all") {
 #' @order 1
 downloadIMF <- function() {
   stop("Manual download of IMF data required!")
+  # nolint next: line_length_linter
   url <- "https://data.imf.org/-/media/iData/External-Storage/Documents/2F78EE59F79143A7921E5E203D3AAA80/en/WEOApr2026all.xlsx"
   utils::download.file(url, basename(url), quiet = TRUE)
 

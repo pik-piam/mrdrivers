@@ -44,7 +44,7 @@ Suggests:
     zoo
 Encoding: UTF-8
 Roxygen: list(markdown = TRUE)
-Date: 2026-11-17
+Date: 2026-11-20
 Config/testthat/edition: 3
 VignetteBuilder: knitr
 Config/roxygen2/version: 8.1.1
